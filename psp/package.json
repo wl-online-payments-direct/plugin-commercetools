@@ -1,0 +1,25 @@
+{
+  "name": "@worldline/psp-integration",
+  "version": "1.0.0",
+  "description": "Module containing Payment integration",
+  "main": "dist/index.js",
+  "types": "dist/types/index.d.ts",
+  "scripts": {
+    "build": "tsc",
+    "dev:build": "tsc -w -preserveWatchOutput",
+    "setup": "npm link && npm run build"
+  },
+  "keywords": [],
+  "license": "ISC",
+  "dependencies": {
+    "onlinepayments-sdk-nodejs": "^4.16.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.8.7",
+    "eslint": "^8.52.0",
+    "typescript": "^5.2.2"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}

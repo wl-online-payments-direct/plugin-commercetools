@@ -1,0 +1,46 @@
+services:
+  app:
+    image: wordline/psp-integration-dev
+    build:
+      dockerfile: ./Dockerfile.dev
+    restart: always
+    ports:
+      - 3000:3000
+    volumes:
+      - .:/app
+    networks:
+      - redisnet
+      - dbnet
+    environment:
+      - REDIS_HOST=redis
+      - MYSQL_HOST=db
+      - MYSQL_DATABASE=psp_app_integration
+      - MYSQL_USER=pspapp
+      - MYSQL_PASSWORD=pspapp
+  redis:
+    image: redis:alpine
+    restart: always
+    networks:
+      - redisnet
+    expose:
+      - 6379
+  db:
+    image: mariadb:10.5
+    command: --transaction-isolation=READ-COMMITTED --binlog-format=ROW
+    restart: always
+    volumes:
+      - db_data:/var/lib/mysql
+    networks:
+      - dbnet
+    environment:
+      - MYSQL_DATABASE=psp_app_integration
+      - MYSQL_USER=pspapp
+      - MYSQL_ROOT_PASSWORD=pspapp
+      - MYSQL_PASSWORD=pspapp
+    expose:
+      - 3306
+volumes:
+  db_data:
+networks:
+  dbnet:
+  redisnet:

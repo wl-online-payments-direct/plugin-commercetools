@@ -1,0 +1,25 @@
+{
+  "name": "@worldline/util-integration",
+  "version": "1.0.0",
+  "description": "Module containing utilities to be used across projects",
+  "main": "dist/index.js",
+  "types": "dist/types/index.d.ts",
+  "scripts": {
+    "build": "tsc",
+    "dev:build": "tsc -w -preserveWatchOutput",
+    "setup": "npm link && npm run build"
+  },
+  "keywords": [],
+  "license": "ISC",
+  "dependencies": {
+    "winston": "^3.11.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.8.7",
+    "eslint": "^8.52.0",
+    "typescript": "^5.2.2"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}

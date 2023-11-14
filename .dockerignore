@@ -1,0 +1,17 @@
+.git
+node_modules
+.eslint*
+.prettier
+README.md
+npm-debug.log
+yarn-error.log
+Dockerfile
+Dockerfile.dev
+.dockerignore
+docker-compose.yml
+.gitignore
+compose.yml
+compose-dev.yml
+.env
+.env-sample
+.cache

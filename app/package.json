@@ -1,0 +1,36 @@
+{
+  "name": "@worldline/app-integration",
+  "version": "1.0.0",
+  "description": "Module containing App logic",
+  "main": "dist/index.js",
+  "types": "dist/types/index.d.ts",
+  "scripts": {
+    "dev:all": "npm run link:deps && run-p dev:build:*",
+    "build": "tsc",
+    "dev:build:self": "tsc -w -preserveWatchOutput",
+    "dev:build:ct": "cd ./node_modules/@worldline/ct-integration && npm run dev:build",
+    "dev:build:db": "cd ./node_modules/@worldline/db-integration && npm run dev:build",
+    "dev:build:psp": "cd ./node_modules/@worldline/psp-integration && npm run dev:build",
+    "dev:build:util": "cd ./node_modules/@worldline/util-integration && npm run dev:build",
+    "setup": "npm link && npm run build",
+    "build:all": "npm run link:deps && npm-run-all build:deps:* && tsc",
+    "build:deps:ct": "cd ./node_modules/@worldline/ct-integration && npm run build",
+    "build:deps:db": "cd ./node_modules/@worldline/db-integration && npm run build",
+    "build:deps:psp": "cd ./node_modules/@worldline/psp-integration && npm run build",
+    "build:deps:util": "cd ./node_modules/@worldline/util-integration && npm run build",
+    "link:deps": "npm link ../db ../ct ../util ../psp"
+  },
+  "files": [
+    "/dist"
+  ],
+  "license": "ISC",
+  "devDependencies": {
+    "@types/node": "^20.8.7",
+    "eslint": "^8.52.0",
+    "npm-run-all": "^4.1.5",
+    "typescript": "^5.2.2"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}

@@ -1,0 +1,27 @@
+{
+  "name": "@worldline/db-integration",
+  "version": "1.0.0",
+  "description": "Module containing data access",
+  "main": "dist/index.js",
+  "types": "dist/types/index.d.ts",
+  "scripts": {
+    "build": "tsc",
+    "dev:build": "tsc -w -preserveWatchOutput",
+    "setup": "npm link && npm run build"
+  },
+  "keywords": [],
+  "license": "ISC",
+  "dependencies": {
+    "@prisma/client": "^5.5.0",
+    "dotenv": "^16.3.1"
+  },
+  "devDependencies": {
+    "@types/node": "^20.8.7",
+    "eslint": "^8.52.0",
+    "prisma": "^5.5.0",
+    "typescript": "^5.2.2"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}
