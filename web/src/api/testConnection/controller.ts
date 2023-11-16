@@ -4,7 +4,7 @@ import {
   isPostRequestOrThrowError,
   logger,
   ResponseClient,
-} from "@tryzens/psp-util-integration";
+} from "@worldline/util-integration";
 import { Request } from "~/types";
 
 const processRequest = async (request: Request, response: ServerResponse) => {
