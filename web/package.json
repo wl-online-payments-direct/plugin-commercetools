@@ -1,7 +1,7 @@
 {
   "name": "@worldline/web-integration",
   "version": "1.0.0",
-  "description": "Web package for worldline",
+  "description": "Package for worldline",
   "main": "dist/index.js",
   "types": "dist/types/index.d.ts",
   "scripts": {
