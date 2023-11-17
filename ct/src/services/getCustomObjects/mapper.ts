@@ -1,4 +1,4 @@
-const mapper = (response: any) => {
+const mapper = (storeId: string, response: any) => {
   if (response?.body?.errors) {
     throw {
       message: "[CT] Failed to retrieve custom object information",
@@ -8,10 +8,19 @@ const mapper = (response: any) => {
   }
 
   const parsedRes = response?.body?.data?.customObjects || {};
-  const result = parsedRes.results.find(
-    (e: { container: string }) => e.container === "wl-configuration"
+
+  const result = parsedRes?.results.find(
+    (e: { container: string }) => e.container === storeId
   );
-  const config = JSON.parse(JSON.stringify(result.value));
+
+  if (!result) {
+    throw {
+      message: "[CT] Failed to identify custom object information",
+      statusCode: 400,
+    };
+  }
+
+  const config = result ? JSON.parse(JSON.stringify(result.value)) : {};
   return config;
 };
 

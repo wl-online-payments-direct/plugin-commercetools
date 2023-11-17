@@ -14,24 +14,7 @@ const processRequest = async (request: Request, response: ServerResponse) => {
     // Only allow POST request; else throw error
     await isPostRequestOrThrowError(method);
 
-    const {
-      projectId,
-      storeId,
-      cartId,
-      tokens,
-      askConsumerConsent = true, // Default will be true
-    } = request.body;
-
-    if (!projectId || !storeId || !cartId || !tokens) {
-      throw {
-        message: "Required parameters are missing or empty",
-        statusCode: 400,
-      };
-    }
-
-    // Perform a test connection request to psp
-    const options = { projectId, storeId, cartId, tokens, askConsumerConsent };
-    const data = await initiatePaymentRequest(options);
+    const data = await initiatePaymentRequest(request);
 
     ResponseClient.setResponseTo200(response, data);
   } catch (error) {

@@ -1,14 +1,15 @@
 import { getCartById, getCustomObjects } from "@worldline/ct-integration";
 import { hostedTokenizationService } from "@worldline/psp-integration";
-import { InitiatePaymentSessionPayload } from "./types";
+import { initiatePaymentSessionType } from "./types";
 
 export async function initiatePaymentSession({
+  authToken,
   projectId,
   storeId,
   cartId,
   tokens,
   askConsumerConsent,
-}: InitiatePaymentSessionPayload) {
+}: initiatePaymentSessionType) {
   try {
     // Fetch cart from Commercetools
     const cart = await getCartById(cartId);
@@ -17,12 +18,11 @@ export async function initiatePaymentSession({
       throw { message: "Failed to fetch the cart data", statusCode: 403 };
     }
 
-    // Will use it for business logic
+    // Will use it later for business logic
     projectId;
-    storeId;
 
     // Fetch variant from admin config
-    const customConfig = await getCustomObjects();
+    const customConfig = await getCustomObjects(authToken, storeId);
 
     const variant = customConfig.variant;
 
