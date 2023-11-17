@@ -1,4 +1,4 @@
-import { getCartById } from "@worldline/ct-integration";
+import { getCartById, getCustomObjects } from "@worldline/ct-integration";
 import { hostedTokenizationService } from "@worldline/psp-integration";
 import { InitiatePaymentSessionPayload } from "./types";
 
@@ -21,18 +21,18 @@ export async function initiatePaymentSession({
     projectId;
     storeId;
 
-    //Todo:
     // Fetch variant from admin config
-    const variant = "";
+    const customConfig = await getCustomObjects();
 
-    //Todo:
+    const variant = customConfig.variant;
+
     // Fetch connection options from admin config
     const connectOpts = {
-      merchantId: "",
-      integrator: "",
-      apiKey: "",
-      apiSecret: "",
-      host: "",
+      merchantId: customConfig.merchantId,
+      integrator: customConfig.integrator,
+      apiKey: customConfig.apiKey,
+      apiSecret: customConfig.apiSecret,
+      host: customConfig.host,
     };
 
     //Call hosted tokenization service
