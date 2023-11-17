@@ -1,7 +1,9 @@
-import { connectService } from "./client";
-import { ConnectionProps } from "./types";
+import { connectService } from "../client";
+import { ConnectOpts, TestConnectionResponse } from "../types";
 
-export async function testConnectionService(options: ConnectionProps) {
+export async function testConnectionService(
+  options: ConnectOpts
+): Promise<TestConnectionResponse> {
   try {
     const { merchantId } = options;
     const client = await connectService(options);

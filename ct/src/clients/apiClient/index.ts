@@ -10,7 +10,7 @@ export class ApiClient {
 
   constructor() {
     this.gClient = new GraphQLClient()
-
+    
     this.gClient.setClientWithAuthMiddlewareOptions({
       apiHost: env.CTP_API_URL as string,
       authHost: env.CTP_AUTH_URL as string,
@@ -28,7 +28,7 @@ export class ApiClient {
     this.variables = variables
   }
 
-  async getData() {
+  async execute() {
     try {
       return this.gClient
         .getApiRoot()
