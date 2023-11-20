@@ -1,10 +1,14 @@
 import healthController from "../api/health/controller";
-import saveConfigController from "../api/saveConfig/controller";
+import testConnectionController from "../api/testConnection/controller";
+import initiatePaymentController from "../api/initiatePayment/controller";
+import createPaymentController from "../api/initiatePayment/controller";
 
 const routes = {
   "/": healthController.processRequest,
   "/health": healthController.processRequest,
-  "/saveConfig": saveConfigController.processRequest,
+  "/connection": testConnectionController.processRequest,
+  "/initiatePayment": initiatePaymentController.processRequest,
+  "/payment": createPaymentController.processRequest,
 };
 
 export { routes };

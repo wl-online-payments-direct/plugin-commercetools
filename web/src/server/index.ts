@@ -20,13 +20,15 @@ const createServer = () => {
         const parts = url.parse(requestUrl);
         const route = routes[parts.pathname as keyof typeof routes];
 
+        const { method } = request;
+
         if (route) {
-          if (isOptionsRequest(request)) {
+          if (isOptionsRequest(method)) {
             response.writeHead(204, cors());
             response.end();
             return;
           }
-          if (isPostRequest(request) && !isMultiPartRequest(request)) {
+          if (isPostRequest(method) && !isMultiPartRequest(request)) {
             let chunks = "";
             request.on("data", (chunk) => {
               chunks += chunk;

@@ -1,1 +1,1 @@
-export * from './configuration.js';
+export * from './services';

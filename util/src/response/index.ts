@@ -39,34 +39,19 @@ class ResponseManager {
     );
   }
 
-  setResponseError(
-    response: ServerResponse,
-    params: {
-      httpStatusCode: number;
-      message?: string;
-      error?: any;
-    }
-  ) {
-    const { httpStatusCode, message, error } = params;
-    response.writeHead(httpStatusCode, {
+  setResponseError(response: ServerResponse, error: any) {
+    const { statusCode = 500, message, details = undefined } = error;
+    response.writeHead(statusCode, {
       ...this.headers,
       ...cors(),
     });
 
-    const errors = {
-      httpStatusCode: error.statusCode || 500,
-      errors: [
-        {
-          code: error.statusCode || 500,
-          message: error?.response?.body?.message || error.message,
-        },
-      ],
-    };
     response.end(
       JSON.stringify({
         status: "nok",
+        statusCode,
         message,
-        errors,
+        details,
       })
     );
   }

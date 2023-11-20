@@ -1,10 +1,31 @@
 import { IncomingMessage } from "http";
 
-const isPostRequest = (request: IncomingMessage) => request.method === "POST";
-const isGetRequest = (request: IncomingMessage) => request.method === "GET";
-const isOptionsRequest = (request: IncomingMessage) =>
-  request.method === "OPTIONS";
+const isPostRequest = (method = "") => method === "POST";
+
+const isGetRequest = (method = "") => method === "GET";
+
+const isOptionsRequest = (method = "") => method === "OPTIONS";
+
 const isMultiPartRequest = (request: IncomingMessage) =>
   !!request.rawHeaders.find((header) => header.includes("multipart/form-data"));
 
-export { isPostRequest, isGetRequest, isMultiPartRequest, isOptionsRequest };
+const isGetRequestOrThrowError = async (method = "") => {
+  if (!isGetRequest(method)) {
+    throw { httpStatusCode: 405, message: "Method not allowed" };
+  }
+};
+
+const isPostRequestOrThrowError = async (method = "") => {
+  if (!isPostRequest(method)) {
+    throw { httpStatusCode: 405, message: "Method not allowed" };
+  }
+};
+
+export {
+  isPostRequest,
+  isGetRequest,
+  isMultiPartRequest,
+  isOptionsRequest,
+  isGetRequestOrThrowError,
+  isPostRequestOrThrowError,
+};
