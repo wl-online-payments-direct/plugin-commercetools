@@ -1,6 +1,4 @@
 import { env } from "process"
-import { IncomingMessage } from "http"
-
 import { GraphQLClient } from "../graphqlClient"
 
 export class MeApiClient {
@@ -11,9 +9,9 @@ export class MeApiClient {
   headers = {} as { [key: string]: string }
   bearerToken?: string
 
-  constructor(props: { request: IncomingMessage }) {
+  constructor(props: { authToken: string }) {
     this.gClient = new GraphQLClient()
-    this.bearerToken = props?.request?.headers?.["authorization"]
+    this.bearerToken = props?.authToken
 
     if (!this.bearerToken) {
       throw { message: "Unauthorized request", statusCode: 401 }
@@ -32,7 +30,7 @@ export class MeApiClient {
     this.variables = variables
   }
 
-  async getData() {
+  async execute() {
     try {
       return this.gClient
         .getApiRoot()

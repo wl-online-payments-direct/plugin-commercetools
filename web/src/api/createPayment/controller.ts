@@ -1,5 +1,5 @@
 import { ServerResponse } from "http";
-import { initiatePaymentRequest } from "../../lib";
+import { createPaymentRequest } from "../../lib";
 import {
   isPostRequestOrThrowError,
   logger,
@@ -14,7 +14,7 @@ const processRequest = async (request: Request, response: ServerResponse) => {
     // Only allow POST request; else throw error
     await isPostRequestOrThrowError(method);
 
-    const data = await initiatePaymentRequest(request);
+    const data = await createPaymentRequest(request);
 
     ResponseClient.setResponseTo200(response, data);
   } catch (error) {
