@@ -13,3 +13,9 @@ export interface CreatePaymentPayload {
   storeId: string;
   hostedTokenizationId: string;
 }
+
+export interface GetPaymentStatusPayload {
+  authToken: string;
+  storeId: string;
+  paymentId: string;
+}
