@@ -1,5 +1,5 @@
 import { ServerResponse } from "http";
-import { testConnectionRequest } from "../../lib/connection";
+import { testConnectionRequest } from "../../lib/";
 import {
   isPostRequestOrThrowError,
   logger,

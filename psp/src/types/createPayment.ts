@@ -12,5 +12,4 @@ export interface CreatePaymentPayload {
 
 export interface CreatePaymentResponse {
   id: number;
-  status: string;
 }

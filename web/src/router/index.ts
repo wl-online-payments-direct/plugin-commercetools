@@ -1,7 +1,7 @@
 import healthController from "../api/health/controller";
 import testConnectionController from "../api/testConnection/controller";
 import initiatePaymentController from "../api/initiatePayment/controller";
-import createPaymentController from "../api/initiatePayment/controller";
+import createPaymentController from "../api/createPayment/controller";
 
 const routes = {
   "/": healthController.processRequest,

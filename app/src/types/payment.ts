@@ -7,8 +7,9 @@ export interface initiatePaymentSessionType {
   askConsumerConsent: boolean;
 }
 
-export interface ICreatePayment {
+export interface CreatePaymentType {
   authToken: string;
   projectId: string;
   storeId: string;
+  hostedTokenizationId: string;
 }

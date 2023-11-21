@@ -11,13 +11,13 @@ const isMultiPartRequest = (request: IncomingMessage) =>
 
 const isGetRequestOrThrowError = async (method = "") => {
   if (!isGetRequest(method)) {
-    throw { httpStatusCode: 405, message: "Method not allowed" };
+    throw { statusCode: 405, message: "Method not allowed" };
   }
 };
 
 const isPostRequestOrThrowError = async (method = "") => {
   if (!isPostRequest(method)) {
-    throw { httpStatusCode: 405, message: "Method not allowed" };
+    throw { statusCode: 405, message: "Method not allowed" };
   }
 };
 

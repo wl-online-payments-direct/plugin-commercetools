@@ -1,2 +1,3 @@
 export * from './connection';
-export * from './payment';
+export * from './initiatePayment';
+export * from './createPayment';

@@ -12,11 +12,7 @@ export async function createPaymentService(
   try {
     const { merchantId } = connectOpts;
     const client = await connectService(connectOpts);
-    const result = await client.payments.createPayment(
-      merchantId,
-      payload,
-      {}
-    );
+    const result = await client.payments.createPayment(merchantId, payload, {});
 
     if (result.body?.errors) {
       throw {
@@ -26,8 +22,11 @@ export async function createPaymentService(
       };
     }
 
-    const { id, status } = result.body;
-    return { id, status };
+    const {
+      payment: { id },
+    } = result.body;
+
+    return { id };
   } catch (error) {
     throw error;
   }
