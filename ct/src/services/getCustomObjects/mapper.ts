@@ -20,7 +20,7 @@ const mapper = (storeId: string, response: any) => {
     };
   }
 
-  const config = result ? JSON.parse(JSON.stringify(result.value)) : {};
+  const config = result ? JSON.parse(JSON.stringify(result.value)) : null;
   return config;
 };
 

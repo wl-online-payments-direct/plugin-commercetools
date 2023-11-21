@@ -1,4 +1,4 @@
-export interface initiatePaymentSessionType {
+export interface InitiatePaymentPayload {
   authToken: string;
   projectId: string;
   storeId: string;
@@ -7,7 +7,7 @@ export interface initiatePaymentSessionType {
   askConsumerConsent: boolean;
 }
 
-export interface CreatePaymentType {
+export interface CreatePaymentPayload {
   authToken: string;
   projectId: string;
   storeId: string;

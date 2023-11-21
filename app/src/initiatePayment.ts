@@ -1,6 +1,6 @@
 import { getCartById, getCustomObjects } from "@worldline/ct-integration";
 import { hostedTokenizationService } from "@worldline/psp-integration";
-import { initiatePaymentSessionType } from "./types";
+import { InitiatePaymentPayload } from "./types";
 
 export async function initiatePaymentSession({
   authToken,
@@ -9,7 +9,7 @@ export async function initiatePaymentSession({
   cartId,
   tokens,
   askConsumerConsent,
-}: initiatePaymentSessionType) {
+}: InitiatePaymentPayload) {
   try {
     // Fetch cart from Commercetools
     const cart = await getCartById(cartId);

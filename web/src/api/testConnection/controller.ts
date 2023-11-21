@@ -29,7 +29,7 @@ const processRequest = async (request: Request, response: ServerResponse) => {
 
     ResponseClient.setResponseTo200(response, { connection });
   } catch (error) {
-    logger.error(error);
+    logger.error(JSON.stringify(error));
     ResponseClient.setResponseError(response, error);
   }
 };

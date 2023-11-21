@@ -1,6 +1,6 @@
 import { $Enums } from "@prisma/client";
 
-export interface CreatePaymentType {
+export interface Payment {
   id: string;
   paymentId: string;
   worldlineId: string;

@@ -1,9 +1,9 @@
 import prisma from "./connection";
-import { createPaymentResponseMapper } from "./mapper/payment";
-import type {
-  CreatePaymentRequest,
-  CreatePaymentResponse,
-} from "./types/payment";
+import {
+  createPaymentResponseMapper,
+  incrementedPaymentIdMapper,
+} from "./mapper";
+import type { CreatePaymentRequest, CreatePaymentResponse } from "./types";
 
 export async function createPaymentInDB(
   data: CreatePaymentRequest
@@ -12,6 +12,29 @@ export async function createPaymentInDB(
     const result = await prisma.payments.create({ data });
     return createPaymentResponseMapper(result);
   } catch (error: any) {
-    throw { message: error?.message, statusCode: 400 };
+    throw {
+      message: "Failed to create payment",
+      statusCode: 400,
+      details: error?.message,
+    };
+  }
+}
+
+export async function getIncrementedPaymentId(): Promise<{
+  incrementedPaymentId: number;
+}> {
+  try {
+    const lastPayment = await prisma.payments.findFirst({
+      orderBy: {
+        createdAt: "desc",
+      },
+    });
+    return incrementedPaymentIdMapper(lastPayment);
+  } catch (error: any) {
+    throw {
+      message: "Failed to increment the payment id",
+      statusCode: 400,
+      details: error?.message,
+    };
   }
 }

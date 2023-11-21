@@ -1,10 +1,11 @@
 import { MeApiClient } from "./../../clients";
 import query from "./query";
 import mapper from "./mapper";
-import { getCustomObjectsCache } from "./../../cache";
+import { getCustomObjectsCache, setCustomObjectsCache } from "./../../cache";
 
 export async function getCustomObjects(authToken: string, storeId: string) {
-  const cache = await getCustomObjectsCache();
+  // Fetch from cache
+  const cache = await getCustomObjectsCache(storeId);
   if (cache) {
     return cache;
   }
@@ -23,5 +24,11 @@ export async function getCustomObjects(authToken: string, storeId: string) {
 
   const result = await apiClient.execute();
 
-  return mapper(storeId, result);
+  const configuration = mapper(storeId, result);
+
+  if (configuration) {
+    await setCustomObjectsCache(storeId, configuration);
+  }
+
+  return configuration;
 }

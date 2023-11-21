@@ -1,7 +1,10 @@
 import { getMyCart, getCustomObjects } from "@worldline/ct-integration";
 import { createPaymentService } from "@worldline/psp-integration";
-import { createPaymentInDB } from "@worldline/db-integration";
-import { CreatePaymentType } from "./types";
+import {
+  createPaymentInDB,
+  getIncrementedPaymentId,
+} from "@worldline/db-integration";
+import { CreatePaymentPayload } from "./types";
 import { createPaymentMapper } from "./mappers";
 
 export async function createPayment({
@@ -9,7 +12,7 @@ export async function createPayment({
   projectId,
   storeId,
   hostedTokenizationId,
-}: CreatePaymentType) {
+}: CreatePaymentPayload) {
   try {
     // Fetch cart from Commercetools
     const { cart, customer } = await getMyCart(authToken);
@@ -56,9 +59,13 @@ export async function createPayment({
       createPaymentPayload
     );
 
+    const merchantReference = customConfig.merchantReference;
+    const { incrementedPaymentId } = await getIncrementedPaymentId();
+    const paymentId = `${merchantReference}-${incrementedPaymentId}`;
+
     // save the payment information to database
     const createPaymenDBResponse = await createPaymentInDB({
-      paymentId: "", //TODO: generate a pattern
+      paymentId, // generate a pattern
       worldlineId: paymentServiceResponse.id.toString(),
       storeId,
       cartId: cart.id,

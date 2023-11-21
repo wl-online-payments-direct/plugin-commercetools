@@ -1,7 +1,7 @@
-import { CreatePaymentType, CreatePaymentResponse } from "./../types/payment";
+import { Payment, CreatePaymentResponse } from "./../types";
 
 export function createPaymentResponseMapper(
-  result: CreatePaymentType
+  result: Payment
 ): CreatePaymentResponse {
   const selectedFields = (({ id, paymentId, status, state }) => ({
     id,
@@ -10,4 +10,20 @@ export function createPaymentResponseMapper(
     state,
   }))(result);
   return selectedFields;
+}
+
+export function incrementedPaymentIdMapper(result: Payment | null): {
+  incrementedPaymentId: number;
+} {
+  const INITIAL_VALUE = 100000;
+
+  if (!result) {
+    return { incrementedPaymentId: INITIAL_VALUE };
+  }
+
+  let [_merchantReference, paymentId] = result?.paymentId?.split("-");
+
+  const incrementedPaymentId = Number(paymentId) + 1;
+
+  return { incrementedPaymentId };
 }
