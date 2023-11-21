@@ -17,16 +17,29 @@
     "dev:build:util": "cd ./node_modules/@worldline/util-integration && npm run dev:build",
     "install:all": "cd ../app && npm install && cd ../bc && npm install && cd ../db && npm install && cd ../psp && npm install && cd ../util && npm install && cd ../cron && npm install",
     "install:ci:all": "cd ../app && npm ci && cd ../bc && npm ci && cd ../db && npm ci && cd ../psp && npm ci && cd ../util && npm ci && cd ../cron && npm ci",
-    "prisma:generate:all": "cd ../db && npx prisma generate"
+    "prisma:generate:all": "cd ../db && npx prisma generate",
+    "lint": "eslint src/**/*.ts",
+    "lint-fix": "eslint --fix src/**/*.ts",
+    "pretty": "prettier --write 'src/**/*.ts'",
+    "prepare": "cd .. && husky install cron/.husky",
+    "precommit": "npm run lint-fix && npm run pretty",
+    "prepush": "npm run lint"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "devDependencies": {
     "@types/node": "^20.8.7",
-    "eslint": "^8.52.0",
-    "typescript": "^5.2.2",
-    "npm-run-all": "^4.1.5"
+    "@typescript-eslint/eslint-plugin": "^6.12.0",
+    "@typescript-eslint/parser": "^6.12.0",
+    "eslint": "^8.54.0",
+    "eslint-config-airbnb": "^19.0.4",
+    "eslint-config-prettier": "^9.0.0",
+    "eslint-plugin-prettier": "^5.0.1",
+    "husky": "^8.0.3",
+    "npm-run-all": "^4.1.5",
+    "prettier": "^3.1.0",
+    "typescript": "^5.2.2"
   },
   "dependencies": {
     "dotenv": "^16.3.1",

@@ -14,7 +14,6 @@
     "dev": "nodemon src/index.ts",
     "dev:all": "npm run link:deps && run-p dev:build:*",
     "start:debug": "nodemon --exec \"node --inspect-brk=0.0.0.0:9229 --require ts-node/register src/index.ts\"",
-    "prepare": "cd .. && husky install web/.husky",
     "link:deps": "npm link ../app ../util",
     "build:deps:app": "cd ./node_modules/@worldline/app-integration && npm run build:all",
     "build:deps:util": "cd ./node_modules/@worldline/util-integration && npm run build",
@@ -22,7 +21,13 @@
     "dev:build:util": "cd ./node_modules/@worldline/util-integration && npm run dev:build",
     "install:all": "cd ../app && npm install && cd ../ct && npm install && cd ../db && npm install && npm install && cd ../psp && npm install && cd ../util && npm install && cd ../web && npm install",
     "install:ci:all": "cd ../app && npm ci && cd ../ct && npm ci && cd ../db && npm ci && npm ci && cd ../psp && npm ci && cd ../util && npm ci && cd ../web && npm ci",
-    "prisma:generate:all": "cd ../db && npx prisma generate"
+    "prisma:generate:all": "cd ../db && npx prisma generate",
+    "lint": "eslint src/**/*.ts",
+    "lint-fix": "eslint --fix src/**/*.ts",
+    "pretty": "prettier --write 'src/**/*.ts'",
+    "prepare": "cd .. && husky install web/.husky",
+    "precommit": "npm run lint-fix && npm run pretty",
+    "prepush": "npm run lint"
   },
   "repository": {
     "type": "git",
@@ -39,14 +44,15 @@
     "typescript": "^4.9.4"
   },
   "devDependencies": {
-    "@typescript-eslint/eslint-plugin": "^5.49.0",
-    "@typescript-eslint/parser": "^5.49.0",
-    "eslint": "^8.32.0",
-    "eslint-plugin-import": "^2.27.5",
+    "@typescript-eslint/eslint-plugin": "^6.12.0",
+    "@typescript-eslint/parser": "^6.12.0",
+    "eslint": "^8.54.0",
+    "eslint-config-airbnb": "^19.0.4",
+    "eslint-config-prettier": "^9.0.0",
+    "eslint-plugin-prettier": "^5.0.1",
     "husky": "^8.0.3",
-    "lint-staged": "^13.1.0",
-    "nodemon": "^2.0.20",
-    "prettier": "^2.8.3",
+    "nodemon": "^3.0.1",
+    "prettier": "^3.1.0",
     "ts-node": "^10.9.1"
   },
   "lint-staged": {
