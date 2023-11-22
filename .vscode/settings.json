@@ -1,0 +1,11 @@
+{
+    "eslint.workingDirectories": [
+      { "directory": "./app", "changeProcessCWD": true },
+      { "directory": "./cron", "changeProcessCWD": true },
+      { "directory": "./ct", "changeProcessCWD": true },
+      { "directory": "./db", "changeProcessCWD": true },
+      { "directory": "./psp", "changeProcessCWD": true },
+      { "directory": "./util", "changeProcessCWD": true },
+      { "directory": "./web", "changeProcessCWD": true },
+    ]
+  }

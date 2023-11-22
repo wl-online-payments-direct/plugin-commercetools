@@ -7,7 +7,13 @@
   "scripts": {
     "build": "tsc",
     "dev:build": "tsc -w -preserveWatchOutput",
-    "setup": "npm link && npm run build"
+    "setup": "npm link && npm run build",
+    "lint": "eslint src/**/*.ts",
+    "lint-fix": "eslint --fix src/**/*.ts",
+    "pretty": "prettier --write 'src/**/*.ts'",
+    "prepare": "cd .. && husky install psp/.husky",
+    "precommit": "npm run lint-fix && npm run pretty",
+    "prepush": "npm run lint"
   },
   "keywords": [],
   "license": "ISC",
@@ -16,7 +22,14 @@
   },
   "devDependencies": {
     "@types/node": "^20.8.7",
-    "eslint": "^8.52.0",
+    "@typescript-eslint/eslint-plugin": "^6.12.0",
+    "@typescript-eslint/parser": "^6.12.0",
+    "eslint": "^8.54.0",
+    "eslint-config-airbnb": "^19.0.4",
+    "eslint-config-prettier": "^9.0.0",
+    "eslint-plugin-prettier": "^5.0.1",
+    "husky": "^8.0.3",
+    "prettier": "^3.1.0",
     "typescript": "^5.2.2"
   },
   "engines": {
