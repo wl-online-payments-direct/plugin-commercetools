@@ -1,11 +1,11 @@
-import { getMyCart, getCustomObjects } from "@worldline/ct-integration";
-import { createPaymentService } from "@worldline/psp-integration";
+import { getMyCart, getCustomObjects } from '@worldline/ct-integration';
+import { createPaymentService } from '@worldline/psp-integration';
 import {
   createPaymentInDB,
   getIncrementedPaymentId,
-} from "@worldline/db-integration";
-import { CreatePaymentPayload } from "./types";
-import { createPaymentMapper } from "./mappers";
+} from '@worldline/db-integration';
+import { CreatePaymentPayload } from './types';
+import { createPaymentMapper } from './mappers';
 
 export async function createPayment({
   authToken,
@@ -18,17 +18,18 @@ export async function createPayment({
     const { cart, customer } = await getMyCart(authToken);
 
     if (!cart) {
-      throw { message: "Failed to fetch the cart data", statusCode: 400 };
+      throw { message: 'Failed to fetch the cart data', statusCode: 400 };
     }
 
-    // Will use it later for business logic
+    // TODO:Will use it later for business logic
+    // eslint-disable-next-line no-unused-expressions
     projectId;
 
     // Fetch custom objects from admin config
     const customConfig = await getCustomObjects(authToken, storeId);
 
     if (!customConfig) {
-      throw { message: "Failed to fetch the custom object", statusCode: 400 };
+      throw { message: 'Failed to fetch the custom object', statusCode: 400 };
     }
 
     // Prepare payload for the service connection
@@ -40,7 +41,7 @@ export async function createPayment({
       host: customConfig.host,
     };
 
-    //Prepare service payload for create payment
+    // Prepare service payload for create payment
     const createPaymentPayload = {
       order: {
         customer: {
@@ -59,7 +60,7 @@ export async function createPayment({
       createPaymentPayload
     );
 
-    const merchantReference = customConfig.merchantReference;
+    const { merchantReference } = customConfig;
     const { incrementedPaymentId } = await getIncrementedPaymentId();
     const paymentId = `${merchantReference}-${incrementedPaymentId}`;
 
@@ -69,7 +70,7 @@ export async function createPayment({
       worldlineId: paymentServiceResponse.id.toString(),
       storeId,
       cartId: cart.id,
-      orderId: "",
+      orderId: '',
     });
 
     return createPaymentMapper(createPaymenDBResponse);

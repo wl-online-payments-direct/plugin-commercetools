@@ -1,9 +1,9 @@
-import { connectService } from "../client";
+import { connectService } from '../client';
 import {
   HostedTokenizationPayload,
   HostedTokenizationResponse,
   ConnectOpts,
-} from "../types";
+} from '../types';
 
 export async function hostedTokenizationService(
   connectOpts: ConnectOpts,
@@ -20,7 +20,7 @@ export async function hostedTokenizationService(
 
     if (result.body?.errors) {
       throw {
-        message: "Failed to process the hosted tokenization service",
+        message: 'Failed to process the hosted tokenization service',
         statusCode: result.body.status,
         details: result.body?.errors,
       };

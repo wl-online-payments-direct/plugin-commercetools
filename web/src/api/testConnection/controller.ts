@@ -1,11 +1,11 @@
-import { ServerResponse } from "http";
-import { testConnectionRequest } from "../../lib/";
+import { ServerResponse } from 'http';
 import {
   isPostRequestOrThrowError,
   logger,
   ResponseClient,
-} from "@worldline/util-integration";
-import { Request } from "~/types";
+} from '@worldline/util-integration';
+import { testConnectionRequest } from '../../lib';
+import { Request, ErrorProps } from '../../lib/types';
 
 const processRequest = async (request: Request, response: ServerResponse) => {
   try {
@@ -18,7 +18,7 @@ const processRequest = async (request: Request, response: ServerResponse) => {
 
     if (!merchantId || !integrator || !apiKey || !apiSecret || !host) {
       throw {
-        message: "Required parameters are missing or empty",
+        message: 'Required parameters are missing or empty',
         statusCode: 400,
       };
     }
@@ -28,7 +28,8 @@ const processRequest = async (request: Request, response: ServerResponse) => {
     const connection = await testConnectionRequest(options);
 
     ResponseClient.setResponseTo200(response, { connection });
-  } catch (error) {
+  } catch (e) {
+    const error = e as ErrorProps;
     logger.error(JSON.stringify(error));
     ResponseClient.setResponseError(response, error);
   }

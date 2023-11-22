@@ -1,5 +1,5 @@
-import WorldLineSDK from "onlinepayments-sdk-nodejs";
-import { ConnectOpts } from "~/types";
+import WorldLineSDK from 'onlinepayments-sdk-nodejs';
+import { ConnectOpts } from '../types';
 
 const connectService = async (props: ConnectOpts) => {
   const { integrator, apiKey, apiSecret, host } = props;

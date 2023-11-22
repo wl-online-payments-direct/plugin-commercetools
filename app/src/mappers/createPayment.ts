@@ -1,4 +1,8 @@
-export async function createPaymentMapper(result: any) {
+export async function createPaymentMapper(result: {
+  paymentId:string;
+  status:string;
+  state:string;
+}) {
   const selectedFields = (({ paymentId, status, state }) => ({
     paymentId,
     status,

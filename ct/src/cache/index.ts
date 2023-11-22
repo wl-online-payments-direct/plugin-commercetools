@@ -1,9 +1,9 @@
-import connect from "./connect";
+import connect from './connect';
 
-const CT_PREFIX = "CT";
+const CT_PREFIX = 'CT';
 const CT_PREFIX_CUSTOM_OBJECTS = `${CT_PREFIX}:customObjects`;
 
-export const setCustomObjectsCache = async (storeId: string, value: any) => {
+export const setCustomObjectsCache = async (storeId: string, value: { [key: string]: string | number}) => {
   const cacheClient = await connect();
   const stringifyValue = JSON.stringify(value);
   const cacheKey = `${CT_PREFIX_CUSTOM_OBJECTS}:${storeId}`;
@@ -14,7 +14,7 @@ export const getCustomObjectsCache = async (storeId: string) => {
   const cacheClient = await connect();
   const cacheKey = `${CT_PREFIX_CUSTOM_OBJECTS}:${storeId}`;
   const stringifyValue = await cacheClient.get(cacheKey);
-  const parsedValue = stringifyValue ? JSON.parse(stringifyValue) : "";
+  const parsedValue = stringifyValue ? JSON.parse(stringifyValue) : '';
   return parsedValue;
 };
 

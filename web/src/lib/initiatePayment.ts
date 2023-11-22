@@ -1,5 +1,5 @@
-import { initiatePaymentSession } from "@worldline/app-integration";
-import { Request } from "~/types";
+import { initiatePaymentSession } from '@worldline/app-integration';
+import { Request } from './types';
 
 export async function initiatePaymentRequest(request: Request) {
   try {
@@ -7,13 +7,13 @@ export async function initiatePaymentRequest(request: Request) {
       projectId,
       storeId,
       cartId,
-      tokens = "",
+      tokens = '',
       askConsumerConsent = true, // Default will be true
     } = request.body;
 
     if (!projectId || !storeId || !cartId) {
       throw {
-        message: "Required parameters are missing or empty",
+        message: 'Required parameters are missing or empty',
         statusCode: 400,
       };
     }
@@ -22,7 +22,7 @@ export async function initiatePaymentRequest(request: Request) {
 
     if (!authToken) {
       throw {
-        message: "Authentication parameters are missing or empty",
+        message: 'Authentication parameters are missing or empty',
         statusCode: 403,
       };
     }

@@ -1,6 +1,6 @@
-import { getCartById, getCustomObjects } from "@worldline/ct-integration";
-import { hostedTokenizationService } from "@worldline/psp-integration";
-import { InitiatePaymentPayload } from "./types";
+import { getCartById, getCustomObjects } from '@worldline/ct-integration';
+import { hostedTokenizationService } from '@worldline/psp-integration';
+import { InitiatePaymentPayload } from './types';
 
 export async function initiatePaymentSession({
   authToken,
@@ -15,16 +15,17 @@ export async function initiatePaymentSession({
     const cart = await getCartById(cartId);
 
     if (!cart) {
-      throw { message: "Failed to fetch the cart data", statusCode: 403 };
+      throw { message: 'Failed to fetch the cart data', statusCode: 403 };
     }
 
-    // Will use it later for business logic
+    // TODO:Will use it later for business logic
+    // eslint-disable-next-line no-unused-expressions
     projectId;
 
     // Fetch variant from admin config
     const customConfig = await getCustomObjects(authToken, storeId);
 
-    const variant = customConfig.variant;
+    const { variant } = customConfig;
 
     // Fetch connection options from admin config
     const connectOpts = {
@@ -35,7 +36,7 @@ export async function initiatePaymentSession({
       host: customConfig.host,
     };
 
-    //Call hosted tokenization service
+    // Call hosted tokenization service
     const hostedTokenizationPayload = {
       locale: cart.locale,
       variant,

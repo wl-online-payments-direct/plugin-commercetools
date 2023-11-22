@@ -1,5 +1,5 @@
-import { createPayment } from "@worldline/app-integration";
-import { Request } from "~/types";
+import { createPayment } from '@worldline/app-integration';
+import { Request } from './types';
 
 export async function createPaymentRequest(request: Request) {
   try {
@@ -7,7 +7,7 @@ export async function createPaymentRequest(request: Request) {
 
     if (!projectId || !storeId || !hostedTokenizationId) {
       throw {
-        message: "Required parameters are missing or empty",
+        message: 'Required parameters are missing or empty',
         statusCode: 400,
       };
     }
@@ -16,7 +16,7 @@ export async function createPaymentRequest(request: Request) {
 
     if (!authToken) {
       throw {
-        message: "Authentication parameters are missing or empty",
+        message: 'Authentication parameters are missing or empty',
         statusCode: 403,
       };
     }

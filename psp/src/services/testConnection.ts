@@ -1,5 +1,5 @@
-import { connectService } from "../client";
-import { ConnectOpts, TestConnectionResponse } from "../types";
+import { connectService } from '../client';
+import { ConnectOpts, TestConnectionResponse } from '../types';
 
 export async function testConnectionService(
   options: ConnectOpts
@@ -14,7 +14,7 @@ export async function testConnectionService(
 
     if (body?.errors) {
       throw {
-        message: "Failed to process the test connection",
+        message: 'Failed to process the test connection',
         statusCode: body.status,
         details: body?.errors,
       };

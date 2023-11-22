@@ -1,6 +1,6 @@
-import http, { ServerResponse } from "http";
-import url from "url";
-import { StatusCodes } from "http-status-codes";
+import http, { ServerResponse } from 'http';
+import url from 'url';
+import { StatusCodes } from 'http-status-codes';
 import {
   cors,
   logger,
@@ -8,15 +8,14 @@ import {
   isOptionsRequest,
   isPostRequest,
   isMultiPartRequest,
-} from "@worldline/util-integration";
-import { routes } from "./../router";
-import { Request } from "./../types";
+} from '@worldline/util-integration';
+import { routes } from '../router';
+import { Request } from '../lib/types';
 
-const createServer = () => {
-  return http.createServer(
+const createServer = () => http.createServer(
     async (request: Request, response: ServerResponse) => {
       try {
-        const requestUrl = request.url || "/";
+        const requestUrl = request.url || '/';
         const parts = url.parse(requestUrl);
         const route = routes[parts.pathname as keyof typeof routes];
 
@@ -29,11 +28,11 @@ const createServer = () => {
             return;
           }
           if (isPostRequest(method) && !isMultiPartRequest(request)) {
-            let chunks = "";
-            request.on("data", (chunk) => {
+            let chunks = '';
+            request.on('data', (chunk) => {
               chunks += chunk;
             });
-            request.on("end", async () => {
+            request.on('end', async () => {
               try {
                 request.body = JSON.parse(chunks);
               } catch (err) {
@@ -46,19 +45,18 @@ const createServer = () => {
           }
         } else {
           ResponseClient.setResponseError(response, {
-            httpStatusCode: StatusCodes.NOT_FOUND,
-            message: "Route not found",
+            statusCode: StatusCodes.NOT_FOUND,
+            message: 'Route not found',
           });
         }
-      } catch (e: any) {
-        logger.debug(e, `Unexpected error when processing URL ${request.url}`);
+      } catch (e) {
+        logger.debug(JSON.stringify(e), `Unexpected error when processing URL ${request.url}`);
         ResponseClient.setResponseError(response, {
-          httpStatusCode: StatusCodes.INTERNAL_SERVER_ERROR,
-          message: e.message,
+          statusCode: StatusCodes.INTERNAL_SERVER_ERROR,
+          message: (e as { message: string}).message,
         });
       }
     }
   );
-};
 
 export { createServer };

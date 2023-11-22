@@ -1,9 +1,9 @@
-import { connectService } from "../client";
+import { connectService } from '../client';
 import {
   CreatePaymentPayload,
   CreatePaymentResponse,
   ConnectOpts,
-} from "../types";
+} from '../types';
 
 export async function createPaymentService(
   connectOpts: ConnectOpts,
@@ -16,7 +16,7 @@ export async function createPaymentService(
 
     if (result.body?.errors) {
       throw {
-        message: "Failed to process the create payment service",
+        message: 'Failed to process the create payment service',
         statusCode: result.body.status,
         details: result.body?.errors,
       };

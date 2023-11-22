@@ -1,4 +1,4 @@
-import { Payment, CreatePaymentResponse } from "./../types";
+import { Payment, CreatePaymentResponse } from '../types';
 
 export function createPaymentResponseMapper(
   result: Payment
@@ -17,11 +17,11 @@ export function incrementedPaymentIdMapper(result: Payment | null): {
 } {
   const INITIAL_VALUE = 100000;
 
-  if (!result) {
+  if (!result || !result?.paymentId) {
     return { incrementedPaymentId: INITIAL_VALUE };
   }
 
-  let [_merchantReference, paymentId] = result?.paymentId?.split("-");
+  const [, paymentId] = result.paymentId.split('-');
 
   const incrementedPaymentId = Number(paymentId) + 1;
 
