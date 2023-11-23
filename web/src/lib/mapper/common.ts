@@ -1,6 +1,5 @@
-//@ts-nocheck
-import { Request } from "~/types";
-import type { QueryParams } from "../types";
+import { Request } from '../types';
+import type { QueryParams } from '../types';
 
 export function getQuery(request: Request): QueryParams {
   if (!request.url) return {};

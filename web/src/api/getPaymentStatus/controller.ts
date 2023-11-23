@@ -1,11 +1,11 @@
-import { ServerResponse } from "http";
-import { getPaymentStatusRequest } from "../../lib";
+import { ServerResponse } from 'http';
 import {
   isGetRequestOrThrowError,
   logger,
   ResponseClient,
-} from "@worldline/util-integration";
-import { Request } from "~/types";
+} from '@worldline/util-integration';
+import { getPaymentStatusRequest } from '../../lib';
+import { ErrorProps, Request } from  '../../lib/types';
 
 const processRequest = async (request: Request, response: ServerResponse) => {
   try {
@@ -17,7 +17,8 @@ const processRequest = async (request: Request, response: ServerResponse) => {
     const data = await getPaymentStatusRequest(request);
 
     ResponseClient.setResponseTo200(response, data);
-  } catch (error) {
+  } catch (e) {
+    const error = e as ErrorProps;
     logger.error(JSON.stringify(error));
     ResponseClient.setResponseError(response, error);
   }
