@@ -5,19 +5,9 @@
   "main": "dist/index.js",
   "scripts": {
     "build": "tsc",
-    "build:all": "npm run link:deps && npm-run-all build:deps:* && npm run build",
-    "link:deps": "npm link ../app ../util",
-    "build:deps:app": "cd ./node_modules/@worldline/app-integration && npm run build:all",
-    "build:deps:util": "cd ./node_modules/@worldline/util-integration && npm run build",
-    "dev:build": "tsc -w -preserveWatchOutput",
-    "dev:all": "npm run link:deps && run-p dev:build:*",
+    "dev": "nodemon src/index.ts",
     "start": "node dist/index.js",
     "typecheck": "tsc",
-    "dev:build:app": "cd ./node_modules/@worldline/app-integration && npm run dev:all",
-    "dev:build:util": "cd ./node_modules/@worldline/util-integration && npm run dev:build",
-    "install:all": "cd ../app && npm install && cd ../bc && npm install && cd ../db && npm install && cd ../psp && npm install && cd ../util && npm install && cd ../cron && npm install",
-    "install:ci:all": "cd ../app && npm ci && cd ../bc && npm ci && cd ../db && npm ci && cd ../psp && npm ci && cd ../util && npm ci && cd ../cron && npm ci",
-    "prisma:generate:all": "cd ../db && npx prisma generate",
     "lint": "eslint src/**/*.ts",
     "lint-fix": "eslint --fix src/**/*.ts",
     "pretty": "prettier --write 'src/**/*.ts'",
@@ -43,6 +33,9 @@
   },
   "dependencies": {
     "dotenv": "^16.3.1",
-    "winston": "^3.11.0"
+    "winston": "^3.11.0",
+    "nodemon": "^3.0.1",
+    "npm-run-all": "^4.1.5",
+    "@worldline/app-integration": "^1.0.0"
   }
 }

@@ -6,8 +6,10 @@
   "types": "dist/types/index.d.ts",
   "scripts": {
     "build": "tsc",
-    "dev:build": "tsc -w -preserveWatchOutput",
-    "setup": "npm link && npm run build",
+    "dev": "tsc -w -preserveWatchOutput",
+    "prisma:generate": "npx prisma generate",
+    "prisma:push": "prisma db push",
+    "prisma:migrate": "prisma migrate deploy",
     "lint": "eslint src/**/*.ts",
     "lint-fix": "eslint --fix src/**/*.ts",
     "pretty": "prettier --write 'src/**/*.ts'",
