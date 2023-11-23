@@ -1,6 +1,6 @@
-import { MeApiClient } from "./../../clients";
-import query from "./query";
-import mapper from "./mapper";
+import { MeApiClient } from '../../clients';
+import query from './query';
+import mapper from './mapper';
 
 export async function getMyCart(authToken: string) {
   // Initialize me client

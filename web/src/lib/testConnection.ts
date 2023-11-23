@@ -1,5 +1,5 @@
-import { testConnection } from "@worldline/app-integration";
-import { ConnectionProps } from "./types/connection";
+import { testConnection } from '@worldline/app-integration';
+import { ConnectionProps } from './types/connection';
 
 export async function testConnectionRequest(options: ConnectionProps) {
   try {
