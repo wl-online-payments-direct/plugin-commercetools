@@ -8,7 +8,7 @@ import {
   isOptionsRequest,
   isPostRequest,
   isMultiPartRequest,
-} from "@worldline/util-integration";
+} from "@worldline/ctintegration-util";
 import { routes } from "./../router";
 import { Request } from "./../types";
 

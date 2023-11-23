@@ -1,5 +1,5 @@
 {
-  "name": "@worldline/psp-integration",
+  "name": "@worldline/ctintegration-psp",
   "version": "1.0.0",
   "description": "Module containing Payment integration",
   "main": "dist/index.js",

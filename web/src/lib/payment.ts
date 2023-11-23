@@ -1,7 +1,7 @@
 import {
   initiatePaymentSession,
   createPayment,
-} from "@worldline/app-integration";
+} from "@worldline/ctintegration-app";
 import { Request } from "~/types";
 
 export async function initiatePaymentRequest(request: Request) {

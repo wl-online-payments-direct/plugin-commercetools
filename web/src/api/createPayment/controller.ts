@@ -4,7 +4,7 @@ import {
   isPostRequestOrThrowError,
   logger,
   ResponseClient,
-} from "@worldline/util-integration";
+} from "@worldline/ctintegration-util";
 import { Request } from "~/types";
 
 const processRequest = async (request: Request, response: ServerResponse) => {

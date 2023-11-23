@@ -1,5 +1,5 @@
 {
-  "name": "@worldline/util-integration",
+  "name": "@worldline/ctintegration-util",
   "version": "1.0.0",
   "description": "Module containing utilities to be used across projects",
   "main": "dist/index.js",

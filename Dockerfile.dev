@@ -1,32 +1,29 @@
 FROM node:18-alpine as server
 
+RUN apk update && apk upgrade
 RUN apk --no-cache add git
 
 WORKDIR /app
-RUN mkdir app ct db mock psp util web
+RUN mkdir app ct db psp util web
 COPY app/package*.json ./app
 COPY ct/package*.json ./ct
 COPY db/package*.json ./db
-COPY mock/package*.json ./mock
 COPY psp/package*.json ./psp
 COPY util/package*.json ./util
 COPY web/package*.json ./web
-WORKDIR /app/web
-RUN npm run install:ci:all
-WORKDIR /app
+COPY cron/package*.json ./cron
+RUN npm ci
 COPY ./app ./app
 COPY ./ct ./ct
 COPY ./db ./db
-COPY ./mock ./mock
 COPY ./psp ./psp
 COPY ./util ./util
 COPY ./web ./web
+COPY ./cron ./cron
 
-WORKDIR /app/web
-RUN npm run prisma:generate:all
+RUN npm run prisma:generate
 
 ENV NODE_ENV development
 
 EXPOSE 3000
-WORKDIR /app/web
-CMD ["npm", "run", "dev:all"]
+CMD ["npm", "run", "dev"]

@@ -8,19 +8,17 @@ RUN mkdir app ct db psp util cron
 COPY app/package*.json ./app
 COPY ct/package*.json ./ct
 COPY db/package*.json ./db
-COPY mock/package*.json ./mock
 COPY psp/package*.json ./psp
 COPY util/package*.json ./util
 COPY cron/package*.json ./cron
-WORKDIR /app/cron
-RUN npm run install:ci:all
+
+RUN npm ci
 
 FROM node:18-alpine as build
 
 RUN apk update && apk upgrade
 RUN apk add --no-cache git
 
-WORKDIR /app
 COPY --from=dependencies /app/app/node_modules ./app/node_modules
 COPY --from=dependencies /app/ct/node_modules ./ct/node_modules
 COPY --from=dependencies /app/db/node_modules ./db/node_modules
@@ -35,10 +33,9 @@ COPY ./util ./util
 COPY ./cron ./cron
 
 #generate prisma.
-WORKDIR /app/cron
-RUN npm run prisma:generate:all
+RUN npm run prisma:generate
 
-RUN npm run build:all
+RUN npm run build
 
 FROM node:18-alpine as deploy
 
@@ -73,5 +70,4 @@ COPY --from=build /app/cron/dist ./cron/dist
 COPY --from=build /app/cron/node_modules ./cron/node_modules
 COPY --from=build /app/cron/package.json ./cron/package.json
 
-WORKDIR /app/cron
-CMD ["npm", "run", "start"]
+CMD ["npm", "run", "start:cron"]

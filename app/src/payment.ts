@@ -2,11 +2,11 @@ import {
   getCartById,
   getMyCart,
   getCustomObjects,
-} from "@worldline/ct-integration";
+} from "@worldline/ctintegration-ct";
 import {
   hostedTokenizationService,
   createPaymentService,
-} from "@worldline/psp-integration";
+} from "@worldline/ctintegration-psp";
 import { ICreatePayment, initiatePaymentSessionType } from "./types";
 
 export async function initiatePaymentSession({
