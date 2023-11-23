@@ -1,7 +1,7 @@
-import { MeApiClient } from "./../../clients";
-import query from "./query";
-import mapper from "./mapper";
-import { getCustomObjectsCache, setCustomObjectsCache } from "./../../cache";
+import { MeApiClient } from '../../clients';
+import query from './query';
+import mapper from './mapper';
+import { getCustomObjectsCache, setCustomObjectsCache } from '../../cache';
 
 export async function getCustomObjects(authToken: string, storeId: string) {
   // Fetch from cache

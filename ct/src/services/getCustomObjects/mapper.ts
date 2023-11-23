@@ -1,7 +1,7 @@
 const mapper = (storeId: string, response: any) => {
   if (response?.body?.errors) {
     throw {
-      message: "[CT] Failed to retrieve custom object information",
+      message: '[CT] Failed to retrieve custom object information',
       details: response?.body?.errors,
       statusCode: 400,
     };
@@ -15,7 +15,7 @@ const mapper = (storeId: string, response: any) => {
 
   if (!result) {
     throw {
-      message: "[CT] Failed to identify custom object information",
+      message: '[CT] Failed to identify custom object information',
       statusCode: 400,
     };
   }

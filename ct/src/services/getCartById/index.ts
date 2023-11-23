@@ -1,6 +1,6 @@
-import { ApiClient } from "./../../clients";
-import query from "./query";
-import mapper from "./mapper";
+import { ApiClient } from '../../clients';
+import query from './query';
+import mapper from './mapper';
 
 export async function getCartById(cartId: string) {
   // Initialize api client

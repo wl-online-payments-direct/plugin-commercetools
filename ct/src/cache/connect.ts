@@ -9,11 +9,7 @@ const connect = async () => {
     },
   });
 
-  try {
-    return await cacheClient.connect();
-  } catch (error) {
-    throw error;
-  }
+  return cacheClient.connect();
 };
 
 export default connect;

@@ -9,25 +9,21 @@ export async function createPaymentService(
   connectOpts: ConnectOpts,
   payload: CreatePaymentPayload
 ): Promise<CreatePaymentResponse> {
-  try {
-    const { merchantId } = connectOpts;
-    const client = await connectService(connectOpts);
-    const result = await client.payments.createPayment(merchantId, payload, {});
+  const { merchantId } = connectOpts;
+  const client = await connectService(connectOpts);
+  const result = await client.payments.createPayment(merchantId, payload, {});
 
-    if (result.body?.errors) {
-      throw {
-        message: 'Failed to process the create payment service',
-        statusCode: result.body.status,
-        details: result.body?.errors,
-      };
-    }
-
-    const {
-      payment: { id },
-    } = result.body;
-
-    return { id };
-  } catch (error) {
-    throw error;
+  if (result.body?.errors) {
+    throw {
+      message: 'Failed to process the create payment service',
+      statusCode: result.body.status,
+      details: result.body?.errors,
+    };
   }
+
+  const {
+    payment: { id },
+  } = result.body;
+
+  return { id };
 }
