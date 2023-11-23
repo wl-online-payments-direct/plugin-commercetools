@@ -15,7 +15,6 @@
     "plugins": ["prettier"],
     "rules": {
 		"import/prefer-default-export": "off",
-		"import/no-extraneous-dependencies": "off",
 		"no-throw-literal": "off",
 		"prefer-default-export": "off",
 		"prettier/prettier": ["error"],
