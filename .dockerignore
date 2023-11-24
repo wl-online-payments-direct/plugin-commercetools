@@ -6,7 +6,7 @@ README.md
 npm-debug.log
 yarn-error.log
 Dockerfile
-Dockerfile.dev
+Dockerfile.*
 .dockerignore
 docker-compose.yml
 .gitignore
@@ -15,3 +15,4 @@ compose-dev.yml
 .env
 .env-sample
 .cache
+bin

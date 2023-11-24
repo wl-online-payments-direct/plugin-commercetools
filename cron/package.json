@@ -1,5 +1,5 @@
 {
-  "name": "@worldline/cron-integration",
+  "name": "@worldline/ctintegration-cron",
   "version": "1.0.0",
   "description": "Cron job for the PSP Integration",
   "main": "dist/index.js",
@@ -33,9 +33,9 @@
   },
   "dependencies": {
     "dotenv": "^16.3.1",
-    "winston": "^3.11.0",
     "nodemon": "^3.0.1",
     "npm-run-all": "^4.1.5",
-    "@worldline/app-integration": "^1.0.0"
+    "@worldline/ctintegration-app": "^1.0.0",
+    "@worldline/ctintegration-util": "^1.0.0"
   }
 }

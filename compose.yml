@@ -1,52 +1,22 @@
 services:
   web:
-    image: wordline/psp-integration-web-prod
+    image: wordline/integration-web-prod
     build:
       dockerfile: ./Dockerfile.web
     ports:
       - 3000:3000
-    volumes:
-      - web_data:/app
     networks:
       - redisnet
       - dbnet
-    environment:
-      - CLIENT_ID=change_app_client_id
-      - CLIENT_SECRET=change_app_secret
-      - JWT_KEY=change_secret
-      - DOMAIN=change_domain
-      - REDIS_HOST=redis
-      - MYSQL_HOST=db
-      - MYSQL_USER=pspapp
-      - MYSQL_PASSWORD=pspapp
-      - AUTH_CALLBACK=https://${DOMAIN}/api/auth
-      - SERVER_DOMAIN=https://${DOMAIN}
-      - ENVIRONMENT=bigcommerce.com
-      - LOGIN_URL=login.${ENVIRONMENT}
-      - API_URL=api.${ENVIRONMENT}
-      - DATABASE_URL="mysql://${MYSQL_USER}:${MYSQL_PASSWORD}@${MYSQL_HOST}:3306/wordline-psp-integration"
-      - CORS_ALLOWED_DOMAIN="*"
+    env_file:
+        - composer.env
   cron:
-    image: wordline/psp-integration-cron-prod
+    image: wordline/integration-cron-prod
     build:
       dockerfile: ./Dockerfile.cron
-    volumes:
-      - cron_data:/app
     networks:
       - redisnet
       - dbnet
-    environment:
-      - CLIENT_ID=change_app_client_id
-      - CLIENT_SECRET=change_app_secret
-      - JWT_KEY=change_secret
-      - REDIS_HOST=redis
-      - MYSQL_HOST=db
-      - MYSQL_USER=pspapp
-      - MYSQL_PASSWORD=pspapp
-      - ENVIRONMENT=bigcommerce.com
-      - LOGIN_URL=login.${ENVIRONMENT}
-      - API_URL=api.${ENVIRONMENT}
-      - DATABASE_URL="mysql://${MYSQL_USER}:${MYSQL_PASSWORD}@${MYSQL_HOST}:3306/ignite-psp-integration"
   redis:
     image: redis:alpine
     restart: always
@@ -70,8 +40,6 @@ services:
       - 3306
 volumes:
   db_data:
-  web_data:
-  cron_data:
 networks:
   dbnet:
   redisnet:

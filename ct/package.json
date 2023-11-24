@@ -1,5 +1,5 @@
 {
-  "name": "@worldline/ct-integration",
+  "name": "@worldline/ctintegration-ct",
   "version": "1.0.0",
   "description": "Module containing Commercetools integration",
   "main": "dist/index.js",

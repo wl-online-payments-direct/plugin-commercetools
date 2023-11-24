@@ -1,4 +1,4 @@
-import { testConnectionService } from '@worldline/psp-integration';
+import { testConnectionService } from '@worldline/ctintegration-psp';
 import { ConnectionProps } from './types/connection';
 
 export async function testConnection(options: ConnectionProps) {

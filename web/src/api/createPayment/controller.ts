@@ -3,7 +3,7 @@ import {
   isPostRequestOrThrowError,
   logger,
   ResponseClient,
-} from '@worldline/util-integration';
+} from '@worldline/ctintegration-util';
 import { createPaymentRequest } from '../../lib';
 import { ErrorProps, Request } from '../../lib/types';
 
