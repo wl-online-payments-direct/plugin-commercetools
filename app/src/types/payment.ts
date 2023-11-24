@@ -9,9 +9,9 @@ export interface InitiatePaymentPayload {
 
 export interface CreatePaymentPayload {
   authToken: string;
-  projectId: string;
   storeId: string;
   hostedTokenizationId: string;
+  returnUrl: string;
 }
 
 export interface GetPaymentStatusPayload {

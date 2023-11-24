@@ -21,8 +21,15 @@ enum States {
   PROCESSING
 }
 
+enum Modes {
+  SALE
+  PRE_AUTHORIZATION
+  FINAL_AUTHORIZATION
+}
+
 model payments {
   id          String   @id @default(uuid())
+  authMode    Modes    
   paymentId   String // auto generated with a pattern
   worldlineId String // worldline id
   storeId     String   @db.VarChar(255)

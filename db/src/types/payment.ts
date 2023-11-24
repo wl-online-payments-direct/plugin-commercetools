@@ -14,6 +14,7 @@ export interface Payment {
 }
 
 export interface CreatePaymentRequest {
+  authMode: $Enums.Modes;
   paymentId: string;
   worldlineId: string;
   storeId: string;

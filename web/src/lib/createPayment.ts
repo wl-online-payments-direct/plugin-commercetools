@@ -3,9 +3,9 @@ import { Request } from './types';
 
 export async function createPaymentRequest(request: Request) {
   try {
-    const { projectId, storeId, hostedTokenizationId } = request.body;
+    const { storeId, hostedTokenizationId, returnUrl } = request.body;
 
-    if (!projectId || !storeId || !hostedTokenizationId) {
+    if (!storeId || !hostedTokenizationId || !returnUrl) {
       throw {
         message: 'Required parameters are missing or empty',
         statusCode: 400,
@@ -24,9 +24,9 @@ export async function createPaymentRequest(request: Request) {
     // Perform create payment request to app
     const options = {
       authToken,
-      projectId,
       storeId,
       hostedTokenizationId,
+      returnUrl
     };
 
     const result = await createPayment(options);
