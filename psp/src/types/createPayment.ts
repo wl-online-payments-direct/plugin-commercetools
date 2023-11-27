@@ -12,4 +12,5 @@ export interface CreatePaymentPayload {
 
 export interface CreatePaymentResponse {
   id: number;
+  redirectURL: string;
 }

@@ -2,13 +2,13 @@ import { connectService } from '../client';
 import { ConnectOpts, TestConnectionResponse } from '../types';
 
 export async function testConnectionService(
-  options: ConnectOpts
+  options: ConnectOpts,
 ): Promise<TestConnectionResponse> {
   const { merchantId } = options;
   const client = await connectService(options);
   const { isSuccess, body } = await client.services.testConnection(
     merchantId,
-    {}
+    {},
   );
 
   if (body?.errors) {

@@ -30,7 +30,13 @@ export class MeApiClient {
     this.projectKey = env.CTP_PROJECT_KEY as string;
   }
 
-  setBody({ query, variables }: { query: string; variables: { [key: string]: any } }) {
+  setBody({
+    query,
+    variables,
+  }: {
+    query: string;
+    variables: { [key: string]: string };
+  }) {
     this.query = query;
     this.variables = variables;
   }
@@ -47,7 +53,14 @@ export class MeApiClient {
             variables: this.variables,
           },
         })
-        .execute();
+        .execute()
+        .catch((e) => {
+          throw {
+            statusCode: e.statusCode,
+            message: '[CT] Failed to execute the request!',
+            details: e.body.errors,
+          };
+        });
     } catch (error) {
       return error;
     }

@@ -1,7 +1,7 @@
 export interface HostedTokenizationPayload {
   locale: string;
   variant: string;
-  tokens: string;
+  tokens: string[];
   askConsumerConsent: boolean;
 }
 

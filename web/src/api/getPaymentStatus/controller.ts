@@ -5,7 +5,7 @@ import {
   ResponseClient,
 } from '@worldline/util-integration';
 import { getPaymentStatusRequest } from '../../lib';
-import { ErrorProps, Request } from  '../../lib/types';
+import { ErrorProps, Request } from '../../lib/types';
 
 const processRequest = async (request: Request, response: ServerResponse) => {
   try {

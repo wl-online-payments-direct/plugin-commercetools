@@ -38,5 +38,4 @@ export async function getPaymentStatusRequest(request: Request) {
   const result = await getPaymentStatus(options);
 
   return result;
-  
 }

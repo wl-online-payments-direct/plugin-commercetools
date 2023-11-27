@@ -3,14 +3,13 @@ import { Request } from './types';
 
 export async function initiatePaymentRequest(request: Request) {
   const {
-    projectId,
     storeId,
     cartId,
     tokens = '',
     askConsumerConsent = true, // Default will be true
   } = request.body;
 
-  if (!projectId || !storeId || !cartId) {
+  if (!storeId || !cartId) {
     throw {
       message: 'Required parameters are missing or empty',
       statusCode: 400,
@@ -29,13 +28,12 @@ export async function initiatePaymentRequest(request: Request) {
   // Perform a payment request to psp
   const options = {
     authToken,
-    projectId,
     storeId,
     cartId,
     tokens,
     askConsumerConsent,
   };
-  
+
   const result = await initiatePaymentSession(options);
 
   return result;

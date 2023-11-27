@@ -5,7 +5,7 @@ import {
   ResponseClient,
 } from '@worldline/ctintegration-util';
 import { initiatePaymentRequest } from '../../lib';
-import { ErrorProps, Request } from  '../../lib/types';
+import { ErrorProps, Request } from '../../lib/types';
 
 const processRequest = async (request: Request, response: ServerResponse) => {
   try {

@@ -26,7 +26,7 @@ export async function createPaymentRequest(request: Request) {
       authToken,
       storeId,
       hostedTokenizationId,
-      returnUrl
+      returnUrl,
     };
 
     const result = await createPayment(options);

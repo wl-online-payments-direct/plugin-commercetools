@@ -1,7 +1,7 @@
 import { Payment, CreatePaymentResponse } from '../types';
 
 export function createPaymentResponseMapper(
-  result: Payment
+  result: Payment,
 ): CreatePaymentResponse {
   const selectedFields = (({ id, paymentId, status, state }) => ({
     id,

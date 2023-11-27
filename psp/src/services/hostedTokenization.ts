@@ -7,14 +7,14 @@ import {
 
 export async function hostedTokenizationService(
   connectOpts: ConnectOpts,
-  payload: HostedTokenizationPayload
+  payload: HostedTokenizationPayload,
 ): Promise<HostedTokenizationResponse> {
   const { merchantId } = connectOpts;
   const client = await connectService(connectOpts);
   const result = await client.hostedTokenization.createHostedTokenization(
     merchantId,
     payload,
-    {}
+    {},
   );
 
   if (result.body?.errors) {

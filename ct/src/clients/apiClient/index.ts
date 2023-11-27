@@ -13,7 +13,7 @@ export class ApiClient {
 
   constructor() {
     this.gClient = new GraphQLClient();
-    
+
     this.gClient.setClientWithAuthMiddlewareOptions({
       apiHost: env.CTP_API_URL as string,
       authHost: env.CTP_AUTH_URL as string,
@@ -26,7 +26,13 @@ export class ApiClient {
     this.projectKey = env.CTP_PROJECT_KEY as string;
   }
 
-  setBody({ query, variables }: { query: string; variables: { [key: string]: any } }) {
+  setBody({
+    query,
+    variables,
+  }: {
+    query: string;
+    variables: { [key: string]: string };
+  }) {
     this.query = query;
     this.variables = variables;
   }
@@ -43,7 +49,14 @@ export class ApiClient {
             variables: this.variables,
           },
         })
-        .execute();
+        .execute()
+        .catch((e) => {
+          throw {
+            statusCode: e.statusCode,
+            message: '[CT] Failed to execute the request!',
+            details: e.body.errors,
+          };
+        });
     } catch (error) {
       return error;
     }

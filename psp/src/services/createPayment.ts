@@ -7,7 +7,7 @@ import {
 
 export async function createPaymentService(
   connectOpts: ConnectOpts,
-  payload: CreatePaymentPayload
+  payload: CreatePaymentPayload,
 ): Promise<CreatePaymentResponse> {
   const { merchantId } = connectOpts;
   const client = await connectService(connectOpts);
@@ -23,7 +23,10 @@ export async function createPaymentService(
 
   const {
     payment: { id },
+    merchantAction: {
+      redirectData: { redirectURL = '' },
+    },
   } = result.body;
 
-  return { id };
+  return { id, redirectURL };
 }

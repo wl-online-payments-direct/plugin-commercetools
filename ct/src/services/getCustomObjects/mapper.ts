@@ -10,12 +10,12 @@ const mapper = (storeId: string, response: any) => {
   const parsedRes = response?.body?.data?.customObjects || {};
 
   const result = parsedRes?.results.find(
-    (e: { container: string }) => e.container === storeId
+    (e: { container: string }) => e.container === storeId,
   );
 
   if (!result) {
     throw {
-      message: '[CT] Failed to identify custom object information',
+      message: '[CT] Failed to fetch the custom object',
       statusCode: 400,
     };
   }

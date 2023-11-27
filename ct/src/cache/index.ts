@@ -3,7 +3,10 @@ import connect from './connect';
 const CT_PREFIX = 'CT';
 const CT_PREFIX_CUSTOM_OBJECTS = `${CT_PREFIX}:customObjects`;
 
-export const setCustomObjectsCache = async (storeId: string, value: { [key: string]: string | number}) => {
+export const setCustomObjectsCache = async (
+  storeId: string,
+  value: { [key: string]: string | number },
+) => {
   const cacheClient = await connect();
   const stringifyValue = JSON.stringify(value);
   const cacheKey = `${CT_PREFIX_CUSTOM_OBJECTS}:${storeId}`;
