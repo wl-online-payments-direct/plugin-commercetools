@@ -1,7 +1,15 @@
 import { testConnection } from '@worldline/ctintegration-app';
-import { ConnectionProps } from './types/connection';
+import { hasRequiredParamsInBody } from '@worldline/ctintegration-util';
+import { Request } from './types';
+import { testConnectionAppPayload } from './mapper';
 
-export async function testConnectionRequest(options: ConnectionProps) {
-  const result = await testConnection(options);
-  return result;
+export async function testConnectionRequest(request: Request) {
+  hasRequiredParamsInBody(request, [
+    'merchantId',
+    'integrator',
+    'apiKey',
+    'apiSecret',
+    'host',
+  ]);
+  return testConnection(testConnectionAppPayload(request));
 }
