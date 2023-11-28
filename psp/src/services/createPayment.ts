@@ -23,10 +23,10 @@ export async function createPaymentService(
 
   const {
     payment: { id },
-    merchantAction: {
-      redirectData: { redirectURL = '' },
-    },
+    merchantAction,
   } = result.body;
+
+  const { redirectURL = '' } = merchantAction?.redirectData || {};
 
   return { id, redirectURL };
 }

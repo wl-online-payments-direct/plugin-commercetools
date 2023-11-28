@@ -6,7 +6,7 @@ import {
 import type { CreatePaymentRequest, CreatePaymentResponse } from './types';
 
 export async function createPaymentInDB(
-  data: CreatePaymentRequest
+  data: CreatePaymentRequest,
 ): Promise<CreatePaymentResponse> {
   try {
     const result = await prisma.payments.create({ data });
@@ -15,7 +15,7 @@ export async function createPaymentInDB(
     throw {
       message: 'Failed to create payment',
       statusCode: 400,
-      details: (error as { message: string}).message,
+      details: (error as { message: string }).message,
     };
   }
 }
@@ -34,7 +34,30 @@ export async function getIncrementedPaymentId(): Promise<{
     throw {
       message: 'Failed to increment the payment id',
       statusCode: 400,
-      details: (error as { message: string}).message,
+      details: (error as { message: string }).message,
+    };
+  }
+}
+
+export async function setPaymentStatusInReview(
+  merchantReference: string,
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+): Promise<any> {
+  try {
+    const result = await prisma.payments.update({
+      where: {
+        paymentId: merchantReference,
+      },
+      data: {
+        status: 'REVIEW',
+      },
+    });
+    return createPaymentResponseMapper(result);
+  } catch (error) {
+    throw {
+      message: 'Failed to create payment',
+      statusCode: 400,
+      details: (error as { message: string }).message,
     };
   }
 }

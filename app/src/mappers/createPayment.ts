@@ -9,7 +9,7 @@ export function getServicePayload({
 }: ServicePayload) {
   const { hostedTokenizationId, returnUrl } = payload;
 
-  const skipAuthentication = false;
+  const skipAuthentication = true;
 
   const createPaymentPayload = {
     hostedTokenizationId,
