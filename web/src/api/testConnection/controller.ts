@@ -14,18 +14,7 @@ const processRequest = async (request: Request, response: ServerResponse) => {
     // Only allow POST request; else throw error
     await isPostRequestOrThrowError(method);
 
-    const { merchantId, integrator, apiKey, apiSecret, host } = request.body;
-
-    if (!merchantId || !integrator || !apiKey || !apiSecret || !host) {
-      throw {
-        message: 'Required parameters are missing or empty',
-        statusCode: 400,
-      };
-    }
-
-    // Perform a test connection request to psp
-    const options = { merchantId, integrator, apiKey, apiSecret, host };
-    const connection = await testConnectionRequest(options);
+    const connection = await testConnectionRequest(request);
 
     ResponseClient.setResponseTo200(response, { connection });
   } catch (e) {
