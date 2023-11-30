@@ -1,4 +1,4 @@
-export interface InitPaymentPayload {
+export interface InitializePaymentPayload {
   authToken: string;
   storeId: string;
   cartId: string;

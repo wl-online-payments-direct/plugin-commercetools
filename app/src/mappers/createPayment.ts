@@ -1,17 +1,30 @@
-import { DatabasePayload, Response, ServicePayload } from '../types';
+import { Cart, Customer } from '@worldline/ctintegration-ct';
+import { $Enums } from '@worldline/ctintegration-db';
+import {
+  CustomObjects,
+  ICreatePaymentPayload,
+  ICreatePaymentResponse,
+} from '../types';
 
-export function getServicePayload({
-  authorizationMode,
-  cart,
-  paymentId,
-  customer,
-  payload,
-}: ServicePayload) {
+export function getServicePayload(
+  customConfig: CustomObjects,
+  incrementedPaymentId: number,
+  activeCart: { cart: Cart; customer: Customer },
+  payload: ICreatePaymentPayload,
+) {
   const { hostedTokenizationId, returnUrl } = payload;
+  const { cart, customer } = activeCart;
+  const { authorizationMode, merchantReference } = customConfig;
+
+  // Concat with the merchant reference
+  const paymentId = `${merchantReference}-${incrementedPaymentId}`;
 
   const skipAuthentication = false;
 
-  const createPaymentPayload = {
+  const amount = cart?.taxedPrice?.totalGross.centAmount || 0;
+  const currencyCode = cart?.taxedPrice?.totalGross.currencyCode || '';
+
+  return {
     hostedTokenizationId,
     cardPaymentMethodSpecificInput: {
       authorizationMode,
@@ -45,35 +58,37 @@ export function getServicePayload({
         merchantReference: paymentId,
       },
       amountOfMoney: {
-        amount: cart.taxedPrice.totalGross.centAmount,
-        currencyCode: cart.taxedPrice.totalGross.currencyCode,
+        amount,
+        currencyCode,
       },
     },
   };
-
-  return createPaymentPayload;
 }
 
-export function getDatabasePayload({
-  authorizationMode,
-  cart,
-  paymentId,
-  storeId,
-  payment,
-}: DatabasePayload) {
-  const payload = {
-    authMode: authorizationMode,
+export function getDatabasePayload(
+  customConfig: CustomObjects,
+  incrementedPaymentId: number,
+  activeCart: { cart: Cart; customer: Customer },
+  payload: ICreatePaymentPayload,
+  payment: { id: number },
+) {
+  const { merchantReference, authorizationMode } = customConfig;
+  const cartId = activeCart.cart.id;
+  const { storeId } = payload;
+  // Concat with the merchant reference
+  const paymentId = `${merchantReference}-${incrementedPaymentId}`;
+
+  return {
+    authMode: authorizationMode as $Enums.Modes,
     paymentId,
     worldlineId: payment.id.toString(),
     storeId,
-    cartId: cart.id,
+    cartId,
     orderId: '',
   };
-
-  return payload;
 }
 
-export async function getMappedResponse(result: Response) {
+export async function getMappedResponse(result: ICreatePaymentResponse) {
   const selectedFields = (({ redirectURL }) => ({
     redirectURL,
   }))(result);

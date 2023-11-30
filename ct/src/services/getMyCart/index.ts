@@ -1,19 +1,14 @@
 import { MeApiClient } from '../../clients';
 import query from './query';
 import mapper from './mapper';
+import { ICart } from './types';
 
 export async function getMyCart(authToken: string) {
-  // Initialize me client
   const apiClient = new MeApiClient({ authToken });
-
-  const variables = {};
-
   apiClient.setBody({
     query,
-    variables,
+    variables: {},
   });
-
-  const result = await apiClient.execute();
-
+  const result = (await apiClient.execute()) as ICart;
   return mapper(result);
 }

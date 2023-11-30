@@ -9,10 +9,10 @@ const hasAuthHeaderOrThrowError = (request: Request) => {
   }
 };
 
-const hasRequiredParamsInBody = (request: Request, rules: string[]) => {
+const hasRequiredParamsInBody = (body: { [key: string]: string }) => {
   // eslint-disable-next-line no-restricted-syntax
-  for (const attribute of rules) {
-    if (!request.body[attribute]) {
+  for (const attribute in body) {
+    if (!body[attribute]) {
       throw {
         message: `Required parameter '${attribute}' is missing or empty`,
         statusCode: 400,
@@ -23,15 +23,12 @@ const hasRequiredParamsInBody = (request: Request, rules: string[]) => {
   return true;
 };
 
-const hasRequiredParamsInQueryString = (
-  data: {
-    [key: string]: string | string[];
-  },
-  rules: string[],
-) => {
+const hasRequiredParamsInQueryString = (queryString: {
+  [key: string]: string | string[];
+}) => {
   // eslint-disable-next-line no-restricted-syntax
-  for (const attribute of rules) {
-    if (!data[attribute]) {
+  for (const attribute in queryString) {
+    if (!queryString[attribute]) {
       throw {
         message: `Required query string '${attribute}' is missing or empty`,
         statusCode: 400,

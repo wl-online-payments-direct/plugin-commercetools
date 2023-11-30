@@ -4,11 +4,15 @@ import {
   hasRequiredParamsInQueryString,
 } from '@worldline/ctintegration-util';
 import { Request } from './types';
-import { getQuery, getPaymentStatusAppPayload } from './mapper';
+import {
+  getQuery,
+  getPaymentStatusRequiredProps,
+  getPaymentStatusAppPayload,
+} from './mapper';
 
 export async function getPaymentStatusRequest(request: Request) {
   hasAuthHeaderOrThrowError(request);
   const queryString = getQuery(request);
-  hasRequiredParamsInQueryString(queryString, ['paymentId', 'storeId']);
+  hasRequiredParamsInQueryString(getPaymentStatusRequiredProps(queryString));
   return getPaymentStatus(getPaymentStatusAppPayload(request, queryString));
 }

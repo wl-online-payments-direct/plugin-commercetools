@@ -4,7 +4,7 @@ import {
   createPaymentInDB,
   getIncrementedPaymentId,
 } from '@worldline/db-integration';
-import { IPayload } from './types';
+import { ICreatePaymentPayload } from './types';
 import {
   getMappedResponse,
   getDatabasePayload,
@@ -12,45 +12,28 @@ import {
   getServicePayload,
 } from './mappers';
 
-export async function createPayment(payload: IPayload) {
-  const { authToken, storeId } = payload;
-
+export async function createPayment(payload: ICreatePaymentPayload) {
   // Fetch cart from Commercetools
-  const { cart, customer } = await getMyCart(authToken);
-
-  if (!cart) {
-    throw { message: 'Failed to fetch the cart data', statusCode: 400 };
-  }
-
+  const activeCart = await getMyCart(payload.authToken);
   // Fetch custom objects from admin config
-  const customConfig = await getCustomObjects(authToken, storeId);
-
+  const customConfig = await getCustomObjects(payload.storeId);
+  // Fetch incremented payment id
   const { incrementedPaymentId } = await getIncrementedPaymentId();
-  // Concat with the merchant reference
-  const paymentId = `${customConfig.merchantReference}-${incrementedPaymentId}`;
-
-  const { authorizationMode } = customConfig;
 
   const payment = await createPaymentService(
     getConnectionServiceProps(customConfig),
-    getServicePayload({
-      authorizationMode,
-      cart,
-      paymentId,
-      customer,
-      payload,
-    }),
+    getServicePayload(customConfig, incrementedPaymentId, activeCart, payload),
   );
 
   // save payment information in the database
   await createPaymentInDB(
-    getDatabasePayload({
-      authorizationMode,
-      cart,
-      paymentId,
-      storeId,
+    getDatabasePayload(
+      customConfig,
+      incrementedPaymentId,
+      activeCart,
+      payload,
       payment,
-    }),
+    ),
   );
 
   return getMappedResponse(payment);
