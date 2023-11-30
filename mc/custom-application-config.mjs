@@ -22,7 +22,7 @@ const config = {
   },
   icon: '${path:@commercetools-frontend/assets/application-icons/rocket.svg}',
   mainMenuLink: {
-    defaultLabel: 'Template starter',
+    defaultLabel: 'Worldline Online Payments',
     labelAllLocales: [],
     permissions: [PERMISSIONS.View],
   },
@@ -30,6 +30,12 @@ const config = {
     {
       uriPath: 'channels',
       defaultLabel: 'Channels',
+      labelAllLocales: [],
+      permissions: [PERMISSIONS.View],
+    },
+    {
+      uriPath: 'myaccounts',
+      defaultLabel: 'My Accounts',
       labelAllLocales: [],
       permissions: [PERMISSIONS.View],
     },
