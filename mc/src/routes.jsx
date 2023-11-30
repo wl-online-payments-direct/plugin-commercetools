@@ -2,7 +2,9 @@ import { Switch, Route, useRouteMatch } from 'react-router-dom';
 import Spacings from '@commercetools-uikit/spacings';
 import Channels from './components/channels';
 import Welcome from './components/welcome';
-import MyAccount from './components/my-account/my-account';
+import MyAccount from './components/my-account';
+import PaymentMethods from './components/payment-methods';
+import OrderDetails from './components/order-details';
 
 const ApplicationRoutes = () => {
   const match = useRouteMatch();
@@ -26,6 +28,12 @@ const ApplicationRoutes = () => {
         </Route>
         <Route path={`${match.path}/myaccounts`}>
           <MyAccount linkToWelcome={match.url} />
+        </Route>
+        <Route path={`${match.path}/paymentmethods`}>
+          <PaymentMethods linkToWelcome={match.url} />
+        </Route>
+        <Route path={`${match.path}/orderdetails`}>
+          <OrderDetails linkToWelcome={match.url} />
         </Route>
         <Route>
           <Welcome />

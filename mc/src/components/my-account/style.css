@@ -1,0 +1,116 @@
+#left-div {
+    color: black;
+    background-color: #F2FAF8;
+    height: 100%;
+    width: 100%;
+}
+
+#right-div {
+    color: black;
+    background-color: white;
+}
+
+.connect-title {
+    text-align: left;
+    font: normal normal normal 32px/30px Inter;
+    letter-spacing: -0.47px;
+    color: #120202;
+    margin-bottom: 30px;
+}
+
+.external-link {
+    color: #45BEAA;
+}
+
+.form-label {
+    font-size: 13px;
+    color: #9F9F9F;
+    margin-bottom: 13px;
+}
+
+.welcome-title {
+    color: #4d4c5a;
+    position: absolute;
+    left: 0px;
+    bottom: 0px;
+    font: normal normal normal 36px/34px Inter;
+    letter-spacing: -0.36px;
+}
+
+.logo-section {
+    background: #F2FAF8;
+    width: 100%;
+    height: 100%;
+    box-sizing: border-box;
+    background-image: none;
+    position: relative;
+    background-position: right bottom;
+    background-repeat: no-repeat;
+    display: flex;
+    justify-content: space-between;
+    flex-direction: column;
+    padding: 3rem;
+}
+
+.logo-wrapper {
+    width: 100%;
+    text-align: right;
+    position: relative;
+    display: inline-block;
+    vertical-align: text-bottom;
+    margin-bottom: 12px;
+    margin-top: 10rem;
+}
+
+.welcome-description {
+    color: #4d4c5a;
+    font-size: 18px;
+    line-height: 22px;
+    letter-spacing: -0.26px;
+}
+
+.logo-bottom-container {
+    position: absolute;
+    bottom: 0px;
+    margin-bottom: 3rem;
+}
+
+.logo-bottom-container p {
+    color: #4d4c5a;
+    font: normal normal bold 1rem/34px Inter;
+}
+
+p.form-label.hook-url {
+    font-weight: 400;
+    color: #040404;
+    font-size: 1rem;
+}
+
+p.info {
+    font-size: .875em;
+    font-weight: 400;
+    color: #040404;
+    margin-top: 4px !important;
+}
+
+.myaccount-form button {
+    font-family: 'Inter', sans-serif;
+    font-size: 18px;
+    letter-spacing: -0.27px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    padding-left: 20px;
+    padding-right: 20px;
+    border-radius: 6px !important;
+    width: 30%;
+    height: 50px;
+    margin: 4rem 0rem !important;
+}
+
+.link-wrapper {
+    text-align: right;
+}
+
+.form-wrapper {
+    margin-top: 4rem;
+}
