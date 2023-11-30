@@ -1,16 +1,14 @@
+import { Prisma } from '@prisma/client';
 import prisma from './connection';
-import {
-  createPaymentResponseMapper,
-  incrementedPaymentIdMapper,
-} from './mapper';
-import type { CreatePaymentRequest, CreatePaymentResponse } from './types';
+import { incrementedPaymentIdMapper } from './mapper';
+import { Payment } from './types';
 
 export async function createPaymentInDB(
-  data: CreatePaymentRequest,
-): Promise<CreatePaymentResponse> {
+  data: Prisma.paymentsCreateInput,
+): Promise<Payment> {
   try {
     const result = await prisma.payments.create({ data });
-    return createPaymentResponseMapper(result);
+    return result;
   } catch (error) {
     throw {
       message: 'Failed to create payment',
@@ -39,23 +37,39 @@ export async function getIncrementedPaymentId(): Promise<{
   }
 }
 
-export async function setPaymentStatusInReview(
-  merchantReference: string,
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-): Promise<any> {
+export async function getPayment(
+  where: Prisma.paymentsWhereInput,
+): Promise<Payment> {
   try {
-    const result = await prisma.payments.update({
-      where: {
-        paymentId: merchantReference,
-      },
-      data: {
-        status: 'REVIEW',
-      },
+    const payment = await prisma.payments.findFirst({
+      where,
     });
-    return createPaymentResponseMapper(result);
+    if (!payment) {
+      throw new Error('Failed to fetch the payment');
+    }
+    return payment;
   } catch (error) {
     throw {
-      message: 'Failed to create payment',
+      message: 'Exception occured for fetching the payment',
+      statusCode: 400,
+      details: (error as { message: string }).message,
+    };
+  }
+}
+
+export async function setPayment(
+  where: Prisma.paymentsWhereUniqueInput,
+  data: { [key: string]: string },
+): Promise<Payment> {
+  try {
+    const result = await prisma.payments.update({
+      where,
+      data,
+    });
+    return result;
+  } catch (error) {
+    throw {
+      message: 'Failed to update payment',
       statusCode: 400,
       details: (error as { message: string }).message,
     };

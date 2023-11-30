@@ -2,13 +2,13 @@ import { InitServicePayload } from '../types';
 
 export function getTokenizationServicePayload({
   variant,
-  cart,
+  locale,
   payload,
 }: InitServicePayload) {
   const { tokens, askConsumerConsent } = payload;
 
   const hostedTokenizationPayload = {
-    locale: cart.locale,
+    locale,
     variant,
     tokens,
     askConsumerConsent,

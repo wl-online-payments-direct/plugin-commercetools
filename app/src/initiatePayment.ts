@@ -22,7 +22,7 @@ export async function initiatePaymentSession(payload: InitPaymentPayload) {
 
   const result = await hostedTokenizationService(
     getConnectionServiceProps(customConfig),
-    getTokenizationServicePayload({ variant, cart, payload }),
+    getTokenizationServicePayload({ variant, locale: 'en-US', payload }),
   );
 
   return result;

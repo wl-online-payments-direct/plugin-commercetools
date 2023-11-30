@@ -1,16 +1,4 @@
-import { Payment, CreatePaymentResponse } from '../types';
-
-export function createPaymentResponseMapper(
-  result: Payment,
-): CreatePaymentResponse {
-  const selectedFields = (({ id, paymentId, status, state }) => ({
-    id,
-    paymentId,
-    status,
-    state,
-  }))(result);
-  return selectedFields;
-}
+import { Payment } from '../types';
 
 export function incrementedPaymentIdMapper(result: Payment | null): {
   incrementedPaymentId: number;

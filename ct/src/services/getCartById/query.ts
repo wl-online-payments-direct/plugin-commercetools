@@ -5,6 +5,12 @@ const query = `
         version
         locale
         country
+        taxedPrice{
+          totalGross{
+            currencyCode
+            centAmount
+          }
+        }
     }
   }
 `;

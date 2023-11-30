@@ -4,22 +4,26 @@ import {
   type AuthMiddlewareOptions,
   type HttpMiddlewareOptions,
 } from '@commercetools/sdk-client-v2';
-import { createApiBuilderFromCtpClient, ApiRoot } from '@commercetools/platform-sdk';
+import {
+  createApiBuilderFromCtpClient,
+  ApiRoot,
+} from '@commercetools/platform-sdk';
 
 export declare type Options = {
-  authHost: string
-  apiHost: string
-  projectKey: string
-  clientId: string
-  clientSecret: string
-  scopes?: Array<string>
-}
+  authHost: string;
+  apiHost: string;
+  projectKey: string;
+  clientId: string;
+  clientSecret: string;
+  scopes?: Array<string>;
+};
 
 export class GraphQLClient {
   apiRoot!: ApiRoot;
 
   setClientWithAuthMiddlewareOptions(props: Options) {
-    const { authHost, projectKey, clientId, clientSecret, scopes, apiHost } = props;
+    const { authHost, projectKey, clientId, clientSecret, scopes, apiHost } =
+      props;
     // Configure authMiddlewareOptions
     const authMiddlewareOptions: AuthMiddlewareOptions = {
       host: authHost,
@@ -48,7 +52,10 @@ export class GraphQLClient {
     this.apiRoot = createApiBuilderFromCtpClient(ctpClient);
   }
 
-  setClientwithExistingTokenFlow(props: { apiHost: string; bearerToken: string }) {
+  setClientwithExistingTokenFlow(props: {
+    apiHost: string;
+    bearerToken: string;
+  }) {
     const { apiHost, bearerToken } = props;
 
     // Configure httpMiddlewareOptions

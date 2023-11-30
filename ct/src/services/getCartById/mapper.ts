@@ -1,4 +1,7 @@
-const mapper = (response: any) => {
+import { Cart } from '@commercetools/platform-sdk';
+import { ICart } from './types';
+
+const mapper = (response: ICart): Cart => {
   if (response?.body?.errors) {
     throw {
       message: '[CT] Failed to retrieve cart information',
@@ -7,7 +10,7 @@ const mapper = (response: any) => {
     };
   }
 
-  return response.body;
+  return response.body?.data?.cart;
 };
 
 export default mapper;
