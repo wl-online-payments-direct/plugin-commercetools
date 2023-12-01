@@ -2,9 +2,9 @@ import { getMyCart, getCustomObjects } from '@worldline/ct-integration';
 import { createPaymentService } from '@worldline/psp-integration';
 import {
   createPaymentInDB,
-  getIncrementedPaymentId,
+  getIncrementedReference,
 } from '@worldline/db-integration';
-import { ICreatePaymentPayload } from './types';
+import { ICreatePaymentPayload, ICreatePaymentResponse } from './types';
 import {
   getMappedResponse,
   getDatabasePayload,
@@ -12,28 +12,24 @@ import {
   getServicePayload,
 } from './mappers';
 
-export async function createPayment(payload: ICreatePaymentPayload) {
+export async function createPayment(
+  payload: ICreatePaymentPayload,
+): Promise<ICreatePaymentResponse> {
   // Fetch cart from Commercetools
-  const activeCart = await getMyCart(payload.authToken);
+  const myCart = await getMyCart(payload.authToken);
   // Fetch custom objects from admin config
   const customConfig = await getCustomObjects(payload.storeId);
   // Fetch incremented payment id
-  const { incrementedPaymentId } = await getIncrementedPaymentId();
+  const reference = await getIncrementedReference(payload.storeId);
 
   const payment = await createPaymentService(
     getConnectionServiceProps(customConfig),
-    getServicePayload(customConfig, incrementedPaymentId, activeCart, payload),
+    getServicePayload(customConfig, reference, myCart, payload),
   );
 
   // save payment information in the database
   await createPaymentInDB(
-    getDatabasePayload(
-      customConfig,
-      incrementedPaymentId,
-      activeCart,
-      payload,
-      payment,
-    ),
+    getDatabasePayload(customConfig, reference, myCart, payload, payment),
   );
 
   return getMappedResponse(payment);

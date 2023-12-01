@@ -29,9 +29,9 @@ enum Modes {
 
 model payments {
   id          String   @id @default(uuid())
-  authMode    Modes    
-  paymentId   String // auto generated with a pattern
-  worldlineId String // worldline id
+  authMode    Modes
+  paymentId   String
+  worldlineId String
   storeId     String   @db.VarChar(255)
   cartId      String   @db.VarChar(255)
   orderId     String   @db.VarChar(255)
@@ -39,7 +39,13 @@ model payments {
   state       States   @default(DEFAULT)
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
+}
 
-  @@unique(id)
-  @@unique(paymentId)
+model payment_references {
+  id          String   @id @default(uuid())
+  storeId     String   @db.VarChar(255)
+  version     Int
+  referenceId Int
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
 }

@@ -1,29 +1,21 @@
-import { Payment, CreatePaymentResponse } from '../types';
+import { Payment, PaymentReference, CreatePaymentResponse } from '../types';
 
 export function createPaymentResponseMapper(
   result: Payment,
 ): CreatePaymentResponse {
-  const selectedFields = (({ id, paymentId, status, state }) => ({
+  const selectedFields = (({ id, status, state }) => ({
     id,
-    paymentId,
     status,
     state,
   }))(result);
   return selectedFields;
 }
 
-export function incrementedPaymentIdMapper(result: Payment | null): {
-  incrementedPaymentId: number;
-} {
-  const INITIAL_VALUE = 100000;
-
-  if (!result || !result?.paymentId) {
-    return { incrementedPaymentId: INITIAL_VALUE };
-  }
-
-  const [, paymentId] = result.paymentId.split('-');
-
-  const incrementedPaymentId = Number(paymentId) + 1;
-
-  return { incrementedPaymentId };
+export function getIncrementedReferenceMapper(result: PaymentReference) {
+  const selectedFields = (({ storeId, version, referenceId }) => ({
+    storeId,
+    version,
+    referenceId,
+  }))(result);
+  return selectedFields;
 }

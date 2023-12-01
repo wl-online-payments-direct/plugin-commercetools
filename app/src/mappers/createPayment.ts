@@ -6,18 +6,26 @@ import {
   ICreatePaymentResponse,
 } from '../types';
 
+const getFormattedPaymentId = (
+  merchantReference: string,
+  referenceId: number,
+) => `${merchantReference}-${referenceId.toString()}`;
+
 export function getServicePayload(
   customConfig: CustomObjects,
-  incrementedPaymentId: number,
-  activeCart: { cart: Cart; customer: Customer },
+  reference: { referenceId: number },
+  myCart: { cart: Cart; customer: Customer },
   payload: ICreatePaymentPayload,
 ) {
   const { hostedTokenizationId, returnUrl } = payload;
-  const { cart, customer } = activeCart;
+  const { cart, customer } = myCart;
   const { authorizationMode, merchantReference } = customConfig;
 
   // Concat with the merchant reference
-  const paymentId = `${merchantReference}-${incrementedPaymentId}`;
+  const paymentId = getFormattedPaymentId(
+    merchantReference,
+    reference.referenceId,
+  );
 
   const skipAuthentication = false;
 
@@ -67,16 +75,20 @@ export function getServicePayload(
 
 export function getDatabasePayload(
   customConfig: CustomObjects,
-  incrementedPaymentId: number,
-  activeCart: { cart: Cart; customer: Customer },
+  reference: { referenceId: number },
+  myCart: { cart: Cart; customer: Customer },
   payload: ICreatePaymentPayload,
   payment: { id: number },
 ) {
   const { merchantReference, authorizationMode } = customConfig;
-  const cartId = activeCart.cart.id;
+  const cartId = myCart.cart.id;
   const { storeId } = payload;
+
   // Concat with the merchant reference
-  const paymentId = `${merchantReference}-${incrementedPaymentId}`;
+  const paymentId = getFormattedPaymentId(
+    merchantReference,
+    reference.referenceId,
+  );
 
   return {
     authMode: authorizationMode as $Enums.Modes,
