@@ -4,10 +4,13 @@ import {
   hasRequiredParamsInBody,
 } from '@worldline/ctintegration-util';
 import { Request } from './types';
-import { getInitSessionAppPayload } from './mapper';
+import {
+  getInitSessionAppPayload,
+  getInitSessionRequiredProps,
+} from './mapper';
 
 export async function initiatePaymentRequest(request: Request) {
   hasAuthHeaderOrThrowError(request);
-  hasRequiredParamsInBody(request, ['storeId', 'cartId']);
+  hasRequiredParamsInBody(getInitSessionRequiredProps(request));
   return initiatePaymentSession(getInitSessionAppPayload(request));
 }

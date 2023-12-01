@@ -1,6 +1,22 @@
 import { Request } from '../types';
+import { pick } from './common';
+
+export function getTestConnectionRequiredProps(request: Request) {
+  return pick(request.body, [
+    'merchantId',
+    'integrator',
+    'apiKey',
+    'apiSecret',
+    'host',
+  ]);
+}
 
 export function testConnectionAppPayload(request: Request) {
-  const { merchantId, integrator, apiKey, apiSecret, host } = request.body;
-  return { merchantId, integrator, apiKey, apiSecret, host };
+  return pick(request.body, [
+    'merchantId',
+    'integrator',
+    'apiKey',
+    'apiSecret',
+    'host',
+  ]);
 }

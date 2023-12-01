@@ -9,13 +9,9 @@ import { ErrorProps, Request } from '../../lib/types';
 
 const processRequest = async (request: Request, response: ServerResponse) => {
   try {
-    const { method } = request;
-
     // Only allow POST request; else throw error
-    await isPostRequestOrThrowError(method);
-
+    await isPostRequestOrThrowError(request.method);
     const data = await initiatePaymentRequest(request);
-
     ResponseClient.setResponseTo200(response, data);
   } catch (e) {
     const error = e as ErrorProps;

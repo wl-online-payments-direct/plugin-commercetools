@@ -1,3 +1,4 @@
+import { CustomObjects } from '../services/getCustomObjects/types';
 import connect from './connect';
 
 const CT_PREFIX = 'CT';
@@ -5,7 +6,7 @@ const CT_PREFIX_CUSTOM_OBJECTS = `${CT_PREFIX}:customObjects`;
 
 export const setCustomObjectsCache = async (
   storeId: string,
-  value: { [key: string]: string | number },
+  value: CustomObjects,
 ) => {
   const cacheClient = await connect();
   const stringifyValue = JSON.stringify(value);

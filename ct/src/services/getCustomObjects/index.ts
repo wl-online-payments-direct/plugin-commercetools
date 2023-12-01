@@ -1,9 +1,12 @@
-import { MeApiClient } from '../../clients';
+import { ApiClient } from '../../clients';
 import query from './query';
 import mapper from './mapper';
 import { getCustomObjectsCache, setCustomObjectsCache } from '../../cache';
+import { CustomObjects } from './types';
 
-export async function getCustomObjects(authToken: string, storeId: string) {
+export async function getCustomObjects(
+  storeId: string,
+): Promise<CustomObjects> {
   // Fetch from cache
   const cache = await getCustomObjectsCache(storeId);
   if (cache) {
@@ -11,7 +14,7 @@ export async function getCustomObjects(authToken: string, storeId: string) {
   }
 
   // Initialize api client
-  const apiClient = new MeApiClient({ authToken });
+  const apiClient = new ApiClient();
 
   const variables = {
     containerName: storeId,
@@ -22,9 +25,10 @@ export async function getCustomObjects(authToken: string, storeId: string) {
     variables,
   });
 
-  const result = await apiClient.execute();
-
-  const configuration = mapper(storeId, result);
+  const configuration: CustomObjects = mapper(
+    storeId,
+    await apiClient.execute(),
+  );
 
   if (configuration) {
     await setCustomObjectsCache(storeId, configuration);
