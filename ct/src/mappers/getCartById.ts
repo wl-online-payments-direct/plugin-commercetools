@@ -1,4 +1,6 @@
-const mapper = (response: any) => {
+import { CartById } from '../types';
+
+const getCartByIdResponseMapper = (response: CartById) => {
   if (response?.body?.errors) {
     throw {
       message: '[CT] Failed to retrieve cart information',
@@ -7,7 +9,7 @@ const mapper = (response: any) => {
     };
   }
 
-  return response.body;
+  return response?.body?.data?.cart;
 };
 
-export default mapper;
+export { getCartByIdResponseMapper };

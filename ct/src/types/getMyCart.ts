@@ -1,6 +1,6 @@
 import { Cart, Customer, ErrorObject } from '@commercetools/platform-sdk';
 
-export interface ICart {
+export interface MyCartResponse {
   body: {
     data: {
       me: {

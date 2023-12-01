@@ -1,6 +1,6 @@
-import { ICart } from './types';
+import { MyCartResponse } from '../types';
 
-const mapper = (response: ICart) => {
+const getMyCartResponseMapper = (response: MyCartResponse) => {
   const body = response?.body;
   if (
     body?.errors ||
@@ -20,4 +20,4 @@ const mapper = (response: ICart) => {
   };
 };
 
-export default mapper;
+export { getMyCartResponseMapper };
