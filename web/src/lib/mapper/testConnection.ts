@@ -18,5 +18,6 @@ export function testConnectionAppPayload(request: Request) {
     'apiKey',
     'apiSecret',
     'host',
+    'enablePspLogs',
   ]);
 }

@@ -7,6 +7,7 @@ export interface CustomObjects {
   apiKey: string;
   apiSecret: string;
   host: string;
+  enablePspLogs: boolean;
   variant: string;
   merchantReference: string;
 }

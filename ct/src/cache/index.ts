@@ -1,4 +1,4 @@
-import { CustomObjects } from '../services/getCustomObjects/types';
+import { CustomObjects } from '../types';
 import connect from './connect';
 
 const CT_PREFIX = 'CT';
