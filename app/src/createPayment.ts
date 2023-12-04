@@ -1,9 +1,9 @@
-import { getMyCart, getCustomObjects } from '@worldline/ct-integration';
-import { createPaymentService } from '@worldline/psp-integration';
+import { getMyCart, getCustomObjects } from '@worldline/ctintegration-ct';
+import { createPaymentService } from '@worldline/ctintegration-psp';
 import {
   createPaymentInDB,
   getIncrementedReference,
-} from '@worldline/db-integration';
+} from '@worldline/ctintegration-db';
 import { ICreatePaymentPayload, ICreatePaymentResponse } from './types';
 import {
   getMappedResponse,

@@ -1,5 +1,5 @@
-import { getCustomObjects, getMyCart } from '@worldline/ct-integration';
-import { hostedTokenizationService } from '@worldline/psp-integration';
+import { getCustomObjects, getMyCart } from '@worldline/ctintegration-ct';
+import { hostedTokenizationService } from '@worldline/ctintegration-psp';
 import { InitializePaymentPayload } from './types';
 import {
   getTokenizationServicePayload,

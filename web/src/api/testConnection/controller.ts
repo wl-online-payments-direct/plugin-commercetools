@@ -3,7 +3,7 @@ import {
   isPostRequestOrThrowError,
   logger,
   ResponseClient,
-} from '@worldline/util-integration';
+} from '@worldline/ctintegration-util';
 import { testConnectionRequest } from '../../lib';
 import { Request, ErrorProps } from '../../lib/types';
 

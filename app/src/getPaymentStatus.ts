@@ -1,5 +1,5 @@
-import { getCustomObjects } from '@worldline/ct-integration';
-import { getPaymentStatusService } from '@worldline/psp-integration';
+import { getCustomObjects } from '@worldline/ctintegration-ct';
+import { getPaymentStatusService } from '@worldline/ctintegration-psp';
 import { GetPaymentStatusPayload } from './types';
 import { getConnectionServiceProps } from './mappers';
 import { getPaymentStatusPayload } from './mappers/getPaymentStatus';
