@@ -48,4 +48,6 @@ model payment_references {
   referenceId Int
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
+
+  @@unique(storeId)
 }
