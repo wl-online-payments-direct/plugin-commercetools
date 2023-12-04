@@ -31,8 +31,8 @@ export async function getIncrementedReference(storeId: string) {
       prisma.$transaction(async (tx) => {
         try {
           const paymentReference = await tx.payment_references.findFirst({
-            orderBy: {
-              createdAt: 'desc',
+            where: {
+              storeId,
             },
           });
 

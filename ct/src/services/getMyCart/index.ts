@@ -1,7 +1,7 @@
 import { MeApiClient } from '../../clients';
 import query from './query';
-import mapper from './mapper';
-import { ICart } from './types';
+import { getMyCartResponseMapper } from '../../mappers';
+import { MyCartResponse } from '../../types';
 
 export async function getMyCart(authToken: string) {
   const apiClient = new MeApiClient({ authToken });
@@ -9,6 +9,6 @@ export async function getMyCart(authToken: string) {
     query,
     variables: {},
   });
-  const result = (await apiClient.execute()) as ICart;
-  return mapper(result);
+  const result = (await apiClient.execute()) as MyCartResponse;
+  return getMyCartResponseMapper(result);
 }

@@ -1,4 +1,4 @@
-import { initiatePaymentSession } from '@worldline/app-integration';
+import { initiatePaymentSession } from '@worldline/ctintegration-app';
 import {
   hasAuthHeaderOrThrowError,
   hasRequiredParamsInBody,

@@ -1,8 +1,8 @@
 import { ApiClient } from '../../clients';
 import query from './query';
-import mapper from './mapper';
+import { getCustomObjectsResponseMapper } from '../../mappers';
 import { getCustomObjectsCache, setCustomObjectsCache } from '../../cache';
-import { CustomObjects } from './types';
+import { CustomObjects, CustomObjectsResponse } from '../../types';
 
 export async function getCustomObjects(
   storeId: string,
@@ -25,9 +25,11 @@ export async function getCustomObjects(
     variables,
   });
 
-  const configuration: CustomObjects = mapper(
+  const response = (await apiClient.execute()) as CustomObjectsResponse;
+
+  const configuration: CustomObjects = getCustomObjectsResponseMapper(
     storeId,
-    await apiClient.execute(),
+    response,
   );
 
   if (configuration) {

@@ -1,4 +1,9 @@
-const mapper = (storeId: string, response: any) => {
+import { CustomObjectsResponse } from '../types';
+
+const getCustomObjectsResponseMapper = (
+  storeId: string,
+  response: CustomObjectsResponse,
+) => {
   if (response?.body?.errors) {
     throw {
       message: '[CT] Failed to retrieve custom object information',
@@ -24,4 +29,4 @@ const mapper = (storeId: string, response: any) => {
   return config;
 };
 
-export default mapper;
+export { getCustomObjectsResponseMapper };

@@ -1,4 +1,4 @@
-import { getPaymentStatus } from '@worldline/app-integration';
+import { getPaymentStatus } from '@worldline/ctintegration-app';
 import {
   hasAuthHeaderOrThrowError,
   hasRequiredParamsInQueryString,

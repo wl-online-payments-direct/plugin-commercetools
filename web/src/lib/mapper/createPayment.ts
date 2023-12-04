@@ -6,10 +6,15 @@ export function getCreatePaymentRequiredProps(request: Request) {
 }
 
 export function getCreatePaymentAppPayload(request: Request) {
-  const { authorization: authToken = '' } = request.headers;
+  const { authorization: authToken = '', accept: acceptHeader = '' } =
+    request.headers;
+  const userAgent = request.headers['user-agent'] || '';
   const { storeId, hostedTokenizationId, returnUrl } = request.body;
+
   return {
     authToken,
+    userAgent,
+    acceptHeader,
     storeId,
     hostedTokenizationId,
     returnUrl,
