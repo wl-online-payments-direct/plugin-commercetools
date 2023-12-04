@@ -17,7 +17,7 @@ export function getServicePayload(
   myCart: { cart: Cart; customer: Customer },
   payload: ICreatePaymentPayload,
 ) {
-  const { hostedTokenizationId, returnUrl } = payload;
+  const { hostedTokenizationId, returnUrl, acceptHeader, userAgent } = payload;
   const { cart, customer } = myCart;
   const { authorizationMode, merchantReference } = customConfig;
 
@@ -31,6 +31,7 @@ export function getServicePayload(
 
   const amount = cart?.taxedPrice?.totalGross.centAmount || 0;
   const currencyCode = cart?.taxedPrice?.totalGross.currencyCode || '';
+  const locale = cart.locale || 'en_US';
 
   return {
     hostedTokenizationId,
@@ -47,18 +48,9 @@ export function getServicePayload(
       customer: {
         merchantCustomerId: cart.customerId || customer.id,
         device: {
-          acceptHeader:
-            'text/html,application/xhtml+xml,application/xmlq=0.9,image/webp,image/apng,*/*q=0.8,application/signed-exchangev=b3',
-          locale: 'en_US',
-          timezoneOffsetUtcMinutes: '-180',
-          userAgent:
-            'Mozilla/5.0 (Windows NT 10.0 Win64 x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/75.0.3770.142 Safari/537.36',
-          browserData: {
-            colorDepth: 24,
-            javaScriptEnabled: false,
-            screenHeight: '1080',
-            screenWidth: '1920',
-          },
+          acceptHeader,
+          locale,
+          userAgent,
         },
       },
       references: {
