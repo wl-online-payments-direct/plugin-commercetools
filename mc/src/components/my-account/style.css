@@ -30,11 +30,11 @@
 
 .welcome-title {
     color: #4d4c5a;
-    position: absolute;
     left: 0px;
     bottom: 0px;
     font: normal normal normal 36px/34px Inter;
     letter-spacing: -0.36px;
+    margin-top: 20%;
 }
 
 .logo-section {
@@ -53,13 +53,10 @@
 }
 
 .logo-wrapper {
-    width: 100%;
-    text-align: right;
-    position: relative;
-    display: inline-block;
-    vertical-align: text-bottom;
+    display: flex;
     margin-bottom: 12px;
-    margin-top: 10rem;
+    margin-top: 40%;
+    justify-content: space-between;
 }
 
 .welcome-description {

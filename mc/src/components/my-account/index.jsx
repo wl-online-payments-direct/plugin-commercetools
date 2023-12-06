@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Link from '@commercetools-uikit/link';
 import { PageContentWide } from '@commercetools-frontend/application-components';
 import SelectInput from '@commercetools-uikit/select-input';
@@ -10,14 +10,136 @@ import PageWrapper from '../page-wrapper';
 import Spacings from '@commercetools-uikit/spacings';
 import worldlineLogo from '../../assets/worldline-logo-main.png';
 import worldlineLogoBottom from '../../assets/worldline-logo-bottom.png';
+import {
+  createCustomObject,
+  getCustomObject,
+} from '../../ct-methods/customObject';
+import { CONTAINER_NAME, CONTAINER_KEY } from '../../../configuration';
 
 const MyAccount = (props) => {
   const [selectedOption, setSelectedOption] = useState('test');
+  const [formData, setFormData] = useState({
+    live: {
+      merchantId: '',
+      apiKey: '',
+      apiSecret: '',
+      webHookKey: '',
+      webHookSecret: '',
+      webHookURL: '',
+      paymentPageURL: '',
+    },
+    test: {
+      merchantId: '',
+      apiKey: '',
+      apiSecret: '',
+      webHookKey: '',
+      webHookSecret: '',
+      webHookURL: '',
+      paymentPageURL: '',
+    },
+  });
+
+  useEffect(() => {
+    getCustomObjectData();
+  }, []);
+
+  const getCustomObjectData = async () => {
+    try {
+      const response = await getCustomObject(CONTAINER_NAME, CONTAINER_KEY);
+      if (response?.value) {
+        for (const option of ['live', 'test']) {
+          const optionData = response.value[option];
+          const updatedFormData = { ...formData };
+          for (const key in optionData) {
+            updatedFormData[option][key] = optionData[key];
+          }
+          setFormData(updatedFormData);
+        }
+      }
+    } catch (error) {
+      console.error('Error fetching custom object:', error);
+    }
+  };
+
   const handleChange = (event) => {
     const selectedValue = event.target.value;
     setSelectedOption(selectedValue);
-    // Additional logic or actions based on the selected value can be added here
   };
+
+  const handleInputChange = (event) => {
+    const { name, value } = event.target;
+    setFormData((prevData) => ({
+      ...prevData,
+      [selectedOption]: {
+        ...prevData[selectedOption],
+        [name]: value,
+      },
+    }));
+  };
+
+  const handleSubmit = async () => {
+    const draft = {
+      container: 'storeId',
+      key: 'storeId',
+      value: {
+        ...(selectedOption === 'live'
+          ? {
+              live: {
+                merchantId: formData[selectedOption].merchantId,
+                apiKey: formData[selectedOption].apiKey,
+                apiSecret: formData[selectedOption].apiSecret,
+                webHookKey: formData[selectedOption].webHookKey,
+                webHookSecret: formData[selectedOption].webHookSecret,
+                webHookURL: formData[selectedOption].webHookURL,
+                paymentPageURL: formData[selectedOption].paymentPageURL,
+              },
+            }
+          : {
+              live: {
+                merchantId: formData['live'].merchantId,
+                apiKey: formData['live'].apiKey,
+                apiSecret: formData['live'].apiSecret,
+                webHookKey: formData['live'].webHookKey,
+                webHookSecret: formData['live'].webHookSecret,
+                webHookURL: formData['live'].webHookURL,
+                paymentPageURL: formData['live'].paymentPageURL,
+              },
+            }),
+        ...(selectedOption === 'test'
+          ? {
+              test: {
+                merchantId: formData[selectedOption].merchantId,
+                apiKey: formData[selectedOption].apiKey,
+                apiSecret: formData[selectedOption].apiSecret,
+                webHookKey: formData[selectedOption].webHookKey,
+                webHookSecret: formData[selectedOption].webHookSecret,
+                webHookURL: formData[selectedOption].webHookURL,
+                paymentPageURL: formData[selectedOption].paymentPageURL,
+              },
+            }
+          : {
+              test: {
+                merchantId: formData['test'].merchantId,
+                apiKey: formData['test'].apiKey,
+                apiSecret: formData['test'].apiSecret,
+                webHookKey: formData['test'].webHookKey,
+                webHookSecret: formData['test'].webHookSecret,
+                webHookURL: formData['test'].webHookURL,
+                paymentPageURL: formData['test'].paymentPageURL,
+              },
+            }),
+      },
+    };
+    try {
+      const response = await createCustomObject(draft);
+      if (response.id) {
+        console.log('Config settings saved successfully...');
+      }
+    } catch (error) {
+      console.error('Error saving custom object:', error);
+    }
+  };
+
   return (
     <PageWrapper title={'My Account'}>
       <PageContentWide columns="1/1">
@@ -66,7 +188,7 @@ const MyAccount = (props) => {
             <h1 className="connect-title">Connect to Worldline</h1>
             <div className="myaccount-form">
               <Spacings.Stack scale="m">
-                <Label isRequiredIndicatorVisible={true} isBold={true}>
+                <Label isBold={true}>
                   <p className="form-label">Checkout types</p>
                 </Label>
                 <SelectInput
@@ -78,59 +200,71 @@ const MyAccount = (props) => {
                     { value: 'live', label: 'Live Mode' },
                   ]}
                 />
-
-                <Label isRequiredIndicatorVisible={true} isBold={true}>
+                <Label isBold={true}>
                   <p className="form-label">Test PSPID</p>
                 </Label>
                 <TextInput
-                  value="TryzensIndiaPvtLtd"
-                  onChange={(event) => alert(event.target.value)}
+                  name="merchantId"
+                  value={formData[selectedOption].merchantId}
+                  onChange={handleInputChange}
                 />
-                <Label isRequiredIndicatorVisible={true} isBold={true}>
+                <Label isBold={true}>
                   <p className="form-label">Test API Key</p>
                 </Label>
                 <TextInput
-                  value="0E916***************"
-                  onChange={(event) => alert(event.target.value)}
+                  name="apiKey"
+                  value={formData[selectedOption].apiKey}
+                  onChange={handleInputChange}
                 />
-                <Label isRequiredIndicatorVisible={true} isBold={true}>
+                <Label isBold={true}>
                   <p className="form-label">Test API Secret</p>
                 </Label>
                 <TextInput
-                  value="CAB82***************"
-                  onChange={(event) => alert(event.target.value)}
+                  name="apiSecret"
+                  value={formData[selectedOption].apiSecret}
+                  onChange={handleInputChange}
                 />
-                <Label isRequiredIndicatorVisible={true} isBold={true}>
+                <Label isBold={true}>
                   <p className="form-label">Test Webhook Key</p>
                 </Label>
                 <TextInput
-                  value="73474***************"
-                  onChange={(event) => alert(event.target.value)}
+                  name="webHookKey"
+                  value={formData[selectedOption].webHookKey}
+                  onChange={handleInputChange}
                 />
-                <Label isRequiredIndicatorVisible={true} isBold={true}>
+                <Label isBold={true}>
                   <p className="form-label">Test Webhook Secret</p>
                 </Label>
                 <TextInput
-                  value="7816A***************"
-                  onChange={(event) => alert(event.target.value)}
+                  name="webHookSecret"
+                  value={formData[selectedOption].webHookSecret}
+                  onChange={handleInputChange}
                 />
-                <Label isRequiredIndicatorVisible={true} isBold={true}>
+                <Label isBold={true}>
                   <p className="form-label hook-url">Webhook URL</p>
                 </Label>
-                <TextInput value="https://worldline.247commerce.co.uk/webhookPaymentCreate" />
+                <TextInput
+                  name="webHookURL"
+                  value={formData[selectedOption].webHookURL}
+                  onChange={handleInputChange}
+                />
                 <p className="info">
                   To avoid copy/paste issues, use the `copy` icon to copy the
                   URL
                 </p>
-                <Label isRequiredIndicatorVisible={true} isBold={true}>
+                <Label isBold={true}>
                   <p className="form-label hook-url">
                     Redirection Payment Page URL - Test
                   </p>
                 </Label>
-                <TextInput value="https://payment.preprod.direct.worldline-solutions.com" />
+                <TextInput
+                  name="paymentPageURL"
+                  value={formData[selectedOption].paymentPageURL}
+                  onChange={handleInputChange}
+                />
                 <PrimaryButton
                   label="Save/Update"
-                  onClick={() => alert('Button clicked')}
+                  onClick={handleSubmit}
                   isDisabled={false}
                 />
               </Spacings.Stack>
