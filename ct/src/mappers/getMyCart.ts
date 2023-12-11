@@ -8,7 +8,8 @@ const getMyCartResponseMapper = (response: MyCartResponse) => {
     !body?.data?.me?.customer
   ) {
     throw {
-      message: 'Failed to fetch customer cart!',
+      message:
+        'Failed to fetch customer cart or No active cart has found for customer!',
       details: body?.errors,
       statusCode: 500,
     };

@@ -1,14 +1,19 @@
 import { ApiClient } from '../../clients';
 import query from './query';
-import mapper from './mapper';
+import { createOrderResponseMapper } from '../../mappers';
+import { CreateOrderPayload, CreateOrderResponse } from '../../types';
 
-export async function createOrder(token: string, cartId: string) {
+export async function createOrder({
+  id,
+  version,
+  accessToken,
+}: CreateOrderPayload) {
   // Initialize api client
   const apiClient = new ApiClient();
 
   const variables = {
-    id: cartId,
-    version: 1,
+    id, // cart id
+    version,
   };
 
   apiClient.setBody({
@@ -16,18 +21,11 @@ export async function createOrder(token: string, cartId: string) {
     variables,
   });
 
-  apiClient.setAuthHeader(token);
+  apiClient.setAuthHeader(accessToken);
 
-  const response = await apiClient.execute();
+  const response = (await apiClient.execute()) as CreateOrderResponse;
 
-  const order = mapper(response);
-
-  if (!order) {
-    throw {
-      message: `Failed to create the order using cart ${cartId}`,
-      statusCode: 500,
-    };
-  }
+  const order = createOrderResponseMapper(response);
 
   return order;
 }

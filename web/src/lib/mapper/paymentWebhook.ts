@@ -1,9 +1,10 @@
 import { Request, WebhookPayload } from '../types';
 
-export function getWebhookPayload(request: Request): WebhookPayload {
+export function getOrderPaymentPayload(request: Request): WebhookPayload {
   const {
     payment: {
       id,
+      status,
       paymentOutput: {
         amountOfMoney: { amount, currencyCode },
         references: { merchantReference },
@@ -13,6 +14,7 @@ export function getWebhookPayload(request: Request): WebhookPayload {
 
   return {
     id,
+    status,
     merchantReference,
     amount,
     currencyCode,

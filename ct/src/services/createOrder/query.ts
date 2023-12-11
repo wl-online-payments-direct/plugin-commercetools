@@ -1,15 +1,12 @@
 const query = `
   mutation($id: String!, $version: Long!) {
-    createMyOrderFromCart(draft: {id: $id, version: $version}) {
-      orderId: id
+    createOrderFromCart(draft: {id: $id, version: $version}) {
+      id
       version
-      paymentInfo {
-        payments {
-          id
-          version
-          transactions {
-            id
-          }
+      taxedPrice{
+        totalGross{
+          currencyCode
+          centAmount
         }
       }
     }

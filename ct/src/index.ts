@@ -1,2 +1,7 @@
-export type { Cart, Customer } from '@commercetools/platform-sdk';
+export type {
+  Cart,
+  Customer,
+  Order,
+  Payment,
+} from '@commercetools/platform-sdk';
 export * from './services';

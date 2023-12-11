@@ -27,7 +27,7 @@ export function getServicePayload(
     reference.referenceId,
   );
 
-  const skipAuthentication = true;
+  const skipAuthentication = false;
 
   const amount = cart?.taxedPrice?.totalGross.centAmount || 0;
   const currencyCode = cart?.taxedPrice?.totalGross.currencyCode || '';

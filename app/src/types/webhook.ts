@@ -3,4 +3,5 @@ export interface WebhookPayload {
   merchantReference: string;
   amount: number;
   currencyCode: string;
+  status: string;
 }

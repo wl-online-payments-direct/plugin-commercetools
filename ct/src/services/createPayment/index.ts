@@ -1,27 +1,18 @@
-// import { Order } from '@commercetools/platform-sdk';
 import { ApiClient } from '../../clients';
 import query from './query';
-import mapper from './mapper';
+import { createPaymentResponseMapper } from '../../mappers';
+import { CreatePaymentPayload, CreatePaymentResponse } from '../../types';
 
-export async function createPayment(order: any) {
-  // Initialize api client
+export async function createPayment({
+  centAmount,
+  currencyCode,
+}: CreatePaymentPayload) {
   const apiClient = new ApiClient();
-
-  const {
-    id,
-    method,
-    taxedPrice: {
-      totalGross: { centAmount, currencyCode },
-    },
-  } = order;
   const variables = {
     draft: {
       amountPlanned: {
         currencyCode,
         centAmount,
-      },
-      paymentMethodInfo: {
-        method,
       },
     },
   };
@@ -31,13 +22,13 @@ export async function createPayment(order: any) {
     variables,
   });
 
-  const response = await apiClient.execute();
+  const response = (await apiClient.execute()) as CreatePaymentResponse;
 
-  const mappedResult = mapper(response);
+  const mappedResult = createPaymentResponseMapper(response);
 
   if (!mappedResult) {
     throw {
-      message: `Failed to create the payment using order ${id}`,
+      message: 'Failed to create the payment using order',
       statusCode: 500,
     };
   }

@@ -1,9 +1,8 @@
-import { handleWebhook } from '@worldline/app-integration';
+import { orderPaymentHandler } from '@worldline/ctintegration-app';
 import { Request } from './types';
-import { getWebhookPayload } from './mapper';
+import { getOrderPaymentPayload } from './mapper';
 
 export async function webhook(request: Request) {
   // Pass webhook request to the app
-  const result = await handleWebhook(getWebhookPayload(request));
-  return result;
+  return orderPaymentHandler(getOrderPaymentPayload(request));
 }

@@ -19,9 +19,9 @@ export class AuthClient {
     });
   }
 
-  async getAccessToken() {
+  async getClientCredentialsToken() {
     try {
-      return this.authClient.anonymousFlow();
+      return this.authClient.clientCredentialsFlow();
     } catch (error) {
       return error;
     }

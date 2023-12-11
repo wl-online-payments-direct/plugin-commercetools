@@ -1,7 +1,7 @@
 const query = `
-  mutation ($draft: MyPaymentDraft!) {
-    createMyPayment(draft: $draft) {
-      paymentId: id
+  mutation ($draft: PaymentDraft!) {
+    createPayment(draft: $draft) {
+      id
       version
     }
   }
