@@ -12,6 +12,10 @@ export interface Payment {
   createdAt: Date;
   updatedAt: Date;
 }
+export interface PaymentQueryParams {
+  orderId: string;
+  page: number;
+}
 
 export interface PaymentReference {
   id: string;

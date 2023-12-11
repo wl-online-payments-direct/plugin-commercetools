@@ -4,7 +4,36 @@ import {
   getIncrementedReferenceMapper,
   retry,
 } from './mapper';
-import type { CreatePaymentRequest, CreatePaymentResponse } from './types';
+import type {
+  CreatePaymentRequest,
+  CreatePaymentResponse,
+  Payment,
+  PaymentQueryParams,
+} from './types';
+
+export async function getDBOrders(
+  query: PaymentQueryParams,
+): Promise<Payment[]> {
+  try {
+    const take = 10;
+    const skip = (query.page - 1) * take;
+    const params = {
+      where: {
+        ...(query.orderId ? { orderId: query.orderId } : {}),
+      },
+      skip,
+      take,
+    };
+    const result = await prisma.payments.findMany(params);
+    return result;
+  } catch (error) {
+    throw {
+      message: 'Failed to fetch list of orders',
+      statusCode: 400,
+      details: (error as { message: string }).message,
+    };
+  }
+}
 
 export async function createPaymentInDB(
   data: CreatePaymentRequest,

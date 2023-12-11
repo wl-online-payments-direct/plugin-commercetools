@@ -13,7 +13,7 @@ enum Status {
   SUCCESS
   FAILED
   PENDING
-  REVIEW
+  IN_REVIEW
 }
 
 enum States {
