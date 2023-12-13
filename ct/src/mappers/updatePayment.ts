@@ -1,8 +1,7 @@
 import { hasErrorDueConcurrentModification } from './common';
+import { UpdatePaymentResponse } from '../types';
 
-import { UpdateCart } from '../types';
-
-const updateCartResponseMapper = (response: UpdateCart) => {
+const updatePaymentResponseMapper = (response: UpdatePaymentResponse) => {
   const hasErrDueConcurrentModification =
     hasErrorDueConcurrentModification(response);
 
@@ -11,7 +10,7 @@ const updateCartResponseMapper = (response: UpdateCart) => {
 
   if (shouldThrowErrors) {
     throw {
-      message: '[CT] Failed to update cart',
+      message: '[CT] Failed to update payment',
       details: response?.body?.errors,
       statusCode: 500,
     };
@@ -19,8 +18,9 @@ const updateCartResponseMapper = (response: UpdateCart) => {
 
   return {
     hasErrDueConcurrentModification,
-    updatedCart: response?.body?.data?.updateCart,
+    updatedOrder: response.body?.data?.updateOrder,
+    updatedPayment: response.body?.data?.updatePayment,
   };
 };
 
-export { updateCartResponseMapper };
+export { updatePaymentResponseMapper };

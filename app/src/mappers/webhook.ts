@@ -1,42 +1,15 @@
 import { Cart, Payment } from '@worldline/ctintegration-ct';
-import { WebhookPayload } from '../types';
+import { PaymentPayload } from '../types';
 
-export function getPaymentDBPayload(payload: WebhookPayload) {
-  const { merchantReference } = payload;
+export function getPaymentDBPayload(payload: PaymentPayload) {
+  const { merchantReference } = payload.payment.paymentOutput.references;
   return {
     paymentId: merchantReference,
   };
 }
 
-export function validateWebhookPayload(
-  payload: WebhookPayload,
-  cart: Cart,
-  payment: { state: string },
-) {
-  // Compare the amounts
-  if (payload.amount !== cart.taxedPrice?.totalGross?.centAmount) {
-    // TODO: send a notification to admin and add a column to save the reason
-    throw {
-      message: 'Cart amount doesnt match with the paid amount',
-      statusCode: 500,
-    };
-  }
-
-  // Verify the payment state
-  if (payment.state === 'PROCESSING') {
-    throw {
-      message: `Failed to process the payment as it is already in ${payment.state}`,
-      statusCode: 500,
-    };
-  }
-}
-
 export function getPaymentFilterQuery(payment: { id: string }) {
   return { id: payment.id };
-}
-
-export function getPaymentUpdateQuery() {
-  return { status: 'IN_REVIEW', state: 'PROCESSING' };
 }
 
 export function getCreateOrderCTPayload(
@@ -69,4 +42,32 @@ export function getUpdateCartPayload(cart: Cart, payment: Payment) {
     version,
     paymentId,
   };
+}
+
+export function hasEqualAmounts(payload: PaymentPayload, cart: Cart): boolean {
+  return (
+    payload.payment.paymentOutput.amountOfMoney.amount !==
+    cart.taxedPrice?.totalGross?.centAmount
+  );
+}
+
+export function isPaymentProcessing(state: string): boolean {
+  return state === 'PROCESSING';
+}
+
+export function getMappedStatus(payload: PaymentPayload) {
+  const statusMapper: { [key: string]: string } = {
+    CREATED: 'SUCCESS',
+    CANCELLED: 'FAILED',
+    REJECTED: 'FAILED',
+    REJECTED_CAPTURE: 'FAILED',
+    REDIRECTED: 'FAILED',
+    PENDING_CAPTURE: 'PENDING',
+    AUTHORIZATION_REQUESTED: 'PENDING',
+    CAPTURE_REQUESTED: 'PENDING',
+    CAPTURED: 'SUCCESS',
+    REFUND_REQUESTED: 'PENDING',
+    REFUNDED: 'SUCCESS',
+  };
+  return statusMapper[payload.payment.status] || '';
 }

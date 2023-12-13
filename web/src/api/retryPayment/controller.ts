@@ -4,7 +4,7 @@ import {
   logger,
   ResponseClient,
 } from '@worldline/ctintegration-util';
-import { webhook } from '../../lib';
+import { retryPayment } from '../../lib';
 import { ErrorProps, Request } from '../../lib/types';
 
 const processRequest = async (request: Request, response: ServerResponse) => {
@@ -13,7 +13,7 @@ const processRequest = async (request: Request, response: ServerResponse) => {
     // Only allow POST request; else throw error
     await isPostRequestOrThrowError(method);
 
-    const data = await webhook(request);
+    const data = await retryPayment(request);
     ResponseClient.setResponseTo200(response, data);
   } catch (e) {
     const error = e as ErrorProps;

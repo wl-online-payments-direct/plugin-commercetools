@@ -96,14 +96,11 @@ export async function getIncrementedReference(storeId: string) {
 
 export async function getPayment(
   where: Prisma.paymentsWhereInput,
-): Promise<Payment> {
+): Promise<Payment | null> {
   try {
     const payment = await prisma.payments.findFirst({
       where,
     });
-    if (!payment) {
-      throw new Error('Failed to fetch the payment');
-    }
     return payment;
   } catch (error) {
     throw {

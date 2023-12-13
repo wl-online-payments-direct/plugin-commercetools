@@ -5,3 +5,5 @@ export * from './createOrder';
 export * from './createPayment';
 export * from './createAccessToken';
 export * from './updateCart';
+export * from './updatePayment';
+export * from './getOrderById';
