@@ -1,4 +1,4 @@
-import { CustomObjectsResponse } from '../types';
+import { CustomObjects, CustomObjectsResponse } from '../types';
 
 const getCustomObjectsResponseMapper = (
   storeId: string,
@@ -8,7 +8,7 @@ const getCustomObjectsResponseMapper = (
     throw {
       message: '[CT] Failed to retrieve custom object information',
       details: response?.body?.errors,
-      statusCode: 400,
+      statusCode: 500,
     };
   }
 
@@ -18,14 +18,14 @@ const getCustomObjectsResponseMapper = (
     (e: { container: string }) => e.container === storeId,
   );
 
-  if (!result) {
+  if (!result?.value) {
     throw {
       message: '[CT] Failed to fetch the custom object',
-      statusCode: 400,
+      statusCode: 500,
     };
   }
 
-  const config = result ? JSON.parse(JSON.stringify(result.value)) : null;
+  const config = JSON.parse(JSON.stringify(result.value)) as CustomObjects;
   return config;
 };
 

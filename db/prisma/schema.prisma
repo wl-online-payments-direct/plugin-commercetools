@@ -37,6 +37,7 @@ model payments {
   orderId     String   @db.VarChar(255)
   status      Status   @default(INITIAL)
   state       States   @default(DEFAULT)
+  errors      String?  @db.Text
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 }

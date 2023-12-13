@@ -18,7 +18,7 @@ export function getServicePayload(
   payload: ICreatePaymentPayload,
 ) {
   const { hostedTokenizationId, returnUrl, acceptHeader, userAgent } = payload;
-  const { cart, customer } = myCart;
+  const { cart } = myCart;
   const { authorizationMode, merchantReference } = customConfig;
 
   // Concat with the merchant reference
@@ -46,7 +46,7 @@ export function getServicePayload(
     },
     order: {
       customer: {
-        merchantCustomerId: cart.customerId || customer.id,
+        merchantCustomerId: cart.customerId || cart.anonymousId,
         device: {
           acceptHeader,
           locale,

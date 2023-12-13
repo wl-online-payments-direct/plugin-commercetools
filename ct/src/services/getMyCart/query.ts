@@ -13,6 +13,7 @@ query {
       id
       version
       customerId
+      anonymousId
       taxCalculationMode
       totalPrice {
         currencyCode
