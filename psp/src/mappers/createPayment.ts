@@ -11,7 +11,7 @@ export async function getCreatePaymentMappedResponse(
         redirectURL: '',
       },
     },
-  } = result.body;
+  } = result.body || {};
 
   return {
     id: id.toString(),
