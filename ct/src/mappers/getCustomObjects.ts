@@ -25,7 +25,14 @@ const getCustomObjectsResponseMapper = (
     };
   }
 
-  const config = JSON.parse(JSON.stringify(result.value)) as CustomObjects;
+  const { mode, live, test, ...rest } = result.value;
+  const connectionProps = mode === 'live' ? live : test;
+  const config = {
+    mode,
+    ...connectionProps,
+    ...rest,
+  } as CustomObjects;
+
   return config;
 };
 

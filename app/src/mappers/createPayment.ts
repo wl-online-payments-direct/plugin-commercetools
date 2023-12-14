@@ -14,12 +14,13 @@ const getFormattedPaymentId = (
 export function getServicePayload(
   customConfig: CustomObjects,
   reference: { referenceId: number },
-  myCart: { cart: Cart; customer: Customer },
+  myCart: { cart: Cart },
   payload: ICreatePaymentPayload,
 ) {
   const { hostedTokenizationId, returnUrl, acceptHeader, userAgent } = payload;
   const { cart } = myCart;
-  const { authorizationMode, merchantReference } = customConfig;
+  const { authorizationMode, merchantReference, skip3dsAuthentication } =
+    customConfig;
 
   // Concat with the merchant reference
   const paymentId = getFormattedPaymentId(
@@ -27,11 +28,10 @@ export function getServicePayload(
     reference.referenceId,
   );
 
-  const skipAuthentication = false;
-
+  const skipAuthentication = skip3dsAuthentication || false;
   const amount = cart?.taxedPrice?.totalGross.centAmount || 0;
   const currencyCode = cart?.taxedPrice?.totalGross.currencyCode || '';
-  const locale = cart.locale || 'en_US';
+  const merchantCustomerId = cart?.customerId || cart?.anonymousId || '';
 
   return {
     hostedTokenizationId,
@@ -46,10 +46,9 @@ export function getServicePayload(
     },
     order: {
       customer: {
-        merchantCustomerId: cart.customerId || cart.anonymousId,
+        merchantCustomerId,
         device: {
           acceptHeader,
-          locale,
           userAgent,
         },
       },
@@ -70,7 +69,7 @@ export function getDatabasePayload(
   reference: { referenceId: number },
   myCart: { cart: Cart; customer: Customer },
   payload: ICreatePaymentPayload,
-  payment: { id: number },
+  payment: ICreatePaymentResponse,
 ) {
   const { merchantReference, authorizationMode } = customConfig;
   const cartId = myCart.cart.id;
@@ -92,8 +91,12 @@ export function getDatabasePayload(
   };
 }
 
-export async function getMappedResponse(result: ICreatePaymentResponse) {
-  const selectedFields = (({ redirectURL }) => ({
+export async function getCreatedPaymentMappedResponse(
+  result: ICreatePaymentResponse,
+) {
+  const selectedFields = (({ id, actionType, redirectURL }) => ({
+    id,
+    actionType,
     redirectURL,
   }))(result);
   return selectedFields;
