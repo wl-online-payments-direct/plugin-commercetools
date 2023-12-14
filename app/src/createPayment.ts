@@ -28,9 +28,9 @@ export async function createPayment(
   );
 
   // save payment information in the database
-  await createPaymentInDB(
+  const dbPayment = await createPaymentInDB(
     getDatabasePayload(customConfig, reference, myCart, payload, payment),
   );
 
-  return getCreatedPaymentMappedResponse(payment);
+  return getCreatedPaymentMappedResponse(payment, dbPayment);
 }

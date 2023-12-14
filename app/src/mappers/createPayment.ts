@@ -92,12 +92,21 @@ export function getDatabasePayload(
 }
 
 export async function getCreatedPaymentMappedResponse(
-  result: ICreatePaymentResponse,
+  payment: ICreatePaymentResponse,
+  dbPayment: { id: string },
 ) {
-  const selectedFields = (({ id, actionType, redirectURL }) => ({
+  const {
+    id: worldlineId = '',
+    actionType = '',
+    redirectURL = '',
+  } = payment || {};
+
+  const { id = '' } = dbPayment || {};
+
+  return {
     id,
+    worldlineId,
     actionType,
     redirectURL,
-  }))(result);
-  return selectedFields;
+  };
 }

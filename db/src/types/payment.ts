@@ -35,6 +35,9 @@ export interface CreatePaymentRequest {
 
 export interface CreatePaymentResponse {
   id: string;
+  paymentId: string;
+  worldlineId: string;
+  orderId: string;
   status: $Enums.Status;
   state: $Enums.States;
 }

@@ -3,8 +3,18 @@ import { Payment, PaymentReference, CreatePaymentResponse } from '../types';
 export function createPaymentResponseMapper(
   result: Payment,
 ): CreatePaymentResponse {
-  const selectedFields = (({ id, status, state }) => ({
+  const selectedFields = (({
     id,
+    paymentId,
+    worldlineId,
+    orderId,
+    status,
+    state,
+  }) => ({
+    id,
+    paymentId,
+    worldlineId,
+    orderId,
     status,
     state,
   }))(result);
