@@ -1,32 +1,31 @@
+import { getCreatePaymentMappedResponse } from '../mappers';
 import { connectService } from '../client';
 import {
-  CreatePaymentPayload,
+  CreatePaymentRequest,
   CreatePaymentResponse,
+  CreatedPaymentServiceResponse,
   ConnectOpts,
 } from '../types';
 
 export async function createPaymentService(
   connectOpts: ConnectOpts,
-  payload: CreatePaymentPayload,
+  payload: CreatePaymentRequest,
 ): Promise<CreatePaymentResponse> {
   const { merchantId } = connectOpts;
   const client = await connectService(connectOpts);
-  const result = await client.payments.createPayment(merchantId, payload, {});
+  const result = (await client.payments.createPayment(
+    merchantId,
+    payload,
+    {},
+  )) as CreatedPaymentServiceResponse;
 
-  if (result.body?.errors) {
+  if (result?.body?.errors) {
     throw {
       message: 'Failed to process the create payment service',
-      statusCode: result.body.status,
-      details: result.body?.errors,
+      statusCode: result.body.errors[0]?.httpStatusCode || 500,
+      details: result.body.errors,
     };
   }
 
-  const {
-    payment: { id },
-    merchantAction,
-  } = result.body;
-
-  const { redirectURL = '' } = merchantAction?.redirectData || {};
-
-  return { id, redirectURL };
+  return getCreatePaymentMappedResponse(result);
 }

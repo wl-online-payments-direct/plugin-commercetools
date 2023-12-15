@@ -5,7 +5,7 @@ const getCartByIdResponseMapper = (response: CartById) => {
     throw {
       message: '[CT] Failed to retrieve cart information',
       details: response?.body?.errors,
-      statusCode: 400,
+      statusCode: 500,
     };
   }
 

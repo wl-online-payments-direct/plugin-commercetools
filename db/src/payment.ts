@@ -44,7 +44,7 @@ export async function createPaymentInDB(
   } catch (error) {
     throw {
       message: 'Failed to create payment',
-      statusCode: 400,
+      statusCode: 500,
       details: (error as { message: string }).message,
     };
   }

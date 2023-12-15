@@ -6,6 +6,3 @@ export interface ConnectOpts {
   host: string;
   enablePspLogs: boolean;
 }
-export interface TestConnectionResponse {
-  result: string;
-}

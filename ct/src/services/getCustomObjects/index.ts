@@ -27,10 +27,7 @@ export async function getCustomObjects(
 
   const response = (await apiClient.execute()) as CustomObjectsResponse;
 
-  const configuration: CustomObjects = getCustomObjectsResponseMapper(
-    storeId,
-    response,
-  );
+  const configuration = getCustomObjectsResponseMapper(storeId, response);
 
   if (configuration) {
     await setCustomObjectsCache(storeId, configuration);
