@@ -1,10 +1,15 @@
+import { Prisma } from '@prisma/client';
 import prisma from './connection';
 import {
   createPaymentResponseMapper,
   getIncrementedReferenceMapper,
   retry,
 } from './mapper';
-import type { CreatePaymentRequest, CreatePaymentResponse } from './types';
+import type {
+  CreatePaymentRequest,
+  CreatePaymentResponse,
+  Payment,
+} from './types';
 
 export async function createPaymentInDB(
   data: CreatePaymentRequest,
@@ -87,6 +92,23 @@ export async function getIncrementedReference(storeId: string) {
   } catch (error) {
     throw {
       message: 'Failed to increment the payment id',
+      statusCode: 400,
+      details: (error as { message: string }).message,
+    };
+  }
+}
+
+export async function getPayment(
+  where: Prisma.paymentsWhereInput,
+): Promise<Payment | null> {
+  try {
+    const payment = await prisma.payments.findFirst({
+      where,
+    });
+    return payment;
+  } catch (error) {
+    throw {
+      message: 'Exception occured for fetching the payment',
       statusCode: 400,
       details: (error as { message: string }).message,
     };
