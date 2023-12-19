@@ -3,6 +3,7 @@ import testConnectionController from '../api/testConnection/controller';
 import initiatePaymentController from '../api/initiatePayment/controller';
 import createPaymentController from '../api/createPayment/controller';
 import getPaymentStatusController from '../api/getPaymentStatus/controller';
+import validateCartController from '../api/validateCart/controller';
 
 const routes = {
   '/': healthController.processRequest,
@@ -11,6 +12,7 @@ const routes = {
   '/initiatePayment': initiatePaymentController.processRequest,
   '/payment': createPaymentController.processRequest,
   '/getPaymentStatus': getPaymentStatusController.processRequest,
+  '/validateCart': validateCartController.processRequest,
 };
 
 export { routes };
