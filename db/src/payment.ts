@@ -26,6 +26,23 @@ export async function createPaymentInDB(
   }
 }
 
+export async function getPayment(
+  where: Prisma.paymentsWhereInput,
+): Promise<Payment | null> {
+  try {
+    const payment = await prisma.payments.findFirst({
+      where,
+    });
+    return payment;
+  } catch (error) {
+    throw {
+      message: 'Exception occured for fetching the payment',
+      statusCode: 400,
+      details: (error as { message: string }).message,
+    };
+  }
+}
+
 export async function getIncrementedReference(storeId: string) {
   try {
     const INITIAL_REFERENCE = 100000;
