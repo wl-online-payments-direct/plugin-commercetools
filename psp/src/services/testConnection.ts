@@ -1,23 +1,20 @@
 import { connectService } from '../client';
-import { ConnectOpts, TestConnectionResponse } from '../types';
+import { ConnectOpts } from '../types';
 
 export async function testConnectionService(
   options: ConnectOpts,
-): Promise<TestConnectionResponse> {
+): Promise<boolean> {
   const { merchantId } = options;
   const client = await connectService(options);
-  const { isSuccess, body } = await client.services.testConnection(
-    merchantId,
-    {},
-  );
+  const result = await client.services.testConnection(merchantId, {});
 
-  if (body?.errors) {
+  if (result?.body?.errors) {
     throw {
       message: 'Failed to process the test connection',
-      statusCode: body.status,
-      details: body?.errors,
+      statusCode: result.body.errors[0]?.httpStatusCode || 500,
+      details: result.body.errors,
     };
   }
 
-  return isSuccess;
+  return !!result?.isSuccess;
 }

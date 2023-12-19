@@ -17,14 +17,14 @@ export async function hostedTokenizationService(
     {},
   );
 
-  if (result.body?.errors) {
+  if (result?.body?.errors) {
     throw {
       message: 'Failed to process the hosted tokenization service',
-      statusCode: result.body.status,
-      details: result.body?.errors,
+      statusCode: result.body.errors[0]?.httpStatusCode || 500,
+      details: result.body.errors,
     };
   }
 
-  const { hostedTokenizationUrl } = result.body;
+  const { hostedTokenizationUrl = '' } = result.body || {};
   return { hostedTokenizationUrl };
 }

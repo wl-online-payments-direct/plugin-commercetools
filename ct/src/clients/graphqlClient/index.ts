@@ -44,12 +44,15 @@ export class GraphQLClient {
     // ClientBuilder
     const ctpClient = new ClientBuilder()
       .withClientCredentialsFlow(authMiddlewareOptions)
-      .withHttpMiddleware(httpMiddlewareOptions)
-      .withLoggerMiddleware()
-      .build();
+      .withHttpMiddleware(httpMiddlewareOptions);
+
+    const client =
+      process.env.ENABLE_LOGS === 'true'
+        ? ctpClient.withLoggerMiddleware().build()
+        : ctpClient.build();
 
     // Create a API root from API builder of commercetools platform client
-    this.apiRoot = createApiBuilderFromCtpClient(ctpClient);
+    this.apiRoot = createApiBuilderFromCtpClient(client);
   }
 
   setClientwithExistingTokenFlow(props: {
@@ -67,12 +70,15 @@ export class GraphQLClient {
     // ClientBuilder
     const ctpClient = new ClientBuilder()
       .withExistingTokenFlow(bearerToken, { force: true })
-      .withHttpMiddleware(httpMiddlewareOptions)
-      .withLoggerMiddleware()
-      .build();
+      .withHttpMiddleware(httpMiddlewareOptions);
+
+    const client =
+      process.env.ENABLE_LOGS === 'true'
+        ? ctpClient.withLoggerMiddleware().build()
+        : ctpClient.build();
 
     // Create a API root from API builder of commercetools platform client
-    this.apiRoot = createApiBuilderFromCtpClient(ctpClient);
+    this.apiRoot = createApiBuilderFromCtpClient(client);
   }
 
   getApiRoot() {

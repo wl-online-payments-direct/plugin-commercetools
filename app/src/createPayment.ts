@@ -6,10 +6,10 @@ import {
 } from '@worldline/ctintegration-db';
 import { ICreatePaymentPayload, ICreatePaymentResponse } from './types';
 import {
-  getMappedResponse,
   getDatabasePayload,
   getConnectionServiceProps,
   getServicePayload,
+  getCreatedPaymentMappedResponse,
 } from './mappers';
 
 export async function createPayment(
@@ -28,9 +28,9 @@ export async function createPayment(
   );
 
   // save payment information in the database
-  await createPaymentInDB(
+  const dbPayment = await createPaymentInDB(
     getDatabasePayload(customConfig, reference, myCart, payload, payment),
   );
 
-  return getMappedResponse(payment);
+  return getCreatedPaymentMappedResponse(payment, dbPayment);
 }

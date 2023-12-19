@@ -3,3 +3,4 @@ export * from './connection';
 export * from './initializePayment';
 export * from './webhook';
 export * from './retryPayment';
+export * from './getPaymentStatus';

@@ -7,13 +7,13 @@ export function getConnectionServiceProps(props: ConnectionProps) {
     apiKey,
     apiSecret,
     host,
-    enablePspLogs,
+    enableLogs,
   }) => ({
     merchantId,
     integrator,
     apiKey,
     apiSecret,
     host,
-    enablePspLogs,
+    enableLogs,
   }))(props);
 }

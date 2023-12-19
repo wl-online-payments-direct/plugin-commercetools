@@ -6,6 +6,9 @@ export interface ICreatePaymentPayload {
   hostedTokenizationId: string;
   returnUrl: string;
 }
+
 export interface ICreatePaymentResponse {
+  id: string;
+  actionType: string;
   redirectURL: string;
 }

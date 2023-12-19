@@ -10,7 +10,6 @@ import { ErrorProps, Request } from '../../lib/types';
 const processRequest = async (request: Request, response: ServerResponse) => {
   try {
     const { method } = request;
-
     // Only allow POST request; else throw error
     await isPostRequestOrThrowError(method);
 

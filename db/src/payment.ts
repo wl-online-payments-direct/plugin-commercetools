@@ -1,6 +1,10 @@
 import { Prisma } from '@prisma/client';
 import prisma from './connection';
-import { getIncrementedReferenceMapper, retry } from './mapper';
+import {
+  createPaymentResponseMapper,
+  getIncrementedReferenceMapper,
+  retry,
+} from './mapper';
 import type {
   CreatePaymentRequest,
   CreatePaymentResponse,
@@ -12,11 +16,11 @@ export async function createPaymentInDB(
 ): Promise<CreatePaymentResponse> {
   try {
     const result = await prisma.payments.create({ data });
-    return result;
+    return createPaymentResponseMapper(result);
   } catch (error) {
     throw {
       message: 'Failed to create payment',
-      statusCode: 400,
+      statusCode: 500,
       details: (error as { message: string }).message,
     };
   }

@@ -1,6 +1,6 @@
 import { GetPaymentStatusPayload } from '../types';
 
-export function getPaymentStatusPayload(payload: GetPaymentStatusPayload) {
-  const { paymentId } = payload;
-  return paymentId;
+export function getPaymentStatusDBPayload(payload: GetPaymentStatusPayload) {
+  const { id = '' } = payload || {};
+  return { id };
 }

@@ -1,16 +1,26 @@
 import { ErrorObject } from '@commercetools/platform-sdk';
 
-export interface CustomObjects {
-  authorizationMode: string;
+interface ConnectionProps {
   merchantId: string;
   integrator: string;
   apiKey: string;
   apiSecret: string;
   host: string;
-  enablePspLogs: boolean;
+}
+interface ConfigModes {
+  mode: string;
+  skip3dsAuthentication: boolean;
+  enableLogs: boolean;
+  authorizationMode: string;
   variant: string;
   merchantReference: string;
 }
+interface ConnectionModes {
+  live: ConnectionProps;
+  test: ConnectionProps;
+}
+
+type CustomObjectsValue = ConfigModes & ConnectionModes;
 
 export interface CustomObjectsResponse {
   body: {
@@ -19,10 +29,12 @@ export interface CustomObjectsResponse {
         results: {
           container: string;
           key: string;
-          value: CustomObjects;
+          value: CustomObjectsValue;
         }[];
       };
     };
-    errors: ErrorObject;
+    errors: ErrorObject[];
   };
 }
+
+export type CustomObjects = ConfigModes & ConnectionProps;
