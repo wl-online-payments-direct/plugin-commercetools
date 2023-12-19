@@ -1,16 +1,16 @@
 import { ErrorObject } from '@commercetools/platform-sdk';
 
 interface ConnectionProps {
-  skip3dsAuthentication: boolean;
   merchantId: string;
   integrator: string;
   apiKey: string;
   apiSecret: string;
   host: string;
-  enablePspLogs: boolean;
 }
 interface ConfigModes {
   mode: string;
+  skip3dsAuthentication: boolean;
+  enableLogs: boolean;
   authorizationMode: string;
   variant: string;
   merchantReference: string;
@@ -33,7 +33,7 @@ export interface CustomObjectsResponse {
         }[];
       };
     };
-    errors: ErrorObject;
+    errors: ErrorObject[];
   };
 }
 

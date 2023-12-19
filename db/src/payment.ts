@@ -1,3 +1,4 @@
+import { Prisma } from '@prisma/client';
 import prisma from './connection';
 import {
   createPaymentResponseMapper,
@@ -45,6 +46,23 @@ export async function createPaymentInDB(
     throw {
       message: 'Failed to create payment',
       statusCode: 500,
+      details: (error as { message: string }).message,
+    };
+  }
+}
+
+export async function getPayment(
+  where: Prisma.paymentsWhereInput,
+): Promise<Payment | null> {
+  try {
+    const payment = await prisma.payments.findFirst({
+      where,
+    });
+    return payment;
+  } catch (error) {
+    throw {
+      message: 'Exception occured for fetching the payment',
+      statusCode: 400,
       details: (error as { message: string }).message,
     };
   }
