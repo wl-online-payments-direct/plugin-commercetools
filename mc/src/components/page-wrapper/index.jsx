@@ -10,11 +10,9 @@ const PageWrapper = ({ children, title }) => {
 
   return (
     <PaymentContext.Provider value={pageData}>
-      <PageContentFull>
-        <Grid className="page-wrapper">
-          <div className="payment-wrapper">{children}</div>
-        </Grid>
-      </PageContentFull>
+      <div className="page-wrapper">
+        <div className="payment-wrapper">{children}</div>
+      </div>
     </PaymentContext.Provider>
   );
 };
