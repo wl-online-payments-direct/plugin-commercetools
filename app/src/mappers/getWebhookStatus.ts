@@ -2,7 +2,7 @@ import { GetWebhookStatusPayload } from '../types';
 
 export function getWebhookStatusDBQuery(payload: GetWebhookStatusPayload) {
   return {
-    OR: [{ id: payload?.paymentId }, { worldlineId: payload?.paymentId }],
+    id: payload?.paymentId,
   };
 }
 
