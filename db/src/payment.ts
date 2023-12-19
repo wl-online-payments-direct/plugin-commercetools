@@ -8,13 +8,14 @@ import {
 import type {
   CreatePaymentRequest,
   CreatePaymentResponse,
+  GetOrders,
   Payment,
   PaymentQueryParams,
 } from './types';
 
 export async function getDBOrders(
   query: PaymentQueryParams,
-): Promise<Payment[]> {
+): Promise<GetOrders> {
   try {
     const take = 10;
     const skip = (query.page - 1) * take;
@@ -22,11 +23,22 @@ export async function getDBOrders(
       where: {
         ...(query.orderId ? { orderId: query.orderId } : {}),
       },
-      skip,
-      take,
     };
-    const result = await prisma.payments.findMany(params);
-    return result;
+    const [totalCount, data] = await prisma.$transaction([
+      prisma.payments.count(params),
+      prisma.payments.findMany({
+        skip,
+        take,
+        ...params,
+      }),
+    ]);
+    return {
+      meta: {
+        ...query,
+        totalCount,
+      },
+      data,
+    };
   } catch (error) {
     throw {
       message: 'Failed to fetch list of orders',

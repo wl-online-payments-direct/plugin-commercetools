@@ -45,3 +45,12 @@ export interface CreatePaymentResponse {
   status: $Enums.Status;
   state: $Enums.States;
 }
+
+export interface GetOrders {
+  meta: {
+    orderId: string;
+    page: number;
+    totalCount: number;
+  };
+  data: Payment[];
+}
