@@ -4,22 +4,26 @@ import {
   type AuthMiddlewareOptions,
   type HttpMiddlewareOptions,
 } from '@commercetools/sdk-client-v2';
-import { createApiBuilderFromCtpClient, ApiRoot } from '@commercetools/platform-sdk';
+import {
+  createApiBuilderFromCtpClient,
+  ApiRoot,
+} from '@commercetools/platform-sdk';
 
 export declare type Options = {
-  authHost: string
-  apiHost: string
-  projectKey: string
-  clientId: string
-  clientSecret: string
-  scopes?: Array<string>
-}
+  authHost: string;
+  apiHost: string;
+  projectKey: string;
+  clientId: string;
+  clientSecret: string;
+  scopes?: Array<string>;
+};
 
 export class GraphQLClient {
   apiRoot!: ApiRoot;
 
   setClientWithAuthMiddlewareOptions(props: Options) {
-    const { authHost, projectKey, clientId, clientSecret, scopes, apiHost } = props;
+    const { authHost, projectKey, clientId, clientSecret, scopes, apiHost } =
+      props;
     // Configure authMiddlewareOptions
     const authMiddlewareOptions: AuthMiddlewareOptions = {
       host: authHost,
@@ -40,15 +44,21 @@ export class GraphQLClient {
     // ClientBuilder
     const ctpClient = new ClientBuilder()
       .withClientCredentialsFlow(authMiddlewareOptions)
-      .withHttpMiddleware(httpMiddlewareOptions)
-      .withLoggerMiddleware()
-      .build();
+      .withHttpMiddleware(httpMiddlewareOptions);
+
+    const client =
+      process.env.ENABLE_LOGS === 'true'
+        ? ctpClient.withLoggerMiddleware().build()
+        : ctpClient.build();
 
     // Create a API root from API builder of commercetools platform client
-    this.apiRoot = createApiBuilderFromCtpClient(ctpClient);
+    this.apiRoot = createApiBuilderFromCtpClient(client);
   }
 
-  setClientwithExistingTokenFlow(props: { apiHost: string; bearerToken: string }) {
+  setClientwithExistingTokenFlow(props: {
+    apiHost: string;
+    bearerToken: string;
+  }) {
     const { apiHost, bearerToken } = props;
 
     // Configure httpMiddlewareOptions
@@ -60,12 +70,15 @@ export class GraphQLClient {
     // ClientBuilder
     const ctpClient = new ClientBuilder()
       .withExistingTokenFlow(bearerToken, { force: true })
-      .withHttpMiddleware(httpMiddlewareOptions)
-      .withLoggerMiddleware()
-      .build();
+      .withHttpMiddleware(httpMiddlewareOptions);
+
+    const client =
+      process.env.ENABLE_LOGS === 'true'
+        ? ctpClient.withLoggerMiddleware().build()
+        : ctpClient.build();
 
     // Create a API root from API builder of commercetools platform client
-    this.apiRoot = createApiBuilderFromCtpClient(ctpClient);
+    this.apiRoot = createApiBuilderFromCtpClient(client);
   }
 
   getApiRoot() {

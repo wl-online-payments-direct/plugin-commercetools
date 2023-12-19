@@ -1,5 +1,5 @@
 export interface GetPaymentStatusPayload {
-  authToken: string;
+  id: string;
   storeId: string;
-  paymentId: string;
+  authToken: string;
 }
