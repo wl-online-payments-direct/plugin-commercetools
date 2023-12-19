@@ -124,10 +124,9 @@ export async function orderPaymentHandler(payload: PaymentPayload) {
   }
 
   const mappedStatus = getMappedStatus(payload);
-
   return retry(async () => {
     try {
-      if (mappedStatus !== 'SUCCESS') {
+      if (mappedStatus === 'FAILED') {
         await setPayment({ id: payment.id }, { status: mappedStatus });
         return {
           isRetry: false,

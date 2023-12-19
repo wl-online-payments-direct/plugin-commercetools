@@ -16,7 +16,5 @@ export async function getPaymentStatusService(
     };
   }
 
-  const { status = '' } = result.body || {};
-
-  return { status };
+  return result.body;
 }

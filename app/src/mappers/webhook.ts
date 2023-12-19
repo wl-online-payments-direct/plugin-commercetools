@@ -57,17 +57,17 @@ export function isPaymentProcessing(state: string): boolean {
 
 export function getMappedStatus(payload: PaymentPayload) {
   const statusMapper: { [key: string]: string } = {
-    CREATED: 'SUCCESS',
+    CREATED: 'INITIAL',
+    REDIRECTED: 'REDIRECTED',
+    AUTHORIZATION_REQUESTED: 'AUTHORIZATION_REQUESTED',
+    CAPTURED: 'CAPTURED',
+    REFUNDED: 'REFUNDED',
+    PENDING_CAPTURE: 'AUTHORIZED',
+    CAPTURE_REQUESTED: 'CAPTURE_REQUESTED',
+    REFUND_REQUESTED: 'REFUND_REQUESTED',
     CANCELLED: 'FAILED',
     REJECTED: 'FAILED',
     REJECTED_CAPTURE: 'FAILED',
-    REDIRECTED: 'FAILED',
-    PENDING_CAPTURE: 'PENDING',
-    AUTHORIZATION_REQUESTED: 'PENDING',
-    CAPTURE_REQUESTED: 'PENDING',
-    CAPTURED: 'SUCCESS',
-    REFUND_REQUESTED: 'PENDING',
-    REFUNDED: 'SUCCESS',
   };
   return statusMapper[payload.payment.status] || '';
 }

@@ -1,4 +1,4 @@
 export interface RetryPaymentStatusPayload {
+  id: string;
   storeId: string;
-  paymentId: string;
 }
