@@ -127,3 +127,7 @@
 .select-dropdown.Mui-focused .MuiOutlinedInput-notchedOutline {
     border-color: #45BEAA !important;
 }
+
+label:focus-within::after {
+    outline: none !important;
+}
