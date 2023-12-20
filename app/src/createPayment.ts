@@ -17,6 +17,12 @@ export async function createPayment(
 ): Promise<ICreatePaymentResponse> {
   // Fetch cart from Commercetools
   const myCart = await getMyCart(payload.authToken);
+  if (!myCart?.cart) {
+    throw {
+      message: 'Failed to fetch the cart or cart is empty!',
+      statusCode: 500,
+    };
+  }
   // Fetch custom objects from admin config
   const customConfig = await getCustomObjects(payload.storeId);
   // Fetch incremented payment id
