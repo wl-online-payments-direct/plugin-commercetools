@@ -19,24 +19,22 @@ import InfoIcon from '@mui/icons-material/Info';
 import Tooltip from '@commercetools-uikit/tooltip';
 import MenuItem from '@mui/material/MenuItem';
 import Select from '@mui/material/Select';
-
-const InfoComponent = (value) => {
-  return (
-    <Tooltip placement="left" title={value}>
-      <InfoIcon />
-    </Tooltip>
-  );
-};
+import { DownloadIcon } from '@commercetools-uikit/icons';
+import {
+  createCustomObject,
+  getCustomObject,
+} from '../../ct-methods/customObject';
+import { CONTAINER_NAME, CONTAINER_KEY } from '../../../configuration';
 
 const PaymentMethods = () => {
   const payment = useContext(PaymentContext);
-  const [age, setAge] = useState(0);
+  const [apiData, setAPIData] = useState({});
   const initialState = {
     onSiteMode: {
       payButtonTitle: {
         label: 'Pay Button Title',
         type: 'text',
-        value: 'Pay by credit card',
+        value: 'Pay with credit cards',
         validation: 'required',
         criteria: ['alpha'],
       },
@@ -44,11 +42,19 @@ const PaymentMethods = () => {
         label: '',
         type: 'text',
         value: 'EN',
+        values: {
+          EN: 'Pay with credit cards',
+          ES: 'Pagar con tarjetas de crédito',
+          FR: 'Payer par carte de crédit',
+          NL: 'Betaal met creditcards',
+          DE: 'Bezahlen Sie mit Kreditkarten',
+          IT: 'Paga con carte di credito',
+        },
       },
       templateFileName: {
         label: ' Template File Name',
         type: 'text',
-        value: '',
+        value: 'SimplifiedCustomPaymentPage',
         placeholder: 'Enter templated file name',
         validation: 'required',
         criteria: [],
@@ -58,30 +64,101 @@ const PaymentMethods = () => {
         type: 'file',
         validation: 'required',
         criteria: [],
+        tooltip: 'Max size 5MB, max dimensions 200x80px,supported jpg,svg,png',
       },
-      enable: true,
+      enabled: {
+        value: false,
+      },
     },
     redirectModeA: {
       sendOrderData: {
         label: 'Send Order Data',
         type: 'boolean',
-        value: true,
+        value: false,
+        tooltip: 'Show Basket Data on Worldline Payment Page',
       },
       templateFileName: {
         label: ' Template File Name',
         type: 'text',
-        value: '',
+        value: 'SimplifiedCustomPaymentPage',
         placeholder: 'Enter templated file name',
         validation: 'required',
         criteria: [],
       },
-      enable: true,
+      refresh: {
+        label: 'Refresh list of available payment methods',
+        type: 'boolean',
+        value: true,
+        tooltip:
+          'New payment methods added to your worldline account will be added to the list below',
+      },
+      paymentOptions: {
+        'American Express': {
+          label: 'American Express',
+          logo: '',
+          enabled: false,
+        },
+        BCMC: {
+          label: 'BCMC',
+          logo: '',
+          enabled: false,
+        },
+        CB: {
+          label: 'CB',
+          logo: '',
+          enabled: false,
+        },
+        'Diners Club': {
+          label: 'Diners Club',
+          logo: '',
+          enabled: false,
+        },
+        Eurocard: {
+          label: 'Eurocard',
+          logo: '',
+          enabled: false,
+        },
+        GOOGLEPAY: {
+          label: 'GOOGLEPAY',
+          logo: '',
+          enabled: false,
+        },
+        JCB: {
+          label: 'JCB',
+          logo: '',
+          enabled: false,
+        },
+        Maestro: {
+          label: 'Maestro',
+          logo: '',
+          enabled: false,
+        },
+        PAYPAL: {
+          label: 'PAYPAL',
+          logo: '',
+          enabled: false,
+        },
+        VISA: {
+          label: 'VISA',
+          logo: '',
+          enabled: false,
+        },
+        WeChatPay: {
+          label: 'WeChatPay',
+          logo: '',
+          enabled: false,
+        },
+      },
+      enabled: {
+        value: false,
+      },
     },
     redirectModeB: {
       sendOrderData: {
         label: 'Send Order Data',
         type: 'boolean',
-        value: true,
+        value: false,
+        tooltip: 'Show Basket Data on Worldline Payment Page',
       },
       displayLogo: {
         label: 'Generic Logo Displayed on Your Payment Page',
@@ -92,66 +169,127 @@ const PaymentMethods = () => {
       payButtonTitle: {
         label: 'Pay Button Title',
         type: 'text',
-        value: 'Pay by credit card',
+        value: 'Pay by Worldline',
         validation: 'required',
         criteria: ['alpha'],
       },
       templateFileName: {
         label: ' Template File Name',
         type: 'text',
-        value: '',
+        value: 'SimplifiedCustomPaymentPage',
         placeholder: 'Enter templated file name',
         validation: 'required',
         criteria: [],
       },
-      enable: true,
+      groupCards: {
+        label: 'Group Cards',
+        type: 'boolean',
+        value: false,
+        tooltip:
+          'Enabling this setting will group and co-badge card brands when relevant',
+      },
+      enabled: false,
+    },
+    paymentOption: {
+      label: 'Payment Option',
+      type: 'boolean',
+      value: '1',
+      validation: 'required',
+      criteria: [],
+      tooltip: 'Final execution of the payment',
+    },
+    authorizationPaymentOption: {
+      label: 'Authorization Payment Option',
+      type: 'boolean',
+      value: '1',
+      validation: 'required',
+      criteria: [],
+    },
+    captureConfiguration: {
+      label: 'Capture Configuration',
+      type: 'text',
+      value: '-1',
+      values: {
+        '-1': 'Manually',
+        0: 'At the end of the day',
+        1: 'After 1 day',
+        2: 'After 2 days',
+        3: 'After 3 days',
+        4: 'After 4 days',
+        5: 'After 5 days',
+        6: 'After 6 days',
+        7: 'After 7 days',
+      },
+      validation: 'required',
     },
     placeOrder: {
       label: 'Place Order',
       type: 'text',
-      value: '',
+      value: 'Place an Order',
       validation: 'required',
       criteria: ['alpha'],
     },
-    placeOrderlanguage: {
+    placeOrderLanguage: {
       label: '',
       type: 'text',
       value: 'EN',
+      values: {
+        EN: 'Place an order',
+        ES: 'Realizar Pedido',
+        FR: 'Passer la commande',
+        NL: 'Plaats Bestelling',
+        DE: 'Bestellung aufgeben',
+        IT: 'Effettua l`ordine',
+      },
+      validation: 'required',
     },
-    enable: true,
+    advancedLogging: {
+      label: 'Enable advanced logging',
+      type: 'boolean',
+      value: false,
+      validation: 'required',
+      criteria: [],
+    },
+    force3DSv2: {
+      label: 'Force 3DSv2',
+      type: 'boolean',
+      value: false,
+      validation: 'required',
+      criteria: [],
+    },
+    bgColor: {
+      label: 'Background Color',
+      type: 'color',
+      value: '#fff',
+      validation: 'required',
+      criteria: [],
+    },
+    textColor: {
+      label: 'Text Color',
+      type: 'color',
+      value: '#fff',
+      validation: 'required',
+      criteria: [],
+    },
+    outlineColor: {
+      label: 'Outline Color',
+      type: 'color',
+      value: '#fff',
+      validation: 'required',
+      criteria: [],
+    },
+    enabled: {
+      value: false,
+    },
   };
 
-  useEffect(() => {
-    console.log('New state:::::::::::', state);
-  });
-
   const reducer = (state, action) => {
-    console.log('action', action);
     switch (action.type) {
       case 'ENABLE-WORLDLINE':
-        return { ...state, enable: action.value };
-      case 'ENABLE-ONSITE-MODE':
         return {
           ...state,
-          onSiteMode: {
-            ...state.onSiteMode,
-            enable: action.value,
-          },
-        };
-      case 'ENABLE-REDIRECT-A':
-        return {
-          ...state,
-          redirectModeA: {
-            ...state.redirectModeA,
-            enable: action.value,
-          },
-        };
-      case 'ENABLE-REDIRECT-B':
-        return {
-          ...state,
-          redirectModeB: {
-            ...state.redirectModeB,
-            enable: action.value,
+          enabled: {
+            value: action.value,
           },
         };
       case 'ONSITE-MODE':
@@ -175,6 +313,10 @@ const PaymentMethods = () => {
             ...action.value,
           },
         };
+      case 'GENERAL-SETTINGS':
+        return {
+          ...action.value,
+        };
       default:
         return state;
     }
@@ -182,17 +324,24 @@ const PaymentMethods = () => {
 
   const [state, dispatch] = useReducer(reducer, initialState);
 
-  const handleOnsiteModeFormUpdate = (field, value) => {
+  const handleOnsiteMode = (field, value) => {
     const payload = { ...state.onSiteMode };
     payload[field] = {
       ...payload[field],
       value: value,
     };
+
+    if (field === 'payButtonLanguage') {
+      payload['payButtonTitle'] = {
+        ...payload['payButtonTitle'],
+        value: state.onSiteMode[field].values[value],
+      };
+    }
+
     dispatch({
       type: 'ONSITE-MODE',
       value: payload,
     });
-    console.log('payload', payload);
   };
 
   const handleRedirectModeA = (field, value) => {
@@ -205,7 +354,6 @@ const PaymentMethods = () => {
       type: 'REDIRECT-MODE-A',
       value: payload,
     });
-    console.log('payload', payload);
   };
 
   const handleRedirectModeB = (field, value) => {
@@ -214,11 +362,119 @@ const PaymentMethods = () => {
       ...payload[field],
       value: value,
     };
+
     dispatch({
       type: 'REDIRECT-MODE-B',
       value: payload,
     });
     console.log('payload', payload);
+  };
+
+  const handleCommonSettings = (field, value) => {
+    const payload = { ...state };
+    payload[field] = {
+      ...payload[field],
+      value: value,
+    };
+
+    if (field === 'placeOrderLanguage') {
+      payload['placeOrder'] = {
+        ...payload['placeOrder'],
+        value: state[field].values[value],
+      };
+    }
+
+    dispatch({
+      type: 'GENERAL-SETTINGS',
+      value: payload,
+    });
+  };
+
+  const handleOptionUpdate = (option, field, value) => {
+    const payload = state.redirectModeA.paymentOptions;
+    payload[option][field] = value;
+    handleRedirectModeA('payOptionUpdate', payload);
+  };
+
+  const saveFormData = async () => {
+    console.log('save Data', state);
+    const payload = Object.keys(state).map((key) => {
+      switch (key) {
+        case 'onSiteMode':
+        case 'redirectModeA':
+        case 'redirectModeB':
+          const data = state[key];
+          return Object.keys(data)
+            .map((key1) => {
+              return { [key + '.' + key1]: data[key1].value };
+            })
+            .flat();
+        default:
+          return { [key]: state[key].value };
+      }
+    });
+    console.log('payload', payload);
+
+    let saveData = {};
+
+    for (let pData of payload) {
+      if (Array.isArray(pData)) {
+        pData.forEach((pValue) => Object.assign(saveData, pValue));
+      } else {
+        Object.assign(saveData, pData);
+      }
+    }
+    Object.keys(saveData).forEach((key) =>
+      saveData[key] === undefined ? delete saveData[key] : {}
+    );
+
+    // setAPIData({
+    //   ...apiData,
+    //   value: {
+    //     ...apiData.value,
+    //     payment: saveData,
+    //   },
+    // });
+
+    const final_payload = {
+      ...apiData,
+      value: {
+        live: {
+          ...apiData.value.live,
+          ...saveData,
+        },
+        test: {
+          ...apiData.value.test,
+          ...saveData,
+        },
+      },
+    };
+
+    console.log('final Data', final_payload);
+    setAPIData(final_payload);
+    try {
+      const response = await createCustomObject(final_payload);
+      if (response.id) {
+        console.log('Config settings saved successfully...');
+      }
+    } catch (error) {
+      console.error('Error saving custom object:', error);
+    }
+  };
+
+  useEffect(() => {
+    getCustomObjectData();
+  }, []);
+
+  const getCustomObjectData = async () => {
+    try {
+      const response = await getCustomObject(CONTAINER_NAME, CONTAINER_KEY);
+      if (response?.value) {
+        setAPIData(response);
+      }
+    } catch (error) {
+      console.error('Error fetching custom object:', error);
+    }
   };
 
   return (
@@ -228,12 +484,12 @@ const PaymentMethods = () => {
         <ToggleInput
           size={'big'}
           isDisabled={false}
-          value={state.enable}
-          isChecked={state.enable}
-          onChange={(event) => {
+          value={state.enabled.value}
+          isChecked={state.enabled.value}
+          onChange={(e) => {
             dispatch({
               type: 'ENABLE-WORLDLINE',
-              value: event.target.checked,
+              value: e.target.checked,
             });
           }}
         />
@@ -246,7 +502,7 @@ const PaymentMethods = () => {
           </h2>
           <PrimaryButton
             label="Save Changes"
-            onClick={() => console.log('clicked')}
+            onClick={() => saveFormData()}
             isDisabled={false}
           />
         </div>
@@ -261,14 +517,9 @@ const PaymentMethods = () => {
             </Typography>
             <ToggleInput
               size={'big'}
-              value={state.onSiteMode.enable}
-              isChecked={state.onSiteMode.enable}
-              onChange={(event) =>
-                dispatch({
-                  type: 'ENABLE-ONSITE-MODE',
-                  value: event.target.checked,
-                })
-              }
+              value={state.onSiteMode.enabled.value}
+              isChecked={state.onSiteMode.enabled.value}
+              onChange={(e) => handleOnsiteMode('enabled', e.target.checked)}
             />
           </AccordionSummary>
           <AccordionDetails className="accordion-details">
@@ -286,7 +537,7 @@ const PaymentMethods = () => {
                   validation={state.onSiteMode.payButtonTitle.validation}
                   type={state.onSiteMode.payButtonTitle.type}
                   onChange={(e) =>
-                    handleOnsiteModeFormUpdate('payButtonTitle', e.target.value)
+                    handleOnsiteMode('payButtonTitle', e.target.value)
                   }
                 />
                 <div className="dropdown-container">
@@ -296,43 +547,21 @@ const PaymentMethods = () => {
                     validation={state.onSiteMode.payButtonLanguage.validation}
                     type={state.onSiteMode.payButtonLanguage.type}
                     onChange={(e) =>
-                      handleOnsiteModeFormUpdate(
-                        'payButtonLanguage',
-                        e.target.value
-                      )
+                      handleOnsiteMode('payButtonLanguage', e.target.value)
                     }
                     displayEmpty
                     inputProps={{ 'aria-label': 'Without label' }}
                   >
-                    <MenuItem value={'EN'}>EN</MenuItem>
-                    <MenuItem value={'ES'}>ES</MenuItem>
-                    <MenuItem value={'FR'}>FR</MenuItem>
-                    <MenuItem value={'NL'}>NL</MenuItem>
-                    <MenuItem value={'DE'}>DE</MenuItem>
-                    <MenuItem value={'IT'}>IT</MenuItem>
+                    {state.onSiteMode.payButtonLanguage.values &&
+                      Object.keys(
+                        state.onSiteMode.payButtonLanguage.values
+                      ).map((lang, index) => (
+                        <MenuItem key={`lang${index}`} value={lang}>
+                          {lang}
+                        </MenuItem>
+                      ))}
                   </Select>
                 </div>
-              </div>
-            </div>
-            <div className="section-wrapper">
-              <h5 className="section-header">
-                Payment Option
-                {/* <InfoComponent value={'Final execution of the payment'} /> */}
-              </h5>
-              <div className="options-section">
-                <RadioField
-                  name="payment-option"
-                  value="direct"
-                  onChange={(event) => console.log(event.target.value)}
-                  direction="inline"
-                >
-                  <RadioInput.Option value="direct">
-                    {'Direct Sale'}
-                  </RadioInput.Option>
-                  <RadioInput.Option value="authorization">
-                    {'Authorization only'}
-                  </RadioInput.Option>
-                </RadioField>
               </div>
             </div>
             <div className="section-wrapper">
@@ -347,10 +576,7 @@ const PaymentMethods = () => {
                   type={state.onSiteMode.templateFileName.type}
                   placeholder={state.onSiteMode.templateFileName.placeholder}
                   onChange={(e) =>
-                    handleOnsiteModeFormUpdate(
-                      'templateFileName',
-                      e.target.value
-                    )
+                    handleOnsiteMode('templateFileName', e.target.value)
                   }
                 />
                 <p className="sub-title">
@@ -364,6 +590,12 @@ const PaymentMethods = () => {
             <div className="section-wrapper">
               <h5 className="section-header">
                 {state.onSiteMode.displayLogo.label}
+                <Tooltip
+                  placement="top"
+                  title={state.onSiteMode.displayLogo.tooltip}
+                >
+                  <InfoIcon />
+                </Tooltip>
               </h5>
               <div className="template-section flex">
                 <img className="" src={worldlineLogo} alt={worldlineLogo} />
@@ -392,91 +624,61 @@ const PaymentMethods = () => {
             </Typography>
             <ToggleInput
               size={'big'}
-              value={state.redirectModeA.enable}
-              isChecked={state.redirectModeA.enable}
-              onChange={(event) =>
-                dispatch({
-                  type: 'ENABLE-REDIRECT-A',
-                  value: event.target.checked,
-                })
-              }
+              value={state.redirectModeA.value}
+              isChecked={state.redirectModeA.enabled.value}
+              onChange={(e) => handleRedirectModeA('enabled', e.target.checked)}
             />
           </AccordionSummary>
           <AccordionDetails className="accordion-details">
             <p className="sub-title">Single payment buttons selected on site</p>
             <div className="relative">
               <span className="float-right">
-                <p>Send Order Data</p>
+                <p>
+                  Send Order Data
+                  <Tooltip
+                    placement="top"
+                    title={state.redirectModeA.sendOrderData.tooltip}
+                  >
+                    <InfoIcon />
+                  </Tooltip>
+                </p>
                 <CheckboxInput
                   value={state.redirectModeA.sendOrderData.value}
-                  onChange={(event) =>
-                    handleRedirectModeA(
-                      'sendOrderData',
-                      !state.redirectModeA.sendOrderData.value
-                    )
+                  onChange={(e) =>
+                    handleRedirectModeA('sendOrderData', e.target.checked)
                   }
                   isChecked={state.redirectModeA.sendOrderData.value}
                 />
               </span>
             </div>
             <SecondaryButton
-              label="Refresh list of available payment methods"
+              label={state.redirectModeA.refresh.label}
               onClick={() => console.log('Button clicked')}
-            />
+            >
+              <Tooltip
+                placement="top"
+                title={state.redirectModeA.refresh.tooltip}
+              >
+                <InfoIcon />
+              </Tooltip>
+            </SecondaryButton>
 
             <ol className="payment-options">
-              <li>
-                <PaymentCard logo={'American Express'} active={true} />
-              </li>
-              <li>
-                <PaymentCard logo={'BCMC'} active={true} />
-              </li>
-              <li>
-                <PaymentCard logo={'CB'} active={true} />
-              </li>
-              <li>
-                <PaymentCard logo={'Diners Club'} active={true} />
-              </li>
-              <li>
-                <PaymentCard logo={'Eurocard'} active={true} />
-              </li>
-              <li>
-                <PaymentCard logo={'GOOGLEPAY'} active={true} />
-              </li>
-              <li>
-                <PaymentCard logo={'JCB'} active={true} />
-              </li>
-              <li>
-                <PaymentCard logo={'Maestro'} active={true} />
-              </li>
-              <li>
-                <PaymentCard logo={'PAYPAL'} active={true} />
-              </li>
-              <li>
-                <PaymentCard logo={'VISA'} active={true} />
-              </li>
-              <li>
-                <PaymentCard logo={'WeChatPay'} active={true} />
-              </li>
+              {state.redirectModeA.paymentOptions &&
+                Object.keys(state.redirectModeA.paymentOptions).map(
+                  (option, index) => (
+                    <li key={`payment-options-${index}`}>
+                      <PaymentCard
+                        logo={state.redirectModeA.paymentOptions[option].label}
+                        active={
+                          state.redirectModeA.paymentOptions[option].enabled
+                        }
+                        handleChange={handleOptionUpdate}
+                      />
+                    </li>
+                  )
+                )}
             </ol>
-            <div className="section-wrapper">
-              <h5 className="section-header">Payment Option</h5>
-              <div className="options-section">
-                <RadioField
-                  name="payment-option"
-                  value="direct"
-                  onChange={(event) => console.log(event.target.value)}
-                  direction="inline"
-                >
-                  <RadioInput.Option value="direct">
-                    {'Direct Sale'}
-                  </RadioInput.Option>
-                  <RadioInput.Option value="authorization">
-                    {'Authorization only'}
-                  </RadioInput.Option>
-                </RadioField>
-              </div>
-            </div>
             <div className="section-wrapper">
               <h5 className="section-header">
                 {state.redirectModeA.templateFileName.label}
@@ -516,14 +718,9 @@ const PaymentMethods = () => {
             </Typography>
             <ToggleInput
               size={'big'}
-              value={state.redirectModeB.enable}
-              isChecked={state.redirectModeB.enable}
-              onChange={(event) =>
-                dispatch({
-                  type: 'ENABLE-REDIRECT-B',
-                  value: event.target.checked,
-                })
-              }
+              value={state.redirectModeB.enabled.value}
+              isChecked={state.redirectModeB.enabled.value}
+              onChange={(e) => handleRedirectModeB('enabled', e.target.checked)}
             />
           </AccordionSummary>
           <AccordionDetails className="accordion-details">
@@ -532,14 +729,19 @@ const PaymentMethods = () => {
             </p>
             <div className="relative">
               <span className="float-right">
-                <p>Send Order Data</p>
+                <p>
+                  Send Order Data
+                  <Tooltip
+                    placement="top"
+                    title={state.redirectModeB.sendOrderData.tooltip}
+                  >
+                    <InfoIcon />
+                  </Tooltip>
+                </p>
                 <CheckboxInput
                   value={state.redirectModeB.sendOrderData.value}
-                  onChange={(event) =>
-                    handleRedirectModeB(
-                      'sendOrderData',
-                      !state.redirectModeB.sendOrderData.value
-                    )
+                  onChange={(e) =>
+                    handleRedirectModeB('sendOrderData', e.target.checked)
                   }
                   isChecked={state.redirectModeB.sendOrderData.value}
                 />
@@ -561,7 +763,9 @@ const PaymentMethods = () => {
               </div>
             </div>
             <div className="section-wrapper">
-              <h5 className="section-header">Pay Button Title</h5>
+              <h5 className="section-header">
+                {state.redirectModeB.payButtonTitle.label}
+              </h5>
               <div className="template-section">
                 <TextInput
                   className="section-input"
@@ -584,7 +788,7 @@ const PaymentMethods = () => {
                   value={state.redirectModeB.templateFileName.value}
                   validation={state.redirectModeB.templateFileName.validation}
                   type={state.redirectModeB.templateFileName.type}
-                  placeholder={state.redirectModeB.templateFileName.placeOrder}
+                  placeholder={state.redirectModeB.templateFileName.placeholder}
                   onChange={(e) =>
                     handleRedirectModeB('templateFileName', e.target.value)
                   }
@@ -597,94 +801,215 @@ const PaymentMethods = () => {
                 </p>
               </div>
             </div>
-            <div className="section-wrapper">
-              <h5 className="section-header">Payment Option</h5>
-              <div className="options-section">
-                <RadioField
-                  name="payment-option"
-                  value="direct"
-                  onChange={(event) => console.log(event.target.value)}
-                  direction="inline"
+
+            <div className="section-wrapper flex">
+              <CheckboxInput
+                value={state.redirectModeB.groupCards.value}
+                onChange={(e) =>
+                  handleRedirectModeB('groupCards', e.target.checked)
+                }
+                isChecked={state.redirectModeB.groupCards.value}
+              />
+              <p>
+                {state.redirectModeB.groupCards.label}
+                <Tooltip
+                  placement="top"
+                  title={state.redirectModeB.groupCards.tooltip}
                 >
-                  <RadioInput.Option value="direct">
-                    {'Direct Sale'}
-                  </RadioInput.Option>
-                  <RadioInput.Option value="authorization">
-                    {'Authorization only'}
-                  </RadioInput.Option>
-                </RadioField>
-              </div>
+                  <InfoIcon />
+                </Tooltip>
+              </p>
             </div>
           </AccordionDetails>
         </Accordion>
         <div className="section-wrapper">
-          <h5 className="section-header">Place Order</h5>
+          <h5 className="section-header">
+            {state.paymentOption.label}
+            <Tooltip placement="top" title={state.paymentOption.tooltip}>
+              <InfoIcon />
+            </Tooltip>
+          </h5>
+          <div className="options-section">
+            <RadioField
+              name="payment-option"
+              value={state.paymentOption.value}
+              onChange={(e) =>
+                handleCommonSettings('paymentOption', e.target.value)
+              }
+              direction="inline"
+            >
+              <RadioInput.Option value={'1'}>{'Direct Sale'}</RadioInput.Option>
+              <RadioInput.Option value={'2'}>
+                {'Authorization only'}
+              </RadioInput.Option>
+            </RadioField>
+          </div>
+        </div>
+        {state.paymentOption.value === '2' && (
+          <div className="section-wrapper flex">
+            <div className="section-wrapper">
+              <h5 className="section-header">
+                {state.authorizationPaymentOption.label}
+              </h5>
+              <div className="options-section">
+                <RadioField
+                  name="authorization-payment-option"
+                  value={state.authorizationPaymentOption.value}
+                  onChange={(e) =>
+                    handleCommonSettings(
+                      'authorizationPaymentOption',
+                      e.target.value
+                    )
+                  }
+                  direction="inline"
+                >
+                  <RadioInput.Option value={'1'}>
+                    {'Pre Authorization'}
+                  </RadioInput.Option>
+                  <RadioInput.Option value={'2'}>
+                    {'Final Authorization'}
+                  </RadioInput.Option>
+                </RadioField>
+              </div>
+            </div>
+            <div className="section-wrapper">
+              <h5 className="section-header">
+                {state.captureConfiguration.label}
+              </h5>
+              <div className="dropdown-container">
+                <Select
+                  className="select-dropdown"
+                  value={state.captureConfiguration.value}
+                  validation={state.captureConfiguration.validation}
+                  type={state.captureConfiguration.type}
+                  onChange={(e) =>
+                    handleCommonSettings('captureConfiguration', e.target.value)
+                  }
+                  displayEmpty
+                  inputProps={{ 'aria-label': 'Without label' }}
+                >
+                  {state.captureConfiguration.values &&
+                    Object.keys(state.captureConfiguration.values).map(
+                      (lang, index) => (
+                        <MenuItem key={`lang${index}`} value={lang}>
+                          {state.captureConfiguration.values[lang]}
+                        </MenuItem>
+                      )
+                    )}
+                </Select>
+              </div>
+            </div>
+          </div>
+        )}
+        <div className="section-wrapper">
+          <h5 className="section-header">{state.placeOrder.label}</h5>
           <div className="template-section flex">
             <TextInput
               className="section-input"
-              value=""
-              onChange={(event) => console.log(event.target.value)}
+              value={state.placeOrder.value}
+              validation={state.placeOrder.validation}
+              type={state.placeOrder.type}
+              onChange={(e) =>
+                handleCommonSettings('placeOrder', e.target.value)
+              }
             />
             <div className="dropdown-container">
               <Select
                 className="select-dropdown"
-                value={age}
-                onChange={(e) => console.log(e.target.value)}
+                value={state.placeOrderLanguage.value}
+                validation={state.placeOrderLanguage.validation}
+                type={state.placeOrderLanguage.type}
+                onChange={(e) =>
+                  handleCommonSettings('placeOrderLanguage', e.target.value)
+                }
                 displayEmpty
                 inputProps={{ 'aria-label': 'Without label' }}
               >
-                <MenuItem value={'EN'}>EN</MenuItem>
-                <MenuItem value={'ES'}>ES</MenuItem>
-                <MenuItem value={'FR'}>FR</MenuItem>
-                <MenuItem value={'NL'}>NL</MenuItem>
-                <MenuItem value={'DE'}>DE</MenuItem>
-                <MenuItem value={'IT'}>IT</MenuItem>
+                {state.placeOrderLanguage.values &&
+                  Object.keys(state.placeOrderLanguage.values).map(
+                    (lang, index) => (
+                      <MenuItem key={`lang${index}`} value={lang}>
+                        {lang}
+                      </MenuItem>
+                    )
+                  )}
               </Select>
             </div>
           </div>
-          <div className="force-s3sv2 flex mb-2">
-            <h5 className="section-header">Force 3DSv2</h5>
+        </div>
+        <div className="section-wrapper">
+          <div className="advanced-loging flex">
+            <h5 className="section-header">{state.advancedLogging.label}</h5>
             <ToggleInput
               size={'small'}
               isDisabled={false}
-              isChecked={true}
-              onChange={(event) => console.log(event.target.checked)}
+              value={state.advancedLogging.value}
+              isChecked={state.advancedLogging.value}
+              onChange={(e) =>
+                handleCommonSettings('advancedLogging', e.target.checked)
+              }
+            />
+            {state.advancedLogging.value && <DownloadIcon />}
+          </div>
+        </div>
+        <div className="section-wrapper">
+          <div className="force-s3sv2 flex mb-2">
+            <h5 className="section-header">{state.force3DSv2.label}</h5>
+            <ToggleInput
+              size={'small'}
+              isDisabled={false}
+              value={state.force3DSv2.value}
+              isChecked={state.force3DSv2.value}
+              onChange={(e) =>
+                handleCommonSettings('force3DSv2', e.target.checked)
+              }
             />
           </div>
+        </div>
+        <div className="section-wrapper">
           <div className="colorpicker-section">
             <div className="colorpicker-container flex mb-2">
               <input
-                type="color"
+                type={state.bgColor.type}
                 name="bg_color"
-                value="#45beaa"
-                title="Background Color"
+                value={state.bgColor.value}
+                title={state.bgColor.label}
+                onChange={(e) =>
+                  handleCommonSettings('bgColor', e.target.value)
+                }
               />
-              <h5 className="colorpicker-title">Background Color</h5>
+              <h5 className="colorpicker-title">{state.bgColor.label}</h5>
             </div>
             <div className="colorpicker-container flex mb-2">
               <input
-                type="color"
+                type={state.textColor.type}
                 name="text_color"
-                value="#000000"
-                title="Text Color"
+                value={state.textColor.value}
+                title={state.textColor.label}
+                onChange={(e) =>
+                  handleCommonSettings('textColor', e.target.value)
+                }
               />
-              <h5 className="colorpicker-title">Text Color</h5>
+              <h5 className="colorpicker-title">{state.textColor.label}</h5>
             </div>
             <div className="colorpicker-container flex mb-2">
               <input
-                type="color"
-                name="outline_color"
-                value="#45beaa"
-                title="Outline Color"
+                type={state.outlineColor.type}
+                name="bg_color"
+                value={state.outlineColor.value}
+                title={state.outlineColor.label}
+                onChange={(e) =>
+                  handleCommonSettings('outlineColor', e.target.value)
+                }
               />
-              <h5 className="colorpicker-title">Outline Color</h5>
+              <h5 className="colorpicker-title">{state.outlineColor.label}</h5>
             </div>
           </div>
         </div>
         <div className="save-wrapper algin-end">
           <PrimaryButton
             label="Save Changes"
-            onClick={() => console.log('clicked')}
+            onClick={() => saveFormData()}
             isDisabled={false}
           />
         </div>

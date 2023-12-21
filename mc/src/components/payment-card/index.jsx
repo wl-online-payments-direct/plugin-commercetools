@@ -2,8 +2,10 @@ import React, { useState, useEffect } from 'react';
 import Card from '@commercetools-uikit/card';
 import ToggleInput from '@commercetools-uikit/toggle-input';
 import './style.css';
+import { GearIcon } from '@commercetools-uikit/icons';
 
-const PaymentCard = ({ logo, active }) => {
+const PaymentCard = ({ logo, active, handleChange }) => {
+  const [showPopover, setShowPopover] = useState(false);
   return (
     <Card theme="light" type="raised" className="payment-options-card">
       <img
@@ -12,12 +14,18 @@ const PaymentCard = ({ logo, active }) => {
         alt={logo}
       />
       <p>{logo}</p>
-      <ToggleInput
-        isDisabled={false}
-        isChecked={active}
-        onChange={(event) => alert(event.target.checked)}
-        size="small"
-      />
+      <div className="payment-options-card-actions flex algin-even">
+        <ToggleInput
+          isDisabled={false}
+          isChecked={active}
+          onChange={(event) =>
+            handleChange(logo, 'enabled', event.target.checked)
+          }
+          size="small"
+        />
+        <GearIcon size="big" onClick={() => setShowPopover(!showPopover)} />
+      </div>
+      {showPopover && <Card theme="light" type="raised"></Card>}
     </Card>
   );
 };

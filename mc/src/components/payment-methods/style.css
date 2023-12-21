@@ -111,6 +111,10 @@
     justify-content: end;
 }
 
+.algin-even {
+    justify-content: space-evenly;
+}
+
 .mb-2 {
     margin-bottom: 2rem;
 }
@@ -129,5 +133,9 @@
 }
 
 label:focus-within::after {
+    outline: none !important;
+}
+
+.options-section div {
     outline: none !important;
 }
