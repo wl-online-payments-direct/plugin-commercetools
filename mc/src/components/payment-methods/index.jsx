@@ -397,7 +397,6 @@ const PaymentMethods = () => {
   };
 
   const saveFormData = async () => {
-    console.log('save Data', state);
     const payload = Object.keys(state).map((key) => {
       switch (key) {
         case 'onSiteMode':
@@ -413,7 +412,6 @@ const PaymentMethods = () => {
           return { [key]: state[key].value };
       }
     });
-    console.log('payload', payload);
 
     let saveData = {};
 
@@ -427,14 +425,6 @@ const PaymentMethods = () => {
     Object.keys(saveData).forEach((key) =>
       saveData[key] === undefined ? delete saveData[key] : {}
     );
-
-    // setAPIData({
-    //   ...apiData,
-    //   value: {
-    //     ...apiData.value,
-    //     payment: saveData,
-    //   },
-    // });
 
     const final_payload = {
       ...apiData,
