@@ -429,6 +429,7 @@ const PaymentMethods = () => {
     const final_payload = {
       ...apiData,
       value: {
+        ...apiData.value,
         live: {
           ...apiData.value.live,
           ...saveData,
@@ -459,6 +460,7 @@ const PaymentMethods = () => {
   const getCustomObjectData = async () => {
     try {
       const response = await getCustomObject(CONTAINER_NAME, CONTAINER_KEY);
+      console.log('response', response);
       if (response?.value) {
         setAPIData(response);
       }
