@@ -71,3 +71,30 @@ export function getMappedStatus(payload: PaymentPayload) {
   };
   return statusMapper[payload.payment.status] || '';
 }
+
+export function shouldSaveToken(
+  result: { isRetry: boolean },
+  cart: Cart,
+  payment: { storePermanently: boolean },
+) {
+  return !result.isRetry && cart?.customerId && payment.storePermanently;
+}
+
+export function getCustomerTokenPayload(
+  cart: Cart,
+  payment: { id: string },
+  payload: PaymentPayload,
+) {
+  const { customerId = '' } = cart || {};
+  const { id: paymentId } = payment;
+  const { token = '' } =
+    payload?.payment?.paymentOutput?.cardPaymentMethodSpecificOutput ||
+    payload?.payment?.paymentOutput?.redirectPaymentMethodSpecificOutput ||
+    {};
+
+  return {
+    customerId,
+    paymentId,
+    token,
+  };
+}
