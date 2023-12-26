@@ -4,3 +4,4 @@ export * from './createPayment';
 export * from './getPaymentStatus';
 export * from './testConnection';
 export * from './retryPayment';
+export * from './deleteToken';
