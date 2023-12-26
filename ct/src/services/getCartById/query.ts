@@ -2,6 +2,7 @@ const query = `
   query ($cartId:String!) {
     cart(id:$cartId){
         id
+        customerId
         version
         locale
         country
