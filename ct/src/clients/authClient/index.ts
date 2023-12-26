@@ -1,9 +1,8 @@
 import { env } from 'process';
-// eslint-disable-next-line import/no-extraneous-dependencies
 import SdkAuth from '@commercetools/sdk-auth';
 
 export class AuthClient {
-  authClient: SdkAuth;
+  authClient;
 
   constructor() {
     this.authClient = new SdkAuth({
