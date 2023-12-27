@@ -1,10 +1,9 @@
 services:
   web:
-    image: worldline/ctintegration-web-prod
-    restart: "no"
+    image: worldline/ctintegration-web-dev
     build:
-      context: .
-      dockerfile: ./Dockerfile.web
+      dockerfile: ./Dockerfile.dev.web
+    restart: "no"
     ports:
       - 3000:3000
     networks:
@@ -13,28 +12,17 @@ services:
     env_file:
       - compose.env
   mc:
-    image: worldline/ctintegration-mc-prod
-    restart: "no"
+    image: worldline/ctintegration-mc-dev
     build:
-      context: .
-      dockerfile: ./Dockerfile.mc
+      dockerfile: ./Dockerfile.dev.mc
+    restart: "no"
     ports:
-      - 80:80
+      - 3001:3001
     networks:
       - redisnet
     env_file:
       - compose.env
-  # cron:
-  #   image: worldline/ctintegration-cron-prod
-  #   restart: "no"
-  #   build:
-  #     context: .
-  #     dockerfile: ./Dockerfile.cron
-  #   networks:
-  #     - redisnet
-  #     - dbnet
-  #   env_file:
-  #     - compose.env
+
   redis:
     image: redis:alpine
     restart: "no"

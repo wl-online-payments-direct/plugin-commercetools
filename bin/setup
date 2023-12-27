@@ -1,0 +1,27 @@
+#!/usr/bin/env bash
+
+if docker compose version > /dev/null 2>&1; then
+  DOCKER_COMPOSE="docker compose"
+else
+  DOCKER_COMPOSE="docker-compose"
+fi
+
+${DOCKER_COMPOSE} -f compose.dev.setup.yml build
+
+${DOCKER_COMPOSE} -f compose.dev.setup.yml up -d
+
+bin/cli npm run prisma:generate
+bin/cli npm run prisma:push
+
+${DOCKER_COMPOSE} -f compose.dev.setup.yml cp web:/app/node_modules ./
+${DOCKER_COMPOSE} -f compose.dev.setup.yml cp web:/app/app/node_modules ./app/
+${DOCKER_COMPOSE} -f compose.dev.setup.yml cp web:/app/ct/node_modules ./ct/
+${DOCKER_COMPOSE} -f compose.dev.setup.yml cp web:/app/cron/node_modules ./cron/
+${DOCKER_COMPOSE} -f compose.dev.setup.yml cp web:/app/db/node_modules ./db/
+${DOCKER_COMPOSE} -f compose.dev.setup.yml cp web:/app/psp/node_modules ./psp/
+${DOCKER_COMPOSE} -f compose.dev.setup.yml cp web:/app/util/node_modules ./util/
+${DOCKER_COMPOSE} -f compose.dev.setup.yml cp web:/app/web/node_modules ./web/
+${DOCKER_COMPOSE} -f compose.dev.setup.yml cp mc:/app/node_modules ./mc/
+
+bin/stop web mc
+bin/start web mc
