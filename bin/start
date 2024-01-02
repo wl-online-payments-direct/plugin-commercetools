@@ -1,3 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
-docker compose -f compose.dev.yml up -d
+bin/docker-compose up -d --remove-orphans "$@"
+bin/log

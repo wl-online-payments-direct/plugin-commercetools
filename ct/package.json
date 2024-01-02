@@ -10,7 +10,6 @@
     "lint": "eslint src/**/*.ts",
     "lint-fix": "eslint --fix src/**/*.ts",
     "pretty": "prettier --write 'src/**/*.ts'",
-    "prepare": "cd .. && husky install ct/.husky",
     "precommit": "npm run lint-fix && npm run pretty",
     "prepush": "npm run lint"
   },

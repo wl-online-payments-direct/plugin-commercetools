@@ -1,0 +1,34 @@
+#!/usr/bin/env bash
+
+set -o errexit
+
+if docker compose version > /dev/null 2>&1; then
+  DOCKER_COMPOSE="docker compose -f compose.dev.setup.yml"
+else
+  DOCKER_COMPOSE="docker-compose -f compose.dev.setup.yml"
+fi
+
+${DOCKER_COMPOSE} build
+
+${DOCKER_COMPOSE} up -d --remove-orphans
+
+
+${DOCKER_COMPOSE} exec web npm run prisma:generate
+${DOCKER_COMPOSE} exec web npm run prisma:push
+
+# Don't exit on error from now on.
+set +e
+
+${DOCKER_COMPOSE} cp web:/app/node_modules ./
+${DOCKER_COMPOSE} cp web:/app/app/node_modules ./app/
+${DOCKER_COMPOSE} cp web:/app/ct/node_modules ./ct/
+${DOCKER_COMPOSE} cp web:/app/cron/node_modules ./cron/
+${DOCKER_COMPOSE} cp web:/app/db/node_modules ./db/
+${DOCKER_COMPOSE} cp web:/app/psp/node_modules ./psp/
+${DOCKER_COMPOSE} cp web:/app/util/node_modules ./util/
+${DOCKER_COMPOSE} cp web:/app/web/node_modules ./web/
+${DOCKER_COMPOSE} cp mc:/app/node_modules ./mc/
+
+${DOCKER_COMPOSE} exec web npm run build
+
+bin/restart
