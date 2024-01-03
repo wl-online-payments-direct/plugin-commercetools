@@ -27,6 +27,7 @@ import {
   getCaptureDatabasePayload,
   hasEqualAmounts,
   hasValidAmount,
+  hasEqualAmountOrder,
   isPaymentProcessing,
 } from './mappers';
 
@@ -196,6 +197,70 @@ const createTransactionInPayment = async (
 
   return { payment: updatedPayment };
 };
+
+export async function orderPaymentCaptureHandler(payload: PaymentPayload) {
+  // log the payload
+  logger().debug(
+    `[orderPaymentCaptureHandler]: payload: ${JSON.stringify(payload)}`,
+  );
+  return retry(async () => {
+    // Fetch DB payment
+    const payment = await getPayment(getPaymentDBPayload(payload));
+    if (!payment) {
+      logger().error('Failed to fetch the payment');
+      return { isRetry: true };
+    }
+
+    // Fetch CT order
+    const order = await getOrderById(payment.orderId);
+    if (!order) {
+      logger().error(`Order with id: '${payment.orderId}' is missing in CT!`);
+      return { isRetry: true };
+    }
+    if (!hasEqualAmountOrder(payload, order)) {
+      logger().error("Order amount doesn't match with the paid amount");
+      return { isRetry: true };
+    }
+    const mappedStatus = getMappedStatus(payload);
+    if (mappedStatus === 'FAILED') {
+      await capturePaymentInDB(
+        getCaptureDatabasePayload(
+          payment,
+          payload.payment?.paymentOutput?.amountOfMoney?.amount,
+          mappedStatus,
+          'Charge',
+        ),
+      );
+      return {
+        isRetry: false,
+        data: {
+          message: `Updated capture payment status as ${mappedStatus} as we received status as ${payload.payment.status}`,
+        },
+      };
+    }
+    let result;
+    // if order id exists
+    if (payment.orderId) {
+      result = await updateOrderStatus(payment.orderId, 'Confirmed', 'Paid');
+      if (order.paymentInfo?.payments[0]?.id) {
+        await createTransactionInPayment(
+          order.paymentInfo.payments[0].id,
+          payload,
+          'Charge',
+        );
+      }
+      await capturePaymentInDB(
+        getCaptureDatabasePayload(
+          payment,
+          payload.payment?.paymentOutput?.amountOfMoney?.amount,
+          mappedStatus,
+          'Charge',
+        ),
+      );
+    }
+    return { isRetry: false, data: result };
+  });
+}
 
 export async function refundPaymentHandler(payload: RefundPayload) {
   // log the payload

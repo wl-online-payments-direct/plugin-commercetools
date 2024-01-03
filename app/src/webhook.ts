@@ -5,6 +5,7 @@ import { getPayment } from '@worldline/ctintegration-db';
 import { PaymentPayload, RefundPayload } from './types';
 import {
   orderPaymentHandler,
+  orderPaymentCaptureHandler,
   refundPaymentHandler,
   orderPaymentCancelHandler,
 } from './common';
@@ -47,6 +48,7 @@ export async function webhookAppHandler({
       statusCode: 500,
     };
   }
+
   // Fetch custom objects from admin config
   const customConfig = await getCustomObjects(payment.storeId);
 
@@ -57,18 +59,21 @@ export async function webhookAppHandler({
     };
   }
 
-  switch (payload.type) {
-    case 'payment.created':
-      return orderPaymentHandler(payload);
-      break;
-    case 'payment.cancelled':
-      return orderPaymentCancelHandler(payload);
-      break;
-    case 'payment.refunded':
-      return refundPaymentHandler(payload);
-
-    default:
-      logger().warn(`[WEBHOOK] Received payload type: ${payload.type}`);
+  if ('payment' in payload) {
+    // Payload is a PaymentPayload
+    switch (payload.type) {
+      case 'payment.created':
+        return orderPaymentHandler(payload);
+      case 'payment.captured':
+        return orderPaymentCaptureHandler(payload);
+      case 'payment.cancelled':
+        return orderPaymentCancelHandler(payload);
+      default:
+        logger().warn(`[WEBHOOK] Received payload type: ${payload.type}`);
+    }
+  } else if ('refund' in payload) {
+    // Payload is a RefundPayload
+    return refundPaymentHandler(payload);
   }
 
   return {};

@@ -51,6 +51,15 @@ export function hasEqualAmounts(payload: PaymentPayload, cart: Cart): boolean {
     cart.taxedPrice?.totalGross?.centAmount
   );
 }
+export function hasEqualAmountOrder(
+  payload: PaymentPayload,
+  order: Order,
+): boolean {
+  return (
+    payload.payment.paymentOutput.amountOfMoney.amount ===
+    order.taxedPrice?.totalGross?.centAmount
+  );
+}
 
 export function hasValidAmount(order: Order, amount: number): RefundResult {
   const totalAmountPlanned = order.taxedPrice?.totalGross?.centAmount ?? 0;
