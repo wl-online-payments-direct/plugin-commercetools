@@ -2,7 +2,12 @@ import { Request } from '../types';
 import type { QueryParams } from '../types';
 
 export function getQuery(request: Request): QueryParams {
-  if (!request.url) return {};
+  if (!request.url) {
+    throw {
+      message: 'Exception occured while fetching the query parameter',
+      statusCode: 500,
+    };
+  }
   const url = new URL(request.url, `https://${request.headers.host}`);
   return Object.fromEntries(url.searchParams.entries());
 }

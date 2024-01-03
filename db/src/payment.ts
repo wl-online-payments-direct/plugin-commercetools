@@ -37,7 +37,7 @@ export async function getPayment(
   } catch (error) {
     throw {
       message: 'Exception occured for fetching the payment',
-      statusCode: 400,
+      statusCode: 500,
       details: (error as { message: string }).message,
     };
   }
@@ -109,7 +109,7 @@ export async function getIncrementedReference(storeId: string) {
   } catch (error) {
     throw {
       message: 'Failed to increment the payment id',
-      statusCode: 400,
+      statusCode: 500,
       details: (error as { message: string }).message,
     };
   }

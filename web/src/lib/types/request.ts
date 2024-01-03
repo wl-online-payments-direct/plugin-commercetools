@@ -2,7 +2,7 @@
 import { IncomingMessage } from 'http';
 
 interface Request extends IncomingMessage {
-  body?: any
+  body?: any;
 }
 
 export { Request };

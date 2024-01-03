@@ -1,9 +1,16 @@
-import { createClient } from 'redis';
+import { RedisClientType, createClient } from 'redis';
 
-const connect = async () => {
-  const config = JSON.parse(process.env.REDIS_CONNECTION_CONFIG || '{}');
-  const cacheClient = createClient(config);
-  return cacheClient.connect();
-};
+class CacheClient {
+  static _instance: RedisClientType;
 
-export default connect;
+  static async getInstance(): Promise<RedisClientType> {
+    if (!this._instance) {
+      const config = JSON.parse(process.env.REDIS_CONNECTION_CONFIG || '{}');
+      const cacheClient = createClient(config) as RedisClientType;
+      this._instance = await cacheClient.connect();
+    }
+    return this._instance;
+  }
+}
+
+export default CacheClient;
