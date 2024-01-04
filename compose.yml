@@ -1,7 +1,9 @@
 services:
   web:
-    image: wordline/integration-web-prod
+    image: worldline/ctintegration-web-prod
+    restart: "no"
     build:
+      context: .
       dockerfile: ./Dockerfile.web
     ports:
       - 3000:3000
@@ -9,17 +11,33 @@ services:
       - redisnet
       - dbnet
     env_file:
-        - composer.env
-  cron:
-    image: wordline/integration-cron-prod
+      - compose.env
+  mc:
+    image: worldline/ctintegration-mc-prod
+    restart: "no"
     build:
-      dockerfile: ./Dockerfile.cron
+      context: .
+      dockerfile: ./Dockerfile.mc
+    ports:
+      - 80:80
     networks:
       - redisnet
-      - dbnet
+    env_file:
+      - compose.env
+  # cron:
+  #   image: worldline/ctintegration-cron-prod
+  #   restart: "no"
+  #   build:
+  #     context: .
+  #     dockerfile: ./Dockerfile.cron
+  #   networks:
+  #     - redisnet
+  #     - dbnet
+  #   env_file:
+  #     - compose.env
   redis:
     image: redis:alpine
-    restart: always
+    restart: "no"
     networks:
       - redisnet
     expose:
@@ -27,15 +45,13 @@ services:
   db:
     image: mariadb:10.5
     command: --transaction-isolation=READ-COMMITTED --binlog-format=ROW
-    restart: always
+    restart: "no"
     volumes:
       - db_data:/var/lib/mysql
     networks:
       - dbnet
-    environment:
-      - MYSQL_USER=pspapp
-      - MYSQL_ROOT_PASSWORD=pspapp
-      - MYSQL_PASSWORD=pspapp
+    env_file:
+      - compose.env
     expose:
       - 3306
 volumes:

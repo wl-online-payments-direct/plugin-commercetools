@@ -21,7 +21,6 @@
     "lint": "npm run -workspaces lint",
     "lint-fix": "npm run -workspaces lint-fix",
     "pretty": "npm run -workspaces pretty",
-    "prepare": "npm run -workspaces prepare",
     "precommit": "npm run -workspaces precommit",
     "prepush": "npm run -workspaces prepush"
   },

@@ -8,11 +8,11 @@ import getWebhookStatusController from '../api/getWebhookStatus/controller';
 const routes = {
   '/': healthController.processRequest,
   '/health': healthController.processRequest,
-  '/connection': testConnectionController.processRequest,
-  '/initiatePayment': initiatePaymentController.processRequest,
+  '/testconnection': testConnectionController.processRequest,
+  '/initiate/payment': initiatePaymentController.processRequest,
   '/payment': createPaymentController.processRequest,
-  '/getPaymentStatus': getPaymentStatusController.processRequest,
-  '/getWebhookStatus': getWebhookStatusController.processRequest,
+  '/payment/status': getPaymentStatusController.processRequest,
+  '/webhook/status': getWebhookStatusController.processRequest,
 };
 
 export { routes };

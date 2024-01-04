@@ -1,27 +1,24 @@
 FROM node:18-alpine as dependencies
 
 RUN apk update && apk upgrade
-RUN apk add --no-cache git
 
 WORKDIR /app
-COPY app/package*.json .
 RUN mkdir app ct db psp util web
-COPY app/package*.json ./app
-COPY ct/package*.json ./ct
-COPY db/package*.json ./db
-COPY psp/package*.json ./psp
-COPY util/package*.json ./util
-COPY web/package*.json ./web
-COPY package*.json .
+COPY app/package*.json ./app/
+COPY ct/package*.json ./ct/
+COPY db/package*.json ./db/
+COPY psp/package*.json ./psp/
+COPY util/package*.json ./util/
+COPY web/package*.json ./web/
+COPY package*.json ./
+
 RUN npm ci
 
 FROM node:18-alpine as build
 
 RUN apk update && apk upgrade
-RUN apk add --no-cache git
 
 WORKDIR /app
-
 COPY --from=dependencies /app/app/node_modules ./app/node_modules
 COPY --from=dependencies /app/ct/node_modules ./ct/node_modules
 COPY --from=dependencies /app/db/node_modules ./db/node_modules
@@ -29,6 +26,8 @@ COPY --from=dependencies /app/psp/node_modules ./psp/node_modules
 COPY --from=dependencies /app/util/node_modules ./util/node_modules
 COPY --from=dependencies /app/web/node_modules ./web/node_modules
 COPY --from=dependencies /app/node_modules ./node_modules
+COPY --from=dependencies /app/package.json ./package.json
+
 COPY ./app ./app
 COPY ./ct ./ct
 COPY ./db ./db
@@ -43,43 +42,37 @@ RUN npm run build
 
 FROM node:18-alpine as deploy
 
+ENV NODE_ENV production
+
 RUN apk update && apk upgrade
-RUN apk add --no-cache git
 
 WORKDIR /app
 RUN mkdir app ct db psp util web
-ENV NODE_ENV production
 
 COPY --from=build /app/app/dist ./app/dist
-COPY --from=build /app/app/node_modules ./app/node_modules
-COPY --from=build /app/app/package.json ./app/package.json
+COPY ./app/package*.json ./app/
 
 COPY --from=build /app/ct/dist ./ct/dist
-COPY --from=build /app/ct/node_modules ./ct/node_modules
-COPY --from=build /app/ct/package.json ./ct/package.json
+COPY ./ct/package*.json ./ct/
 
 COPY --from=build /app/db/dist ./db/dist
-COPY --from=build /app/db/node_modules ./db/node_modules
-COPY --from=build /app/db/package.json ./db/package.json
+COPY ./db/package*.json ./db/
 #needed for prisma migration.
 COPY db/prisma ./db/prisma
 
 COPY --from=build /app/psp/dist ./psp/dist
-COPY --from=build /app/psp/node_modules ./psp/node_modules
-COPY --from=build /app/psp/package.json ./psp/package.json
+COPY ./psp/package*.json ./psp/
 
 COPY --from=build /app/util/dist ./util/dist
-COPY --from=build /app/util/node_modules ./util/node_modules
-COPY --from=build /app/util/package.json ./util/package.json
+COPY ./util/package*.json ./util/
 
-COPY --from=build /app/web/build ./web/dist
-COPY --from=build /app/web/node_modules ./web/node_modules
-COPY --from=build /app/web/package.json ./web/package.json
-COPY ./web/migrate-db-and-start.sh ./web/migrate-db-and-start.sh
+COPY --from=build /app/web/package*.json ./web/
+COPY --from=build /app/web/dist ./web/dist
+COPY ./migrate-db-and-start.sh ./migrate-db-and-start.sh
 
-COPY --from=build /app/node_modules ./node_modules
-COPY --from=build /app/package.json ./package.json
+COPY ./package*.json ./
 
-WORKDIR /app/web
+RUN npm ci
+
 EXPOSE 3000
 CMD ["./migrate-db-and-start.sh"]

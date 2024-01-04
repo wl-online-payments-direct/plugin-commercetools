@@ -10,7 +10,6 @@
     "lint": "eslint src/**/*.ts",
     "lint-fix": "eslint --fix src/**/*.ts",
     "pretty": "prettier --write 'src/**/*.ts'",
-    "prepare": "cd .. && husky install ct/.husky",
     "precommit": "npm run lint-fix && npm run pretty",
     "prepush": "npm run lint"
   },
@@ -19,6 +18,7 @@
   "dependencies": {
     "@commercetools/platform-sdk": "^7.0.0",
     "@commercetools/sdk-client-v2": "^2.3.0",
+    "@worldline/ctintegration-util": "^1.0.0",
     "cross-fetch": "^4.0.0",
     "redis": "^4.6.10"
   },

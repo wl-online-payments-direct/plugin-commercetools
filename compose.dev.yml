@@ -1,38 +1,9 @@
 services:
-  web-cron:
-    image: wordline/ct-integration-dev
-    build:
-      dockerfile: ./Dockerfile.dev
-    ports:
-      - 3000:3000
-    networks:
-      - redisnet
-      - dbnet
+  web:
     volumes:
-      - .:/app
-  redis:
-    image: redis:alpine
-    restart: always
-    networks:
-      - redisnet
-    expose:
-      - 6379
-  db:
-    image: mariadb:10.5
-    command: --transaction-isolation=READ-COMMITTED --binlog-format=ROW
-    restart: always
+      - ./:/app
+
+  mc:
     volumes:
-      - db_data:/var/lib/mysql
-    networks:
-      - dbnet
-    environment:
-      - MYSQL_USER=pspapp
-      - MYSQL_ROOT_PASSWORD=pspapp
-      - MYSQL_PASSWORD=pspapp
-    expose:
-      - 3306
-volumes:
-  db_data:
-networks:
-  dbnet:
-  redisnet:
+      - ./mc:/app
+
