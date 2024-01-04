@@ -15,12 +15,9 @@ import {
   getCustomObject,
 } from '../../ct-methods/customObject';
 import { CONTAINER_NAME, CONTAINER_KEY } from '../../../configuration';
-import { ClipboardIcon } from '@commercetools-uikit/icons';
 
 const MyAccount = (props) => {
   const [selectedOption, setSelectedOption] = useState('test');
-  const [data, setData] = useState({});
-  const [copied, setCopied] = useState(false);
   const [formData, setFormData] = useState({
     live: {
       merchantId: '',
@@ -49,7 +46,6 @@ const MyAccount = (props) => {
   const getCustomObjectData = async () => {
     try {
       const response = await getCustomObject(CONTAINER_NAME, CONTAINER_KEY);
-      setData(response.value);
       if (response?.value) {
         for (const option of ['live', 'test']) {
           const optionData = response.value[option];
@@ -86,7 +82,6 @@ const MyAccount = (props) => {
       container: 'storeId',
       key: 'storeId',
       value: {
-        ...data,
         ...(selectedOption === 'live'
           ? {
               live: {
@@ -248,32 +243,15 @@ const MyAccount = (props) => {
                 <Label isBold={true}>
                   <p className="form-label hook-url">Webhook URL</p>
                 </Label>
-                <div className="flex">
-                  <TextInput
-                    name="webHookURL"
-                    value={formData[selectedOption].webHookURL}
-                    onChange={handleInputChange}
-                  />
-                  <ClipboardIcon
-                    style={{ margin: 'auto' }}
-                    onClick={() => {
-                      setCopied(true);
-                      navigator.clipboard.writeText(
-                        formData[selectedOption].webHookURL
-                      );
-                    }}
-                  />
-                </div>
-                <div
-                  className="flex"
-                  style={{ justifyContent: 'space-between' }}
-                >
-                  <p className="info">
-                    To avoid copy/paste issues, use the `copy` icon to copy the
-                    URL
-                  </p>
-                  {copied && <p>Copied!</p>}
-                </div>
+                <TextInput
+                  name="webHookURL"
+                  value={formData[selectedOption].webHookURL}
+                  onChange={handleInputChange}
+                />
+                <p className="info">
+                  To avoid copy/paste issues, use the `copy` icon to copy the
+                  URL
+                </p>
                 <Label isBold={true}>
                   <p className="form-label hook-url">
                     Redirection Payment Page URL - Test
