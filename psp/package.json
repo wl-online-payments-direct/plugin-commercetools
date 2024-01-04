@@ -16,6 +16,7 @@
   "keywords": [],
   "license": "ISC",
   "dependencies": {
+    "@worldline/ctintegration-util": "^1.0.0",
     "onlinepayments-sdk-nodejs": "^4.16.0"
   },
   "devDependencies": {
