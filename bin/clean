@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+
+bin/cli rm -rf ./**/node_modules
+bin/cli rm -rf ./node_modules
+bin/cli rm -rf ./**/dist
+bin/cli rm ./**/tsconfig.tsbuildinfo

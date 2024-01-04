@@ -92,7 +92,7 @@ export async function getIncrementedReference(storeId: string) {
   } catch (error) {
     throw {
       message: 'Failed to increment the payment id',
-      statusCode: 400,
+      statusCode: 500,
       details: (error as { message: string }).message,
     };
   }
