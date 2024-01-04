@@ -128,7 +128,7 @@ export async function setPayment(
   } catch (error) {
     throw {
       message: 'Failed to update payment',
-      statusCode: 400,
+      statusCode: 500,
       details: (error as { message: string }).message,
     };
   }

@@ -8,7 +8,7 @@ export class AuthClient {
     this.authClient = new SdkAuth({
       host: env.CTP_AUTH_URL,
       projectKey: env.CTP_PROJECT_KEY,
-      disableRefreshToken: false,
+      disableRefreshToken: true,
       credentials: {
         clientId: env.CTP_CLIENT_ID,
         clientSecret: env.CTP_CLIENT_SECRET,
@@ -19,10 +19,6 @@ export class AuthClient {
   }
 
   async getClientCredentialsToken() {
-    try {
-      return this.authClient.clientCredentialsFlow();
-    } catch (error) {
-      return error;
-    }
+    return this.authClient.clientCredentialsFlow();
   }
 }

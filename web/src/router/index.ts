@@ -14,7 +14,7 @@ const routes = {
   '/payment': createPaymentController.processRequest,
   '/payment/status': getPaymentStatusController.processRequest,
   '/webhook': webhookController.processRequest,
-  '/retryPayment': retryPaymentController.processRequest,
+  '/payment/retry': retryPaymentController.processRequest,
 };
 
 export { routes };
