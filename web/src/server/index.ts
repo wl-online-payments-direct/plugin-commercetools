@@ -50,7 +50,7 @@ const createServer = () =>
         });
       }
     } catch (e) {
-      logger.debug(
+      logger().debug(
         JSON.stringify(e),
         `Unexpected error when processing URL ${request.url}`,
       );

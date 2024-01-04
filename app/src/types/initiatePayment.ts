@@ -1,8 +1,7 @@
 export interface InitializePaymentPayload {
   authToken: string;
   storeId: string;
-  cartId: string;
-  tokens: string[];
+  tokens: string;
   askConsumerConsent: boolean;
 }
 
