@@ -90,7 +90,7 @@ export function getDatabasePayload(
     storeId,
     cartId,
     orderId: '',
-    storePermanently: true, // TODO: will confirm
+    storePermanently: false, // TODO: will confirm
   };
 }
 

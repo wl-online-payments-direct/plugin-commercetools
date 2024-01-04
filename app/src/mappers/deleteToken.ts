@@ -1,10 +1,3 @@
-import { DeleteTokenPayload } from '../types';
-
-export function getConditionByToken(payload: DeleteTokenPayload) {
-  const { token = '' } = payload || {};
-  return { token };
-}
-
 export function getDeletedTokenMappedResponse(
   hasDBTokenDeleted: {
     count: number;

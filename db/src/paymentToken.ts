@@ -1,4 +1,3 @@
-import { Prisma } from '@prisma/client';
 import prisma from './connection';
 import { CreateCustomerPaymentTokenRequest } from './types';
 
@@ -16,12 +15,12 @@ export async function saveCustomerPaymentToken(
   }
 }
 
-export async function getCustomerPaymentToken(
-  where: Prisma.customer_payment_tokensWhereInput,
-) {
+export async function getCustomerPaymentToken(token: string) {
   try {
     return await prisma.customer_payment_tokens.findFirst({
-      where,
+      where: {
+        token,
+      },
     });
   } catch (error) {
     throw {
@@ -32,12 +31,12 @@ export async function getCustomerPaymentToken(
   }
 }
 
-export async function deleteCustomerPaymentTokens(
-  where: Prisma.customer_payment_tokensWhereInput,
-) {
+export async function deleteCustomerPaymentTokens(token: string) {
   try {
     return await prisma.customer_payment_tokens.deleteMany({
-      where,
+      where: {
+        token,
+      },
     });
   } catch (error) {
     throw {

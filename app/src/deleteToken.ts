@@ -8,33 +8,29 @@ import { logger } from '@worldline/ctintegration-util';
 import { DeleteTokenPayload } from './types';
 import {
   getConnectionServiceProps,
-  getConditionByToken,
   getDeletedTokenMappedResponse,
 } from './mappers';
 
 export async function deleteTokenAppHandler(payload: DeleteTokenPayload) {
-  const customerPaymentToken = await getCustomerPaymentToken(
-    getConditionByToken(payload),
-  );
+  const customerPaymentToken = await getCustomerPaymentToken(payload.token);
   if (!customerPaymentToken) {
     throw {
-      message: `Failed to fetch the payment for token: '${payload.token}'`,
+      message: 'Failed to fetch the payment for token',
       statusCode: 500,
     };
   }
 
   // Remove database token
-  const hasDBTokenDeleted = await deleteCustomerPaymentTokens(
-    getConditionByToken(payload),
-  );
-  logger.debug('Processed deletion for customer tokens in database');
+  const hasDBTokenDeleted = await deleteCustomerPaymentTokens(payload.token);
+
+  logger().debug('Processed deletion for customer tokens in database');
 
   // Remove psp token
   const hasPspTokenDeleted = await deleteTokenService(
     getConnectionServiceProps(await getCustomObjects(payload.storeId)),
     payload.token,
   );
-  logger.debug('Processed deletion for customer tokens in psp');
+  logger().debug('Processed deletion for customer tokens in psp');
 
   return getDeletedTokenMappedResponse(hasDBTokenDeleted, hasPspTokenDeleted);
 }

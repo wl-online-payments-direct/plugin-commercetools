@@ -1,14 +1,19 @@
 import { Request, DeleteTokenAppPayload } from '../types';
-import { pick } from './common';
 
 export function getDeleteTokenRequiredProps(request: Request) {
-  return pick(request.body, ['storeId', 'token']);
+  const { storeId = '', token = '' } = (request?.body ||
+    {}) as DeleteTokenAppPayload;
+  return {
+    storeId,
+    token,
+  };
 }
 
 export function getDeleteTokenAppPayload(
   request: Request,
 ): DeleteTokenAppPayload {
-  const { storeId, token } = request.body || {};
+  const { storeId = '', token = '' } = (request.body ||
+    {}) as DeleteTokenAppPayload;
   return {
     storeId,
     token,
