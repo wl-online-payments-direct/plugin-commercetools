@@ -48,6 +48,7 @@ query {
         supplyChannel {
           id
         }
+        inventoryMode
         quantity
         discountedPricePerQuantity {
           quantity

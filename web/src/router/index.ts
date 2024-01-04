@@ -12,7 +12,7 @@ const routes = {
   '/initiate/payment': initiatePaymentController.processRequest,
   '/payment': createPaymentController.processRequest,
   '/payment/status': getPaymentStatusController.processRequest,
-  '/validateCart': validateCartController.processRequest,
+  '/cart/validate': validateCartController.processRequest,
 };
 
 export { routes };
