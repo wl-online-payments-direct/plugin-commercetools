@@ -1,15 +1,19 @@
 import { Request, RetryPaymentAppPayload } from '../types';
 
-import { pick } from './common';
-
 export function getRetryPaymentRequiredProps(request: Request) {
-  return pick(request.body, ['id', 'storeId']);
+  const { id = '', storeId = '' } = (request?.body ||
+    {}) as RetryPaymentAppPayload;
+  return {
+    id,
+    storeId,
+  };
 }
 
 export function getRetryPaymentAppPayload(
   request: Request,
 ): RetryPaymentAppPayload {
-  const { id, storeId } = request.body;
+  const { id = '', storeId = '' } = (request?.body ||
+    {}) as RetryPaymentAppPayload;
   return {
     id,
     storeId,
