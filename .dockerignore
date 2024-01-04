@@ -16,3 +16,4 @@ compose-dev.yml
 .env-sample
 .cache
 bin
+buildspec_*.yaml

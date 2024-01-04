@@ -10,13 +10,13 @@
     "lint": "eslint src/**/*.ts",
     "lint-fix": "eslint --fix src/**/*.ts",
     "pretty": "prettier --write 'src/**/*.ts'",
-    "prepare": "cd .. && husky install psp/.husky",
     "precommit": "npm run lint-fix && npm run pretty",
     "prepush": "npm run lint"
   },
   "keywords": [],
   "license": "ISC",
   "dependencies": {
+    "@worldline/ctintegration-util": "^1.0.0",
     "onlinepayments-sdk-nodejs": "^4.16.0"
   },
   "devDependencies": {

@@ -32,6 +32,7 @@ export function getServicePayload(
   const amount = cart?.taxedPrice?.totalGross.centAmount || 0;
   const currencyCode = cart?.taxedPrice?.totalGross.currencyCode || '';
   const merchantCustomerId = cart?.customerId || cart?.anonymousId || '';
+  const locale = cart?.locale ? { locale: cart.locale } : {};
 
   return {
     hostedTokenizationId,
@@ -48,6 +49,7 @@ export function getServicePayload(
       customer: {
         merchantCustomerId,
         device: {
+          ...locale,
           acceptHeader,
           userAgent,
         },

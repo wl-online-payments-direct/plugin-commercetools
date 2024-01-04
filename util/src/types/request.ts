@@ -1,8 +1,7 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { IncomingMessage } from 'http';
 
 interface Request extends IncomingMessage {
-  body?: any;
+  body?: unknown;
 }
 
 export { Request };

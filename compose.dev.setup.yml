@@ -1,0 +1,49 @@
+services:
+  web:
+    image: worldline/ctintegration-web-dev
+    build:
+      dockerfile: ./Dockerfile.dev.web
+    restart: "no"
+    ports:
+      - 3000:3000
+    networks:
+      - redisnet
+      - dbnet
+    env_file:
+      - compose.env
+  mc:
+    image: worldline/ctintegration-mc-dev
+    build:
+      dockerfile: ./Dockerfile.dev.mc
+    restart: "no"
+    ports:
+      - 3001:3001
+    networks:
+      - redisnet
+    env_file:
+      - compose.env
+
+  redis:
+    image: redis:alpine
+    restart: "no"
+    networks:
+      - redisnet
+    expose:
+      - 6379
+  db:
+    image: mariadb:10.5
+    command: --transaction-isolation=READ-COMMITTED --binlog-format=ROW
+    restart: "no"
+    volumes:
+      - db_data:/var/lib/mysql
+    networks:
+      - dbnet
+    env_file:
+      - compose.env
+    expose:
+      - 3306
+volumes:
+  db_data:
+networks:
+  dbnet:
+  redisnet:

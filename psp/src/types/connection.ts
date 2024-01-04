@@ -4,5 +4,5 @@ export interface ConnectOpts {
   apiKey: string;
   apiSecret: string;
   host: string;
-  enablePspLogs: boolean;
+  enableLogs: boolean;
 }

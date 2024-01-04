@@ -8,10 +8,10 @@ import validateCartController from '../api/validateCart/controller';
 const routes = {
   '/': healthController.processRequest,
   '/health': healthController.processRequest,
-  '/connection': testConnectionController.processRequest,
-  '/initiatePayment': initiatePaymentController.processRequest,
+  '/testconnection': testConnectionController.processRequest,
+  '/initiate/payment': initiatePaymentController.processRequest,
   '/payment': createPaymentController.processRequest,
-  '/getPaymentStatus': getPaymentStatusController.processRequest,
+  '/payment/status': getPaymentStatusController.processRequest,
   '/validateCart': validateCartController.processRequest,
 };
 

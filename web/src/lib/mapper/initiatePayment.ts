@@ -1,17 +1,23 @@
-import { Request } from '../types';
-import { pick } from './common';
+import { InitiatePaymentPayload, Request } from '../types';
 
 export function getInitSessionRequiredProps(request: Request) {
-  return pick(request.body, ['storeId']);
+  const { storeId = '' } = (request?.body || {}) as InitiatePaymentPayload;
+  return {
+    storeId,
+  };
 }
 
 export function getInitSessionAppPayload(request: Request) {
   const { authorization: authToken = '' } = request.headers;
-  const { storeId, cartId, tokens, askConsumerConsent = true } = request.body;
+  const {
+    storeId = '',
+    tokens = '',
+    askConsumerConsent = true,
+  } = (request?.body || {}) as InitiatePaymentPayload;
+
   return {
     authToken,
     storeId,
-    cartId,
     tokens,
     askConsumerConsent,
   };
