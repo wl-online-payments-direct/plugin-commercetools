@@ -18,10 +18,9 @@ export function pick<Data extends object, Keys extends keyof Data>(
 ): Pick<Data, Keys> {
   const result = {} as Pick<Data, Keys>;
 
-  // eslint-disable-next-line no-restricted-syntax
-  for (const key of keys) {
+  keys.forEach((key) => {
     result[key] = data[key];
-  }
+  });
 
   return result;
 }
