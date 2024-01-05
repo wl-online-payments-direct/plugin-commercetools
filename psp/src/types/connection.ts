@@ -4,7 +4,5 @@ export interface ConnectOpts {
   apiKey: string;
   apiSecret: string;
   host: string;
-}
-export interface TestConnectionResponse {
-  result: string;
+  enableLogs: boolean;
 }

@@ -1,5 +1,5 @@
-import { ServerResponse } from "http";
-import { cors } from "./../headers";
+import { ServerResponse } from 'http';
+import { cors } from '../headers';
 
 const StatusCodes = {
   OK: 200,
@@ -8,10 +8,8 @@ const StatusCodes = {
 
 class ResponseManager {
   headers = {
-    "Content-Type": "application/json",
+    'Content-Type': 'application/json',
   };
-
-  constructor() {}
 
   setResponseTo200<T>(response: ServerResponse, params?: T) {
     response.writeHead(StatusCodes.OK, {
@@ -22,7 +20,7 @@ class ResponseManager {
       JSON.stringify({
         statusCode: StatusCodes.OK,
         result: params,
-      })
+      }),
     );
   }
 
@@ -35,11 +33,18 @@ class ResponseManager {
       JSON.stringify({
         statusCode: StatusCodes.CREATED,
         result: params,
-      })
+      }),
     );
   }
 
-  setResponseError(response: ServerResponse, error: any) {
+  setResponseError(
+    response: ServerResponse,
+    error: {
+      statusCode: number;
+      message: string;
+      details?: string;
+    },
+  ) {
     const { statusCode = 500, message, details = undefined } = error;
     response.writeHead(statusCode, {
       ...this.headers,
@@ -48,11 +53,11 @@ class ResponseManager {
 
     response.end(
       JSON.stringify({
-        status: "nok",
+        status: 'nok',
         statusCode,
         message,
         details,
-      })
+      }),
     );
   }
 

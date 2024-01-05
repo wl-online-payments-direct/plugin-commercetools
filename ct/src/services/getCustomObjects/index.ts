@@ -1,16 +1,20 @@
-import { MeApiClient } from "./../../clients";
-import query from "./query";
-import mapper from "./mapper";
-import { getCustomObjectsCache } from "./../../cache";
+import { ApiClient } from '../../clients';
+import query from './query';
+import { getCustomObjectsResponseMapper } from '../../mappers';
+import { getCustomObjectsCache, setCustomObjectsCache } from '../../cache';
+import { CustomObjects, CustomObjectsResponse } from '../../types';
 
-export async function getCustomObjects(authToken: string, storeId: string) {
-  const cache = await getCustomObjectsCache();
+export async function getCustomObjects(
+  storeId: string,
+): Promise<CustomObjects> {
+  // Fetch from cache
+  const cache = await getCustomObjectsCache(storeId);
   if (cache) {
     return cache;
   }
 
   // Initialize api client
-  const apiClient = new MeApiClient({ authToken });
+  const apiClient = new ApiClient();
 
   const variables = {
     containerName: storeId,
@@ -21,7 +25,13 @@ export async function getCustomObjects(authToken: string, storeId: string) {
     variables,
   });
 
-  const result = await apiClient.execute();
+  const response = (await apiClient.execute()) as CustomObjectsResponse;
 
-  return mapper(storeId, result);
+  const configuration = getCustomObjectsResponseMapper(storeId, response);
+
+  if (configuration) {
+    await setCustomObjectsCache(storeId, configuration);
+  }
+
+  return configuration;
 }

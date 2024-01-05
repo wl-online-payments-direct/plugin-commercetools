@@ -1,23 +1,23 @@
-import { IncomingMessage } from "http";
+import { IncomingMessage } from 'http';
 
-const isPostRequest = (method = "") => method === "POST";
+const isPostRequest = (method = '') => method === 'POST';
 
-const isGetRequest = (method = "") => method === "GET";
+const isGetRequest = (method = '') => method === 'GET';
 
-const isOptionsRequest = (method = "") => method === "OPTIONS";
+const isOptionsRequest = (method = '') => method === 'OPTIONS';
 
 const isMultiPartRequest = (request: IncomingMessage) =>
-  !!request.rawHeaders.find((header) => header.includes("multipart/form-data"));
+  !!request.rawHeaders.find((header) => header.includes('multipart/form-data'));
 
-const isGetRequestOrThrowError = async (method = "") => {
+const isGetRequestOrThrowError = async (method = '') => {
   if (!isGetRequest(method)) {
-    throw { httpStatusCode: 405, message: "Method not allowed" };
+    throw { statusCode: 405, message: 'Method not allowed' };
   }
 };
 
-const isPostRequestOrThrowError = async (method = "") => {
+const isPostRequestOrThrowError = async (method = '') => {
   if (!isPostRequest(method)) {
-    throw { httpStatusCode: 405, message: "Method not allowed" };
+    throw { statusCode: 405, message: 'Method not allowed' };
   }
 };
 

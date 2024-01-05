@@ -1,20 +1,21 @@
-import { createClient } from "redis";
+import { logger } from '@worldline/ctintegration-util';
 
-const connect = async () => {
-  const cacheClient = createClient({
-    password: process.env.REDIS_PASSWORD,
-    socket: {
-      host: process.env.REDIS_HOST,
-      port: parseInt(process.env.REDIS_PORT || "6379", 10),
-    },
-  });
+import { RedisClientType, createClient } from 'redis';
 
-  try {
-    return await cacheClient.connect();
-  } catch (error) {
-    console.log(error);
-    throw error;
+class CacheClient {
+  static _instance: RedisClientType;
+
+  static async getInstance(): Promise<RedisClientType> {
+    if (!this._instance) {
+      const config = JSON.parse(process.env.REDIS_CONNECTION_CONFIG || '{}');
+      if (!Object.keys(config).length) {
+        logger().warn('Failed to establish a cache client connection!');
+      }
+      const cacheClient = createClient(config) as RedisClientType;
+      this._instance = await cacheClient.connect();
+    }
+    return this._instance;
   }
-};
+}
 
-export default connect;
+export default CacheClient;

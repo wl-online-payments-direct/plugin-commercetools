@@ -1,35 +1,30 @@
-import { ServerResponse } from "http";
-import { testConnectionRequest } from "../../lib/connection";
+import { ServerResponse } from 'http';
 import {
   isPostRequestOrThrowError,
   logger,
   ResponseClient,
-} from "@worldline/ctintegration-util";
-import { Request } from "~/types";
+} from '@worldline/ctintegration-util';
+import { testConnectionRequest } from '../../lib';
+import { Request, ErrorProps } from '../../lib/types';
 
 const processRequest = async (request: Request, response: ServerResponse) => {
   try {
     const { method } = request;
+    logger().debug(`[TestConnection] Request initiated with method: ${method}`);
 
     // Only allow POST request; else throw error
     await isPostRequestOrThrowError(method);
 
-    const { merchantId, integrator, apiKey, apiSecret, host } = request.body;
+    logger().debug('[TestConnection] Process started');
 
-    if (!merchantId || !integrator || !apiKey || !apiSecret || !host) {
-      throw {
-        message: "Required parameters are missing or empty",
-        statusCode: 400,
-      };
-    }
+    const connection = await testConnectionRequest(request);
 
-    // Perform a test connection request to psp
-    const options = { merchantId, integrator, apiKey, apiSecret, host };
-    const connection = await testConnectionRequest(options);
+    logger().debug('[TestConnection] Process completed');
 
     ResponseClient.setResponseTo200(response, { connection });
-  } catch (error) {
-    logger.error(error);
+  } catch (e) {
+    const error = e as ErrorProps;
+    logger().error(JSON.stringify(error));
     ResponseClient.setResponseError(response, error);
   }
 };

@@ -1,2 +1,2 @@
-
-console.log("health")
+// eslint-disable-next-line no-console
+console.log('health');

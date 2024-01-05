@@ -1,18 +1,24 @@
-import connect from "./connect";
+import { CustomObjects } from '../types';
+import CacheClient from './connect';
 
-const CT_PREFIX = "CT";
-const KEY_CUSTOM_OBJECT = `${CT_PREFIX}:customObjects`;
+const CT_PREFIX = 'CT';
+const CT_PREFIX_CUSTOM_OBJECTS = `${CT_PREFIX}:customObjects`;
 
-export const setCustomObjectsCache = async (value: any) => {
-  const cacheClient = await connect();
+export const setCustomObjectsCache = async (
+  storeId: string,
+  value: CustomObjects,
+) => {
+  const cacheClient = await CacheClient.getInstance();
   const stringifyValue = JSON.stringify(value);
-  await cacheClient.set(KEY_CUSTOM_OBJECT, stringifyValue);
+  const cacheKey = `${CT_PREFIX_CUSTOM_OBJECTS}:${storeId}`;
+  await cacheClient.set(cacheKey, stringifyValue);
 };
 
-export const getCustomObjectsCache = async () => {
-  const cacheClient = await connect();
-  const stringifyValue = await cacheClient.get(KEY_CUSTOM_OBJECT);
-  const parsedValue = stringifyValue ? JSON.parse(stringifyValue) : "";
+export const getCustomObjectsCache = async (storeId: string) => {
+  const cacheClient = await CacheClient.getInstance();
+  const cacheKey = `${CT_PREFIX_CUSTOM_OBJECTS}:${storeId}`;
+  const stringifyValue = await cacheClient.get(cacheKey);
+  const parsedValue = stringifyValue ? JSON.parse(stringifyValue) : '';
   return parsedValue;
 };
 

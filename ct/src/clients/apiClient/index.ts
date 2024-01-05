@@ -1,16 +1,19 @@
-import { env } from "process"
+import { env } from 'process';
 
-import { GraphQLClient } from "../graphqlClient"
+import { GraphQLClient } from '../graphqlClient';
 
 export class ApiClient {
-  gClient: GraphQLClient
-  projectKey: string
-  query!: string
-  variables = {} as { [key: string]: string | number }
+  gClient: GraphQLClient;
+
+  projectKey: string;
+
+  query!: string;
+
+  variables = {} as { [key: string]: string | number };
 
   constructor() {
-    this.gClient = new GraphQLClient()
-    
+    this.gClient = new GraphQLClient();
+
     this.gClient.setClientWithAuthMiddlewareOptions({
       apiHost: env.CTP_API_URL as string,
       authHost: env.CTP_AUTH_URL as string,
@@ -18,14 +21,20 @@ export class ApiClient {
       clientId: env.CTP_CLIENT_ID as string,
       clientSecret: env.CTP_CLIENT_SECRET as string,
       scopes: [env.CTP_SCOPES] as unknown as Array<string>,
-    })
+    });
 
-    this.projectKey = env.CTP_PROJECT_KEY as string
+    this.projectKey = env.CTP_PROJECT_KEY as string;
   }
 
-  setBody({ query, variables }: { query: string; variables: { [key: string]: any } }) {
-    this.query = query
-    this.variables = variables
+  setBody({
+    query,
+    variables,
+  }: {
+    query: string;
+    variables: { [key: string]: string };
+  }) {
+    this.query = query;
+    this.variables = variables;
   }
 
   async execute() {
@@ -41,8 +50,15 @@ export class ApiClient {
           },
         })
         .execute()
+        .catch((e) => {
+          throw {
+            statusCode: e.statusCode,
+            message: '[CT] Failed to execute the request!',
+            details: e.body.errors,
+          };
+        });
     } catch (error) {
-      return error
+      return error;
     }
   }
 }

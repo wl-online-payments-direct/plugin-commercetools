@@ -15,9 +15,6 @@ query {
       customerId
       anonymousId
       taxCalculationMode
-      billingAddress {
-        ...addressFields
-      }
       totalPrice {
         currencyCode
         centAmount
@@ -37,23 +34,6 @@ query {
     }
   }
 
-  fragment addressFields on Address {
-    id
-    firstName
-    lastName
-    email
-    phone
-    city
-    country
-    streetName
-    streetNumber
-    additionalStreetInfo
-    postalCode
-    state
-    building
-    apartment
-    region
-  }
 }
 `;
 export default query;

@@ -1,6 +1,6 @@
 generator client {
-  provider = "prisma-client-js"
-  binaryTargets = [ "native", "debian-openssl-1.1.x", "debian-openssl-3.0.x","linux-musl", "linux-musl-openssl-3.0.x"]
+  provider      = "prisma-client-js"
+  binaryTargets = ["native", "debian-openssl-1.1.x", "debian-openssl-3.0.x", "linux-musl", "linux-musl-openssl-3.0.x"]
 }
 
 datasource db {
@@ -8,21 +8,47 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model storeUsers {
-  id        Int      @id @default(autoincrement()) @db.UnsignedInt
-  userId    Int
-  storeHash String   @db.VarChar(10)
-  isAdmin   Boolean?
-
-  @@unique([userId, storeHash], map: "userId_storeHash")
-}
-model configuration {
-  id               Int      @id @default(autoincrement())
-  storeHash        String   @db.VarChar(255)
-  createdTimestamp DateTime @default(now())
-  configKey        String   @db.VarChar(255)
-  configValue      String   @db.VarChar(255)
-
-  @@unique([storeHash, configKey])
+enum Status {
+  INITIAL // on create
+  SUCCESS
+  FAILED
+  PENDING
+  REVIEW
 }
 
+enum States {
+  DEFAULT
+  PROCESSING
+}
+
+enum Modes {
+  SALE
+  PRE_AUTHORIZATION
+  FINAL_AUTHORIZATION
+}
+
+model payments {
+  id          String   @id @default(uuid())
+  authMode    Modes
+  paymentId   String
+  worldlineId String
+  storeId     String   @db.VarChar(255)
+  cartId      String   @db.VarChar(255)
+  orderId     String   @db.VarChar(255)
+  status      Status   @default(INITIAL)
+  state       States   @default(DEFAULT)
+  errors      String?  @db.Text
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model payment_references {
+  id          String   @id @default(uuid())
+  storeId     String   @db.VarChar(255)
+  version     Int
+  referenceId Int
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@unique(storeId)
+}

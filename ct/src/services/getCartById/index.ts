@@ -1,6 +1,7 @@
-import { ApiClient } from "./../../clients";
-import query from "./query";
-import mapper from "./mapper";
+import { ApiClient } from '../../clients';
+import query from './query';
+import { getCartByIdResponseMapper } from '../../mappers';
+import { CartById } from '../../types';
 
 export async function getCartById(cartId: string) {
   // Initialize api client
@@ -15,7 +16,7 @@ export async function getCartById(cartId: string) {
     variables,
   });
 
-  const result = await apiClient.execute();
+  const result = (await apiClient.execute()) as CartById;
 
-  return mapper(result);
+  return getCartByIdResponseMapper(result);
 }

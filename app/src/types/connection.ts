@@ -4,4 +4,5 @@ export interface ConnectionProps {
   apiKey: string;
   apiSecret: string;
   host: string;
+  enableLogs: boolean;
 }
