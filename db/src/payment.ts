@@ -109,19 +109,19 @@ export async function getPayment(
   } catch (error) {
     throw {
       message: 'Exception occured for fetching the payment',
-      statusCode: 400,
+      statusCode: 500,
       details: (error as { message: string }).message,
     };
   }
 }
 
 export async function setPayment(
-  where: Prisma.paymentsWhereUniqueInput,
+  where: { [key: string]: string },
   data: { [key: string]: string },
 ): Promise<Payment> {
   try {
     const result = await prisma.payments.update({
-      where,
+      where: where as unknown as Prisma.paymentsWhereUniqueInput,
       data,
     });
     return result;
