@@ -76,7 +76,7 @@ const MyAccount = (props) => {
       ...prevData,
       [selectedOption]: {
         ...prevData[selectedOption],
-        [name]: value,
+        [name]: value.trim(),
       },
     }));
   };
