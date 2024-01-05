@@ -2286,7 +2286,7 @@
     history "4.10.1"
     prop-types "15.8.1"
 
-"@commercetools-uikit/loading-spinner@16.12.0", "@commercetools-uikit/loading-spinner@^16.11.0", "@commercetools-uikit/loading-spinner@^16.7.3":
+"@commercetools-uikit/loading-spinner@16.12.0", "@commercetools-uikit/loading-spinner@^16.7.3":
   version "16.12.0"
   resolved "https://registry.npmjs.org/@commercetools-uikit/loading-spinner/-/loading-spinner-16.12.0.tgz"
   integrity sha512-KzyhnYHJr+fWDNhIqMQ5FICPS+z6byEgUpoHyfyU6zHh7IQehaD4dUnupm0urKhE0TMp6aNYdN67P104Fp+03A==
@@ -2297,6 +2297,21 @@
     "@commercetools-uikit/spacings-inline" "16.12.0"
     "@commercetools-uikit/text" "16.12.0"
     "@commercetools-uikit/utils" "16.12.0"
+    "@emotion/react" "^11.10.5"
+    prop-types "15.8.1"
+    react-intl "^6.3.2"
+
+"@commercetools-uikit/loading-spinner@^16.12.1":
+  version "16.12.1"
+  resolved "https://registry.yarnpkg.com/@commercetools-uikit/loading-spinner/-/loading-spinner-16.12.1.tgz#e6a60a441b07e7f732e89b10e023c971696b5d07"
+  integrity sha512-GkW3R2QIn1sOQP7xzYTmPLYElI/w8Awg549Lgcx6bmeleIv1fg3aBT6fG+YWOksU7oIpGGtHOmLb5L4S8ROIMw==
+  dependencies:
+    "@babel/runtime" "^7.20.13"
+    "@babel/runtime-corejs3" "^7.20.13"
+    "@commercetools-uikit/design-system" "16.12.1"
+    "@commercetools-uikit/spacings-inline" "16.12.1"
+    "@commercetools-uikit/text" "16.12.1"
+    "@commercetools-uikit/utils" "16.12.1"
     "@emotion/react" "^11.10.5"
     prop-types "15.8.1"
     react-intl "^6.3.2"

@@ -1,6 +1,7 @@
 {
   "onSiteMode": {
     "payButtonTitle": {
+      "key": "onSiteMode_payButtonTitle",
       "label": "Pay Button Title",
       "type": "text",
       "value": "Pay with credit cards",
@@ -8,6 +9,7 @@
       "criteria": ["alpha"]
     },
     "payButtonLanguage": {
+      "key": "onSiteMode_payButtonLanguage",
       "label": "",
       "type": "text",
       "value": "EN",
@@ -21,6 +23,7 @@
       }
     },
     "templateFileName": {
+      "key": "onSiteMode_templateFileName",
       "label": " Template File Name",
       "type": "text",
       "value": "SimplifiedCustomPaymentPage",
@@ -36,17 +39,20 @@
       "tooltip": "Max size 5MB, max dimensions 200x80px,supported jpg,svg,png"
     },
     "enabled": {
+      "key": "onSiteMode_enabled",
       "value": false
     }
   },
   "redirectModeA": {
     "sendOrderData": {
+      "key": "redirectModeB_sendOrderData",
       "label": "Send Order Data",
       "type": "boolean",
       "value": false,
       "tooltip": "Show Basket Data on Worldline Payment Page"
     },
     "templateFileName": {
+      "key": "redirectModeB_templateFileName",
       "label": " Template File Name",
       "type": "text",
       "value": "SimplifiedCustomPaymentPage",
@@ -55,6 +61,7 @@
       "criteria": []
     },
     "refresh": {
+      "key": "redirectModeA_refresh",
       "label": "Refresh list of available payment methods",
       "type": "boolean",
       "value": true,
@@ -118,11 +125,13 @@
       }
     },
     "enabled": {
+      "key": "redirectModeA_enabled",
       "value": false
     }
   },
   "redirectModeB": {
     "sendOrderData": {
+      "key": "redirectModeB_sendOrderData",
       "label": "Send Order Data",
       "type": "boolean",
       "value": false,
@@ -135,6 +144,7 @@
       "criteria": []
     },
     "payButtonTitle": {
+      "key": "redirectModeB_payButtonTitle",
       "label": "Pay Button Title",
       "type": "text",
       "value": "Pay by Worldline",
@@ -142,6 +152,7 @@
       "criteria": ["alpha"]
     },
     "templateFileName": {
+      "key": "redirectModeB_templateFileName",
       "label": " Template File Name",
       "type": "text",
       "value": "SimplifiedCustomPaymentPage",
@@ -150,14 +161,19 @@
       "criteria": []
     },
     "groupCards": {
+      "key": "redirectModeB_groupCards",
       "label": "Group Cards",
       "type": "boolean",
       "value": false,
       "tooltip": "Enabling this setting will group and co-badge card brands when relevant"
     },
-    "enabled": false
+    "enabled": {
+      "key": "redirectModeB_enabled",
+      "value": false
+    }
   },
   "paymentOption": {
+    "key": "paymentOption",
     "label": "Payment Option",
     "type": "boolean",
     "value": "1",
@@ -166,6 +182,7 @@
     "tooltip": "Final execution of the payment"
   },
   "authorizationPaymentOption": {
+    "key": "authorizationPaymentOption",
     "label": "Authorization Payment Option",
     "type": "boolean",
     "value": "1",
@@ -173,6 +190,7 @@
     "criteria": []
   },
   "captureConfiguration": {
+    "key": "captureConfiguration",
     "label": "Capture Configuration",
     "type": "text",
     "value": "-1",
@@ -190,6 +208,7 @@
     "validation": "required"
   },
   "placeOrder": {
+    "key": "placeOrder",
     "label": "Place Order",
     "type": "text",
     "value": "Place an Order",
@@ -197,6 +216,7 @@
     "criteria": ["alpha"]
   },
   "placeOrderLanguage": {
+    "key": "placeOrderLanguage",
     "label": "",
     "type": "text",
     "value": "EN",
@@ -211,6 +231,7 @@
     "validation": "required"
   },
   "advancedLogging": {
+    "key": "advancedLogging",
     "label": "Enable advanced logging",
     "type": "boolean",
     "value": false,
@@ -218,6 +239,7 @@
     "criteria": []
   },
   "force3DSv2": {
+    "key": "force3DSv2",
     "label": "Force 3DSv2",
     "type": "boolean",
     "value": false,
@@ -225,6 +247,7 @@
     "criteria": []
   },
   "bgColor": {
+    "key": "bgColor",
     "label": "Background Color",
     "type": "color",
     "value": "#fff",
@@ -232,6 +255,7 @@
     "criteria": []
   },
   "textColor": {
+    "key": "textColor",
     "label": "Text Color",
     "type": "color",
     "value": "#fff",
@@ -239,6 +263,7 @@
     "criteria": []
   },
   "outlineColor": {
+    "key": "outlineColor",
     "label": "Outline Color",
     "type": "color",
     "value": "#fff",
@@ -246,6 +271,7 @@
     "criteria": []
   },
   "enabled": {
+    "key": "enabled",
     "value": false
   }
 }

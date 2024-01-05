@@ -1,0 +1,29 @@
+{
+  "onSiteMode": [
+    "payButtonTitle",
+    "payButtonLanguage",
+    "templateFileName",
+    "enabled"
+  ],
+  "redirectModeA": ["sendOrderData", "templateFileName", "refresh", "enabled"],
+  "redirectModeB": [
+    "sendOrderData",
+    "payButtonTitle",
+    "templateFileName",
+    "groupCards",
+    "enabled"
+  ],
+  "general": [
+    "paymentOption",
+    "authorizationPaymentOption",
+    "captureConfiguration",
+    "placeOrder",
+    "placeOrderLanguage",
+    "advancedLogging",
+    "force3DSv2",
+    "bgColor",
+    "textColor",
+    "outlineColor",
+    "enabled"
+  ]
+}

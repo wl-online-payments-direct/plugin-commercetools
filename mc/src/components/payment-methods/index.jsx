@@ -1,38 +1,33 @@
 import React, { useContext, useState, useReducer, useEffect } from 'react';
 import './style.css';
 import PageWrapper, { PaymentContext } from '../page-wrapper';
-import PaymentCard from '../payment-card';
-import CheckboxInput from '@commercetools-uikit/checkbox-input';
-import SecondaryButton from '@commercetools-uikit/secondary-button';
 import ToggleInput from '@commercetools-uikit/toggle-input';
-import RadioField from '@commercetools-uikit/radio-field';
-import RadioInput from '@commercetools-uikit/radio-input';
-import Accordion from '@mui/material/Accordion';
-import AccordionSummary from '@mui/material/AccordionSummary';
-import AccordionDetails from '@mui/material/AccordionDetails';
-import Typography from '@mui/material/Typography';
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import TextInput from '@commercetools-uikit/text-input';
-import worldlineLogo from '../../assets/worldline-logo-main.png';
 import PrimaryButton from '@commercetools-uikit/primary-button';
-import InfoIcon from '@mui/icons-material/Info';
-import Tooltip from '@commercetools-uikit/tooltip';
-import MenuItem from '@mui/material/MenuItem';
-import Select from '@mui/material/Select';
-import { DownloadIcon } from '@commercetools-uikit/icons';
 import {
   createCustomObject,
   getCustomObject,
 } from '../../ct-methods/customObject';
 import { CONTAINER_NAME, CONTAINER_KEY } from '../../../configuration';
 import initialState from './intialState.json';
+import dataFields from './dataFields.json';
+import LoadingSpinner from '@commercetools-uikit/loading-spinner';
+import OnSiteMode from './OnSiteMode';
+import RedirectModeA from './RedirectModeA';
+import RedirectModeB from './RedirectModeB';
+import GeneralSettings from './GeneralSettings';
 
 const PaymentMethods = () => {
   const payment = useContext(PaymentContext);
   const [apiData, setAPIData] = useState({});
+  const [loading, setLoading] = useState(true);
 
   const reducer = (state, action) => {
     switch (action.type) {
+      case 'UPDATE-STATE':
+        return {
+          ...state,
+          ...action.value,
+        };
       case 'ENABLE-WORLDLINE':
         return {
           ...state,
@@ -115,7 +110,6 @@ const PaymentMethods = () => {
       type: 'REDIRECT-MODE-B',
       value: payload,
     });
-    console.log('payload', payload);
   };
 
   const handleCommonSettings = (field, value) => {
@@ -145,6 +139,7 @@ const PaymentMethods = () => {
   };
 
   const saveFormData = async () => {
+    setLoading(true);
     const payload = Object.keys(state).map((key) => {
       switch (key) {
         case 'onSiteMode':
@@ -153,7 +148,7 @@ const PaymentMethods = () => {
           const data = state[key];
           return Object.keys(data)
             .map((key1) => {
-              return { [key + '.' + key1]: data[key1].value };
+              return { [key + '_' + key1]: data[key1].value };
             })
             .flat();
         default:
@@ -189,15 +184,16 @@ const PaymentMethods = () => {
       },
     };
 
-    console.log('final Data', final_payload);
     setAPIData(final_payload);
     try {
       const response = await createCustomObject(final_payload);
       if (response.id) {
         console.log('Config settings saved successfully...');
+        getCustomObjectData();
       }
     } catch (error) {
       console.error('Error saving custom object:', error);
+      setLoading(false);
     }
   };
 
@@ -208,9 +204,22 @@ const PaymentMethods = () => {
   const getCustomObjectData = async () => {
     try {
       const response = await getCustomObject(CONTAINER_NAME, CONTAINER_KEY);
-      console.log('response', response);
       if (response?.value) {
         setAPIData(response);
+        let payload = initialState;
+        for (let ds of Object.keys(dataFields)) {
+          for (let field of dataFields[ds]) {
+            if (ds !== 'general')
+              payload[ds][field].value =
+                response.value.test[payload[ds][field].key];
+            else payload[field].value = response.value.test[payload[field].key];
+          }
+        }
+        dispatch({
+          type: 'UPDATE_STATE',
+          value: payload,
+        });
+        setLoading(false);
       }
     } catch (error) {
       console.error('Error fetching custom object:', error);
@@ -218,549 +227,72 @@ const PaymentMethods = () => {
   };
 
   return (
-    <PageWrapper title={'Payment Methods'}>
-      <div className="enable-worldline flex algin-end mb-1">
-        <h3 className="section-header">Enable Worldline Checkout</h3>
-        <ToggleInput
-          size={'big'}
-          isDisabled={false}
-          value={state.enabled.value}
-          isChecked={state.enabled.value}
-          onChange={(e) => {
-            dispatch({
-              type: 'ENABLE-WORLDLINE',
-              value: e.target.checked,
-            });
-          }}
-        />
-      </div>
-      <div className="payment-options-wrapper mb-2">
-        <div className="save-wrapper mb-2">
-          <h2>
-            Please select a combination of one or more checkout types to design
-            your checkout experience
-          </h2>
-          <PrimaryButton
-            label="Save Changes"
-            onClick={() => saveFormData()}
-            isDisabled={false}
-          />
-        </div>
-        <Accordion className="payment-on-site payment-section-wrapper">
-          <AccordionSummary
-            className="accordion-header relative"
-            expandIcon={<ExpandMoreIcon />}
-            aria-controls="panel1a-content"
-          >
-            <Typography>
-              <p>On Site Mode: Card Payments Only</p>
-            </Typography>
+    <>
+      {loading ? (
+        <LoadingSpinner size="l">Loading</LoadingSpinner>
+      ) : (
+        <PageWrapper title={'Payment Methods'}>
+          <div className="enable-worldline flex algin-end mb-1">
+            <h3 className="section-header">Enable Worldline Checkout</h3>
             <ToggleInput
               size={'big'}
-              value={state.onSiteMode.enabled.value}
-              isChecked={state.onSiteMode.enabled.value}
-              onChange={(e) => handleOnsiteMode('enabled', e.target.checked)}
-            />
-          </AccordionSummary>
-          <AccordionDetails className="accordion-details">
-            <p className="sub-title">
-              On site card payment without any redirection
-            </p>
-            <div className="section-wrapper">
-              <h5 className="section-header">
-                {state.onSiteMode.payButtonTitle.label}
-              </h5>
-              <div className="template-section flex">
-                <TextInput
-                  className="section-input"
-                  value={state.onSiteMode.payButtonTitle.value}
-                  validation={state.onSiteMode.payButtonTitle.validation}
-                  type={state.onSiteMode.payButtonTitle.type}
-                  onChange={(e) =>
-                    handleOnsiteMode('payButtonTitle', e.target.value)
-                  }
-                />
-                <div className="dropdown-container">
-                  <Select
-                    className="select-dropdown"
-                    value={state.onSiteMode.payButtonLanguage.value}
-                    validation={state.onSiteMode.payButtonLanguage.validation}
-                    type={state.onSiteMode.payButtonLanguage.type}
-                    onChange={(e) =>
-                      handleOnsiteMode('payButtonLanguage', e.target.value)
-                    }
-                    displayEmpty
-                    inputProps={{ 'aria-label': 'Without label' }}
-                  >
-                    {state.onSiteMode.payButtonLanguage.values &&
-                      Object.keys(
-                        state.onSiteMode.payButtonLanguage.values
-                      ).map((lang, index) => (
-                        <MenuItem key={`lang${index}`} value={lang}>
-                          {lang}
-                        </MenuItem>
-                      ))}
-                  </Select>
-                </div>
-              </div>
-            </div>
-            <div className="section-wrapper">
-              <h5 className="section-header">
-                {state.onSiteMode.templateFileName.label}
-              </h5>
-              <div className="template-section">
-                <TextInput
-                  className="section-input"
-                  value={state.onSiteMode.templateFileName.value}
-                  validation={state.onSiteMode.templateFileName.validation}
-                  type={state.onSiteMode.templateFileName.type}
-                  placeholder={state.onSiteMode.templateFileName.placeholder}
-                  onChange={(e) =>
-                    handleOnsiteMode('templateFileName', e.target.value)
-                  }
-                />
-                <p className="sub-title">
-                  If you are using a customized template, please enter the name
-                  here. If empty, the standard payment page will be displayed.
-                  Payment page look and feel can be customized on Worldline Back
-                  Office.
-                </p>
-              </div>
-            </div>
-            <div className="section-wrapper">
-              <h5 className="section-header">
-                {state.onSiteMode.displayLogo.label}
-                <Tooltip
-                  placement="top"
-                  title={state.onSiteMode.displayLogo.tooltip}
-                >
-                  <InfoIcon />
-                </Tooltip>
-              </h5>
-              <div className="template-section flex">
-                <img className="" src={worldlineLogo} alt={worldlineLogo} />
-                <input
-                  className="section-input"
-                  value={state.onSiteMode.displayLogo.value}
-                  validation={state.onSiteMode.displayLogo.validation}
-                  type={state.onSiteMode.displayLogo.type}
-                  onChange={(event) => console.log(event.target.value)}
-                />
-              </div>
-            </div>
-          </AccordionDetails>
-        </Accordion>
-        <Accordion className="payment-redirect payment-section-wrapper">
-          <AccordionSummary
-            className="accordion-header relative"
-            expandIcon={<ExpandMoreIcon />}
-            aria-controls="panel1a-content"
-          >
-            <Typography>
-              <p>
-                Redirect Mode A: Payment Method selection <b>before </b>
-                redirection
-              </p>
-            </Typography>
-            <ToggleInput
-              size={'big'}
-              value={state.redirectModeA.value}
-              isChecked={state.redirectModeA.enabled.value}
-              onChange={(e) => handleRedirectModeA('enabled', e.target.checked)}
-            />
-          </AccordionSummary>
-          <AccordionDetails className="accordion-details">
-            <p className="sub-title">Single payment buttons selected on site</p>
-            <div className="relative">
-              <span className="float-right">
-                <p>
-                  Send Order Data
-                  <Tooltip
-                    placement="top"
-                    title={state.redirectModeA.sendOrderData.tooltip}
-                  >
-                    <InfoIcon />
-                  </Tooltip>
-                </p>
-                <CheckboxInput
-                  value={state.redirectModeA.sendOrderData.value}
-                  onChange={(e) =>
-                    handleRedirectModeA('sendOrderData', e.target.checked)
-                  }
-                  isChecked={state.redirectModeA.sendOrderData.value}
-                />
-              </span>
-            </div>
-            <SecondaryButton
-              label={state.redirectModeA.refresh.label}
-              onClick={() => console.log('Button clicked')}
-            >
-              <Tooltip
-                placement="top"
-                title={state.redirectModeA.refresh.tooltip}
-              >
-                <InfoIcon />
-              </Tooltip>
-            </SecondaryButton>
-
-            <ol className="payment-options">
-              {state.redirectModeA.paymentOptions &&
-                Object.keys(state.redirectModeA.paymentOptions).map(
-                  (option, index) => (
-                    <li key={`payment-options-${index}`}>
-                      <PaymentCard
-                        logo={state.redirectModeA.paymentOptions[option].label}
-                        active={
-                          state.redirectModeA.paymentOptions[option].enabled
-                        }
-                        handleChange={handleOptionUpdate}
-                      />
-                    </li>
-                  )
-                )}
-            </ol>
-            <div className="section-wrapper">
-              <h5 className="section-header">
-                {state.redirectModeA.templateFileName.label}
-              </h5>
-              <div className="template-section">
-                <TextInput
-                  className="section-input"
-                  value={state.redirectModeA.templateFileName.value}
-                  validation={state.redirectModeA.templateFileName.validation}
-                  type={state.redirectModeA.templateFileName.type}
-                  onChange={(e) =>
-                    handleRedirectModeA('templateFileName', e.target.value)
-                  }
-                  placeholder={state.redirectModeA.templateFileName.placeholder}
-                />
-                <p className="sub-title">
-                  If you are using a customized template, please enter the name
-                  here. If empty, the standard payment page will be displayed.
-                  Payment page look and feel can be customized on Worldline Back
-                  Office.
-                </p>
-              </div>
-            </div>
-          </AccordionDetails>
-        </Accordion>
-        <Accordion className="payment-redirect payment-section-wrapper">
-          <AccordionSummary
-            className="accordion-header relative"
-            expandIcon={<ExpandMoreIcon />}
-            aria-controls="panel1a-content"
-          >
-            <Typography>
-              <p>
-                Redirect Mode B: Payment Method selection <b>after </b>
-                redirection
-              </p>
-            </Typography>
-            <ToggleInput
-              size={'big'}
-              value={state.redirectModeB.enabled.value}
-              isChecked={state.redirectModeB.enabled.value}
-              onChange={(e) => handleRedirectModeB('enabled', e.target.checked)}
-            />
-          </AccordionSummary>
-          <AccordionDetails className="accordion-details">
-            <p className="sub-title">
-              Full redirection to Worldline Online Payments page
-            </p>
-            <div className="relative">
-              <span className="float-right">
-                <p>
-                  Send Order Data
-                  <Tooltip
-                    placement="top"
-                    title={state.redirectModeB.sendOrderData.tooltip}
-                  >
-                    <InfoIcon />
-                  </Tooltip>
-                </p>
-                <CheckboxInput
-                  value={state.redirectModeB.sendOrderData.value}
-                  onChange={(e) =>
-                    handleRedirectModeB('sendOrderData', e.target.checked)
-                  }
-                  isChecked={state.redirectModeB.sendOrderData.value}
-                />
-              </span>
-            </div>
-            <div className="section-wrapper">
-              <h5 className="section-header">
-                {state.redirectModeB.displayLogo.label}
-              </h5>
-              <div className="template-section flex">
-                <img className="" src={worldlineLogo} alt={worldlineLogo} />
-                <input
-                  className="section-input"
-                  value={state.redirectModeB.displayLogo.value}
-                  validation={state.redirectModeB.displayLogo.validation}
-                  type={state.redirectModeB.displayLogo.type}
-                  onChange={(event) => console.log(event.target.value)}
-                />
-              </div>
-            </div>
-            <div className="section-wrapper">
-              <h5 className="section-header">
-                {state.redirectModeB.payButtonTitle.label}
-              </h5>
-              <div className="template-section">
-                <TextInput
-                  className="section-input"
-                  value={state.redirectModeB.payButtonTitle.value}
-                  validation={state.redirectModeB.payButtonTitle.validation}
-                  type={state.redirectModeB.payButtonTitle.type}
-                  onChange={(e) =>
-                    handleRedirectModeB('payButtonTitle', e.target.value)
-                  }
-                />
-              </div>
-            </div>
-            <div className="section-wrapper">
-              <h5 className="section-header">
-                {state.redirectModeB.templateFileName.label}
-              </h5>
-              <div className="template-section">
-                <TextInput
-                  className="section-input"
-                  value={state.redirectModeB.templateFileName.value}
-                  validation={state.redirectModeB.templateFileName.validation}
-                  type={state.redirectModeB.templateFileName.type}
-                  placeholder={state.redirectModeB.templateFileName.placeholder}
-                  onChange={(e) =>
-                    handleRedirectModeB('templateFileName', e.target.value)
-                  }
-                />
-                <p className="sub-title">
-                  If you are using a customized template, please enter the name
-                  here. If empty, the standard payment page will be displayed.
-                  Payment page look and feel can be customized on Worldline Back
-                  Office.
-                </p>
-              </div>
-            </div>
-
-            <div className="section-wrapper flex">
-              <CheckboxInput
-                value={state.redirectModeB.groupCards.value}
-                onChange={(e) =>
-                  handleRedirectModeB('groupCards', e.target.checked)
-                }
-                isChecked={state.redirectModeB.groupCards.value}
-              />
-              <p>
-                {state.redirectModeB.groupCards.label}
-                <Tooltip
-                  placement="top"
-                  title={state.redirectModeB.groupCards.tooltip}
-                >
-                  <InfoIcon />
-                </Tooltip>
-              </p>
-            </div>
-          </AccordionDetails>
-        </Accordion>
-        <div className="section-wrapper">
-          <h5 className="section-header">
-            {state.paymentOption.label}
-            <Tooltip placement="top" title={state.paymentOption.tooltip}>
-              <InfoIcon />
-            </Tooltip>
-          </h5>
-          <div className="options-section">
-            <RadioField
-              name="payment-option"
-              value={state.paymentOption.value}
-              onChange={(e) =>
-                handleCommonSettings('paymentOption', e.target.value)
-              }
-              direction="inline"
-            >
-              <RadioInput.Option value={'1'}>{'Direct Sale'}</RadioInput.Option>
-              <RadioInput.Option value={'2'}>
-                {'Authorization only'}
-              </RadioInput.Option>
-            </RadioField>
-          </div>
-        </div>
-        {state.paymentOption.value === '2' && (
-          <div className="section-wrapper flex">
-            <div className="section-wrapper">
-              <h5 className="section-header">
-                {state.authorizationPaymentOption.label}
-              </h5>
-              <div className="options-section">
-                <RadioField
-                  name="authorization-payment-option"
-                  value={state.authorizationPaymentOption.value}
-                  onChange={(e) =>
-                    handleCommonSettings(
-                      'authorizationPaymentOption',
-                      e.target.value
-                    )
-                  }
-                  direction="inline"
-                >
-                  <RadioInput.Option value={'1'}>
-                    {'Pre Authorization'}
-                  </RadioInput.Option>
-                  <RadioInput.Option value={'2'}>
-                    {'Final Authorization'}
-                  </RadioInput.Option>
-                </RadioField>
-              </div>
-            </div>
-            <div className="section-wrapper">
-              <h5 className="section-header">
-                {state.captureConfiguration.label}
-              </h5>
-              <div className="dropdown-container">
-                <Select
-                  className="select-dropdown"
-                  value={state.captureConfiguration.value}
-                  validation={state.captureConfiguration.validation}
-                  type={state.captureConfiguration.type}
-                  onChange={(e) =>
-                    handleCommonSettings('captureConfiguration', e.target.value)
-                  }
-                  displayEmpty
-                  inputProps={{ 'aria-label': 'Without label' }}
-                >
-                  {state.captureConfiguration.values &&
-                    Object.keys(state.captureConfiguration.values).map(
-                      (lang, index) => (
-                        <MenuItem key={`lang${index}`} value={lang}>
-                          {state.captureConfiguration.values[lang]}
-                        </MenuItem>
-                      )
-                    )}
-                </Select>
-              </div>
-            </div>
-          </div>
-        )}
-        <div className="section-wrapper">
-          <h5 className="section-header">{state.placeOrder.label}</h5>
-          <div className="template-section flex">
-            <TextInput
-              className="section-input"
-              value={state.placeOrder.value}
-              validation={state.placeOrder.validation}
-              type={state.placeOrder.type}
-              onChange={(e) =>
-                handleCommonSettings('placeOrder', e.target.value)
-              }
-            />
-            <div className="dropdown-container">
-              <Select
-                className="select-dropdown"
-                value={state.placeOrderLanguage.value}
-                validation={state.placeOrderLanguage.validation}
-                type={state.placeOrderLanguage.type}
-                onChange={(e) =>
-                  handleCommonSettings('placeOrderLanguage', e.target.value)
-                }
-                displayEmpty
-                inputProps={{ 'aria-label': 'Without label' }}
-              >
-                {state.placeOrderLanguage.values &&
-                  Object.keys(state.placeOrderLanguage.values).map(
-                    (lang, index) => (
-                      <MenuItem key={`lang${index}`} value={lang}>
-                        {lang}
-                      </MenuItem>
-                    )
-                  )}
-              </Select>
-            </div>
-          </div>
-        </div>
-        <div className="section-wrapper">
-          <div className="advanced-loging flex">
-            <h5 className="section-header">{state.advancedLogging.label}</h5>
-            <ToggleInput
-              size={'small'}
               isDisabled={false}
-              value={state.advancedLogging.value}
-              isChecked={state.advancedLogging.value}
-              onChange={(e) =>
-                handleCommonSettings('advancedLogging', e.target.checked)
-              }
-            />
-            {state.advancedLogging.value && <DownloadIcon />}
-          </div>
-        </div>
-        <div className="section-wrapper">
-          <div className="force-s3sv2 flex mb-2">
-            <h5 className="section-header">{state.force3DSv2.label}</h5>
-            <ToggleInput
-              size={'small'}
-              isDisabled={false}
-              value={state.force3DSv2.value}
-              isChecked={state.force3DSv2.value}
-              onChange={(e) =>
-                handleCommonSettings('force3DSv2', e.target.checked)
-              }
+              value={state.enabled.value}
+              isChecked={state.enabled.value}
+              onChange={(e) => {
+                dispatch({
+                  type: 'ENABLE-WORLDLINE',
+                  value: e.target.checked,
+                });
+              }}
             />
           </div>
-        </div>
-        <div className="section-wrapper">
-          <div className="colorpicker-section">
-            <div className="colorpicker-container flex mb-2">
-              <input
-                type={state.bgColor.type}
-                name="bg_color"
-                value={state.bgColor.value}
-                title={state.bgColor.label}
-                onChange={(e) =>
-                  handleCommonSettings('bgColor', e.target.value)
-                }
+          <div className="payment-options-wrapper mb-2">
+            <div className="save-wrapper mb-2">
+              <h2>
+                Please select a combination of one or more checkout types to
+                design your checkout experience
+              </h2>
+              <PrimaryButton
+                label="Save Changes"
+                onClick={() => saveFormData()}
+                isDisabled={false}
               />
-              <h5 className="colorpicker-title">{state.bgColor.label}</h5>
             </div>
-            <div className="colorpicker-container flex mb-2">
-              <input
-                type={state.textColor.type}
-                name="text_color"
-                value={state.textColor.value}
-                title={state.textColor.label}
-                onChange={(e) =>
-                  handleCommonSettings('textColor', e.target.value)
-                }
+            <OnSiteMode
+              onSiteMode={state.onSiteMode}
+              handleOnsiteMode={handleOnsiteMode}
+            />
+            <RedirectModeA
+              redirectModeA={state.redirectModeA}
+              handleRedirectModeA={handleRedirectModeA}
+              handleOptionUpdate={handleOptionUpdate}
+            />
+            <RedirectModeB
+              redirectModeB={state.redirectModeB}
+              handleRedirectModeB={handleRedirectModeB}
+            />
+            <GeneralSettings
+              state={state}
+              handleCommonSettings={handleCommonSettings}
+            />
+            <div className="save-wrapper algin-end">
+              <PrimaryButton
+                label="Save Changes"
+                onClick={() => saveFormData()}
+                isDisabled={false}
               />
-              <h5 className="colorpicker-title">{state.textColor.label}</h5>
-            </div>
-            <div className="colorpicker-container flex mb-2">
-              <input
-                type={state.outlineColor.type}
-                name="bg_color"
-                value={state.outlineColor.value}
-                title={state.outlineColor.label}
-                onChange={(e) =>
-                  handleCommonSettings('outlineColor', e.target.value)
-                }
-              />
-              <h5 className="colorpicker-title">{state.outlineColor.label}</h5>
             </div>
           </div>
-        </div>
-        <div className="save-wrapper algin-end">
-          <PrimaryButton
-            label="Save Changes"
-            onClick={() => saveFormData()}
-            isDisabled={false}
-          />
-        </div>
-      </div>
-      <p class="supportmail">
-        Support Email :{' '}
-        <a href="mailto:dl-dl_shoppingcarts@worldline.com">
-          dl-dl_shoppingcarts@worldline.com
-        </a>
-      </p>
-    </PageWrapper>
+          <p class="supportmail">
+            Support Email :{' '}
+            <a href="mailto:dl-dl_shoppingcarts@worldline.com">
+              dl-dl_shoppingcarts@worldline.com
+            </a>
+          </p>
+        </PageWrapper>
+      )}
+    </>
   );
 };
 
