@@ -83,6 +83,29 @@ const RedirectModeA = ({
         </ol>
         <div className="section-wrapper">
           <h5 className="section-header">
+            {redirectModeA.merchantReferenceID.label}
+            <Tooltip
+              placement="top"
+              title={redirectModeA.merchantReferenceID.tooltip}
+            >
+              <InfoIcon />
+            </Tooltip>
+          </h5>
+          <div className="template-section">
+            <TextInput
+              className="section-input"
+              value={redirectModeA.merchantReferenceID.value}
+              validation={redirectModeA.merchantReferenceID.validation}
+              type={redirectModeA.merchantReferenceID.type}
+              placeholder={redirectModeA.merchantReferenceID.placeholder}
+              onChange={(e) =>
+                handleRedirectModeA('merchantReferenceID', e.target.value)
+              }
+            />
+          </div>
+        </div>
+        <div className="section-wrapper">
+          <h5 className="section-header">
             {redirectModeA.templateFileName.label}
           </h5>
           <div className="template-section">

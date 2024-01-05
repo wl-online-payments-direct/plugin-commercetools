@@ -2,13 +2,21 @@
   "onSiteMode": [
     "payButtonTitle",
     "payButtonLanguage",
+    "merchantReferenceID",
     "templateFileName",
     "enabled"
   ],
-  "redirectModeA": ["sendOrderData", "templateFileName", "refresh", "enabled"],
+  "redirectModeA": [
+    "sendOrderData",
+    "merchantReferenceID",
+    "templateFileName",
+    "refresh",
+    "enabled"
+  ],
   "redirectModeB": [
     "sendOrderData",
     "payButtonTitle",
+    "merchantReferenceID",
     "templateFileName",
     "groupCards",
     "enabled"

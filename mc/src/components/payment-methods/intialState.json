@@ -22,6 +22,16 @@
         "IT": "Paga con carte di credito"
       }
     },
+    "merchantReferenceID": {
+      "key": "onSiteMode_merchantReferenceID",
+      "label": " Merchant Reference ID",
+      "type": "text",
+      "value": "",
+      "placeholder": "Enter Merchant Reference",
+      "validation": "required",
+      "criteria": [],
+      "tooltip": "If you want to show the Merchant ID in Bank statement on their Customer bank account., then you should limit the Merchant ID length to 12 characters"
+    },
     "templateFileName": {
       "key": "onSiteMode_templateFileName",
       "label": " Template File Name",
@@ -50,6 +60,16 @@
       "type": "boolean",
       "value": false,
       "tooltip": "Show Basket Data on Worldline Payment Page"
+    },
+    "merchantReferenceID": {
+      "key": "redirectModeA_merchantReferenceID",
+      "label": " Merchant Reference ID",
+      "type": "text",
+      "value": "",
+      "placeholder": "Enter Merchant Reference",
+      "validation": "required",
+      "criteria": [],
+      "tooltip": "If you want to show the Merchant ID in Bank statement on their Customer bank account., then you should limit the Merchant ID length to 12 characters"
     },
     "templateFileName": {
       "key": "redirectModeB_templateFileName",
@@ -150,6 +170,16 @@
       "value": "Pay by Worldline",
       "validation": "required",
       "criteria": ["alpha"]
+    },
+    "merchantReferenceID": {
+      "key": "redirectModeB_merchantReferenceID",
+      "label": " Merchant Reference ID",
+      "type": "text",
+      "value": "",
+      "placeholder": "Enter Merchant Reference",
+      "validation": "required",
+      "criteria": [],
+      "tooltip": "If you want to show the Merchant ID in Bank statement on their Customer bank account., then you should limit the Merchant ID length to 12 characters"
     },
     "templateFileName": {
       "key": "redirectModeB_templateFileName",
