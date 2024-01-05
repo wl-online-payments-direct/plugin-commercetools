@@ -212,6 +212,7 @@ const MyAccount = (props) => {
                   name="merchantId"
                   value={formData[selectedOption].merchantId}
                   onChange={handleInputChange}
+                  placeholder="Enter your PSPID"
                 />
                 <Label isBold={true}>
                   <p className="form-label">Test API Key</p>
@@ -220,6 +221,7 @@ const MyAccount = (props) => {
                   name="apiKey"
                   value={formData[selectedOption].apiKey}
                   onChange={handleInputChange}
+                  placeholder="Enter your API Key"
                 />
                 <Label isBold={true}>
                   <p className="form-label">Test API Secret</p>
@@ -228,6 +230,7 @@ const MyAccount = (props) => {
                   name="apiSecret"
                   value={formData[selectedOption].apiSecret}
                   onChange={handleInputChange}
+                  placeholder="Enter your API Secret"
                 />
                 <Label isBold={true}>
                   <p className="form-label">Test Webhook Key</p>
@@ -236,6 +239,7 @@ const MyAccount = (props) => {
                   name="webHookKey"
                   value={formData[selectedOption].webHookKey}
                   onChange={handleInputChange}
+                  placeholder="Enter your Webhook Key"
                 />
                 <Label isBold={true}>
                   <p className="form-label">Test Webhook Secret</p>
@@ -244,6 +248,7 @@ const MyAccount = (props) => {
                   name="webHookSecret"
                   value={formData[selectedOption].webHookSecret}
                   onChange={handleInputChange}
+                  placeholder="Enter your Webhook Secret"
                 />
                 <Label isBold={true}>
                   <p className="form-label hook-url">Webhook URL</p>
@@ -253,6 +258,7 @@ const MyAccount = (props) => {
                     name="webHookURL"
                     value={formData[selectedOption].webHookURL}
                     onChange={handleInputChange}
+                    placeholder="Enter your Webhook URL"
                   />
                   <ClipboardIcon
                     style={{ margin: 'auto' }}
@@ -283,6 +289,7 @@ const MyAccount = (props) => {
                   name="paymentPageURL"
                   value={formData[selectedOption].paymentPageURL}
                   onChange={handleInputChange}
+                  placeholder="Enter your Redirection Payment Page URL"
                 />
                 <PrimaryButton
                   label="Save/Update"
