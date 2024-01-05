@@ -1,4 +1,4 @@
-const getQuery = (shouldIncludeInterfaceId: boolean) => `
+const getMutation = (shouldIncludeInterfaceId: boolean) => `
   mutation (
       $orderId: String!,
       $orderVersion: Long!,
@@ -67,4 +67,4 @@ const getQuery = (shouldIncludeInterfaceId: boolean) => `
     }
   `;
 
-export default getQuery;
+export default getMutation;

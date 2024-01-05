@@ -1,6 +1,6 @@
 import { Order, Payment } from '@commercetools/platform-sdk';
 import { ApiClient } from '../../clients';
-import getQuery from './query';
+import getMutation from './query';
 import { updatePaymentResponseMapper } from '../../mappers';
 import { UpdatePaymentResponse } from '../../types';
 
@@ -29,16 +29,12 @@ export async function updatePayment(
     methodInfoName: pspPaymentMethod,
     methodInfoLocale: 'en',
     interfaceId: pspId,
-    // Todo: confirm
-    // interfaceName: 'interfaceName',
-    // interfaceCode: 'interfaceCode',
-    // interfaceText: 'interfaceText',
     orderState: 'Confirmed',
     orderPaymentState: 'Paid',
   };
 
   apiClient.setBody({
-    query: getQuery(shouldIncludeInterfaceId),
+    query: getMutation(shouldIncludeInterfaceId),
     variables,
   });
 
