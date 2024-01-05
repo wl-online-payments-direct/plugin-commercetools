@@ -28,14 +28,6 @@ query ($orderId: String!) {
           }
         }
       }
-      discountedPricePerQuantity{
-        quantity
-        discountedPrice{
-          value{
-            centAmount
-          }
-        }
-      }
       taxRate {
          includedInPrice
       }
@@ -72,36 +64,6 @@ query ($orderId: String!) {
             }
           }
         }
-      }
-    }
-    returnInfo{ 
-      items{ 
-        ... on LineItemReturnItem {
-          type
-          lineItemId
-          id
-          quantity
-          comment
-          shipmentState
-          paymentState
-        }
-      } 
-    } 
-    totalPrice{
-      type
-      centAmount
-      fractionDigits
-      currencyCode
-    }
-    shippingInfo{
-      taxRate{
-        amount
-        includedInPrice
-      }
-    }
-    taxedShippingPrice{
-      totalTax{
-        centAmount
       }
     }
     taxedPrice{
