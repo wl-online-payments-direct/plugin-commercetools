@@ -5,3 +5,4 @@ export * from './webhook';
 export * from './retryPayment';
 export * from './getPaymentStatus';
 export * from './deleteToken';
+export * from './loadPaymentMethods';
