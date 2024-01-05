@@ -1,6 +1,6 @@
 import { getCustomObjects, getMyCart } from '@worldline/ctintegration-ct';
 import { getPaymentTokensByCustomerID } from '@worldline/ctintegration-db';
-import { LoadPaymentMethodsPayload } from './types';
+import { CustomerPaymentToken, LoadPaymentMethodsPayload } from './types';
 import { loadPaymentMethodsMappedResponse } from './mappers';
 
 export async function loadPaymentMethodsAppHandler(
@@ -15,17 +15,13 @@ export async function loadPaymentMethodsAppHandler(
     };
   }
 
-  const methods = [];
-
+  let savedTokens: CustomerPaymentToken[] = [];
   if (cart.customerId) {
-    const savedTokens = await getPaymentTokensByCustomerID(cart.customerId);
-    methods.push(...savedTokens);
+    savedTokens = await getPaymentTokensByCustomerID(cart.customerId);
   }
 
-  // Fetch custom objects from admin config
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  // Fetch custom objects
   const customConfig = await getCustomObjects(payload.storeId);
 
-  // TODO: Need to fetch the custom objects too and merge in the savedTokens
-  return loadPaymentMethodsMappedResponse(methods);
+  return loadPaymentMethodsMappedResponse(customConfig, savedTokens);
 }
