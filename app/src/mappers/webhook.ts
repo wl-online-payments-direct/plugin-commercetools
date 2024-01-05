@@ -91,10 +91,14 @@ export function getCustomerTokenPayload(
     payload?.payment?.paymentOutput?.cardPaymentMethodSpecificOutput ||
     payload?.payment?.paymentOutput?.redirectPaymentMethodSpecificOutput ||
     {};
+  const { cardNumber: title = '' } =
+    payload?.payment?.paymentOutput?.cardPaymentMethodSpecificOutput?.card ||
+    {};
 
   return {
     customerId,
     paymentId,
     token,
+    title,
   };
 }
