@@ -58,7 +58,7 @@
       "key": "redirectModeB_sendOrderData",
       "label": "Send Order Data",
       "type": "boolean",
-      "value": false,
+      "value": true,
       "tooltip": "Show Basket Data on Worldline Payment Page"
     },
     "merchantReferenceID": {
@@ -154,7 +154,7 @@
       "key": "redirectModeB_sendOrderData",
       "label": "Send Order Data",
       "type": "boolean",
-      "value": false,
+      "value": true,
       "tooltip": "Show Basket Data on Worldline Payment Page"
     },
     "displayLogo": {
