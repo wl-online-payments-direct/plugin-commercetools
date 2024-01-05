@@ -1,14 +1,7 @@
-import { hasErrorDueConcurrentModification } from './common';
 import { UpdatePaymentResponse } from '../types';
 
 const updatePaymentResponseMapper = (response: UpdatePaymentResponse) => {
-  const hasErrDueConcurrentModification =
-    hasErrorDueConcurrentModification(response);
-
-  const shouldThrowErrors =
-    !!response?.body?.errors?.length && !hasErrDueConcurrentModification;
-
-  if (shouldThrowErrors) {
+  if (response?.body?.errors?.length) {
     throw {
       message: '[CT] Failed to update payment',
       details: response?.body?.errors,
@@ -17,7 +10,6 @@ const updatePaymentResponseMapper = (response: UpdatePaymentResponse) => {
   }
 
   return {
-    hasErrDueConcurrentModification,
     updatedOrder: response.body?.data?.updateOrder,
     updatedPayment: response.body?.data?.updatePayment,
   };

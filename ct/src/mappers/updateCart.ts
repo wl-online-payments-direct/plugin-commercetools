@@ -1,15 +1,7 @@
-import { hasErrorDueConcurrentModification } from './common';
-
 import { UpdateCart } from '../types';
 
 const updateCartResponseMapper = (response: UpdateCart) => {
-  const hasErrDueConcurrentModification =
-    hasErrorDueConcurrentModification(response);
-
-  const shouldThrowErrors =
-    !!response?.body?.errors?.length && !hasErrDueConcurrentModification;
-
-  if (shouldThrowErrors) {
+  if (response?.body?.errors?.length) {
     throw {
       message: '[CT] Failed to update cart',
       details: response?.body?.errors,
@@ -18,7 +10,6 @@ const updateCartResponseMapper = (response: UpdateCart) => {
   }
 
   return {
-    hasErrDueConcurrentModification,
     updatedCart: response?.body?.data?.updateCart,
   };
 };

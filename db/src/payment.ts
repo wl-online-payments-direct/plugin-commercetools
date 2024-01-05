@@ -98,12 +98,12 @@ export async function getIncrementedReference(storeId: string) {
   }
 }
 
-export async function getPayment(
-  where: Prisma.paymentsWhereInput,
-): Promise<Payment | null> {
+export async function getPayment(where: {
+  [key: string]: string;
+}): Promise<Payment | null> {
   try {
-    const payment = await prisma.payments.findFirst({
-      where,
+    const payment = await prisma.payments.findUnique({
+      where: where as unknown as Prisma.paymentsWhereUniqueInput,
     });
     return payment;
   } catch (error) {

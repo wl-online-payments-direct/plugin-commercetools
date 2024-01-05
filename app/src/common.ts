@@ -11,8 +11,8 @@ import {
   updatePayment,
 } from '@worldline/ctintegration-ct';
 import { getPayment, setPayment } from '@worldline/ctintegration-db';
-import { retry } from '@worldline/ctintegration-util';
-import { PaymentPayload } from '../types';
+import { logger, retry } from '@worldline/ctintegration-util';
+import { PaymentPayload } from './types';
 import {
   getPaymentDBPayload,
   getPaymentFilterQuery,
@@ -22,7 +22,7 @@ import {
   getMappedStatus,
   hasEqualAmounts,
   isPaymentProcessing,
-} from '../mappers';
+} from './mappers';
 
 export const resolveOrderPayment = (order: Order): Payment => {
   const payments = (order?.paymentInfo?.payments || []) as unknown as Payment[];
@@ -41,13 +41,9 @@ const createOrderWithPayment = async (cart: Cart) => {
   const ctPayment = await createPayment(getCreatePaymentCTPayload(cart));
 
   // Mutate cart for add payment
-  const { hasErrDueConcurrentModification, updatedCart } = await updateCart(
+  const { updatedCart } = await updateCart(
     getUpdateCartPayload(cart, ctPayment),
   );
-
-  if (hasErrDueConcurrentModification) {
-    return { isRetry: true };
-  }
 
   // Get access token
   const token = await getClientCredentialsToken();
@@ -56,7 +52,7 @@ const createOrderWithPayment = async (cart: Cart) => {
     getCreateOrderCTPayload(updatedCart, token),
   );
 
-  return { isRetry: false, data: { order: ctOrder } };
+  return { order: ctOrder };
 };
 
 const updateOrderWithPayment = async (
@@ -74,58 +70,50 @@ const updateOrderWithPayment = async (
   const payment = resolveOrderPayment(order);
 
   // Mutate cart for update payment
-  const { hasErrDueConcurrentModification, updatedOrder } = await updatePayment(
-    order,
-    payment,
-    payload,
-  );
+  const { updatedOrder } = await updatePayment(order, payment, payload);
 
-  if (hasErrDueConcurrentModification) {
-    return { isRetry: true };
-  }
-
-  return { isRetry: false, data: { order: updatedOrder } };
+  return { order: updatedOrder };
 };
 
 export async function orderPaymentHandler(payload: PaymentPayload) {
-  // Fetch DB payment
-  const payment = await getPayment(getPaymentDBPayload(payload));
-  if (!payment) {
-    throw {
-      message: `Failed to fetch the payment with merchant reference '${payload.payment.paymentOutput.references.merchantReference}'`,
-      statusCode: 500,
-    };
-  }
+  // log the payload
+  logger().debug(`[orderPaymentHandler]:payload: ${JSON.stringify(payload)}`);
 
-  // Fetch CT cart
-  const cart = await getCartById(payment.cartId);
-  if (!cart) {
-    await setPayment({ id: payment.id }, { status: 'IN_REVIEW' });
-    // TODO: store the error message in database.
-    throw {
-      message: `Cart '${payment.cartId}' is missing!`,
-      statusCode: 500,
-    };
-  }
-
-  if (hasEqualAmounts(payload, cart)) {
-    // TODO: send a notification to admin and add a column to save the reason
-    throw {
-      message: 'Cart amount doesnt match with the paid amount',
-      statusCode: 500,
-    };
-  }
-
-  if (isPaymentProcessing(payment.state)) {
-    throw {
-      message: `Failed to process the payment as it is already in '${payment.state}' state!`,
-      statusCode: 500,
-    };
-  }
-
-  const mappedStatus = getMappedStatus(payload);
   return retry(async () => {
+    // Fetch DB payment
+    const payment = await getPayment(getPaymentDBPayload(payload));
+
+    if (!payment) {
+      logger().error('Failed to fetch the payment');
+      return { isRetry: true };
+    }
+
     try {
+      // Fetch CT cart
+      const cart = await getCartById(payment.cartId);
+      if (!cart) {
+        await setPayment({ id: payment.id }, { status: 'IN_REVIEW' });
+        // TODO: store the error message in database.
+
+        logger().error(`Cart '${payment.cartId}' is missing!`);
+        return { isRetry: true };
+      }
+
+      if (hasEqualAmounts(payload, cart)) {
+        // TODO: send a notification to admin and add a column to save the reason
+        logger().error('Cart amount doesnt match with the paid amount');
+        return { isRetry: true };
+      }
+
+      if (isPaymentProcessing(payment.state)) {
+        logger().error(
+          `Failed to process the payment as it is already in '${payment.state}' state!`,
+        );
+        return { isRetry: true };
+      }
+
+      const mappedStatus = getMappedStatus(payload);
+
       if (mappedStatus === 'FAILED') {
         await setPayment({ id: payment.id }, { status: mappedStatus });
         return {
@@ -152,13 +140,13 @@ export async function orderPaymentHandler(payload: PaymentPayload) {
       }
       // update order id and reset the state as DEFAULT
       await setPayment(getPaymentFilterQuery(payment), {
-        ...(!payment.orderId && result?.data?.order?.id
-          ? { orderId: result.data.order.id }
+        ...(!payment.orderId && result?.order?.id
+          ? { orderId: result.order.id }
           : {}),
         state: 'DEFAULT',
       });
 
-      return result;
+      return { isRetry: false, data: result };
     } catch (error) {
       // If any exception happens, reset to default state
       await setPayment(getPaymentFilterQuery(payment), {

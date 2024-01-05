@@ -1,5 +1,5 @@
 import { PaymentPayload } from './types';
-import { orderPaymentHandler } from './lib';
+import { orderPaymentHandler } from './common';
 
 export async function webhookAppHandler(payload: PaymentPayload) {
   if (payload.type === 'payment.created') {

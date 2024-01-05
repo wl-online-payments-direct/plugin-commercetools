@@ -6,7 +6,7 @@ import {
   getConnectionServiceProps,
   retryPaymentStatusPayload,
 } from './mappers';
-import { orderPaymentHandler } from './lib';
+import { orderPaymentHandler } from './common';
 
 export async function retryPaymentAppHandler(
   payload: RetryPaymentStatusPayload,
