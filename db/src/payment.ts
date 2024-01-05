@@ -1,4 +1,3 @@
-import { Prisma } from '@prisma/client';
 import prisma from './connection';
 import {
   createPaymentResponseMapper,
@@ -20,23 +19,6 @@ export async function createPaymentInDB(
   } catch (error) {
     throw {
       message: 'Failed to create payment',
-      statusCode: 500,
-      details: (error as { message: string }).message,
-    };
-  }
-}
-
-export async function getPayment(
-  where: Prisma.paymentsWhereInput,
-): Promise<Payment | null> {
-  try {
-    const payment = await prisma.payments.findFirst({
-      where,
-    });
-    return payment;
-  } catch (error) {
-    throw {
-      message: 'Exception occured for fetching the payment',
       statusCode: 500,
       details: (error as { message: string }).message,
     };
@@ -109,6 +91,23 @@ export async function getIncrementedReference(storeId: string) {
   } catch (error) {
     throw {
       message: 'Failed to increment the payment id',
+      statusCode: 500,
+      details: (error as { message: string }).message,
+    };
+  }
+}
+
+export async function getPayment(where: {
+  [key: string]: string | number | boolean;
+}): Promise<Payment | null> {
+  try {
+    const payment = await prisma.payments.findFirst({
+      where,
+    });
+    return payment;
+  } catch (error) {
+    throw {
+      message: 'Exception occured for fetching the payment',
       statusCode: 500,
       details: (error as { message: string }).message,
     };
