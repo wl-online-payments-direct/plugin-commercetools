@@ -1,6 +1,6 @@
 import { ServerResponse } from 'http';
 import {
-  isPostRequestOrThrowError,
+  isGetRequestOrThrowError,
   logger,
   ResponseClient,
 } from '@worldline/ctintegration-util';
@@ -10,8 +10,8 @@ import { ErrorProps, Request } from '../../lib/types';
 const processRequest = async (request: Request, response: ServerResponse) => {
   try {
     const { method } = request;
-    // Only allow POST request; else throw error
-    await isPostRequestOrThrowError(method);
+    // Only allow GET request; else throw error
+    await isGetRequestOrThrowError(method);
 
     const data = await loadPaymentMethods(request);
     ResponseClient.setResponseTo200(response, data);

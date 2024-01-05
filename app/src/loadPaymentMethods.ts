@@ -1,4 +1,4 @@
-import { getMyCart } from '@worldline/ctintegration-ct';
+import { getCustomObjects, getMyCart } from '@worldline/ctintegration-ct';
 import { getPaymentTokensByCustomerID } from '@worldline/ctintegration-db';
 import { LoadPaymentMethodsPayload } from './types';
 import { loadPaymentMethodsMappedResponse } from './mappers';
@@ -15,15 +15,17 @@ export async function loadPaymentMethodsAppHandler(
     };
   }
 
-  if (!cart.customerId) {
-    throw {
-      message: 'Failed to identify the customer information',
-      statusCode: 500,
-    };
+  const methods = [];
+
+  if (cart.customerId) {
+    const savedTokens = await getPaymentTokensByCustomerID(cart.customerId);
+    methods.push(...savedTokens);
   }
 
-  const paymentTokens = await getPaymentTokensByCustomerID(cart.customerId);
+  // Fetch custom objects from admin config
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const customConfig = await getCustomObjects(payload.storeId);
 
-  // Need to fetch the custom objects too and merge in the paymentTokens
-  return loadPaymentMethodsMappedResponse(paymentTokens);
+  // TODO: Need to fetch the custom objects too and merge in the savedTokens
+  return loadPaymentMethodsMappedResponse(methods);
 }

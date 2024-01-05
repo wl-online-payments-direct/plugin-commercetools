@@ -1,5 +1,6 @@
 export interface LoadPaymentMethodsPayload {
   authToken: string;
+  storeId: string;
 }
 
 export interface CustomerPaymentToken {
