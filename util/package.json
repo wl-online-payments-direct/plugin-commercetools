@@ -32,5 +32,12 @@
   },
   "engines": {
     "node": ">=18.0.0"
+  },
+  "lint-staged": {
+    "src/**/*.ts":[
+      "npm run lint-fix",
+      "npm run pretty",
+      "npm run build"
+    ]
   }
 }

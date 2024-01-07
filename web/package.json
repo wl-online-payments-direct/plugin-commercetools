@@ -42,12 +42,6 @@
     "prettier": "^3.1.0",
     "ts-node": "^10.9.1"
   },
-  "lint-staged": {
-    "src/**/*.{ts,js}": [
-      "eslint",
-      "prettier --write"
-    ]
-  },
   "nodemonConfig": {
     "verbose": false,
     "execMap": {
@@ -67,5 +61,12 @@
       "*.test.ts"
     ],
     "ext": "ts,js"
+  },
+  "lint-staged": {
+    "src/**/*.ts":[
+      "npm run lint-fix",
+      "npm run pretty",
+      "npm run build"
+    ]
   }
 }
