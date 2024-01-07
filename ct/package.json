@@ -6,6 +6,7 @@
   "types": "dist/types/index.d.ts",
   "scripts": {
     "build": "tsc",
+    "typecheck": "tsc --noEmit",
     "dev": "tsc -w -preserveWatchOutput",
     "lint": "eslint src/**/*.ts",
     "lint-fix": "eslint --fix src/**/*.ts",
@@ -41,7 +42,7 @@
     "src/**/*.ts":[
       "npm run lint-fix",
       "npm run pretty",
-      "npm run build"
+      "npm run typecheck"
     ]
   }
 }
