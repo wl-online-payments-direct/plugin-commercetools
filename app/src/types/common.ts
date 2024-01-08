@@ -9,29 +9,15 @@ export interface CustomObjects {
   host: string;
   variant: string;
   merchantReference: string;
-  onSiteMode_payButtonTitle?: string;
-  onSiteMode_payButtonLanguage?: string;
-  onSiteMode_templateFileName?: string;
-  onSiteMode_enabled?: boolean;
-  redirectModeA_sendOrderData?: boolean;
-  redirectModeA_templateFileName?: string;
-  redirectModeA_refresh?: boolean;
-  redirectModeA_enabled?: boolean;
-  redirectModeB_sendOrderData?: boolean;
-  redirectModeB_payButtonTitle?: string;
-  redirectModeB_templateFileName?: string;
-  redirectModeB_groupCards?: boolean;
-  paymentOption?: string;
-  authorizationPaymentOption?: string;
-  captureConfiguration?: string;
-  placeOrder?: string;
-  placeOrderLanguage?: string;
-  advancedLogging?: boolean;
-  force3DSv2?: boolean;
-  bgColor?: string;
-  textColor?: string;
-  outlineColor?: string;
-  enabled?: boolean;
-  redirectModeB_enabled?: string;
-  onSiteMode_merchantReferenceID?: string;
+  webhookKey: string;
+  webhookSecret: string;
+  webhookUrl: string;
+  redirectUrl: string;
+  paymentMethods: [
+    {
+      title: string;
+      redirectURL: string;
+      type: string;
+    },
+  ];
 }

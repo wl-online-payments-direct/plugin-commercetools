@@ -6,6 +6,17 @@ interface ConnectionProps {
   apiKey: string;
   apiSecret: string;
   host: string;
+  webhookKey: string;
+  webhookSecret: string;
+  webhookUrl: string;
+  redirectUrl: string;
+  paymentMethods: [
+    {
+      title: string;
+      redirectURL: string;
+      type: string;
+    },
+  ];
 }
 interface ConfigModes {
   mode: string;
