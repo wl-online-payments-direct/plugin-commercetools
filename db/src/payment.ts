@@ -102,7 +102,7 @@ export async function getPayment(where: {
   [key: string]: string;
 }): Promise<Payment | null> {
   try {
-    const payment = await prisma.payments.findUnique({
+    const payment = await prisma.payments.findFirst({
       where: where as unknown as Prisma.paymentsWhereUniqueInput,
     });
     return payment;

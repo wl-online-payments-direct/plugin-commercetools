@@ -11,6 +11,14 @@ import { orderPaymentHandler } from './common';
 export async function retryPaymentAppHandler(
   payload: RetryPaymentStatusPayload,
 ) {
+  const customConfig = await getCustomObjects(payload.storeId, false);
+  if (!customConfig) {
+    throw {
+      message: 'Failed to fetch configuration',
+      statusCode: 500,
+    };
+  }
+
   const dbPayment = await getPayment(retryPaymentStatusPayload(payload));
   if (!dbPayment) {
     throw {
@@ -20,7 +28,7 @@ export async function retryPaymentAppHandler(
   }
   // Get psp details
   const payment = await getPaymentStatusService(
-    getConnectionServiceProps(await getCustomObjects(payload.storeId)),
+    getConnectionServiceProps(customConfig),
     dbPayment.worldlineId,
   );
   return orderPaymentHandler({ payment });

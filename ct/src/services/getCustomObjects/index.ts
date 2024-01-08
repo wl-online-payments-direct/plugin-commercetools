@@ -6,10 +6,11 @@ import { CustomObjects, CustomObjectsResponse } from '../../types';
 
 export async function getCustomObjects(
   storeId: string,
+  useCache = true,
 ): Promise<CustomObjects> {
   // Fetch from cache
   const cache = await getCustomObjectsCache(storeId);
-  if (cache) {
+  if (useCache && cache) {
     return cache;
   }
 
