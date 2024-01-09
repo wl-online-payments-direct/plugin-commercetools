@@ -2,8 +2,10 @@ import { ApiClient } from '../../clients';
 import query from './query';
 import { createPaymentResponseMapper } from '../../mappers';
 import { CreatePaymentPayload, CreatePaymentResponse } from '../../types';
+import { constants } from '../../constants';
 
 export async function createPayment({
+  paymentId,
   centAmount,
   currencyCode,
 }: CreatePaymentPayload) {
@@ -13,6 +15,15 @@ export async function createPayment({
       amountPlanned: {
         currencyCode,
         centAmount,
+      },
+      custom: {
+        typeKey: constants.CREATE_PAYMENT.TYPE_KEY,
+        fields: [
+          {
+            name: constants.CREATE_PAYMENT.FIELDS.PAYMENTID,
+            value: `"${paymentId}"`,
+          },
+        ],
       },
     },
   };

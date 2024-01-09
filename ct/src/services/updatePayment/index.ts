@@ -2,14 +2,35 @@ import { Order, Payment } from '@commercetools/platform-sdk';
 import { ApiClient } from '../../clients';
 import getMutation from './query';
 import { updatePaymentResponseMapper } from '../../mappers';
-import { UpdatePaymentResponse } from '../../types';
+import { PaymentPayload, UpdatePaymentResponse } from '../../types';
 
 export async function updatePayment(
   order: Order,
-  payment: Payment,
-  payload: any,
+  dbPaymentId: string,
+  payload: PaymentPayload,
 ) {
   const { id: orderId, version: orderVersion } = order;
+
+  // get payments from order
+  const payments = (order?.paymentInfo?.payments || []) as unknown as Payment[];
+
+  // get payment based on the dbpaymentId
+  const payment = payments.find(
+    (py) =>
+      (
+        py?.custom as unknown as {
+          customFieldsRaw: { [key: string]: string }[];
+        }
+      )?.customFieldsRaw?.find((field) => field?.value === dbPaymentId),
+  );
+
+  if (!payment) {
+    throw {
+      message: `Failed to fetch the payment with payment id '${dbPaymentId}'`,
+      statusCode: 500,
+    };
+  }
+
   const { id: paymentId, version: paymentVersion } = payment;
   const {
     payment: {

@@ -25,10 +25,11 @@ export function getCreateOrderCTPayload(
   };
 }
 
-export function getCreatePaymentCTPayload(cart: Cart) {
+export function getCreatePaymentCTPayload(cart: Cart, paymentId: string) {
   const { centAmount = 0, currencyCode = '' } =
     cart.taxedPrice?.totalGross || {};
   return {
+    paymentId: paymentId || '',
     centAmount,
     currencyCode,
   };

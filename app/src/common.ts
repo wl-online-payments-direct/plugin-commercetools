@@ -1,7 +1,5 @@
 import {
   Cart,
-  Order,
-  Payment,
   createOrder,
   createPayment,
   getCartById,
@@ -24,21 +22,11 @@ import {
   isPaymentProcessing,
 } from './mappers';
 
-export const resolveOrderPayment = (order: Order): Payment => {
-  const payments = (order?.paymentInfo?.payments || []) as unknown as Payment[];
-  const sortedPayments = payments.sort(
-    (a, b) =>
-      new Date(b.lastModifiedAt).getTime() -
-      new Date(a.lastModifiedAt).getTime(),
-  );
-  const [payment] = sortedPayments;
-  // return last modified payment
-  return payment;
-};
-
-const createOrderWithPayment = async (cart: Cart) => {
+const createOrderWithPayment = async (paymentId: string, cart: Cart) => {
   // Create order and payment
-  const ctPayment = await createPayment(getCreatePaymentCTPayload(cart));
+  const ctPayment = await createPayment(
+    getCreatePaymentCTPayload(cart, paymentId),
+  );
 
   // Mutate cart for add payment
   const { updatedCart } = await updateCart(
@@ -57,6 +45,7 @@ const createOrderWithPayment = async (cart: Cart) => {
 
 const updateOrderWithPayment = async (
   orderId: string,
+  dbPaymentId: string,
   payload: PaymentPayload,
 ) => {
   const order = await getOrderById(orderId);
@@ -67,47 +56,47 @@ const updateOrderWithPayment = async (
     };
   }
 
-  const payment = resolveOrderPayment(order);
-
   // Mutate cart for update payment
-  const { updatedOrder } = await updatePayment(order, payment, payload);
+  const { updatedOrder } = await updatePayment(order, dbPaymentId, payload);
 
   return { order: updatedOrder };
 };
 
 export async function orderPaymentHandler(payload: PaymentPayload) {
   // log the payload
-  logger().debug(`[orderPaymentHandler]:payload: ${JSON.stringify(payload)}`);
+  logger().debug(`[orderPaymentHandler] payload: ${JSON.stringify(payload)}`);
 
   return retry(async () => {
     // Fetch DB payment
-    const payment = await getPayment(getPaymentDBPayload(payload));
+    const dbPayment = await getPayment(getPaymentDBPayload(payload));
 
-    if (!payment) {
-      logger().error('Failed to fetch the payment');
+    if (!dbPayment) {
+      logger().error('[orderPaymentHandler] Failed to fetch the payment');
       return { isRetry: true };
     }
 
     try {
       // Fetch CT cart
-      const cart = await getCartById(payment.cartId);
+      const cart = await getCartById(dbPayment.cartId);
       if (!cart) {
-        await setPayment({ id: payment.id }, { status: 'IN_REVIEW' });
+        await setPayment({ id: dbPayment.id }, { status: 'IN_REVIEW' });
         // TODO: store the error message in database.
 
-        logger().error(`Cart '${payment.cartId}' is missing!`);
+        logger().error(`Cart '${dbPayment.cartId}' is missing!`);
         return { isRetry: true };
       }
 
       if (hasEqualAmounts(payload, cart)) {
         // TODO: send a notification to admin and add a column to save the reason
-        logger().error('Cart amount doesnt match with the paid amount');
+        logger().error(
+          '[orderPaymentHandler] Cart amount doesnt match with the paid amount',
+        );
         return { isRetry: true };
       }
 
-      if (isPaymentProcessing(payment.state)) {
+      if (isPaymentProcessing(dbPayment.state)) {
         logger().error(
-          `Failed to process the payment as it is already in '${payment.state}' state!`,
+          `[orderPaymentHandler] Failed to process the payment as it is already in '${dbPayment.state}' state!`,
         );
         return { isRetry: true };
       }
@@ -115,7 +104,7 @@ export async function orderPaymentHandler(payload: PaymentPayload) {
       const mappedStatus = getMappedStatus(payload);
 
       if (mappedStatus === 'FAILED') {
-        await setPayment({ id: payment.id }, { status: mappedStatus });
+        await setPayment({ id: dbPayment.id }, { status: mappedStatus });
         return {
           isRetry: false,
           data: {
@@ -125,22 +114,29 @@ export async function orderPaymentHandler(payload: PaymentPayload) {
       }
 
       await setPayment(
-        { id: payment.id },
+        { id: dbPayment.id },
         { status: mappedStatus, state: 'PROCESSING' },
       );
 
       let result;
+      // TODO: What happens when one of the webhook arrive out of sync?
+      // E.g. a payment got authorized and then captured, but the webhooks reached in reverse order.
+
       // if order id exists
-      if (payment.orderId) {
+      if (dbPayment.orderId) {
         // update order and payment
-        result = await updateOrderWithPayment(payment.orderId, payload);
+        result = await updateOrderWithPayment(
+          dbPayment.orderId,
+          dbPayment.paymentId,
+          payload,
+        );
       } else {
         // create order and payment
-        result = await createOrderWithPayment(cart);
+        result = await createOrderWithPayment(dbPayment.paymentId, cart);
       }
       // update order id and reset the state as DEFAULT
-      await setPayment(getPaymentFilterQuery(payment), {
-        ...(!payment.orderId && result?.order?.id
+      await setPayment(getPaymentFilterQuery(dbPayment), {
+        ...(!dbPayment.orderId && result?.order?.id
           ? { orderId: result.order.id }
           : {}),
         state: 'DEFAULT',
@@ -149,7 +145,7 @@ export async function orderPaymentHandler(payload: PaymentPayload) {
       return { isRetry: false, data: result };
     } catch (error) {
       // If any exception happens, reset to default state
-      await setPayment(getPaymentFilterQuery(payment), {
+      await setPayment(getPaymentFilterQuery(dbPayment), {
         state: 'DEFAULT',
       });
       throw error;

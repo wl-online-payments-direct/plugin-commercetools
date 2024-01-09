@@ -49,6 +49,12 @@ query ($orderId: String!) {
         paymentMethodInfo {
           paymentInterface
         }
+        custom {
+          customFieldsRaw {
+            name
+            value
+          }
+        }
         transactions {
           id
           type
