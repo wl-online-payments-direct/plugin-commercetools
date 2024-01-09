@@ -1,14 +1,21 @@
 import { ApiClient } from '../../clients';
 import query from './query';
 import { createPaymentResponseMapper } from '../../mappers';
-import { CreatePaymentPayload, CreatePaymentResponse } from '../../types';
+import { CreatePaymentResponse, PaymentPayload } from '../../types';
 import { constants } from '../../constants';
 
-export async function createPayment({
-  paymentId,
-  centAmount,
-  currencyCode,
-}: CreatePaymentPayload) {
+export async function createPayment(payload: PaymentPayload) {
+  const {
+    payment: {
+      id: interfaceId,
+      paymentOutput: {
+        paymentMethod,
+        amountOfMoney: { amount: centAmount, currencyCode },
+        references: { merchantReference },
+      },
+    },
+  } = payload;
+
   const apiClient = new ApiClient();
   const variables = {
     draft: {
@@ -16,12 +23,20 @@ export async function createPayment({
         currencyCode,
         centAmount,
       },
+      interfaceId,
+      paymentMethodInfo: {
+        method: paymentMethod,
+        name: {
+          locale: 'en',
+          value: paymentMethod,
+        },
+      },
       custom: {
         typeKey: constants.CREATE_PAYMENT.TYPE_KEY,
         fields: [
           {
             name: constants.CREATE_PAYMENT.FIELDS.PAYMENTID,
-            value: `"${paymentId}"`,
+            value: `"${merchantReference}"`,
           },
         ],
       },

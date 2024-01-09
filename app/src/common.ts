@@ -15,18 +15,15 @@ import {
   getPaymentDBPayload,
   getPaymentFilterQuery,
   getCreateOrderCTPayload,
-  getCreatePaymentCTPayload,
   getUpdateCartPayload,
   getMappedStatus,
   hasEqualAmounts,
   isPaymentProcessing,
 } from './mappers';
 
-const createOrderWithPayment = async (paymentId: string, cart: Cart) => {
+const createOrderWithPayment = async (payload: PaymentPayload, cart: Cart) => {
   // Create order and payment
-  const ctPayment = await createPayment(
-    getCreatePaymentCTPayload(cart, paymentId),
-  );
+  const ctPayment = await createPayment(payload);
 
   // Mutate cart for add payment
   const { updatedCart } = await updateCart(
@@ -44,22 +41,24 @@ const createOrderWithPayment = async (paymentId: string, cart: Cart) => {
 };
 
 const updateOrderWithPayment = async (
-  orderId: string,
-  dbPaymentId: string,
   payload: PaymentPayload,
+  dbPayment: { orderId: string },
 ) => {
-  const order = await getOrderById(orderId);
+  const order = await getOrderById(dbPayment.orderId);
   if (!order) {
     throw {
-      message: `Failed to fetch the order with id '${orderId}'`,
+      message: `Failed to fetch the order with id '${dbPayment.orderId}'`,
       statusCode: 500,
     };
   }
 
   // Mutate cart for update payment
-  const { updatedOrder } = await updatePayment(order, dbPaymentId, payload);
+  const { updatedPayment } = await updatePayment(payload, order);
 
-  return { order: updatedOrder };
+  return {
+    order: { id: order.id, version: order.version },
+    payment: updatedPayment,
+  };
 };
 
 export async function orderPaymentHandler(payload: PaymentPayload) {
@@ -118,22 +117,12 @@ export async function orderPaymentHandler(payload: PaymentPayload) {
         { status: mappedStatus, state: 'PROCESSING' },
       );
 
-      let result;
       // TODO: What happens when one of the webhook arrive out of sync?
-      // E.g. a payment got authorized and then captured, but the webhooks reached in reverse order.
+      // E.g. a payment got authorized and then captured, but the webhooks reached in reverse order
+      const result = !dbPayment?.orderId
+        ? await createOrderWithPayment(payload, cart)
+        : await updateOrderWithPayment(payload, dbPayment);
 
-      // if order id exists
-      if (dbPayment.orderId) {
-        // update order and payment
-        result = await updateOrderWithPayment(
-          dbPayment.orderId,
-          dbPayment.paymentId,
-          payload,
-        );
-      } else {
-        // create order and payment
-        result = await createOrderWithPayment(dbPayment.paymentId, cart);
-      }
       // update order id and reset the state as DEFAULT
       await setPayment(getPaymentFilterQuery(dbPayment), {
         ...(!dbPayment.orderId && result?.order?.id

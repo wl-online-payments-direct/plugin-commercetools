@@ -1,33 +1,10 @@
-const getMutation = (shouldIncludeInterfaceId: boolean) => `
+const getMutation = () => `
   mutation (
-      $orderId: String!,
-      $orderVersion: Long!,
       $paymentId:String!,
       $paymentVersion: Long!,
       $methodInfoName: String!,
       $methodInfoLocale: Locale!,
-      ${shouldIncludeInterfaceId ? '$interfaceId: String!,' : ''}
-      $orderState: OrderState!,
-      $orderPaymentState: PaymentState!,
     ) {
-      # Order update action
-      updateOrder: updateOrder(
-        id:$orderId
-        version:$orderVersion
-        actions:[{
-          changeOrderState: {
-            orderState: $orderState
-          }
-        },
-        {
-          changePaymentState: {
-            paymentState: $orderPaymentState
-          }
-        }]
-      ){
-        id
-        version
-      }
       # Payment update actions
       updatePayment: updatePayment(
         # The current version of the Payment.
@@ -47,17 +24,6 @@ const getMutation = (shouldIncludeInterfaceId: boolean) => `
               }
             }
           },
-          ${
-            shouldIncludeInterfaceId
-              ? `
-              {
-                setInterfaceId:{
-                  interfaceId:$interfaceId
-                }
-              },
-              `
-              : ''
-          }
         ]
       ) {
         # Return the id, version

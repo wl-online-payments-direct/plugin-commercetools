@@ -10,7 +10,6 @@ const updatePaymentResponseMapper = (response: UpdatePaymentResponse) => {
   }
 
   return {
-    updatedOrder: response.body?.data?.updateOrder,
     updatedPayment: response.body?.data?.updatePayment,
   };
 };

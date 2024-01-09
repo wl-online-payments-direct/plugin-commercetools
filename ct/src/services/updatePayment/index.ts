@@ -4,12 +4,15 @@ import getMutation from './query';
 import { updatePaymentResponseMapper } from '../../mappers';
 import { PaymentPayload, UpdatePaymentResponse } from '../../types';
 
-export async function updatePayment(
-  order: Order,
-  dbPaymentId: string,
-  payload: PaymentPayload,
-) {
-  const { id: orderId, version: orderVersion } = order;
+export async function updatePayment(payload: PaymentPayload, order: Order) {
+  const {
+    payment: {
+      paymentOutput: {
+        paymentMethod,
+        references: { merchantReference },
+      },
+    },
+  } = payload;
 
   // get payments from order
   const payments = (order?.paymentInfo?.payments || []) as unknown as Payment[];
@@ -19,43 +22,30 @@ export async function updatePayment(
     (py) =>
       (
         py?.custom as unknown as {
-          customFieldsRaw: { [key: string]: string }[];
+          customFieldsRaw: { value: string }[];
         }
-      )?.customFieldsRaw?.find((field) => field?.value === dbPaymentId),
+      )?.customFieldsRaw?.find((field) => field?.value === merchantReference),
   );
 
   if (!payment) {
     throw {
-      message: `Failed to fetch the payment with payment id '${dbPaymentId}'`,
+      message: `Failed to fetch the payment with payment id '${merchantReference}'`,
       statusCode: 500,
     };
   }
 
   const { id: paymentId, version: paymentVersion } = payment;
-  const {
-    payment: {
-      id: pspId,
-      paymentOutput: { paymentMethod: pspPaymentMethod },
-    },
-  } = payload;
-
-  const shouldIncludeInterfaceId = !payment?.interfaceId;
 
   const apiClient = new ApiClient();
   const variables = {
-    orderId,
-    orderVersion,
     paymentId,
     paymentVersion,
-    methodInfoName: pspPaymentMethod,
+    methodInfoName: paymentMethod,
     methodInfoLocale: 'en',
-    interfaceId: pspId,
-    orderState: 'Confirmed',
-    orderPaymentState: 'Paid',
   };
 
   apiClient.setBody({
-    query: getMutation(shouldIncludeInterfaceId),
+    query: getMutation(),
     variables,
   });
 
