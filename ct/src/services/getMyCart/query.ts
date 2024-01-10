@@ -29,6 +29,9 @@ query {
           centAmount
         }
       }
+      billingAddress {
+        country
+      }
       country
       locale
     }
