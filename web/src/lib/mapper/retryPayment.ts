@@ -14,8 +14,10 @@ export function getRetryPaymentAppPayload(
 ): RetryPaymentAppPayload {
   const { id = '', storeId = '' } = (request?.body ||
     {}) as RetryPaymentAppPayload;
+  const { authorization: authToken = '' } = request.headers;
   return {
     id,
     storeId,
+    authToken,
   };
 }

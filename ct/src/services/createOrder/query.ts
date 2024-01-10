@@ -3,12 +3,6 @@ const query = `
     createOrderFromCart(draft: {id: $id, version: $version}) {
       id
       version
-      taxedPrice{
-        totalGross{
-          currencyCode
-          centAmount
-        }
-      }
     }
   }
 `;

@@ -1,25 +1,18 @@
 import { ServerResponse } from 'http';
 import {
-  isPostRequestOrThrowError,
+  isGetRequestOrThrowError,
   logger,
   ResponseClient,
 } from '@worldline/ctintegration-util';
-import { retryPayment } from '../../lib';
+import { getWebhookStatusRequest } from '../../lib';
 import { ErrorProps, Request } from '../../lib/types';
 
 const processRequest = async (request: Request, response: ServerResponse) => {
   try {
-    const { method } = request;
-    logger().debug(`[RetryPayment] Request initiated with method: ${method}`);
+    // Only allow GET request; else throw error
+    await isGetRequestOrThrowError(request.method);
 
-    // Only allow POST request; else throw error
-    await isPostRequestOrThrowError(method);
-
-    logger().debug('[RetryPayment] Process started');
-
-    const data = await retryPayment(request);
-
-    logger().debug('[RetryPayment] Process completed');
+    const data = await getWebhookStatusRequest(request);
 
     ResponseClient.setResponseTo200(response, data);
   } catch (e) {
@@ -28,4 +21,5 @@ const processRequest = async (request: Request, response: ServerResponse) => {
     ResponseClient.setResponseError(response, error);
   }
 };
+
 export default { processRequest };
