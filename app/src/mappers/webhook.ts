@@ -64,11 +64,10 @@ export function getMappedStatus(payload: PaymentPayload) {
 }
 
 export function shouldSaveToken(
-  result: { isRetry: boolean },
   cart: Cart,
   payment: { storePermanently: boolean },
 ) {
-  return !result.isRetry && cart?.customerId && payment.storePermanently;
+  return cart?.customerId && payment.storePermanently;
 }
 
 export function getCustomerTokenPayload(
