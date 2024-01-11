@@ -3,6 +3,7 @@ import { CustomObjects, HostedCheckoutPayload } from '../types';
 
 export function getHostedCheckoutPayload(
   customConfig: CustomObjects,
+  reference: { referenceId: number },
   cart: Cart,
   payload: HostedCheckoutPayload,
 ) {
@@ -12,8 +13,11 @@ export function getHostedCheckoutPayload(
   const locale = cart?.locale || 'en-US';
   const countryCode = cart?.billingAddress?.country || '';
 
-  const { variant } = customConfig;
+  const { variant, merchantReference } = customConfig;
   const { tokens } = payload;
+
+  // Concat with the merchant reference
+  const paymentId = `${merchantReference}-${reference?.referenceId?.toString()}`;
 
   return {
     order: {
@@ -26,6 +30,10 @@ export function getHostedCheckoutPayload(
         billingAddress: {
           countryCode,
         },
+      },
+      references: {
+        // this key is used to identify the merchant from webhook
+        merchantReference: paymentId,
       },
     },
     hostedCheckoutSpecificInput: {

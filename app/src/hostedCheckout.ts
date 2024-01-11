@@ -1,5 +1,6 @@
 import { getCustomObjects, getMyCart } from '@worldline/ctintegration-ct';
 import { hostedCheckoutService } from '@worldline/ctintegration-psp';
+import { getIncrementedReference } from '@worldline/ctintegration-db';
 import { HostedCheckoutPayload } from './types';
 import { getHostedCheckoutPayload, getConnectionServiceProps } from './mappers';
 
@@ -14,9 +15,12 @@ export async function hostedCheckoutSession(payload: HostedCheckoutPayload) {
   }
   const customConfig = await getCustomObjects(payload.storeId);
 
+  // Fetch incremented payment id
+  const reference = await getIncrementedReference(payload.storeId);
+
   const result = await hostedCheckoutService(
     getConnectionServiceProps(customConfig),
-    getHostedCheckoutPayload(customConfig, cart, payload),
+    getHostedCheckoutPayload(customConfig, reference, cart, payload),
   );
 
   return result;
