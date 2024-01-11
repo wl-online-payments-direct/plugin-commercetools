@@ -5,7 +5,7 @@ export async function saveCustomerPaymentToken(
   data: CreateCustomerPaymentTokenRequest,
 ) {
   try {
-    return await prisma.customer_payment_tokens.create({ data });
+    return prisma.customer_payment_tokens.create({ data });
   } catch (error) {
     throw {
       message: 'Exception occured for save customer payment token',
@@ -15,11 +15,11 @@ export async function saveCustomerPaymentToken(
   }
 }
 
-export async function getCustomerPaymentToken(token: string) {
+export async function getCustomerPaymentToken(id: string) {
   try {
-    return await prisma.customer_payment_tokens.findFirst({
+    return prisma.customer_payment_tokens.findUnique({
       where: {
-        token,
+        id,
       },
     });
   } catch (error) {
@@ -31,11 +31,11 @@ export async function getCustomerPaymentToken(token: string) {
   }
 }
 
-export async function deleteCustomerPaymentTokens(token: string) {
+export async function deleteCustomerPaymentTokens(id: string) {
   try {
-    return await prisma.customer_payment_tokens.deleteMany({
+    return prisma.customer_payment_tokens.delete({
       where: {
-        token,
+        id,
       },
     });
   } catch (error) {
