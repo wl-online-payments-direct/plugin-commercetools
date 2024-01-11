@@ -13,7 +13,6 @@ interface ConnectionProps {
   paymentMethods: [
     {
       title: string;
-      redirectURL: string;
       type: string;
     },
   ];

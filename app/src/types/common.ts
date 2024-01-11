@@ -16,7 +16,6 @@ export interface CustomObjects {
   paymentMethods: [
     {
       title: string;
-      redirectURL: string;
       type: string;
     },
   ];
