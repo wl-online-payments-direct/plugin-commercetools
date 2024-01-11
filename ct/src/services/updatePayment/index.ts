@@ -1,44 +1,51 @@
 import { Order, Payment } from '@commercetools/platform-sdk';
 import { ApiClient } from '../../clients';
-import getQuery from './query';
+import getMutation from './query';
 import { updatePaymentResponseMapper } from '../../mappers';
-import { UpdatePaymentResponse } from '../../types';
+import { PaymentPayload, UpdatePaymentResponse } from '../../types';
 
-export async function updatePayment(
-  order: Order,
-  payment: Payment,
-  payload: any,
-) {
-  const { id: orderId, version: orderVersion } = order;
-  const { id: paymentId, version: paymentVersion } = payment;
+export async function updatePayment(payload: PaymentPayload, order: Order) {
   const {
     payment: {
-      id: pspId,
-      paymentOutput: { paymentMethod: pspPaymentMethod },
+      paymentOutput: {
+        paymentMethod,
+        references: { merchantReference },
+      },
     },
   } = payload;
 
-  const shouldIncludeInterfaceId = !payment?.interfaceId;
+  // get payments from order
+  const payments = (order?.paymentInfo?.payments || []) as unknown as Payment[];
+
+  // get payment based on the dbpaymentId
+  const payment = payments.find(
+    (py) =>
+      (
+        py?.custom as unknown as {
+          customFieldsRaw: { value: string }[];
+        }
+      )?.customFieldsRaw?.find((field) => field?.value === merchantReference),
+  );
+
+  if (!payment) {
+    throw {
+      message: `Failed to fetch the payment with payment id '${merchantReference}'`,
+      statusCode: 500,
+    };
+  }
+
+  const { id: paymentId, version: paymentVersion } = payment;
 
   const apiClient = new ApiClient();
   const variables = {
-    orderId,
-    orderVersion,
     paymentId,
     paymentVersion,
-    methodInfoName: pspPaymentMethod,
+    methodInfoName: paymentMethod,
     methodInfoLocale: 'en',
-    interfaceId: pspId,
-    // Todo: confirm
-    // interfaceName: 'interfaceName',
-    // interfaceCode: 'interfaceCode',
-    // interfaceText: 'interfaceText',
-    orderState: 'Confirmed',
-    orderPaymentState: 'Paid',
   };
 
   apiClient.setBody({
-    query: getQuery(shouldIncludeInterfaceId),
+    query: getMutation(),
     variables,
   });
 

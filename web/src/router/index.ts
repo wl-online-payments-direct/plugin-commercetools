@@ -7,6 +7,7 @@ import webhookController from '../api/webhook/controller';
 import retryPaymentController from '../api/retryPayment/controller';
 import deleteTokenController from '../api/deleteToken/controller';
 import loadPaymentMethodsController from '../api/loadPaymentMethods/controller';
+import getWebhookStatusController from '../api/getWebhookStatus/controller';
 
 const routes = {
   '/': healthController.processRequest,
@@ -16,6 +17,7 @@ const routes = {
   '/payment': createPaymentController.processRequest,
   '/payment/status': getPaymentStatusController.processRequest,
   '/webhook': webhookController.processRequest,
+  '/webhook/status': getWebhookStatusController.processRequest,
   '/payment/retry': retryPaymentController.processRequest,
   '/token/remove': deleteTokenController.processRequest,
   '/payment/methods': loadPaymentMethodsController.processRequest,

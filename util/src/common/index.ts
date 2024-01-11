@@ -1,4 +1,4 @@
-import { Request } from '../types';
+import { Action, Request } from '../types';
 
 const hasAuthHeaderOrThrowError = (request: Request) => {
   if (!request.headers.authorization) {
@@ -37,11 +37,11 @@ const hasRequiredParamsInQueryString = (queryString: {
   return true;
 };
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-const retry = async (action: any, maxAttemptCount = 3) => {
+const retry = async (action: Action, maxAttemptCount = 3) => {
   let retries = maxAttemptCount;
   while (retries > 0) {
     retries -= 1;
+    // TODO: will fix this
     // eslint-disable-next-line no-await-in-loop
     const { isRetry, data = {} } = await action();
     if (!isRetry) {

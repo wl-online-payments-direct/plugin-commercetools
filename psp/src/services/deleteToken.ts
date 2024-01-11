@@ -10,7 +10,7 @@ export async function deleteTokenService(
   const result = await client.tokens.removeToken(merchantId, token, {});
   if (result?.body?.errors) {
     throw {
-      message: `Failed to process the token ${token} deletion`,
+      message: 'Failed to process the token deletion',
       statusCode: result.body.errors[0]?.httpStatusCode || 500,
       details: result.body.errors,
     };

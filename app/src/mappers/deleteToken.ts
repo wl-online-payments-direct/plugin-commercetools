@@ -1,17 +1,15 @@
 export function getDeletedTokenMappedResponse(
-  hasDBTokenDeleted: {
-    count: number;
-  },
+  hasDBTokenDeleted: { [key: string]: string | Date },
   hasPspTokenDeleted: boolean,
 ) {
-  const hasDeleted = hasDBTokenDeleted?.count && hasPspTokenDeleted;
+  const hasDeleted = !!hasDBTokenDeleted && hasPspTokenDeleted;
 
   return {
     hasDeleted,
     ...(!hasDeleted
       ? {
           details: {
-            hasDbRecordsDeleted: hasDBTokenDeleted?.count,
+            hasDbRecordsDeleted: !!hasDBTokenDeleted,
             hasPspRecordsDeleted: hasPspTokenDeleted,
           },
         }
