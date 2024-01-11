@@ -21,6 +21,7 @@
   "license": "ISC",
   "dependencies": {
     "@prisma/client": "^5.5.0",
+    "@worldline/ctintegration-util": "^1.0.0",
     "dotenv": "^16.3.1"
   },
   "devDependencies": {
@@ -40,7 +41,7 @@
     "node": ">=18.0.0"
   },
   "lint-staged": {
-    "src/**/*.ts":[
+    "src/**/*.ts": [
       "npm run lint-fix",
       "npm run pretty",
       "npm run typecheck"
