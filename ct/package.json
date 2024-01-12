@@ -6,6 +6,7 @@
   "types": "dist/types/index.d.ts",
   "scripts": {
     "build": "tsc",
+    "typecheck": "tsc --noEmit",
     "dev": "tsc -w -preserveWatchOutput",
     "lint": "eslint src/**/*.ts",
     "lint-fix": "eslint --fix src/**/*.ts",
@@ -17,6 +18,7 @@
   "license": "ISC",
   "dependencies": {
     "@commercetools/platform-sdk": "^7.0.0",
+    "@commercetools/sdk-auth": "^4.0.1",
     "@commercetools/sdk-client-v2": "^2.3.0",
     "@worldline/ctintegration-util": "^1.0.0",
     "cross-fetch": "^4.0.0",
@@ -36,5 +38,12 @@
   },
   "engines": {
     "node": ">=18.0.0"
+  },
+  "lint-staged": {
+    "src/**/*.ts":[
+      "npm run lint-fix",
+      "npm run pretty",
+      "npm run typecheck"
+    ]
   }
 }

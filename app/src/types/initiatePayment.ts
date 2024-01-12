@@ -7,9 +7,7 @@ export interface InitializePaymentPayload {
 
 export interface InitServicePayload {
   variant: string;
-  cart: {
-    locale: string;
-  };
+  locale: string;
   payload: {
     tokens: string[];
     askConsumerConsent: boolean;

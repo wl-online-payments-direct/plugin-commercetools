@@ -5,3 +5,5 @@ export * from './getPaymentStatus';
 export * from './getWebhookStatus';
 export * from './testConnection';
 export * from './validateCart';
+export * from './retryPayment';
+export * from './webhook';
