@@ -4,7 +4,7 @@ import { ConnectOpts } from '../types';
 export async function getPaymentStatusService(
   connectOpts: ConnectOpts,
   paymentId: string,
-): Promise<{ status: string }> {
+) {
   const { merchantId } = connectOpts;
   const client = await connectService(connectOpts);
   const result = await client.payments.getPayment(merchantId, paymentId, {});
@@ -16,7 +16,5 @@ export async function getPaymentStatusService(
     };
   }
 
-  const { status = '' } = result.body || {};
-
-  return { status };
+  return result.body;
 }

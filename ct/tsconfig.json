@@ -28,7 +28,7 @@
     },
     "include": [
       "src/**/*.ts",
-      "node-bigcommerce.d.ts"
+      "node-bigcommerce.d.ts",
     ],
     "exclude": ["node_modules/**"],
   }
