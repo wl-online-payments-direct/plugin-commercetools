@@ -36,11 +36,6 @@ export interface PaymentPayload {
   type?: string;
 }
 
-export interface RefundResult {
-  isEqual: boolean;
-  isGreater: boolean;
-}
-
 export interface RefundPayload {
   refund: {
     refundOutput: {

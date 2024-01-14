@@ -2,12 +2,16 @@ import crypto from 'crypto';
 import { logger } from '@worldline/ctintegration-util';
 import { getCustomObjects } from '@worldline/ctintegration-ct';
 import { getPayment } from '@worldline/ctintegration-db';
-import { PaymentPayload } from './types';
-import { orderPaymentHandler, orderPaymentCancelHandler } from './common';
+import { PaymentPayload, RefundPayload } from './types';
+import {
+  orderPaymentHandler,
+  refundPaymentHandler,
+  orderPaymentCancelHandler,
+} from './common';
 import { getPaymentDBPayload } from './mappers';
 
 const authenticateWebhook = (
-  payload: PaymentPayload,
+  payload: PaymentPayload | RefundPayload,
   signature: string,
   webhookSecret: string,
 ) => {
@@ -21,7 +25,6 @@ const authenticateWebhook = (
       .createHmac('sha256', webhookSecret)
       .update(stringifyPayload)
       .digest('base64');
-
     // Compare our hash to Worldline hash
     return hash === signature;
   } catch (e) {
@@ -33,7 +36,7 @@ export async function webhookAppHandler({
   payload,
   signature,
 }: {
-  payload: PaymentPayload;
+  payload: PaymentPayload | RefundPayload;
   signature: string;
 }) {
   const payment = await getPayment(getPaymentDBPayload(payload));
@@ -44,7 +47,6 @@ export async function webhookAppHandler({
       statusCode: 500,
     };
   }
-
   // Fetch custom objects from admin config
   const customConfig = await getCustomObjects(payment.storeId);
 
@@ -61,6 +63,9 @@ export async function webhookAppHandler({
       break;
     case 'payment.cancelled':
       return orderPaymentCancelHandler(payload);
+      break;
+    case 'payment.refunded':
+      return refundPaymentHandler(payload);
 
     default:
       logger().warn(`[WEBHOOK] Received payload type: ${payload.type}`);

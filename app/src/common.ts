@@ -196,6 +196,82 @@ const createTransactionInPayment = async (
 
   return { payment: updatedPayment };
 };
+
+export async function refundPaymentHandler(payload: RefundPayload) {
+  // log the payload
+  logger().debug(`[refundPaymentHandler]:payload: ${JSON.stringify(payload)}`);
+  return retry(async () => {
+    // Fetch DB payment
+    const payment = await getPayment(getPaymentDBPayload(payload));
+
+    if (!payment) {
+      logger().error('Failed to fetch the payment');
+      return { isRetry: true };
+    }
+    const refundAmount = payload.refund.refundOutput.amountOfMoney.amount;
+    // Fetch CT order
+    const order = await getOrderById(payment.orderId);
+    if (!order) {
+      logger().error(`Order with id: '${payment.orderId}' is missing!`);
+      return { isRetry: true };
+    }
+
+    // Validate refund amount
+    const hasValidRefund = hasValidAmount(order, refundAmount);
+
+    if (hasValidRefund.isGreater) {
+      logger().error('Refund amount cannot be greater than the order amount!');
+      return { isRetry: true };
+    }
+
+    const mappedStatus = getMappedStatus(payload);
+
+    if (mappedStatus === 'FAILED') {
+      await capturePaymentInDB(
+        getCaptureDatabasePayload(
+          payment,
+          refundAmount,
+          mappedStatus,
+          'Refund',
+        ),
+      );
+      return {
+        isRetry: false,
+        data: {
+          message: `Updated refund payment status as ${mappedStatus} as we received status as ${payload.refund.status}`,
+        },
+      };
+    }
+    let response;
+    if (order.paymentInfo?.payments[0].id) {
+      response = createTransactionInPayment(
+        order.paymentInfo?.payments[0].id,
+        payload,
+        'Refund',
+      );
+      await capturePaymentInDB(
+        getCaptureDatabasePayload(
+          payment,
+          refundAmount,
+          mappedStatus,
+          'Refund',
+        ),
+      );
+    }
+
+    // if refund is equal to order amount
+    if (hasValidRefund.isEqual) {
+      // update order status
+      const result = await updateOrderStatus(payment.orderId, 'Complete');
+      if (result.order.orderState === 'Complete') {
+        logger().info(`Order status update to : ${result.order.orderState}`);
+      }
+    }
+
+    return { isRetry: false, data: response };
+  });
+}
+
 export async function orderPaymentCancelHandler(payload: PaymentPayload) {
   // log the payload
   logger().debug(
@@ -216,7 +292,7 @@ export async function orderPaymentCancelHandler(payload: PaymentPayload) {
       return { isRetry: true };
     }
 
-    // Validate refund amount
+    // Validate amount
     const amount = hasValidAmount(order, cancelAmount);
     if (amount.isGreater) {
       logger().error('Cancel amount is not valid!');

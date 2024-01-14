@@ -6,3 +6,4 @@ export * from './retryPayment';
 export * from './getPaymentStatus';
 export * from './getWebhookStatus';
 export * from './cancelPayment';
+export * from './refundPayment';
