@@ -57,3 +57,17 @@ model payment_references {
 
   @@unique(storeId)
 }
+
+model payment_transactions {
+  id            String   @id @default(uuid())
+  status        String?   @db.Text
+  paymentId     String
+  worldlineId   String
+  storeId       String   @db.VarChar(255)
+  orderId       String   @db.VarChar(255)
+  amount        Int
+  type          String?   @db.Text
+  errors        String?  @db.Text
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+}

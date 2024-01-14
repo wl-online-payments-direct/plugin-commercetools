@@ -18,13 +18,12 @@ export async function updatePayment(payload: PaymentPayload, order: Order) {
   const payments = (order?.paymentInfo?.payments || []) as unknown as Payment[];
 
   // get payment based on the dbpaymentId
-  const payment = payments.find(
-    (py) =>
-      (
-        py?.custom as unknown as {
-          customFieldsRaw: { value: string }[];
-        }
-      )?.customFieldsRaw?.find((field) => field?.value === merchantReference),
+  const payment = payments.find((py) =>
+    (
+      py?.custom as unknown as {
+        customFieldsRaw: { value: string }[];
+      }
+    )?.customFieldsRaw?.find((field) => field?.value === merchantReference),
   );
 
   if (!payment) {

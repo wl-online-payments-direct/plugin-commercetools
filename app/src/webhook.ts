@@ -3,7 +3,7 @@ import { logger } from '@worldline/ctintegration-util';
 import { getCustomObjects } from '@worldline/ctintegration-ct';
 import { getPayment } from '@worldline/ctintegration-db';
 import { PaymentPayload } from './types';
-import { orderPaymentHandler } from './common';
+import { orderPaymentHandler, orderPaymentCancelHandler } from './common';
 import { getPaymentDBPayload } from './mappers';
 
 const authenticateWebhook = (
@@ -58,6 +58,9 @@ export async function webhookAppHandler({
   switch (payload.type) {
     case 'payment.created':
       return orderPaymentHandler(payload);
+      break;
+    case 'payment.cancelled':
+      return orderPaymentCancelHandler(payload);
 
     default:
       logger().warn(`[WEBHOOK] Received payload type: ${payload.type}`);

@@ -1,5 +1,5 @@
-import { Cart, Payment } from '@worldline/ctintegration-ct';
-import { PaymentPayload } from '../types';
+import { Cart, Payment, Order } from '@worldline/ctintegration-ct';
+import { PaymentPayload, RefundResult } from '../types';
 
 export function getPaymentDBPayload(payload: PaymentPayload) {
   const { merchantReference } = payload.payment.paymentOutput.references;
@@ -42,6 +42,15 @@ export function hasEqualAmounts(payload: PaymentPayload, cart: Cart): boolean {
   );
 }
 
+export function hasValidAmount(order: Order, amount: number): RefundResult {
+  const totalAmountPlanned = order.taxedPrice?.totalGross?.centAmount ?? 0;
+
+  return {
+    isEqual: totalAmountPlanned === amount,
+    isGreater: totalAmountPlanned < amount,
+  };
+}
+
 export function isPaymentProcessing(state: string): boolean {
   return state === 'PROCESSING';
 }
@@ -56,7 +65,7 @@ export function getMappedStatus(payload: PaymentPayload) {
     PENDING_CAPTURE: 'AUTHORIZED',
     CAPTURE_REQUESTED: 'CAPTURE_REQUESTED',
     REFUND_REQUESTED: 'REFUND_REQUESTED',
-    CANCELLED: 'FAILED',
+    CANCELLED: 'CANCELLED',
     REJECTED: 'FAILED',
     REJECTED_CAPTURE: 'FAILED',
   };

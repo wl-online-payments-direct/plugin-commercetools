@@ -6,6 +6,7 @@ import getPaymentStatusController from '../api/getPaymentStatus/controller';
 import webhookController from '../api/webhook/controller';
 import retryPaymentController from '../api/retryPayment/controller';
 import getWebhookStatusController from '../api/getWebhookStatus/controller';
+import cancelPaymentController from '../api/cancelPayment/controller';
 
 const routes = {
   '/': healthController.processRequest,
@@ -17,6 +18,7 @@ const routes = {
   '/webhook': webhookController.processRequest,
   '/webhook/status': getWebhookStatusController.processRequest,
   '/payment/retry': retryPaymentController.processRequest,
+  '/payment/cancel': cancelPaymentController.processRequest,
 };
 
 export { routes };

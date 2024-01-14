@@ -6,3 +6,6 @@ export * from './createPayment';
 export * from './updateCart';
 export * from './updatePayment';
 export * from './getOrderById';
+export * from './updateOrder';
+export * from './createTransaction';
+export * from './getPaymentById';

@@ -35,3 +35,35 @@ export interface PaymentPayload {
   };
   type?: string;
 }
+
+export interface RefundResult {
+  isEqual: boolean;
+  isGreater: boolean;
+}
+
+export interface RefundPayload {
+  refund: {
+    refundOutput: {
+      amountOfMoney: {
+        amount: number;
+        currencyCode: string;
+      };
+      references: {
+        merchantReference: string;
+      };
+      cardPaymentMethodSpecificOutput: {
+        totalAmountPaid: number;
+        totalAmountRefunded: number;
+      };
+      paymentMethod: string;
+    };
+    status: string;
+    statusOutput: {
+      isCancellable: boolean;
+      statusCategory: string;
+      statusCode: number;
+    };
+    id: string;
+  };
+  type?: string;
+}
