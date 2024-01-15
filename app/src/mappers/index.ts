@@ -1,6 +1,6 @@
 export * from './createPayment';
 export * from './connection';
-export * from './initializePayment';
+export * from './hostedTokenization';
 export * from './hostedCheckout';
 export * from './webhook';
 export * from './retryPayment';

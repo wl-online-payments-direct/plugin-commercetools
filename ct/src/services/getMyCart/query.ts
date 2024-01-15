@@ -30,7 +30,15 @@ query {
         }
       }
       billingAddress {
+        apartment
+        building
+        streetName
+        streetNumber
+        postalCode
+        city
+        state
         country
+        additionalAddressInfo
       }
       country
       locale

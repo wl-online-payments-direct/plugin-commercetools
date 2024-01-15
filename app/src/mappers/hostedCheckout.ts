@@ -10,11 +10,23 @@ export function getHostedCheckoutPayload(
   const amount = cart?.taxedPrice?.totalGross.centAmount || 0;
   const currencyCode = cart?.taxedPrice?.totalGross.currencyCode || '';
   const merchantCustomerId = cart?.customerId || cart?.anonymousId || '';
-  const locale = cart?.locale || 'en-US';
-  const countryCode = cart?.billingAddress?.country || '';
+  const locale = cart?.locale ? { locale: cart.locale } : {};
 
   const { variant, merchantReference } = customConfig;
   const { tokens } = payload;
+
+  // Billing address
+  const {
+    apartment = '',
+    building = '',
+    streetName = '',
+    streetNumber = '',
+    additionalAddressInfo: additionalInfo = '',
+    country: countryCode = '',
+    city = '',
+    state = '',
+    postalCode: zip = '',
+  } = cart?.billingAddress || {};
 
   // Concat with the merchant reference
   const paymentId = `${merchantReference}-${reference?.referenceId?.toString()}`;
@@ -28,6 +40,12 @@ export function getHostedCheckoutPayload(
       customer: {
         merchantCustomerId,
         billingAddress: {
+          houseNumber: `${apartment} ${building}`,
+          city,
+          state,
+          street: `${streetNumber} ${streetName}`,
+          zip,
+          additionalInfo,
           countryCode,
         },
       },
@@ -38,7 +56,7 @@ export function getHostedCheckoutPayload(
     },
     hostedCheckoutSpecificInput: {
       variant,
-      locale,
+      ...locale,
       tokens,
     },
   };

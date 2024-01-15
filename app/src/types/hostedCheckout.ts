@@ -19,7 +19,7 @@ export interface HostedCheckoutServicePayload {
   };
   hostedCheckoutSpecificInput: {
     variant: string;
-    locale: string;
+    locale?: string;
     tokens: string;
   };
 }

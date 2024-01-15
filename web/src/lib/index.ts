@@ -1,5 +1,5 @@
 export * from './testConnection';
-export * from './initiatePayment';
+export * from './hostedTokenization';
 export * from './hostedCheckout';
 export * from './createPayment';
 export * from './getPaymentStatus';

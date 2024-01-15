@@ -8,12 +8,18 @@ export interface HostedCheckoutPayload {
       merchantCustomerId: string;
       billingAddress: {
         countryCode: string;
+        houseNumber?: string;
+        city: string;
+        state: string;
+        street: string;
+        zip: string;
+        additionalInfo: string;
       };
     };
   };
   hostedCheckoutSpecificInput: {
     variant: string;
-    locale: string;
+    locale?: string;
     tokens: string;
   };
 }
