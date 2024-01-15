@@ -28,8 +28,6 @@ const MyAccount = (props) => {
       apiSecret: '',
       webHookKey: '',
       webHookSecret: '',
-      webHookURL: '',
-      paymentPageURL: '',
     },
     test: {
       merchantId: '',
@@ -37,14 +35,10 @@ const MyAccount = (props) => {
       apiSecret: '',
       webHookKey: '',
       webHookSecret: '',
-      webHookURL: '',
-      paymentPageURL: '',
     },
+    webHookURL: '',
+    paymentPageURL: '',
   });
-
-  useEffect(() => {
-    getCustomObjectData();
-  }, []);
 
   const getCustomObjectData = async () => {
     try {
@@ -65,6 +59,10 @@ const MyAccount = (props) => {
     }
   };
 
+  useEffect(() => {
+    getCustomObjectData();
+  }, []);
+
   const handleChange = (event) => {
     const selectedValue = event.target.value;
     setSelectedOption(selectedValue);
@@ -72,13 +70,22 @@ const MyAccount = (props) => {
 
   const handleInputChange = (event) => {
     const { name, value } = event.target;
-    setFormData((prevData) => ({
-      ...prevData,
-      [selectedOption]: {
-        ...prevData[selectedOption],
-        [name]: value.trim(),
-      },
-    }));
+    setFormData((prevData) => {
+      if (name === 'webHookURL' || 'paymentPageURL') {
+        return {
+          ...prevData,
+          [name]: value,
+        };
+      } else {
+        return {
+          ...prevData,
+          [selectedOption]: {
+            ...prevData[selectedOption],
+            [name]: value,
+          },
+        };
+      }
+    });
   };
 
   const handleSubmit = async () => {
@@ -87,6 +94,8 @@ const MyAccount = (props) => {
       key: 'storeId',
       value: {
         ...data,
+        webHookURL: formData.webHookURL,
+        paymentPageURL: formData.paymentPageURL,
         ...(selectedOption === 'live'
           ? {
               live: {
@@ -95,8 +104,6 @@ const MyAccount = (props) => {
                 apiSecret: formData[selectedOption].apiSecret,
                 webHookKey: formData[selectedOption].webHookKey,
                 webHookSecret: formData[selectedOption].webHookSecret,
-                webHookURL: formData[selectedOption].webHookURL,
-                paymentPageURL: formData[selectedOption].paymentPageURL,
               },
             }
           : {
@@ -106,8 +113,6 @@ const MyAccount = (props) => {
                 apiSecret: formData['live'].apiSecret,
                 webHookKey: formData['live'].webHookKey,
                 webHookSecret: formData['live'].webHookSecret,
-                webHookURL: formData['live'].webHookURL,
-                paymentPageURL: formData['live'].paymentPageURL,
               },
             }),
         ...(selectedOption === 'test'
@@ -118,8 +123,6 @@ const MyAccount = (props) => {
                 apiSecret: formData[selectedOption].apiSecret,
                 webHookKey: formData[selectedOption].webHookKey,
                 webHookSecret: formData[selectedOption].webHookSecret,
-                webHookURL: formData[selectedOption].webHookURL,
-                paymentPageURL: formData[selectedOption].paymentPageURL,
               },
             }
           : {
@@ -129,8 +132,6 @@ const MyAccount = (props) => {
                 apiSecret: formData['test'].apiSecret,
                 webHookKey: formData['test'].webHookKey,
                 webHookSecret: formData['test'].webHookSecret,
-                webHookURL: formData['test'].webHookURL,
-                paymentPageURL: formData['test'].paymentPageURL,
               },
             }),
       },
@@ -212,7 +213,6 @@ const MyAccount = (props) => {
                   name="merchantId"
                   value={formData[selectedOption].merchantId}
                   onChange={handleInputChange}
-                  placeholder="Enter your PSPID"
                 />
                 <Label isBold={true}>
                   <p className="form-label">Test API Key</p>
@@ -221,7 +221,6 @@ const MyAccount = (props) => {
                   name="apiKey"
                   value={formData[selectedOption].apiKey}
                   onChange={handleInputChange}
-                  placeholder="Enter your API Key"
                 />
                 <Label isBold={true}>
                   <p className="form-label">Test API Secret</p>
@@ -230,7 +229,6 @@ const MyAccount = (props) => {
                   name="apiSecret"
                   value={formData[selectedOption].apiSecret}
                   onChange={handleInputChange}
-                  placeholder="Enter your API Secret"
                 />
                 <Label isBold={true}>
                   <p className="form-label">Test Webhook Key</p>
@@ -239,7 +237,6 @@ const MyAccount = (props) => {
                   name="webHookKey"
                   value={formData[selectedOption].webHookKey}
                   onChange={handleInputChange}
-                  placeholder="Enter your Webhook Key"
                 />
                 <Label isBold={true}>
                   <p className="form-label">Test Webhook Secret</p>
@@ -248,7 +245,6 @@ const MyAccount = (props) => {
                   name="webHookSecret"
                   value={formData[selectedOption].webHookSecret}
                   onChange={handleInputChange}
-                  placeholder="Enter your Webhook Secret"
                 />
                 <Label isBold={true}>
                   <p className="form-label hook-url">Webhook URL</p>
@@ -256,17 +252,14 @@ const MyAccount = (props) => {
                 <div className="flex">
                   <TextInput
                     name="webHookURL"
-                    value={formData[selectedOption].webHookURL}
+                    value={formData.webHookURL}
                     onChange={handleInputChange}
-                    placeholder="Enter your Webhook URL"
                   />
                   <ClipboardIcon
                     style={{ margin: 'auto' }}
                     onClick={() => {
                       setCopied(true);
-                      navigator.clipboard.writeText(
-                        formData[selectedOption].webHookURL
-                      );
+                      navigator.clipboard.writeText(formData.webHookURL);
                     }}
                   />
                 </div>
@@ -287,9 +280,8 @@ const MyAccount = (props) => {
                 </Label>
                 <TextInput
                   name="paymentPageURL"
-                  value={formData[selectedOption].paymentPageURL}
+                  value={formData.paymentPageURL}
                   onChange={handleInputChange}
-                  placeholder="Enter your Redirection Payment Page URL"
                 />
                 <PrimaryButton
                   label="Save/Update"
