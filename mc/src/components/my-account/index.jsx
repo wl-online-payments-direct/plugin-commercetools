@@ -28,6 +28,8 @@ const MyAccount = (props) => {
       apiSecret: '',
       webHookKey: '',
       webHookSecret: '',
+      webHookURL: '',
+      paymentPageURL: '',
     },
     test: {
       merchantId: '',
@@ -35,14 +37,14 @@ const MyAccount = (props) => {
       apiSecret: '',
       webHookKey: '',
       webHookSecret: '',
+      webHookURL: '',
+      paymentPageURL: '',
     },
-    webHookURL: '',
-    paymentPageURL: '',
   });
 
   useEffect(() => {
     getCustomObjectData();
-  }, [getCustomObjectData]);
+  }, []);
 
   const getCustomObjectData = async () => {
     try {
@@ -70,21 +72,13 @@ const MyAccount = (props) => {
 
   const handleInputChange = (event) => {
     const { name, value } = event.target;
-    setFormData((prevData) => {
-      if (name === 'webHookURL' || 'paymentPageURL') {
-        return {
-          ...prevData,
-          [name]: value,
-        };
-      }
-      return {
-        ...prevData,
-        [selectedOption]: {
-          ...prevData[selectedOption],
-          [name]: value,
-        },
-      };
-    });
+    setFormData((prevData) => ({
+      ...prevData,
+      [selectedOption]: {
+        ...prevData[selectedOption],
+        [name]: value,
+      },
+    }));
   };
 
   const handleSubmit = async () => {
@@ -93,8 +87,6 @@ const MyAccount = (props) => {
       key: 'storeId',
       value: {
         ...data,
-        webHookURL: formData.webHookURL,
-        paymentPageURL: formData.paymentPageURL,
         ...(selectedOption === 'live'
           ? {
               live: {
@@ -103,6 +95,8 @@ const MyAccount = (props) => {
                 apiSecret: formData[selectedOption].apiSecret,
                 webHookKey: formData[selectedOption].webHookKey,
                 webHookSecret: formData[selectedOption].webHookSecret,
+                webHookURL: formData[selectedOption].webHookURL,
+                paymentPageURL: formData[selectedOption].paymentPageURL,
               },
             }
           : {
@@ -112,6 +106,8 @@ const MyAccount = (props) => {
                 apiSecret: formData['live'].apiSecret,
                 webHookKey: formData['live'].webHookKey,
                 webHookSecret: formData['live'].webHookSecret,
+                webHookURL: formData['live'].webHookURL,
+                paymentPageURL: formData['live'].paymentPageURL,
               },
             }),
         ...(selectedOption === 'test'
@@ -122,6 +118,8 @@ const MyAccount = (props) => {
                 apiSecret: formData[selectedOption].apiSecret,
                 webHookKey: formData[selectedOption].webHookKey,
                 webHookSecret: formData[selectedOption].webHookSecret,
+                webHookURL: formData[selectedOption].webHookURL,
+                paymentPageURL: formData[selectedOption].paymentPageURL,
               },
             }
           : {
@@ -131,6 +129,8 @@ const MyAccount = (props) => {
                 apiSecret: formData['test'].apiSecret,
                 webHookKey: formData['test'].webHookKey,
                 webHookSecret: formData['test'].webHookSecret,
+                webHookURL: formData['test'].webHookURL,
+                paymentPageURL: formData['test'].paymentPageURL,
               },
             }),
       },
@@ -251,7 +251,7 @@ const MyAccount = (props) => {
                 <div className="flex">
                   <TextInput
                     name="webHookURL"
-                    value={formData.webHookURL}
+                    value={formData[selectedOption].webHookURL}
                     onChange={handleInputChange}
                   />
                   <ClipboardIcon
@@ -281,7 +281,7 @@ const MyAccount = (props) => {
                 </Label>
                 <TextInput
                   name="paymentPageURL"
-                  value={formData.paymentPageURL}
+                  value={formData[selectedOption].paymentPageURL}
                   onChange={handleInputChange}
                 />
                 <PrimaryButton
