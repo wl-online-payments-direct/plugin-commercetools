@@ -3,6 +3,7 @@ export * from './request';
 export * from './error';
 export * from './testConnection';
 export * from './initiatePayment';
+export * from './hostedCheckout';
 export * from './createPayment';
 export * from './webhook';
 export * from './retryPayment';

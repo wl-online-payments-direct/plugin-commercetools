@@ -132,8 +132,8 @@ export async function orderPaymentHandler(payload: PaymentPayload) {
       // update order id and reset the state as DEFAULT
       await setPayment(getPaymentFilterQuery(dbPayment), {
         ...(!dbPayment.orderId && result?.order?.id
-          ? { orderId: result.order.id }
-          : {}),
+          ? { orderId: result.order.id, worldlineId: payload?.payment?.id }
+          : { worldlineId: payload?.payment?.id }),
         state: 'DEFAULT',
       });
 

@@ -8,7 +8,7 @@ export class MeApiClient {
 
   query!: string;
 
-  variables = {} as { [key: string]: string };
+  variables = {} as { [key: string]: string | number | boolean };
 
   headers = {} as { [key: string]: string };
 
@@ -35,7 +35,7 @@ export class MeApiClient {
     variables,
   }: {
     query: string;
-    variables: { [key: string]: string };
+    variables: { [key: string]: string | number | boolean };
   }) {
     this.query = query;
     this.variables = variables;

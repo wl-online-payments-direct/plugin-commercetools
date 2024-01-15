@@ -1,3 +1,4 @@
+import { getFormattedHostedTokenizationResult } from '../mappers';
 import { connectService } from '../client';
 import {
   HostedTokenizationPayload,
@@ -25,6 +26,5 @@ export async function hostedTokenizationService(
     };
   }
 
-  const { hostedTokenizationUrl = '' } = result.body || {};
-  return { hostedTokenizationUrl };
+  return getFormattedHostedTokenizationResult(result?.body);
 }

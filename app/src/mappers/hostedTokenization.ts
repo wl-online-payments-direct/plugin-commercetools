@@ -1,16 +1,16 @@
 import { Cart } from '@worldline/ctintegration-ct';
-import { CustomObjects, InitializePaymentPayload } from '../types';
+import { CustomObjects, HostedTokenizationPayload } from '../types';
 
 export function getTokenizationServicePayload(
   customConfig: CustomObjects,
-  activeCart: { cart: Cart },
-  payload: InitializePaymentPayload,
+  cart: Cart,
+  payload: HostedTokenizationPayload,
 ) {
   const { variant } = customConfig;
   const { tokens, askConsumerConsent } = payload;
-  const locale = activeCart?.cart?.locale || 'en-US';
+  const locale = cart?.locale ? { locale: cart.locale } : {};
   return {
-    locale,
+    ...locale,
     variant,
     tokens,
     askConsumerConsent,

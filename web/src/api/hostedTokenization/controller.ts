@@ -4,14 +4,14 @@ import {
   logger,
   ResponseClient,
 } from '@worldline/ctintegration-util';
-import { initiatePaymentRequest } from '../../lib';
+import { hostedTokenizationRequest } from '../../lib';
 import { ErrorProps, Request } from '../../lib/types';
 
 const processRequest = async (request: Request, response: ServerResponse) => {
   try {
     // Only allow POST request; else throw error
     await isPostRequestOrThrowError(request.method);
-    const data = await initiatePaymentRequest(request);
+    const data = await hostedTokenizationRequest(request);
     ResponseClient.setResponseTo200(response, data);
   } catch (e) {
     const error = e as ErrorProps;
