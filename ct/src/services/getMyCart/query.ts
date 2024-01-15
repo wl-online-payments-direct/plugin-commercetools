@@ -40,8 +40,61 @@ query {
         country
         additionalAddressInfo
       }
+      lineItems {
+        id
+        productId
+        taxedPrice {
+          totalTax {
+            currencyCode
+            centAmount
+          }
+          totalGross{
+            currencyCode
+            centAmount
+          }
+        }
+        taxRate {
+          includedInPrice
+        }
+        supplyChannel {
+          id
+        }
+        inventoryMode
+        quantity
+        discountedPricePerQuantity {
+          quantity
+          discountedPrice {
+            value {
+              currencyCode
+              centAmount
+            }
+          }
+        }
+        price {
+          value {
+            currencyCode
+            centAmount
+          }
+          discounted {
+            value {
+              centAmount
+            }
+          }
+        }
+        productType {
+          name
+        }
+        variant {
+          id
+          sku
+          images {
+            url
+          }
+        }
+      }
       country
       locale
+      inventoryMode
     }
   }
 
