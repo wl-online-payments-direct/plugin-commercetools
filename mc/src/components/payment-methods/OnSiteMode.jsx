@@ -13,7 +13,7 @@ import Tooltip from '@commercetools-uikit/tooltip';
 import MenuItem from '@mui/material/MenuItem';
 import Select from '@mui/material/Select';
 
-const OnSiteMode = ({ onSiteMode, handleOnsiteMode }) => {
+const OnSiteMode = ({ onSiteMode, handleOnsiteMode, handleLogoUpload }) => {
   return (
     <Accordion className="payment-on-site payment-section-wrapper">
       <AccordionSummary
@@ -131,7 +131,7 @@ const OnSiteMode = ({ onSiteMode, handleOnsiteMode }) => {
               value={onSiteMode.displayLogo.value}
               validation={onSiteMode.displayLogo.validation}
               type={onSiteMode.displayLogo.type}
-              onChange={(event) => console.log(event.target.value)}
+              onChange={(event) => handleLogoUpload(event)}
             />
           </div>
         </div>

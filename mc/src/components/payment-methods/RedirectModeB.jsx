@@ -12,7 +12,11 @@ import worldlineLogo from '../../assets/worldline-logo-main.png';
 import InfoIcon from '@mui/icons-material/Info';
 import Tooltip from '@commercetools-uikit/tooltip';
 
-const RedirectModeB = ({ redirectModeB, handleRedirectModeB }) => {
+const RedirectModeB = ({
+  redirectModeB,
+  handleRedirectModeB,
+  handleLogoUpload,
+}) => {
   return (
     <Accordion className="payment-redirect payment-section-wrapper">
       <AccordionSummary
@@ -66,7 +70,7 @@ const RedirectModeB = ({ redirectModeB, handleRedirectModeB }) => {
               value={redirectModeB.displayLogo.value}
               validation={redirectModeB.displayLogo.validation}
               type={redirectModeB.displayLogo.type}
-              onChange={(event) => console.log(event.target.value)}
+              onChange={(event) => handleLogoUpload(event)}
             />
           </div>
         </div>

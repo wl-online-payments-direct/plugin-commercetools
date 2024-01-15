@@ -17,6 +17,7 @@ const RedirectModeA = ({
   redirectModeA,
   handleRedirectModeA,
   handleOptionUpdate,
+  fetchPaymentMethods,
 }) => {
   return (
     <Accordion className="payment-redirect payment-section-wrapper">
@@ -62,7 +63,7 @@ const RedirectModeA = ({
         </div>
         <SecondaryButton
           label={redirectModeA.refresh.label}
-          onClick={() => console.log('Button clicked')}
+          onClick={() => fetchPaymentMethods()}
         >
           <Tooltip placement="top" title={redirectModeA.refresh.tooltip}>
             <InfoIcon />

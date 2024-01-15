@@ -1,6 +1,6 @@
 import React, { useContext, useState, useReducer, useEffect } from 'react';
 import './style.css';
-import PageWrapper, { PaymentContext } from '../page-wrapper';
+import PageWrapper from '../page-wrapper';
 import ToggleInput from '@commercetools-uikit/toggle-input';
 import PrimaryButton from '@commercetools-uikit/primary-button';
 import {
@@ -15,55 +15,11 @@ import OnSiteMode from './OnSiteMode';
 import RedirectModeA from './RedirectModeA';
 import RedirectModeB from './RedirectModeB';
 import GeneralSettings from './GeneralSettings';
+import reducer from './reducer';
 
 const PaymentMethods = () => {
-  const payment = useContext(PaymentContext);
   const [apiData, setAPIData] = useState({});
   const [loading, setLoading] = useState(true);
-
-  const reducer = (state, action) => {
-    switch (action.type) {
-      case 'UPDATE-STATE':
-        return {
-          ...state,
-          ...action.value,
-        };
-      case 'ENABLE-WORLDLINE':
-        return {
-          ...state,
-          enabled: {
-            value: action.value,
-          },
-        };
-      case 'ONSITE-MODE':
-        return {
-          ...state,
-          onSiteMode: {
-            ...action.value,
-          },
-        };
-      case 'REDIRECT-MODE-A':
-        return {
-          ...state,
-          redirectModeA: {
-            ...action.value,
-          },
-        };
-      case 'REDIRECT-MODE-B':
-        return {
-          ...state,
-          redirectModeB: {
-            ...action.value,
-          },
-        };
-      case 'GENERAL-SETTINGS':
-        return {
-          ...action.value,
-        };
-      default:
-        return state;
-    }
-  };
 
   const [state, dispatch] = useReducer(reducer, initialState);
 
@@ -138,6 +94,9 @@ const PaymentMethods = () => {
     handleRedirectModeA('payOptionUpdate', payload);
   };
 
+  const handleLogoUpload = (e) => {};
+  const fetchPaymentMethods = () => {};
+
   const saveFormData = async () => {
     setLoading(true);
     const payload = Object.keys(state).map((key) => {
@@ -188,7 +147,6 @@ const PaymentMethods = () => {
     try {
       const response = await createCustomObject(final_payload);
       if (response.id) {
-        console.log('Config settings saved successfully...');
         getCustomObjectData();
       }
     } catch (error) {
@@ -262,15 +220,18 @@ const PaymentMethods = () => {
             <OnSiteMode
               onSiteMode={state.onSiteMode}
               handleOnsiteMode={handleOnsiteMode}
+              handleLogoUpload={handleLogoUpload}
             />
             <RedirectModeA
               redirectModeA={state.redirectModeA}
               handleRedirectModeA={handleRedirectModeA}
               handleOptionUpdate={handleOptionUpdate}
+              fetchPaymentMethods={fetchPaymentMethods}
             />
             <RedirectModeB
               redirectModeB={state.redirectModeB}
               handleRedirectModeB={handleRedirectModeB}
+              handleLogoUpload={handleLogoUpload}
             />
             <GeneralSettings
               state={state}
