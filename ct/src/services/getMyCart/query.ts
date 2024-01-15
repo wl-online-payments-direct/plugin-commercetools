@@ -29,6 +29,17 @@ query {
           centAmount
         }
       }
+      billingAddress {
+        apartment
+        building
+        streetName
+        streetNumber
+        postalCode
+        city
+        state
+        country
+        additionalAddressInfo
+      }
       lineItems {
         id
         productId

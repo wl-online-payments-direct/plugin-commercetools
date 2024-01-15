@@ -1,18 +1,20 @@
 import healthController from '../api/health/controller';
 import testConnectionController from '../api/testConnection/controller';
-import initiatePaymentController from '../api/initiatePayment/controller';
+import hostedTokenizationController from '../api/hostedTokenization/controller';
 import createPaymentController from '../api/createPayment/controller';
 import getPaymentStatusController from '../api/getPaymentStatus/controller';
 import validateCartController from '../api/validateCart/controller';
 import webhookController from '../api/webhook/controller';
 import retryPaymentController from '../api/retryPayment/controller';
 import getWebhookStatusController from '../api/getWebhookStatus/controller';
+import hostedCheckoutController from '../api/hostedCheckout/controller';
 
 const routes = {
   '/': healthController.processRequest,
   '/health': healthController.processRequest,
   '/testconnection': testConnectionController.processRequest,
-  '/initiate/payment': initiatePaymentController.processRequest,
+  '/initiate/hostedtokenization': hostedTokenizationController.processRequest,
+  '/initiate/hostedcheckout': hostedCheckoutController.processRequest,
   '/payment': createPaymentController.processRequest,
   '/payment/status': getPaymentStatusController.processRequest,
   '/cart/validate': validateCartController.processRequest,

@@ -1,4 +1,4 @@
-import { initiatePaymentSession } from '@worldline/ctintegration-app';
+import { hostedTokenizationSession } from '@worldline/ctintegration-app';
 import {
   hasAuthHeaderOrThrowError,
   hasRequiredParamsInBody,
@@ -9,8 +9,8 @@ import {
   getInitSessionRequiredProps,
 } from './mapper';
 
-export async function initiatePaymentRequest(request: Request) {
+export async function hostedTokenizationRequest(request: Request) {
   hasAuthHeaderOrThrowError(request);
   hasRequiredParamsInBody(getInitSessionRequiredProps(request));
-  return initiatePaymentSession(getInitSessionAppPayload(request));
+  return hostedTokenizationSession(getInitSessionAppPayload(request));
 }
