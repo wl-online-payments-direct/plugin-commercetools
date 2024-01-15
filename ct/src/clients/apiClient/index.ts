@@ -11,6 +11,8 @@ export class ApiClient {
 
   variables = {} as { [key: string]: string | number };
 
+  headers = {} as { [key: string]: string };
+
   constructor() {
     this.gClient = new GraphQLClient();
 
@@ -31,10 +33,14 @@ export class ApiClient {
     variables,
   }: {
     query: string;
-    variables: { [key: string]: string };
+    variables: { [key: string]: any };
   }) {
     this.query = query;
     this.variables = variables;
+  }
+
+  setAuthHeader(value: string) {
+    this.headers.authorization = `Bearer ${value}`;
   }
 
   async execute() {
@@ -48,6 +54,7 @@ export class ApiClient {
             query: this.query,
             variables: this.variables,
           },
+          headers: this.headers,
         })
         .execute()
         .catch((e) => {
