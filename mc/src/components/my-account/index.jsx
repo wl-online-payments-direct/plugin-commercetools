@@ -14,7 +14,7 @@ import {
   createCustomObject,
   getCustomObject,
 } from '../../ct-methods/customObject';
-import { CONTAINER_NAME, CONTAINER_KEY } from '../../../configuration';
+import { ClipboardIcon } from '@commercetools-uikit/icons';
 
 const MyAccount = (props) => {
   const [selectedOption, setSelectedOption] = useState('test');
@@ -25,8 +25,6 @@ const MyAccount = (props) => {
       apiSecret: '',
       webHookKey: '',
       webHookSecret: '',
-      webHookURL: '',
-      paymentPageURL: '',
     },
     test: {
       merchantId: '',
@@ -34,18 +32,15 @@ const MyAccount = (props) => {
       apiSecret: '',
       webHookKey: '',
       webHookSecret: '',
-      webHookURL: '',
-      paymentPageURL: '',
     },
+    webHookURL: '',
+    paymentPageURL: '',
   });
-
-  useEffect(() => {
-    getCustomObjectData();
-  }, []);
 
   const getCustomObjectData = async () => {
     try {
-      const response = await getCustomObject(CONTAINER_NAME, CONTAINER_KEY);
+      const response = await getCustomObject();
+      setData(response.value);
       if (response?.value) {
         for (const option of ['live', 'test']) {
           const optionData = response.value[option];
@@ -61,6 +56,10 @@ const MyAccount = (props) => {
     }
   };
 
+  useEffect(() => {
+    getCustomObjectData();
+  }, []);
+
   const handleChange = (event) => {
     const selectedValue = event.target.value;
     setSelectedOption(selectedValue);
@@ -68,13 +67,22 @@ const MyAccount = (props) => {
 
   const handleInputChange = (event) => {
     const { name, value } = event.target;
-    setFormData((prevData) => ({
-      ...prevData,
-      [selectedOption]: {
-        ...prevData[selectedOption],
-        [name]: value,
-      },
-    }));
+    setFormData((prevData) => {
+      if (name === 'webHookURL' || 'paymentPageURL') {
+        return {
+          ...prevData,
+          [name]: value,
+        };
+      } else {
+        return {
+          ...prevData,
+          [selectedOption]: {
+            ...prevData[selectedOption],
+            [name]: value,
+          },
+        };
+      }
+    });
   };
 
   const handleSubmit = async () => {
@@ -82,6 +90,9 @@ const MyAccount = (props) => {
       container: 'storeId',
       key: 'storeId',
       value: {
+        ...data,
+        webHookURL: formData.webHookURL,
+        paymentPageURL: formData.paymentPageURL,
         ...(selectedOption === 'live'
           ? {
               live: {
@@ -90,8 +101,6 @@ const MyAccount = (props) => {
                 apiSecret: formData[selectedOption].apiSecret,
                 webHookKey: formData[selectedOption].webHookKey,
                 webHookSecret: formData[selectedOption].webHookSecret,
-                webHookURL: formData[selectedOption].webHookURL,
-                paymentPageURL: formData[selectedOption].paymentPageURL,
               },
             }
           : {
@@ -101,8 +110,6 @@ const MyAccount = (props) => {
                 apiSecret: formData['live'].apiSecret,
                 webHookKey: formData['live'].webHookKey,
                 webHookSecret: formData['live'].webHookSecret,
-                webHookURL: formData['live'].webHookURL,
-                paymentPageURL: formData['live'].paymentPageURL,
               },
             }),
         ...(selectedOption === 'test'
@@ -113,8 +120,6 @@ const MyAccount = (props) => {
                 apiSecret: formData[selectedOption].apiSecret,
                 webHookKey: formData[selectedOption].webHookKey,
                 webHookSecret: formData[selectedOption].webHookSecret,
-                webHookURL: formData[selectedOption].webHookURL,
-                paymentPageURL: formData[selectedOption].paymentPageURL,
               },
             }
           : {
@@ -124,8 +129,6 @@ const MyAccount = (props) => {
                 apiSecret: formData['test'].apiSecret,
                 webHookKey: formData['test'].webHookKey,
                 webHookSecret: formData['test'].webHookSecret,
-                webHookURL: formData['test'].webHookURL,
-                paymentPageURL: formData['test'].paymentPageURL,
               },
             }),
       },
@@ -243,15 +246,30 @@ const MyAccount = (props) => {
                 <Label isBold={true}>
                   <p className="form-label hook-url">Webhook URL</p>
                 </Label>
-                <TextInput
-                  name="webHookURL"
-                  value={formData[selectedOption].webHookURL}
-                  onChange={handleInputChange}
-                />
-                <p className="info">
-                  To avoid copy/paste issues, use the `copy` icon to copy the
-                  URL
-                </p>
+                <div className="flex">
+                  <TextInput
+                    name="webHookURL"
+                    value={formData.webHookURL}
+                    onChange={handleInputChange}
+                  />
+                  <ClipboardIcon
+                    style={{ margin: 'auto' }}
+                    onClick={() => {
+                      setCopied(true);
+                      navigator.clipboard.writeText(formData.webHookURL);
+                    }}
+                  />
+                </div>
+                <div
+                  className="flex"
+                  style={{ justifyContent: 'space-between' }}
+                >
+                  <p className="info">
+                    To avoid copy/paste issues, use the `copy` icon to copy the
+                    URL
+                  </p>
+                  {copied && <p>Copied!</p>}
+                </div>
                 <Label isBold={true}>
                   <p className="form-label hook-url">
                     Redirection Payment Page URL - Test
@@ -259,7 +277,7 @@ const MyAccount = (props) => {
                 </Label>
                 <TextInput
                   name="paymentPageURL"
-                  value={formData[selectedOption].paymentPageURL}
+                  value={formData.paymentPageURL}
                   onChange={handleInputChange}
                 />
                 <PrimaryButton
