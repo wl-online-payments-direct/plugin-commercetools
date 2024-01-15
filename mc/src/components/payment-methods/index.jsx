@@ -24,7 +24,6 @@ import {
   createCustomObject,
   getCustomObject,
 } from '../../ct-methods/customObject';
-import { CONTAINER_NAME, CONTAINER_KEY } from '../../../configuration';
 
 const PaymentMethods = () => {
   const payment = useContext(PaymentContext);
@@ -459,7 +458,7 @@ const PaymentMethods = () => {
 
   const getCustomObjectData = async () => {
     try {
-      const response = await getCustomObject(CONTAINER_NAME, CONTAINER_KEY);
+      const response = await getCustomObject();
       console.log('response', response);
       if (response?.value) {
         setAPIData(response);
@@ -1006,7 +1005,7 @@ const PaymentMethods = () => {
           />
         </div>
       </div>
-      <p class="supportmail">
+      <p className="supportmail">
         Support Email :{' '}
         <a href="mailto:dl-dl_shoppingcarts@worldline.com">
           dl-dl_shoppingcarts@worldline.com

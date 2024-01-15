@@ -14,7 +14,6 @@ import {
   createCustomObject,
   getCustomObject,
 } from '../../ct-methods/customObject';
-import { CONTAINER_NAME, CONTAINER_KEY } from '../../../configuration';
 import { ClipboardIcon } from '@commercetools-uikit/icons';
 
 const MyAccount = (props) => {
@@ -42,7 +41,7 @@ const MyAccount = (props) => {
 
   const getCustomObjectData = async () => {
     try {
-      const response = await getCustomObject(CONTAINER_NAME, CONTAINER_KEY);
+      const response = await getCustomObject();
       setData(response.value);
       if (response?.value) {
         for (const option of ['live', 'test']) {
