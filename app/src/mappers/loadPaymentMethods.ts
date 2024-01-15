@@ -15,7 +15,6 @@ export function loadPaymentMethodsMappedResponse(
   const { paymentMethods = [] } = customConfig || {};
 
   return {
-    tokens,
-    paymentMethods,
+    paymentMethods: [...tokens, ...paymentMethods],
   };
 }
