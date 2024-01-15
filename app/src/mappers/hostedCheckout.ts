@@ -13,7 +13,7 @@ export function getHostedCheckoutPayload(
   const locale = cart?.locale ? { locale: cart.locale } : {};
 
   const { variant, merchantReference } = customConfig;
-  const { tokens } = payload;
+  const { tokens, returnUrl, acceptHeader, userAgent } = payload;
 
   // Billing address
   const {
@@ -39,6 +39,11 @@ export function getHostedCheckoutPayload(
       },
       customer: {
         merchantCustomerId,
+        device: {
+          ...locale,
+          acceptHeader,
+          userAgent,
+        },
         billingAddress: {
           houseNumber: `${apartment} ${building}`,
           city,
@@ -58,6 +63,7 @@ export function getHostedCheckoutPayload(
       variant,
       ...locale,
       tokens,
+      returnUrl,
     },
   };
 }

@@ -1,20 +1,30 @@
 import { HostedCheckoutPayload, Request } from '../types';
 
 export function getHostedCheckoutRequiredProps(request: Request) {
-  const { storeId = '' } = (request?.body || {}) as HostedCheckoutPayload;
+  const { storeId = '', returnUrl = '' } = (request?.body ||
+    {}) as HostedCheckoutPayload;
   return {
     storeId,
+    returnUrl,
   };
 }
 
 export function getHostedCheckoutAppPayload(request: Request) {
-  const { authorization: authToken = '' } = request.headers;
-  const { storeId = '', tokens = '' } = (request?.body ||
-    {}) as HostedCheckoutPayload;
+  const userAgent = request.headers['user-agent'] || '';
+  const authToken = request.headers.authorization || '';
+  const acceptHeader = request.headers.accept || '';
+  const {
+    storeId = '',
+    tokens = '',
+    returnUrl = '',
+  } = (request?.body || {}) as HostedCheckoutPayload;
 
   return {
     authToken,
+    userAgent,
+    acceptHeader,
     storeId,
+    returnUrl,
     tokens,
   };
 }

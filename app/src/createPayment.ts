@@ -16,8 +16,8 @@ export async function createPayment(
   payload: ICreatePaymentPayload,
 ): Promise<ICreatePaymentResponse> {
   // Fetch cart from Commercetools
-  const myCart = await getMyCart(payload.authToken);
-  if (!myCart?.cart) {
+  const { cart } = await getMyCart(payload.authToken);
+  if (!cart) {
     throw {
       message: 'Failed to fetch the cart or cart is empty!',
       statusCode: 500,
@@ -30,12 +30,12 @@ export async function createPayment(
 
   const payment = await createPaymentService(
     getConnectionServiceProps(customConfig),
-    getServicePayload(customConfig, reference, myCart, payload),
+    getServicePayload(customConfig, reference, cart, payload),
   );
 
   // save payment information in the database
   const dbPayment = await createPaymentInDB(
-    getDatabasePayload(customConfig, reference, myCart, payload, payment),
+    getDatabasePayload(customConfig, reference, cart, payload, payment),
   );
 
   return getCreatedPaymentMappedResponse(payment, dbPayment);
