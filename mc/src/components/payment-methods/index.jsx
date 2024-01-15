@@ -7,7 +7,7 @@ import {
   createCustomObject,
   getCustomObject,
 } from '../../ct-methods/customObject';
-import { CONTAINER_NAME, CONTAINER_KEY } from '../../../configuration';
+import CONFIG from '../../../configuration';
 import initialState from './intialState.json';
 import dataFields from './dataFields.json';
 import LoadingSpinner from '@commercetools-uikit/loading-spinner';
@@ -16,6 +16,8 @@ import RedirectModeA from './RedirectModeA';
 import RedirectModeB from './RedirectModeB';
 import GeneralSettings from './GeneralSettings';
 import reducer from './reducer';
+
+const { emailAddress } = CONFIG;
 
 const PaymentMethods = () => {
   const [apiData, setAPIData] = useState({});
@@ -248,9 +250,7 @@ const PaymentMethods = () => {
           </div>
           <p class="supportmail">
             Support Email :{' '}
-            <a href="mailto:dl-dl_shoppingcarts@worldline.com">
-              dl-dl_shoppingcarts@worldline.com
-            </a>
+            <a href={`mailto:${emailAddress}`}>{emailAddress}</a>
           </p>
         </PageWrapper>
       )}
