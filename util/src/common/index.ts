@@ -13,13 +13,23 @@ const hasRequiredParamsInBody = (body: {
   [key: string]: string | number | boolean;
 }) => {
   Object.keys(body).forEach((key) => {
-    if (!body[key]) {
+    const value = body[key];
+
+    if (typeof value === 'boolean') {
+      if (value == null) {
+        throw {
+          message: `Required parameter '${key}' is missing or empty`,
+          statusCode: 400,
+        };
+      }
+    } else if (!value) {
       throw {
         message: `Required parameter '${key}' is missing or empty`,
         statusCode: 400,
       };
     }
   });
+
   // All checked out, request body is OK
   return true;
 };

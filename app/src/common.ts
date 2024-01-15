@@ -28,7 +28,6 @@ import {
   getCaptureDatabasePayload,
   hasEqualAmounts,
   hasValidAmount,
-  hasEqualAmountOrder,
   isPaymentProcessing,
   shouldSaveToken,
   getCustomerTokenPayload,
@@ -229,8 +228,12 @@ export async function orderPaymentCaptureHandler(payload: PaymentPayload) {
       logger().error(`Order with id: '${payment.orderId}' is missing in CT!`);
       return { isRetry: true };
     }
-    if (!hasEqualAmountOrder(payload, order)) {
-      logger().error("Order amount doesn't match with the paid amount");
+    const captureAmount = payload.payment.paymentOutput.amountOfMoney.amount;
+    // Validate capture amount
+    const hasValidCapture = hasValidAmount(order, captureAmount);
+
+    if (hasValidCapture.isGreater) {
+      logger().error('Capture amount cannot be greater than the order amount!');
       return { isRetry: true };
     }
     const mappedStatus = getMappedStatus(payload);
@@ -250,27 +253,35 @@ export async function orderPaymentCaptureHandler(payload: PaymentPayload) {
         },
       };
     }
-    let result;
-    // if order id exists
-    if (payment.orderId) {
-      result = await updateOrderStatus(payment.orderId, 'Confirmed', 'Paid');
-      if (order.paymentInfo?.payments[0]?.id) {
-        await createTransactionInPayment(
-          order.paymentInfo.payments[0].id,
-          payload,
-          'Charge',
-        );
-      }
-      await capturePaymentInDB(
-        getCaptureDatabasePayload(
-          payment,
-          payload.payment?.paymentOutput?.amountOfMoney?.amount,
-          mappedStatus,
-          'Charge',
-        ),
+    let response;
+    if (order.paymentInfo?.payments[0].id) {
+      response = await createTransactionInPayment(
+        order.paymentInfo.payments[0].id,
+        payload,
+        'Charge',
       );
     }
-    return { isRetry: false, data: result };
+    await capturePaymentInDB(
+      getCaptureDatabasePayload(
+        payment,
+        payload.payment?.paymentOutput?.amountOfMoney?.amount,
+        mappedStatus,
+        'Charge',
+      ),
+    );
+    // if capture amount is equal to order amount
+    if (hasValidCapture.isEqual) {
+      // update order status
+      const result = await updateOrderStatus(
+        payment.orderId,
+        'Confirmed',
+        'Paid',
+      );
+      if (result.order.orderState === 'Confirmed') {
+        logger().info(`Order status update to : ${result.order.orderState}`);
+      }
+    }
+    return { isRetry: false, data: response };
   });
 }
 
@@ -321,7 +332,7 @@ export async function refundPaymentHandler(payload: RefundPayload) {
     }
     let response;
     if (order.paymentInfo?.payments[0].id) {
-      response = createTransactionInPayment(
+      response = await createTransactionInPayment(
         order.paymentInfo?.payments[0].id,
         payload,
         'Refund',
