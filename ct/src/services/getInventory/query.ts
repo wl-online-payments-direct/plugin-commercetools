@@ -1,6 +1,6 @@
 const query = `
-query ($where: String!) {
-  inventoryEntries(where: $where) {
+query ($where: String!, $limit: Int) {
+  inventoryEntries(where: $where, limit:$limit) {
     total
     count
     exists

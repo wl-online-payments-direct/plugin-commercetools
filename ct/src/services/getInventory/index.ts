@@ -9,6 +9,7 @@ export async function getInventory(authToken: string, skus: string) {
     query,
     variables: {
       where: `sku in (${skus})`,
+      limit: skus?.split(',')?.length || 0,
     },
   });
   const result = (await apiClient.execute()) as GetInventoryResponse;
