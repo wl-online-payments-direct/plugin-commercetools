@@ -26,7 +26,6 @@ export const getCustomObject = async (container, key) => {
                 'Content-Type': 'application/json',
             },
         });
-        console.log('Custom object :', customObject);
         return customObject;
     } catch (error) {
         console.error('Error custom object:', error.message);
