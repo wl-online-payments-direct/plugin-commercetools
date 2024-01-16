@@ -1,0 +1,307 @@
+{
+  "onSiteMode": {
+    "payButtonTitle": {
+      "key": "onSiteMode_payButtonTitle",
+      "label": "Pay Button Title",
+      "type": "text",
+      "value": "Pay with credit cards",
+      "validation": "required",
+      "criteria": ["alpha"]
+    },
+    "payButtonLanguage": {
+      "key": "onSiteMode_payButtonLanguage",
+      "label": "",
+      "type": "text",
+      "value": "EN",
+      "values": {
+        "EN": "Pay with credit cards",
+        "ES": "Pagar con tarjetas de crédito",
+        "FR": "Payer par carte de crédit",
+        "NL": "Betaal met creditcards",
+        "DE": "Bezahlen Sie mit Kreditkarten",
+        "IT": "Paga con carte di credito"
+      }
+    },
+    "merchantReferenceID": {
+      "key": "onSiteMode_merchantReferenceID",
+      "label": " Merchant Reference ID",
+      "type": "text",
+      "value": "",
+      "placeholder": "Enter Merchant Reference",
+      "validation": "required",
+      "criteria": [],
+      "tooltip": "If you want to show the Merchant ID in Bank statement on their Customer bank account., then you should limit the Merchant ID length to 12 characters"
+    },
+    "templateFileName": {
+      "key": "onSiteMode_templateFileName",
+      "label": " Template File Name",
+      "type": "text",
+      "value": "SimplifiedCustomPaymentPage",
+      "placeholder": "Enter templated file name",
+      "validation": "required",
+      "criteria": []
+    },
+    "displayLogo": {
+      "label": "Display Logo for Accepted Card Brands",
+      "type": "file",
+      "validation": "required",
+      "criteria": [],
+      "tooltip": "Max size 5MB, max dimensions 200x80px,supported jpg,svg,png"
+    },
+    "enabled": {
+      "key": "onSiteMode_enabled",
+      "value": false
+    }
+  },
+  "redirectModeA": {
+    "sendOrderData": {
+      "key": "redirectModeB_sendOrderData",
+      "label": "Send Order Data",
+      "type": "boolean",
+      "value": true,
+      "tooltip": "Show Basket Data on Worldline Payment Page"
+    },
+    "merchantReferenceID": {
+      "key": "redirectModeA_merchantReferenceID",
+      "label": " Merchant Reference ID",
+      "type": "text",
+      "value": "",
+      "placeholder": "Enter Merchant Reference",
+      "validation": "required",
+      "criteria": [],
+      "tooltip": "If you want to show the Merchant ID in Bank statement on their Customer bank account., then you should limit the Merchant ID length to 12 characters"
+    },
+    "templateFileName": {
+      "key": "redirectModeB_templateFileName",
+      "label": " Template File Name",
+      "type": "text",
+      "value": "SimplifiedCustomPaymentPage",
+      "placeholder": "Enter templated file name",
+      "validation": "required",
+      "criteria": []
+    },
+    "refresh": {
+      "key": "redirectModeA_refresh",
+      "label": "Refresh list of available payment methods",
+      "type": "boolean",
+      "value": true,
+      "tooltip": "New payment methods added to your worldline account will be added to the list below"
+    },
+    "paymentOptions": {
+      "American Express": {
+        "label": "American Express",
+        "logo": "",
+        "enabled": false
+      },
+      "BCMC": {
+        "label": "BCMC",
+        "logo": "",
+        "enabled": false
+      },
+      "CB": {
+        "label": "CB",
+        "logo": "",
+        "enabled": false
+      },
+      "Diners Club": {
+        "label": "Diners Club",
+        "logo": "",
+        "enabled": false
+      },
+      "Eurocard": {
+        "label": "Eurocard",
+        "logo": "",
+        "enabled": false
+      },
+      "GOOGLEPAY": {
+        "label": "GOOGLEPAY",
+        "logo": "",
+        "enabled": false
+      },
+      "JCB": {
+        "label": "JCB",
+        "logo": "",
+        "enabled": false
+      },
+      "Maestro": {
+        "label": "Maestro",
+        "logo": "",
+        "enabled": false
+      },
+      "PAYPAL": {
+        "label": "PAYPAL",
+        "logo": "",
+        "enabled": false
+      },
+      "VISA": {
+        "label": "VISA",
+        "logo": "",
+        "enabled": false
+      },
+      "WeChatPay": {
+        "label": "WeChatPay",
+        "logo": "",
+        "enabled": false
+      }
+    },
+    "enabled": {
+      "key": "redirectModeA_enabled",
+      "value": false
+    }
+  },
+  "redirectModeB": {
+    "sendOrderData": {
+      "key": "redirectModeB_sendOrderData",
+      "label": "Send Order Data",
+      "type": "boolean",
+      "value": true,
+      "tooltip": "Show Basket Data on Worldline Payment Page"
+    },
+    "displayLogo": {
+      "label": "Generic Logo Displayed on Your Payment Page",
+      "type": "file",
+      "validation": "required",
+      "criteria": []
+    },
+    "payButtonTitle": {
+      "key": "redirectModeB_payButtonTitle",
+      "label": "Pay Button Title",
+      "type": "text",
+      "value": "Pay by Worldline",
+      "validation": "required",
+      "criteria": ["alpha"]
+    },
+    "merchantReferenceID": {
+      "key": "redirectModeB_merchantReferenceID",
+      "label": " Merchant Reference ID",
+      "type": "text",
+      "value": "",
+      "placeholder": "Enter Merchant Reference",
+      "validation": "required",
+      "criteria": [],
+      "tooltip": "If you want to show the Merchant ID in Bank statement on their Customer bank account., then you should limit the Merchant ID length to 12 characters"
+    },
+    "templateFileName": {
+      "key": "redirectModeB_templateFileName",
+      "label": " Template File Name",
+      "type": "text",
+      "value": "SimplifiedCustomPaymentPage",
+      "placeholder": "Enter templated file name",
+      "validation": "required",
+      "criteria": []
+    },
+    "groupCards": {
+      "key": "redirectModeB_groupCards",
+      "label": "Group Cards",
+      "type": "boolean",
+      "value": false,
+      "tooltip": "Enabling this setting will group and co-badge card brands when relevant"
+    },
+    "enabled": {
+      "key": "redirectModeB_enabled",
+      "value": false
+    }
+  },
+  "paymentOption": {
+    "key": "paymentOption",
+    "label": "Payment Option",
+    "type": "boolean",
+    "value": "1",
+    "validation": "required",
+    "criteria": [],
+    "tooltip": "Final execution of the payment"
+  },
+  "authorizationPaymentOption": {
+    "key": "authorizationPaymentOption",
+    "label": "Authorization Payment Option",
+    "type": "boolean",
+    "value": "1",
+    "validation": "required",
+    "criteria": []
+  },
+  "captureConfiguration": {
+    "key": "captureConfiguration",
+    "label": "Capture Configuration",
+    "type": "text",
+    "value": "-1",
+    "values": {
+      "-1": "Manually",
+      "0": "At the end of the day",
+      "1": "After 1 day",
+      "2": "After 2 days",
+      "3": "After 3 days",
+      "4": "After 4 days",
+      "5": "After 5 days",
+      "6": "After 6 days",
+      "7": "After 7 days"
+    },
+    "validation": "required"
+  },
+  "placeOrder": {
+    "key": "placeOrder",
+    "label": "Place Order",
+    "type": "text",
+    "value": "Place an Order",
+    "validation": "required",
+    "criteria": ["alpha"]
+  },
+  "placeOrderLanguage": {
+    "key": "placeOrderLanguage",
+    "label": "",
+    "type": "text",
+    "value": "EN",
+    "values": {
+      "EN": "Place an order",
+      "ES": "Realizar Pedido",
+      "FR": "Passer la commande",
+      "NL": "Plaats Bestelling",
+      "DE": "Bestellung aufgeben",
+      "IT": "Effettua l`ordine"
+    },
+    "validation": "required"
+  },
+  "advancedLogging": {
+    "key": "advancedLogging",
+    "label": "Enable advanced logging",
+    "type": "boolean",
+    "value": false,
+    "validation": "required",
+    "criteria": []
+  },
+  "force3DSv2": {
+    "key": "force3DSv2",
+    "label": "Force 3DSv2",
+    "type": "boolean",
+    "value": false,
+    "validation": "required",
+    "criteria": []
+  },
+  "bgColor": {
+    "key": "bgColor",
+    "label": "Background Color",
+    "type": "color",
+    "value": "#fff",
+    "validation": "required",
+    "criteria": []
+  },
+  "textColor": {
+    "key": "textColor",
+    "label": "Text Color",
+    "type": "color",
+    "value": "#fff",
+    "validation": "required",
+    "criteria": []
+  },
+  "outlineColor": {
+    "key": "outlineColor",
+    "label": "Outline Color",
+    "type": "color",
+    "value": "#fff",
+    "validation": "required",
+    "criteria": []
+  },
+  "enabled": {
+    "key": "enabled",
+    "value": false
+  }
+}

@@ -3,6 +3,8 @@ import Spacings from '@commercetools-uikit/spacings';
 import Channels from './components/channels';
 import Welcome from './components/welcome';
 import MyAccount from './components/my-account';
+import PaymentMethods from './components/payment-methods';
+
 
 const ApplicationRoutes = () => {
   const match = useRouteMatch();
@@ -26,6 +28,9 @@ const ApplicationRoutes = () => {
         </Route>
         <Route path={`${match.path}/myaccounts`}>
           <MyAccount linkToWelcome={match.url} />
+        </Route>
+        <Route path={`${match.path}/paymentmethods`}>
+          <PaymentMethods linkToWelcome={match.url} />
         </Route>
         <Route>
           <Welcome />

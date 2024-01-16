@@ -1115,10 +1115,10 @@
     "core-js-pure" "^3.30.2"
     "regenerator-runtime" "^0.14.0"
 
-"@babel/runtime@^7.1.2", "@babel/runtime@^7.10.0", "@babel/runtime@^7.10.2", "@babel/runtime@^7.12.0", "@babel/runtime@^7.12.13", "@babel/runtime@^7.12.5", "@babel/runtime@^7.14.8", "@babel/runtime@^7.15.4", "@babel/runtime@^7.16.3", "@babel/runtime@^7.17.9", "@babel/runtime@^7.18.3", "@babel/runtime@^7.20.13", "@babel/runtime@^7.22.15", "@babel/runtime@^7.23.2", "@babel/runtime@^7.5.5", "@babel/runtime@^7.8.4", "@babel/runtime@^7.8.7", "@babel/runtime@^7.9.2":
-  "integrity" "sha512-NdUTHcPe4C99WxPub+K9l9tK5/lV4UXIoaHSYgzco9BCyjKAAwzdBI+wWtYqHt7LJdbo74ZjRPJgzVweq1sz0w=="
-  "resolved" "https://registry.npmjs.org/@babel/runtime/-/runtime-7.23.5.tgz"
-  "version" "7.23.5"
+"@babel/runtime@^7.1.2", "@babel/runtime@^7.10.0", "@babel/runtime@^7.10.2", "@babel/runtime@^7.12.0", "@babel/runtime@^7.12.13", "@babel/runtime@^7.12.5", "@babel/runtime@^7.14.8", "@babel/runtime@^7.15.4", "@babel/runtime@^7.16.3", "@babel/runtime@^7.17.9", "@babel/runtime@^7.18.3", "@babel/runtime@^7.20.13", "@babel/runtime@^7.22.15", "@babel/runtime@^7.23.2", "@babel/runtime@^7.23.7", "@babel/runtime@^7.5.5", "@babel/runtime@^7.8.4", "@babel/runtime@^7.8.7", "@babel/runtime@^7.9.2":
+  "integrity" "sha512-Y7KbAP984rn1VGMbGqKmBLio9V7y5Je9GvU4rQPCPinCyNfUcToxIXl06d59URp/F3LwinvODxab5N/G6qggkw=="
+  "resolved" "https://registry.npmjs.org/@babel/runtime/-/runtime-7.23.8.tgz"
+  "version" "7.23.8"
   dependencies:
     "regenerator-runtime" "^0.14.0"
 
@@ -1779,6 +1779,22 @@
     "prop-types" "15.8.1"
     "react-is" "17.0.2"
 
+"@commercetools-uikit/accessible-button@16.12.1":
+  "integrity" "sha512-9rdXiMyBxVvEwVG3PRc91f5ZzvY9DQc9A0gcSK2owJj4eONugPCE/yyiZ1yf7kszWs9XrU9Uz9yldLwk0LzhHg=="
+  "resolved" "https://registry.npmjs.org/@commercetools-uikit/accessible-button/-/accessible-button-16.12.1.tgz"
+  "version" "16.12.1"
+  dependencies:
+    "@babel/runtime" "^7.20.13"
+    "@babel/runtime-corejs3" "^7.20.13"
+    "@commercetools-uikit/design-system" "16.12.1"
+    "@commercetools-uikit/utils" "16.12.1"
+    "@emotion/react" "^11.10.5"
+    "@emotion/styled" "^11.10.5"
+    "@types/react-is" "^17.0.3"
+    "lodash" "4.17.21"
+    "prop-types" "15.8.1"
+    "react-is" "17.0.2"
+
 "@commercetools-uikit/accessible-hidden@^16.7.3":
   "integrity" "sha512-W9fRjkYJRC08yv4wRCH/ipnzruKqBSSaM5Fkv0DQmAVhBgxAbyHP4QWyzGUt5X2A4BW4RcghfHHMMPHPnmsu1Q=="
   "resolved" "https://registry.npmjs.org/@commercetools-uikit/accessible-hidden/-/accessible-hidden-16.12.0.tgz"
@@ -1825,6 +1841,22 @@
     "lodash" "4.17.21"
     "prop-types" "15.8.1"
 
+"@commercetools-uikit/buttons@16.12.1":
+  "integrity" "sha512-7QN2vK9TSHyewPD1Sc+z/N5hXTohH6Aga8/tJC1UapqHWzU/deS7kI4gkoHhbSQB742n+GG9+LTEzDsZGzjW4g=="
+  "resolved" "https://registry.npmjs.org/@commercetools-uikit/buttons/-/buttons-16.12.1.tgz"
+  "version" "16.12.1"
+  dependencies:
+    "@babel/runtime" "^7.20.13"
+    "@babel/runtime-corejs3" "^7.20.13"
+    "@commercetools-uikit/accessible-button" "16.12.1"
+    "@commercetools-uikit/design-system" "16.12.1"
+    "@commercetools-uikit/flat-button" "16.12.1"
+    "@commercetools-uikit/icon-button" "16.12.1"
+    "@commercetools-uikit/link-button" "16.12.1"
+    "@commercetools-uikit/primary-button" "16.12.1"
+    "@commercetools-uikit/secondary-button" "16.12.1"
+    "@commercetools-uikit/secondary-icon-button" "16.12.1"
+
 "@commercetools-uikit/card@^16.7.3":
   "integrity" "sha512-gSSWlz3uacSOoXDbCj2WQxugppgHhFJtFoUgrycGa+U1tV++pQnAOU7rbbw9mgfF6A16RhaTiBWTt8F8cPnK0w=="
   "resolved" "https://registry.npmjs.org/@commercetools-uikit/card/-/card-16.12.0.tgz"
@@ -1838,6 +1870,23 @@
     "@emotion/react" "^11.10.5"
     "@emotion/styled" "^11.10.5"
     "prop-types" "15.8.1"
+
+"@commercetools-uikit/checkbox-input@^16.12.1":
+  "integrity" "sha512-sdsG2NDMs6sKTNoosf438ioEqBqEBW+6373rXFG/LE46lRULkfVW2q0Y0pjrP7Ffld7ffkhS96CPHU/rQ2hRbw=="
+  "resolved" "https://registry.npmjs.org/@commercetools-uikit/checkbox-input/-/checkbox-input-16.12.1.tgz"
+  "version" "16.12.1"
+  dependencies:
+    "@babel/runtime" "^7.20.13"
+    "@babel/runtime-corejs3" "^7.20.13"
+    "@commercetools-uikit/design-system" "16.12.1"
+    "@commercetools-uikit/icons" "16.12.1"
+    "@commercetools-uikit/input-utils" "16.12.1"
+    "@commercetools-uikit/select-utils" "16.12.1"
+    "@commercetools-uikit/utils" "16.12.1"
+    "@emotion/react" "^11.10.5"
+    "@emotion/styled" "^11.10.5"
+    "prop-types" "15.8.1"
+    "react-intl" "^6.3.2"
 
 "@commercetools-uikit/collapsible-motion@16.12.0":
   "integrity" "sha512-/LKjMTIexBWB55wOpuZlgujTyBoAXwY59BdDifBTp2lorEcF4YdAU5mzfk3/vUwPYYhbZn4LedDcQ8fNnmeNog=="
@@ -1862,6 +1911,19 @@
     "@babel/runtime-corejs3" "^7.20.13"
     "@commercetools-uikit/design-system" "16.12.0"
     "@commercetools-uikit/utils" "16.12.0"
+    "@emotion/react" "^11.10.5"
+    "@emotion/styled" "^11.10.5"
+    "prop-types" "15.8.1"
+
+"@commercetools-uikit/constraints@16.12.1":
+  "integrity" "sha512-3xP0lVf3TStRSp9UwBYmmdneSYv+YColYpxzSfu58J6gODhn8oztRBMu3RgY9glRngueHewIe88IP4ctSkj/UA=="
+  "resolved" "https://registry.npmjs.org/@commercetools-uikit/constraints/-/constraints-16.12.1.tgz"
+  "version" "16.12.1"
+  dependencies:
+    "@babel/runtime" "^7.20.13"
+    "@babel/runtime-corejs3" "^7.20.13"
+    "@commercetools-uikit/design-system" "16.12.1"
+    "@commercetools-uikit/utils" "16.12.1"
     "@emotion/react" "^11.10.5"
     "@emotion/styled" "^11.10.5"
     "prop-types" "15.8.1"
@@ -1898,6 +1960,19 @@
     "prop-types" "15.8.1"
     "react" "17.0.2"
 
+"@commercetools-uikit/design-system@16.12.1":
+  "integrity" "sha512-p13zjMjJHDr9PRw3HYPDXYAYwa8+S+8lRc7zRfpey3FfnwP9omV1rRUE9ZKlUfr5CZCl80JADEiZzqnQCH2FtQ=="
+  "resolved" "https://registry.npmjs.org/@commercetools-uikit/design-system/-/design-system-16.12.1.tgz"
+  "version" "16.12.1"
+  dependencies:
+    "@babel/runtime" "^7.20.13"
+    "@babel/runtime-corejs3" "^7.20.13"
+    "@commercetools-uikit/hooks" "16.12.1"
+    "@emotion/react" "^11.10.5"
+    "lodash" "4.17.21"
+    "prop-types" "15.8.1"
+    "react" "17.0.2"
+
 "@commercetools-uikit/field-errors@16.12.0":
   "integrity" "sha512-cr/MKiX5IuONRVaNvU2g0K9x0NNJSGWqrFzyh2gstq9yTKp+HzFbe7G8f1FQ6BDwrybL1veAXE/+3mUyYNj7Aw=="
   "resolved" "https://registry.npmjs.org/@commercetools-uikit/field-errors/-/field-errors-16.12.0.tgz"
@@ -1906,6 +1981,18 @@
     "@babel/runtime" "^7.20.13"
     "@babel/runtime-corejs3" "^7.20.13"
     "@commercetools-uikit/messages" "16.12.0"
+    "@emotion/react" "^11.10.5"
+    "@emotion/styled" "^11.10.5"
+    "prop-types" "15.8.1"
+
+"@commercetools-uikit/field-errors@16.12.1":
+  "integrity" "sha512-PhYqnfgD6GY+FCpnUzFGjT3GlsEWRsL/rbQv6jn8TmYEXGODvgdWtBTOGkxiQAfW1IQWdPy+M4nkKlDACrCuBg=="
+  "resolved" "https://registry.npmjs.org/@commercetools-uikit/field-errors/-/field-errors-16.12.1.tgz"
+  "version" "16.12.1"
+  dependencies:
+    "@babel/runtime" "^7.20.13"
+    "@babel/runtime-corejs3" "^7.20.13"
+    "@commercetools-uikit/messages" "16.12.1"
     "@emotion/react" "^11.10.5"
     "@emotion/styled" "^11.10.5"
     "prop-types" "15.8.1"
@@ -1931,7 +2018,46 @@
     "prop-types" "15.8.1"
     "react-intl" "^6.3.2"
 
-"@commercetools-uikit/flat-button@^16.12.0", "@commercetools-uikit/flat-button@^16.7.3", "@commercetools-uikit/flat-button@16.12.0":
+"@commercetools-uikit/field-label@16.12.1":
+  "integrity" "sha512-pbHf9JkAI7aqGK/eVGZGGSSt0slHYjhIylcCtiOYU1yxY4tRRslWnf2AR939gnDM4iEJGAiJ1DbrBcZKNsYJEw=="
+  "resolved" "https://registry.npmjs.org/@commercetools-uikit/field-label/-/field-label-16.12.1.tgz"
+  "version" "16.12.1"
+  dependencies:
+    "@babel/runtime" "^7.20.13"
+    "@babel/runtime-corejs3" "^7.20.13"
+    "@commercetools-uikit/constraints" "16.12.1"
+    "@commercetools-uikit/design-system" "16.12.1"
+    "@commercetools-uikit/icon-button" "16.12.1"
+    "@commercetools-uikit/icons" "16.12.1"
+    "@commercetools-uikit/label" "16.12.1"
+    "@commercetools-uikit/spacings-inline" "16.12.1"
+    "@commercetools-uikit/spacings-stack" "16.12.1"
+    "@commercetools-uikit/text" "16.12.1"
+    "@commercetools-uikit/utils" "16.12.1"
+    "@emotion/react" "^11.10.5"
+    "@emotion/styled" "^11.10.5"
+    "prop-types" "15.8.1"
+    "react-intl" "^6.3.2"
+
+"@commercetools-uikit/flat-button@^16.12.1", "@commercetools-uikit/flat-button@^16.7.3", "@commercetools-uikit/flat-button@16.12.1":
+  "integrity" "sha512-n5wJbHUcL3Z+WPzF43kZ9BmbEg/OgmhAPRWJYJqLanBHlMu+MPMsjkgHb1Z9EJSs0y3PR03mLFCyoJZdNGHXEg=="
+  "resolved" "https://registry.npmjs.org/@commercetools-uikit/flat-button/-/flat-button-16.12.1.tgz"
+  "version" "16.12.1"
+  dependencies:
+    "@babel/runtime" "^7.20.13"
+    "@babel/runtime-corejs3" "^7.20.13"
+    "@commercetools-uikit/accessible-button" "16.12.1"
+    "@commercetools-uikit/design-system" "16.12.1"
+    "@commercetools-uikit/spacings-inline" "16.12.1"
+    "@commercetools-uikit/text" "16.12.1"
+    "@commercetools-uikit/utils" "16.12.1"
+    "@emotion/react" "^11.10.5"
+    "@emotion/styled" "^11.10.5"
+    "lodash" "4.17.21"
+    "prop-types" "15.8.1"
+    "react-intl" "^6.3.2"
+
+"@commercetools-uikit/flat-button@16.12.0":
   "integrity" "sha512-a9h9M3uPFsye89avnYDLB6x2lAG+Gmkj6uwNbZJcWWcEuX04Uqodrxv2b0BHyvWAzfC/gLAZx/4MzsPgMTYkRQ=="
   "resolved" "https://registry.npmjs.org/@commercetools-uikit/flat-button/-/flat-button-16.12.0.tgz"
   "version" "16.12.0"
@@ -1972,6 +2098,18 @@
     "lodash" "4.17.21"
     "raf-schd" "^4.0.3"
 
+"@commercetools-uikit/hooks@16.12.1":
+  "integrity" "sha512-lU+IxtZ92BUs6ho6GJy5JH0ZOmuQu+DJtduCFDXyW2roTC/Awtn3DNGOLY9k4fSE4it4EhvI2/FbxBvzDFd7cg=="
+  "resolved" "https://registry.npmjs.org/@commercetools-uikit/hooks/-/hooks-16.12.1.tgz"
+  "version" "16.12.1"
+  dependencies:
+    "@babel/runtime" "^7.20.13"
+    "@babel/runtime-corejs3" "^7.20.13"
+    "@commercetools-uikit/utils" "16.12.1"
+    "@types/raf-schd" "^4.0.1"
+    "lodash" "4.17.21"
+    "raf-schd" "^4.0.3"
+
 "@commercetools-uikit/i18n@^16.7.3":
   "integrity" "sha512-6tYZzdizqOh12l/4qqqv6gIEVI4ogvLXPwoAjcQigflcX+KYkQmQeA0yuoqlLjc6hFEFaQD5/GfxjtO9E4vVhg=="
   "resolved" "https://registry.npmjs.org/@commercetools-uikit/i18n/-/i18n-16.12.0.tgz"
@@ -1998,6 +2136,24 @@
     "prop-types" "15.8.1"
     "react-intl" "^6.3.2"
 
+"@commercetools-uikit/icon-button@16.12.1":
+  "integrity" "sha512-uTK3ciPXfmJ5ZOJ+LtqP5lzs12fZtaPkkuIl8807uzhlFp/EyOmqZf2+dpRGtSfo2qvEZ0QGnJo8fMUEJ58D1A=="
+  "resolved" "https://registry.npmjs.org/@commercetools-uikit/icon-button/-/icon-button-16.12.1.tgz"
+  "version" "16.12.1"
+  dependencies:
+    "@babel/runtime" "^7.20.13"
+    "@babel/runtime-corejs3" "^7.20.13"
+    "@commercetools-uikit/accessible-button" "16.12.1"
+    "@commercetools-uikit/design-system" "16.12.1"
+    "@commercetools-uikit/spacings" "16.12.1"
+    "@commercetools-uikit/text" "16.12.1"
+    "@commercetools-uikit/utils" "16.12.1"
+    "@emotion/react" "^11.10.5"
+    "@emotion/styled" "^11.10.5"
+    "lodash" "4.17.21"
+    "prop-types" "15.8.1"
+    "react-intl" "^6.3.2"
+
 "@commercetools-uikit/icons@^16.11.0", "@commercetools-uikit/icons@^16.7.3", "@commercetools-uikit/icons@16.12.0":
   "integrity" "sha512-4WQQGGQ/8CDKxaUbl1HHUD2Gs8f9aRihN6+p3SmBPhW4XrW86HAjaZv6KL0p0NaKAzfMbORvNfcv7tdszhqpYQ=="
   "resolved" "https://registry.npmjs.org/@commercetools-uikit/icons/-/icons-16.12.0.tgz"
@@ -2007,6 +2163,22 @@
     "@babel/runtime-corejs3" "^7.20.13"
     "@commercetools-uikit/design-system" "16.12.0"
     "@commercetools-uikit/utils" "16.12.0"
+    "@emotion/react" "^11.10.5"
+    "@emotion/styled" "^11.10.5"
+    "@types/dompurify" "^2.4.0"
+    "dompurify" "2.4.7"
+    "prop-types" "15.8.1"
+    "react-from-dom" "0.6.2"
+
+"@commercetools-uikit/icons@16.12.1":
+  "integrity" "sha512-LCDRZaYPpNpgC1BKwvtA2DLlnokKIGRA7h+z0DuZH7mRg9A5AXCOFnbbL5Zm4+TfjZc5CbWtnD81zjQ6XQ7dZQ=="
+  "resolved" "https://registry.npmjs.org/@commercetools-uikit/icons/-/icons-16.12.1.tgz"
+  "version" "16.12.1"
+  dependencies:
+    "@babel/runtime" "^7.20.13"
+    "@babel/runtime-corejs3" "^7.20.13"
+    "@commercetools-uikit/design-system" "16.12.1"
+    "@commercetools-uikit/utils" "16.12.1"
     "@emotion/react" "^11.10.5"
     "@emotion/styled" "^11.10.5"
     "@types/dompurify" "^2.4.0"
@@ -2029,6 +2201,21 @@
     "prop-types" "15.8.1"
     "react-textarea-autosize" "8.4.0"
 
+"@commercetools-uikit/input-utils@16.12.1":
+  "integrity" "sha512-9bn4XEpfByDzl9fW+hjxqQsA8ElcKFSvCXkBm8ZZd/SKsJZ+VoxGDV9Q68vu2Qe9S9cSopHa+QI0++4mERoETg=="
+  "resolved" "https://registry.npmjs.org/@commercetools-uikit/input-utils/-/input-utils-16.12.1.tgz"
+  "version" "16.12.1"
+  dependencies:
+    "@babel/runtime" "^7.20.13"
+    "@babel/runtime-corejs3" "^7.20.13"
+    "@commercetools-uikit/design-system" "16.12.1"
+    "@commercetools-uikit/flat-button" "16.12.1"
+    "@commercetools-uikit/icons" "16.12.1"
+    "@commercetools-uikit/utils" "16.12.1"
+    "@emotion/react" "^11.10.5"
+    "prop-types" "15.8.1"
+    "react-textarea-autosize" "8.4.0"
+
 "@commercetools-uikit/label@^16.7.3", "@commercetools-uikit/label@16.12.0":
   "integrity" "sha512-dtNaCPZPVJ5G9HxxKBtoXUgjcpoOFos3C2+dy34gO7Qclvd2Lq58zUljMYnPWh6OZd7WnOKdv7AiYtKUy2NMng=="
   "resolved" "https://registry.npmjs.org/@commercetools-uikit/label/-/label-16.12.0.tgz"
@@ -2041,6 +2228,37 @@
     "@commercetools-uikit/utils" "16.12.0"
     "@emotion/react" "^11.10.5"
     "@emotion/styled" "^11.10.5"
+    "prop-types" "15.8.1"
+
+"@commercetools-uikit/label@16.12.1":
+  "integrity" "sha512-v1X4IVpgjN84pTsCNX71MCSYL4CgfCoip3c3wqQiUmuTGcqMa4PN9NoqZ2LhZHZrFL6N95w2bqDuvaItH7nZyw=="
+  "resolved" "https://registry.npmjs.org/@commercetools-uikit/label/-/label-16.12.1.tgz"
+  "version" "16.12.1"
+  dependencies:
+    "@babel/runtime" "^7.20.13"
+    "@babel/runtime-corejs3" "^7.20.13"
+    "@commercetools-uikit/design-system" "16.12.1"
+    "@commercetools-uikit/text" "16.12.1"
+    "@commercetools-uikit/utils" "16.12.1"
+    "@emotion/react" "^11.10.5"
+    "@emotion/styled" "^11.10.5"
+    "prop-types" "15.8.1"
+
+"@commercetools-uikit/link-button@16.12.1":
+  "integrity" "sha512-mP1gwn+hrMuBe6F5oeK1HR9Svv0sTC1N9cTHXk4rG66YGzZDlSPH6hN3capJjyEGV0gWrfFJs1fayh34FNdfdQ=="
+  "resolved" "https://registry.npmjs.org/@commercetools-uikit/link-button/-/link-button-16.12.1.tgz"
+  "version" "16.12.1"
+  dependencies:
+    "@babel/runtime" "^7.20.13"
+    "@babel/runtime-corejs3" "^7.20.13"
+    "@commercetools-uikit/accessible-button" "16.12.1"
+    "@commercetools-uikit/design-system" "16.12.1"
+    "@commercetools-uikit/spacings-inline" "16.12.1"
+    "@commercetools-uikit/text" "16.12.1"
+    "@commercetools-uikit/utils" "16.12.1"
+    "@emotion/react" "^11.10.5"
+    "@emotion/styled" "^11.10.5"
+    "lodash" "4.17.21"
     "prop-types" "15.8.1"
 
 "@commercetools-uikit/link@^16.12.0":
@@ -2061,7 +2279,22 @@
     "history" "4.10.1"
     "prop-types" "15.8.1"
 
-"@commercetools-uikit/loading-spinner@^16.11.0", "@commercetools-uikit/loading-spinner@^16.7.3", "@commercetools-uikit/loading-spinner@16.12.0":
+"@commercetools-uikit/loading-spinner@^16.12.1", "@commercetools-uikit/loading-spinner@^16.7.3":
+  "integrity" "sha512-GkW3R2QIn1sOQP7xzYTmPLYElI/w8Awg549Lgcx6bmeleIv1fg3aBT6fG+YWOksU7oIpGGtHOmLb5L4S8ROIMw=="
+  "resolved" "https://registry.npmjs.org/@commercetools-uikit/loading-spinner/-/loading-spinner-16.12.1.tgz"
+  "version" "16.12.1"
+  dependencies:
+    "@babel/runtime" "^7.20.13"
+    "@babel/runtime-corejs3" "^7.20.13"
+    "@commercetools-uikit/design-system" "16.12.1"
+    "@commercetools-uikit/spacings-inline" "16.12.1"
+    "@commercetools-uikit/text" "16.12.1"
+    "@commercetools-uikit/utils" "16.12.1"
+    "@emotion/react" "^11.10.5"
+    "prop-types" "15.8.1"
+    "react-intl" "^6.3.2"
+
+"@commercetools-uikit/loading-spinner@16.12.0":
   "integrity" "sha512-KzyhnYHJr+fWDNhIqMQ5FICPS+z6byEgUpoHyfyU6zHh7IQehaD4dUnupm0urKhE0TMp6aNYdN67P104Fp+03A=="
   "resolved" "https://registry.npmjs.org/@commercetools-uikit/loading-spinner/-/loading-spinner-16.12.0.tgz"
   "version" "16.12.0"
@@ -2142,6 +2375,20 @@
     "prop-types" "15.8.1"
     "react-intl" "^6.3.2"
 
+"@commercetools-uikit/messages@16.12.1":
+  "integrity" "sha512-8qsIcH7yGjb1c0lwWgeK303ACB0mHBlTlsojPdQ4cxck8RmiUT/9S2nipKvxzwlMgrufopKLZO9K1cMwk/rrWw=="
+  "resolved" "https://registry.npmjs.org/@commercetools-uikit/messages/-/messages-16.12.1.tgz"
+  "version" "16.12.1"
+  dependencies:
+    "@babel/runtime" "^7.20.13"
+    "@babel/runtime-corejs3" "^7.20.13"
+    "@commercetools-uikit/text" "16.12.1"
+    "@commercetools-uikit/utils" "16.12.1"
+    "@emotion/react" "^11.10.5"
+    "@emotion/styled" "^11.10.5"
+    "prop-types" "15.8.1"
+    "react-intl" "^6.3.2"
+
 "@commercetools-uikit/notifications@^16.11.0", "@commercetools-uikit/notifications@^16.7.3":
   "integrity" "sha512-8BEum7jbLdAWugH42XvJOwMRi0MnxfNbruJBeRw20PmIpjhJ2CS5S+cxIrD59a/ZgWcdtli2e4lBsgemCJESBA=="
   "resolved" "https://registry.npmjs.org/@commercetools-uikit/notifications/-/notifications-16.12.0.tgz"
@@ -2194,23 +2441,82 @@
     "lodash" "4.17.21"
     "prop-types" "15.8.1"
 
-"@commercetools-uikit/primary-button@^16.12.0", "@commercetools-uikit/primary-button@^16.7.3":
-  "integrity" "sha512-Lql/0fxByTaAytqbe3KKUzFi6tpVjTHirvg3rT3e9Gb+Q/HNs3MLRElxM2jp4vJokpY4XADKtHMpcfug568FSQ=="
-  "resolved" "https://registry.npmjs.org/@commercetools-uikit/primary-button/-/primary-button-16.12.0.tgz"
-  "version" "16.12.0"
+"@commercetools-uikit/primary-action-dropdown@^16.12.1":
+  "integrity" "sha512-gDzzgSm256deWgP5kBRDM4qlTEx8uEFaS7NNOb9kMyYpXPbtF9zZJNl1RbFbsVTbPb+jq3wU+ZG6T9FE6Q1t3w=="
+  "resolved" "https://registry.npmjs.org/@commercetools-uikit/primary-action-dropdown/-/primary-action-dropdown-16.12.1.tgz"
+  "version" "16.12.1"
   dependencies:
     "@babel/runtime" "^7.20.13"
     "@babel/runtime-corejs3" "^7.20.13"
-    "@commercetools-uikit/accessible-button" "16.12.0"
-    "@commercetools-uikit/design-system" "16.12.0"
-    "@commercetools-uikit/spacings-inline" "16.12.0"
-    "@commercetools-uikit/text" "16.12.0"
-    "@commercetools-uikit/utils" "16.12.0"
+    "@commercetools-uikit/accessible-button" "16.12.1"
+    "@commercetools-uikit/buttons" "16.12.1"
+    "@commercetools-uikit/design-system" "16.12.1"
+    "@commercetools-uikit/hooks" "16.12.1"
+    "@commercetools-uikit/icons" "16.12.1"
+    "@commercetools-uikit/text" "16.12.1"
+    "@commercetools-uikit/utils" "16.12.1"
     "@emotion/react" "^11.10.5"
     "@emotion/styled" "^11.10.5"
     "lodash" "4.17.21"
     "prop-types" "15.8.1"
     "react-intl" "^6.3.2"
+
+"@commercetools-uikit/primary-button@^16.12.0", "@commercetools-uikit/primary-button@^16.7.3", "@commercetools-uikit/primary-button@16.12.1":
+  "integrity" "sha512-+MI1xxh2JCHlsxAIprRiBlH0KqQx3gv4LWRR8vqUX1iVUwzXQUC/VCnmQXI3gg6PFqIM+Y99AK1w78N9zjTYgA=="
+  "resolved" "https://registry.npmjs.org/@commercetools-uikit/primary-button/-/primary-button-16.12.1.tgz"
+  "version" "16.12.1"
+  dependencies:
+    "@babel/runtime" "^7.20.13"
+    "@babel/runtime-corejs3" "^7.20.13"
+    "@commercetools-uikit/accessible-button" "16.12.1"
+    "@commercetools-uikit/design-system" "16.12.1"
+    "@commercetools-uikit/spacings-inline" "16.12.1"
+    "@commercetools-uikit/text" "16.12.1"
+    "@commercetools-uikit/utils" "16.12.1"
+    "@emotion/react" "^11.10.5"
+    "@emotion/styled" "^11.10.5"
+    "lodash" "4.17.21"
+    "prop-types" "15.8.1"
+    "react-intl" "^6.3.2"
+
+"@commercetools-uikit/radio-field@^16.12.1":
+  "integrity" "sha512-wRLTXQHQgYiIce1M0WVxuOFbfmjyouYH0+KrDpms0ZwIHjLReA8n75nduHpQvw94WqdkAh8rS+Q10bVI7vrg+w=="
+  "resolved" "https://registry.npmjs.org/@commercetools-uikit/radio-field/-/radio-field-16.12.1.tgz"
+  "version" "16.12.1"
+  dependencies:
+    "@babel/runtime" "^7.20.13"
+    "@babel/runtime-corejs3" "^7.20.13"
+    "@commercetools-uikit/constraints" "16.12.1"
+    "@commercetools-uikit/design-system" "16.12.1"
+    "@commercetools-uikit/field-errors" "16.12.1"
+    "@commercetools-uikit/field-label" "16.12.1"
+    "@commercetools-uikit/radio-input" "16.12.1"
+    "@commercetools-uikit/spacings-stack" "16.12.1"
+    "@commercetools-uikit/utils" "16.12.1"
+    "@emotion/react" "^11.10.5"
+    "@emotion/styled" "^11.10.5"
+    "prop-types" "15.8.1"
+    "react-intl" "^6.3.2"
+
+"@commercetools-uikit/radio-input@^16.12.1", "@commercetools-uikit/radio-input@16.12.1":
+  "integrity" "sha512-VLmLkWQuFxMpGqR6Utd+H9gGp4rIGU82HJ+WaJfHNADOuMLePh2PPDjWJisQPZMmJmqC43cxFtgDzYWWkDSHLQ=="
+  "resolved" "https://registry.npmjs.org/@commercetools-uikit/radio-input/-/radio-input-16.12.1.tgz"
+  "version" "16.12.1"
+  dependencies:
+    "@babel/runtime" "^7.20.13"
+    "@babel/runtime-corejs3" "^7.20.13"
+    "@commercetools-uikit/constraints" "16.12.1"
+    "@commercetools-uikit/design-system" "16.12.1"
+    "@commercetools-uikit/icons" "16.12.1"
+    "@commercetools-uikit/input-utils" "16.12.1"
+    "@commercetools-uikit/spacings-inline" "16.12.1"
+    "@commercetools-uikit/spacings-inset" "16.12.1"
+    "@commercetools-uikit/spacings-stack" "16.12.1"
+    "@commercetools-uikit/utils" "16.12.1"
+    "@emotion/react" "^11.10.5"
+    "@emotion/styled" "^11.10.5"
+    "prop-types" "15.8.1"
+    "react-is" "17.0.2"
 
 "@commercetools-uikit/rich-text-input@^16.12.0":
   "integrity" "sha512-CfglzlbHC5Wc9bB0U9Mi1PwI3QvBbm/DXzvAMPL4fVEhYuAGLKhk6wGkUBASK0UT2NzfuLkAiLnDN6++ave7sA=="
@@ -2269,18 +2575,18 @@
     "slate-react" "0.75.0"
     "style-to-object" "0.4.4"
 
-"@commercetools-uikit/secondary-button@^16.7.3":
-  "integrity" "sha512-Kpoeg3vmm4B2Aph7ytNERI1TBArKqMF1TQU2xkIxxo8I02SzgUuEfPlgPUkMawOrO5taTDh5snebBALFNlQ3Jg=="
-  "resolved" "https://registry.npmjs.org/@commercetools-uikit/secondary-button/-/secondary-button-16.12.0.tgz"
-  "version" "16.12.0"
+"@commercetools-uikit/secondary-button@^16.7.3", "@commercetools-uikit/secondary-button@16.12.1":
+  "integrity" "sha512-OEGV+wwAubT2vbeiyo0XMGmrFFOnh+Sn1OdHIv/EA3IX+pDGl2zrkNhh7+vNc8Es6vIo0dZIVhaGzA1gI27T7A=="
+  "resolved" "https://registry.npmjs.org/@commercetools-uikit/secondary-button/-/secondary-button-16.12.1.tgz"
+  "version" "16.12.1"
   dependencies:
     "@babel/runtime" "^7.20.13"
     "@babel/runtime-corejs3" "^7.20.13"
-    "@commercetools-uikit/accessible-button" "16.12.0"
-    "@commercetools-uikit/design-system" "16.12.0"
-    "@commercetools-uikit/spacings-inline" "16.12.0"
-    "@commercetools-uikit/text" "16.12.0"
-    "@commercetools-uikit/utils" "16.12.0"
+    "@commercetools-uikit/accessible-button" "16.12.1"
+    "@commercetools-uikit/design-system" "16.12.1"
+    "@commercetools-uikit/spacings-inline" "16.12.1"
+    "@commercetools-uikit/text" "16.12.1"
+    "@commercetools-uikit/utils" "16.12.1"
     "@emotion/react" "^11.10.5"
     "@emotion/styled" "^11.10.5"
     "lodash" "4.17.21"
@@ -2298,6 +2604,24 @@
     "@commercetools-uikit/spacings" "16.12.0"
     "@commercetools-uikit/text" "16.12.0"
     "@commercetools-uikit/utils" "16.12.0"
+    "@emotion/react" "^11.10.5"
+    "@emotion/styled" "^11.10.5"
+    "lodash" "4.17.21"
+    "prop-types" "15.8.1"
+    "react-intl" "^6.3.2"
+
+"@commercetools-uikit/secondary-icon-button@16.12.1":
+  "integrity" "sha512-dg++ZsEKMAus+KaAxEFjifPCpZp8PPM70x50trLXZT3aNRBvhF81FCZcPnPkBP5xXOL9kTBeV+NJpMbp33503w=="
+  "resolved" "https://registry.npmjs.org/@commercetools-uikit/secondary-icon-button/-/secondary-icon-button-16.12.1.tgz"
+  "version" "16.12.1"
+  dependencies:
+    "@babel/runtime" "^7.20.13"
+    "@babel/runtime-corejs3" "^7.20.13"
+    "@commercetools-uikit/accessible-button" "16.12.1"
+    "@commercetools-uikit/design-system" "16.12.1"
+    "@commercetools-uikit/spacings" "16.12.1"
+    "@commercetools-uikit/text" "16.12.1"
+    "@commercetools-uikit/utils" "16.12.1"
     "@emotion/react" "^11.10.5"
     "@emotion/styled" "^11.10.5"
     "lodash" "4.17.21"
@@ -2361,6 +2685,25 @@
     "prop-types" "15.8.1"
     "react-select" "5.8.0"
 
+"@commercetools-uikit/select-utils@16.12.1":
+  "integrity" "sha512-rExdTDjxCn7ZjP1CoFWalw9eJd1NdlemvLuMQrgDyz/6MydkxNVtWQnEgCf+E3/cfKgA/ylttFYCdvAgeVnRUw=="
+  "resolved" "https://registry.npmjs.org/@commercetools-uikit/select-utils/-/select-utils-16.12.1.tgz"
+  "version" "16.12.1"
+  dependencies:
+    "@babel/runtime" "^7.20.13"
+    "@babel/runtime-corejs3" "^7.20.13"
+    "@commercetools-uikit/accessible-button" "16.12.1"
+    "@commercetools-uikit/design-system" "16.12.1"
+    "@commercetools-uikit/icons" "16.12.1"
+    "@commercetools-uikit/spacings" "16.12.1"
+    "@commercetools-uikit/text" "16.12.1"
+    "@commercetools-uikit/utils" "16.12.1"
+    "@emotion/react" "^11.10.5"
+    "@emotion/styled" "^11.10.5"
+    "lodash" "4.17.21"
+    "prop-types" "15.8.1"
+    "react-select" "5.8.0"
+
 "@commercetools-uikit/spacings-inline@16.12.0":
   "integrity" "sha512-hucRLbOK1ZuSUIaT2pxXNTOGdevL7QiYNXR3t5/B/kR/VY0NjE26gGI1swJvkEqkXbQOiXDUgPirZNek4ya2IQ=="
   "resolved" "https://registry.npmjs.org/@commercetools-uikit/spacings-inline/-/spacings-inline-16.12.0.tgz"
@@ -2370,6 +2713,18 @@
     "@babel/runtime-corejs3" "^7.20.13"
     "@commercetools-uikit/design-system" "16.12.0"
     "@commercetools-uikit/utils" "16.12.0"
+    "@emotion/react" "^11.10.5"
+    "prop-types" "15.8.1"
+
+"@commercetools-uikit/spacings-inline@16.12.1":
+  "integrity" "sha512-aB5kmBuHhDoYAAz6knOoIJzyCwMSEbBwjips7ZYH3KdqZI5M8RSWAOOt0CTi9ULuanDVurySnm2hTLz7VMYGxw=="
+  "resolved" "https://registry.npmjs.org/@commercetools-uikit/spacings-inline/-/spacings-inline-16.12.1.tgz"
+  "version" "16.12.1"
+  dependencies:
+    "@babel/runtime" "^7.20.13"
+    "@babel/runtime-corejs3" "^7.20.13"
+    "@commercetools-uikit/design-system" "16.12.1"
+    "@commercetools-uikit/utils" "16.12.1"
     "@emotion/react" "^11.10.5"
     "prop-types" "15.8.1"
 
@@ -2385,6 +2740,18 @@
     "@emotion/react" "^11.10.5"
     "prop-types" "15.8.1"
 
+"@commercetools-uikit/spacings-inset-squish@16.12.1":
+  "integrity" "sha512-daqEF0sAubSn+UNKJBfwuWO2OjvzABfBz32d7ShMSNYGlVhfSSyL91EX1A/AVrRth4lOme7ZBZVSshS0RCIAZQ=="
+  "resolved" "https://registry.npmjs.org/@commercetools-uikit/spacings-inset-squish/-/spacings-inset-squish-16.12.1.tgz"
+  "version" "16.12.1"
+  dependencies:
+    "@babel/runtime" "^7.20.13"
+    "@babel/runtime-corejs3" "^7.20.13"
+    "@commercetools-uikit/design-system" "16.12.1"
+    "@commercetools-uikit/utils" "16.12.1"
+    "@emotion/react" "^11.10.5"
+    "prop-types" "15.8.1"
+
 "@commercetools-uikit/spacings-inset@16.12.0":
   "integrity" "sha512-9auQ+LnzZZvOU7zz5UckX/FvMLeI7X6Jm0r+wTyXs9HKdwQM6qyUW4/UObbo/r9lgsuM2jBm8eDEmIF7TKNdZw=="
   "resolved" "https://registry.npmjs.org/@commercetools-uikit/spacings-inset/-/spacings-inset-16.12.0.tgz"
@@ -2394,6 +2761,18 @@
     "@babel/runtime-corejs3" "^7.20.13"
     "@commercetools-uikit/design-system" "16.12.0"
     "@commercetools-uikit/utils" "16.12.0"
+    "@emotion/react" "^11.10.5"
+    "prop-types" "15.8.1"
+
+"@commercetools-uikit/spacings-inset@16.12.1":
+  "integrity" "sha512-sWnm7bq52WLlqG+umt+8DTUePzyY0g/Gja+ECdAIlaUEK600gGpt3EI5rRzUaDns72iahLcX7Mdb4YN/lNz0kg=="
+  "resolved" "https://registry.npmjs.org/@commercetools-uikit/spacings-inset/-/spacings-inset-16.12.1.tgz"
+  "version" "16.12.1"
+  dependencies:
+    "@babel/runtime" "^7.20.13"
+    "@babel/runtime-corejs3" "^7.20.13"
+    "@commercetools-uikit/design-system" "16.12.1"
+    "@commercetools-uikit/utils" "16.12.1"
     "@emotion/react" "^11.10.5"
     "prop-types" "15.8.1"
 
@@ -2409,6 +2788,18 @@
     "@emotion/react" "^11.10.5"
     "prop-types" "15.8.1"
 
+"@commercetools-uikit/spacings-stack@16.12.1":
+  "integrity" "sha512-aWowDQIiWJs2GHQDMID+zX830NnVNykwKzb9NJ70x5AqEFynLyVzAikUOqISAaoXKZvTR2Fkcor3P8foCMMHjw=="
+  "resolved" "https://registry.npmjs.org/@commercetools-uikit/spacings-stack/-/spacings-stack-16.12.1.tgz"
+  "version" "16.12.1"
+  dependencies:
+    "@babel/runtime" "^7.20.13"
+    "@babel/runtime-corejs3" "^7.20.13"
+    "@commercetools-uikit/design-system" "16.12.1"
+    "@commercetools-uikit/utils" "16.12.1"
+    "@emotion/react" "^11.10.5"
+    "prop-types" "15.8.1"
+
 "@commercetools-uikit/spacings@^16.11.0", "@commercetools-uikit/spacings@^16.7.3", "@commercetools-uikit/spacings@16.12.0":
   "integrity" "sha512-T+4wpyDBild60H9hxLMdEO9zGVUk+obAN7gG3MrjEpsmkQ/ZnAYu+GmewhsqgFOUE4i+l1rXCCbQJ7nb3zJlpw=="
   "resolved" "https://registry.npmjs.org/@commercetools-uikit/spacings/-/spacings-16.12.0.tgz"
@@ -2420,6 +2811,18 @@
     "@commercetools-uikit/spacings-inset" "16.12.0"
     "@commercetools-uikit/spacings-inset-squish" "16.12.0"
     "@commercetools-uikit/spacings-stack" "16.12.0"
+
+"@commercetools-uikit/spacings@16.12.1":
+  "integrity" "sha512-HMd1GVwOJ4H9aG2siZ0hBIdNVyUDXqy36EWokBQ71OmMDIKNUV6wrQvEJBK7wL4pVXv+k4RxpGzmoGooWSi/Sw=="
+  "resolved" "https://registry.npmjs.org/@commercetools-uikit/spacings/-/spacings-16.12.1.tgz"
+  "version" "16.12.1"
+  dependencies:
+    "@babel/runtime" "^7.20.13"
+    "@babel/runtime-corejs3" "^7.20.13"
+    "@commercetools-uikit/spacings-inline" "16.12.1"
+    "@commercetools-uikit/spacings-inset" "16.12.1"
+    "@commercetools-uikit/spacings-inset-squish" "16.12.1"
+    "@commercetools-uikit/spacings-stack" "16.12.1"
 
 "@commercetools-uikit/text-field@^16.11.0":
   "integrity" "sha512-qdIAcSUAHilagR5I2K7wKydaZW9VtNO9TGr+YxQFWPZOhGXjuPMLvStKtgt+XuUAICYZMscvABV/PPHzaT/HNg=="
@@ -2469,6 +2872,53 @@
     "prop-types" "15.8.1"
     "warning" "4.0.3"
 
+"@commercetools-uikit/text@16.12.1":
+  "integrity" "sha512-5EUc0S4konZtEZWoaIe/QEWbf+Hnx/9SEFWP6629hujoK3o37BkgCD4QoDR9v5inr/QGB8se0ZgdRVoAcz5azg=="
+  "resolved" "https://registry.npmjs.org/@commercetools-uikit/text/-/text-16.12.1.tgz"
+  "version" "16.12.1"
+  dependencies:
+    "@babel/runtime" "^7.20.13"
+    "@babel/runtime-corejs3" "^7.20.13"
+    "@commercetools-uikit/design-system" "16.12.1"
+    "@commercetools-uikit/utils" "16.12.1"
+    "@emotion/react" "^11.10.5"
+    "lodash" "4.17.21"
+    "prop-types" "15.8.1"
+    "warning" "4.0.3"
+
+"@commercetools-uikit/toggle-input@^16.12.1":
+  "integrity" "sha512-kfwCgCxd8pkSDwmx+Zg1tZBkvxqYBswKwvJGFmwp8idtbZYH5wladgJSGI+U0WaOjWAc0RQyi2/vBXUjj8z6Yg=="
+  "resolved" "https://registry.npmjs.org/@commercetools-uikit/toggle-input/-/toggle-input-16.12.1.tgz"
+  "version" "16.12.1"
+  dependencies:
+    "@babel/runtime" "^7.20.13"
+    "@babel/runtime-corejs3" "^7.20.13"
+    "@commercetools-uikit/constraints" "16.12.1"
+    "@commercetools-uikit/design-system" "16.12.1"
+    "@commercetools-uikit/input-utils" "16.12.1"
+    "@commercetools-uikit/utils" "16.12.1"
+    "@emotion/react" "^11.10.5"
+    "@emotion/styled" "^11.10.5"
+    "prop-types" "15.8.1"
+
+"@commercetools-uikit/tooltip@^16.12.1":
+  "integrity" "sha512-Z0MzbpKFu9zVffzQ0rHr/dZgecgKgW24NQLV41aofTrzDQPbrX+bWXmVAFuGADlseh4F+kA9mUeAe3/PnpG0vw=="
+  "resolved" "https://registry.npmjs.org/@commercetools-uikit/tooltip/-/tooltip-16.12.1.tgz"
+  "version" "16.12.1"
+  dependencies:
+    "@babel/runtime" "^7.20.13"
+    "@babel/runtime-corejs3" "^7.20.13"
+    "@commercetools-uikit/constraints" "16.12.1"
+    "@commercetools-uikit/design-system" "16.12.1"
+    "@commercetools-uikit/hooks" "16.12.1"
+    "@commercetools-uikit/utils" "16.12.1"
+    "@emotion/react" "^11.10.5"
+    "@emotion/styled" "^11.10.5"
+    "lodash" "4.17.21"
+    "prop-types" "15.8.1"
+    "react-is" "17.0.2"
+    "use-popper" "1.1.6"
+
 "@commercetools-uikit/tooltip@16.12.0":
   "integrity" "sha512-1Psw8yk1+FVRfCeE3zJJ34NtCiUiN+7Hiiizf41gX2X0EdHSCvscyjq4MNqMTKu5AWJ1M5LMs9+gQBIooL8q3A=="
   "resolved" "https://registry.npmjs.org/@commercetools-uikit/tooltip/-/tooltip-16.12.0.tgz"
@@ -2491,6 +2941,15 @@
   "integrity" "sha512-Ul04ggglZZF1pA13dMX2iabmCi7mMuKMocbZB0/cvOCsUy203N+I7XvsYV9u4/fte9KaHb0YK9elRENuUWgOpg=="
   "resolved" "https://registry.npmjs.org/@commercetools-uikit/utils/-/utils-16.12.0.tgz"
   "version" "16.12.0"
+  dependencies:
+    "@babel/runtime" "^7.20.13"
+    "@babel/runtime-corejs3" "^7.20.13"
+    "@emotion/is-prop-valid" "1.2.1"
+
+"@commercetools-uikit/utils@16.12.1":
+  "integrity" "sha512-V+gR8XbVTi4NAfooqiLETD76fHdomcybFYzUa+DeuL6S80ovOdBMPkxF2OZz+LJy8zNY8fmjJ86RA5OJBEchqw=="
+  "resolved" "https://registry.npmjs.org/@commercetools-uikit/utils/-/utils-16.12.1.tgz"
+  "version" "16.12.1"
   dependencies:
     "@babel/runtime" "^7.20.13"
     "@babel/runtime-corejs3" "^7.20.13"
@@ -2640,7 +3099,21 @@
   "resolved" "https://registry.npmjs.org/@emotion/memoize/-/memoize-0.8.1.tgz"
   "version" "0.8.1"
 
-"@emotion/react@^11.10.5", "@emotion/react@^11.8.1", "@emotion/react@11.11.0":
+"@emotion/react@^11.10.5", "@emotion/react@^11.11.1", "@emotion/react@^11.8.1":
+  "integrity" "sha512-Cnn0kuq4DoONOMcnoVsTOR8E+AdnKFf//6kUWc4LCdnxj31pZWn7rIULd6Y7/Js1PiPHzn7SKCM9vB/jBni8eA=="
+  "resolved" "https://registry.npmjs.org/@emotion/react/-/react-11.11.3.tgz"
+  "version" "11.11.3"
+  dependencies:
+    "@babel/runtime" "^7.18.3"
+    "@emotion/babel-plugin" "^11.11.0"
+    "@emotion/cache" "^11.11.0"
+    "@emotion/serialize" "^1.1.3"
+    "@emotion/use-insertion-effect-with-fallbacks" "^1.0.1"
+    "@emotion/utils" "^1.2.1"
+    "@emotion/weak-memoize" "^0.3.1"
+    "hoist-non-react-statics" "^3.3.1"
+
+"@emotion/react@11.11.0":
   "integrity" "sha512-ZSK3ZJsNkwfjT3JpDAWJZlrGD81Z3ytNDsxw1LKq1o+xkmO5pnWfr6gmCC8gHEFf3nSSX/09YrG67jybNPxSUw=="
   "resolved" "https://registry.npmjs.org/@emotion/react/-/react-11.11.0.tgz"
   "version" "11.11.0"
@@ -2654,10 +3127,10 @@
     "@emotion/weak-memoize" "^0.3.1"
     "hoist-non-react-statics" "^3.3.1"
 
-"@emotion/serialize@^1.1.2":
-  "integrity" "sha512-zR6a/fkFP4EAcCMQtLOhIgpprZOwNmCldtpaISpvz348+DP4Mz8ZoKaGGCQpbzepNIUWbq4w6hNZkwDyKoS+HA=="
-  "resolved" "https://registry.npmjs.org/@emotion/serialize/-/serialize-1.1.2.tgz"
-  "version" "1.1.2"
+"@emotion/serialize@^1.1.2", "@emotion/serialize@^1.1.3":
+  "integrity" "sha512-iD4D6QVZFDhcbH0RAG1uVu1CwVLMWUkCvAqqlewO/rxf8+87yIBAlt4+AxMiiKPLs5hFc0owNk/sLLAOROw3cA=="
+  "resolved" "https://registry.npmjs.org/@emotion/serialize/-/serialize-1.1.3.tgz"
+  "version" "1.1.3"
   dependencies:
     "@emotion/hash" "^0.9.1"
     "@emotion/memoize" "^0.8.1"
@@ -2670,7 +3143,7 @@
   "resolved" "https://registry.npmjs.org/@emotion/sheet/-/sheet-1.2.2.tgz"
   "version" "1.2.2"
 
-"@emotion/styled@^11.10.5", "@emotion/styled@11.11.0":
+"@emotion/styled@^11.10.5", "@emotion/styled@^11.11.0", "@emotion/styled@11.11.0":
   "integrity" "sha512-hM5Nnvu9P3midq5aaXj4I+lnSfNi7Pmd4EWk1fOZ3pxookaQTNew6bp4JaCBYM4HVFZF9g7UjJmsUmC2JlxOng=="
   "resolved" "https://registry.npmjs.org/@emotion/styled/-/styled-11.11.0.tgz"
   "version" "11.11.0"
@@ -2754,25 +3227,32 @@
   "resolved" "https://registry.npmjs.org/@faker-js/faker/-/faker-7.6.0.tgz"
   "version" "7.6.0"
 
-"@floating-ui/core@^1.4.2":
-  "integrity" "sha512-QgcKYwzcc8vvZ4n/5uklchy8KVdjJwcOeI+HnnTNclJjs2nYsy23DOCf+sSV1kBwD9yDAoVKCkv/gEPzgQU3Pw=="
-  "resolved" "https://registry.npmjs.org/@floating-ui/core/-/core-1.5.1.tgz"
-  "version" "1.5.1"
-  dependencies:
-    "@floating-ui/utils" "^0.1.3"
-
-"@floating-ui/dom@^1.0.1":
-  "integrity" "sha512-ClAbQnEqJAKCJOEbbLo5IUlZHkNszqhuxS4fHAVxRPXPya6Ysf2G8KypnYcOTpx6I8xcgF9bbHb6g/2KpbV8qA=="
-  "resolved" "https://registry.npmjs.org/@floating-ui/dom/-/dom-1.5.3.tgz"
+"@floating-ui/core@^1.5.3":
+  "integrity" "sha512-O0WKDOo0yhJuugCx6trZQj5jVJ9yR0ystG2JaNAemYUWce+pmM6WUEFIibnWyEJKdrDxhm75NoSRME35FNaM/Q=="
+  "resolved" "https://registry.npmjs.org/@floating-ui/core/-/core-1.5.3.tgz"
   "version" "1.5.3"
   dependencies:
-    "@floating-ui/core" "^1.4.2"
-    "@floating-ui/utils" "^0.1.3"
+    "@floating-ui/utils" "^0.2.0"
 
-"@floating-ui/utils@^0.1.3":
-  "integrity" "sha512-OfX7E2oUDYxtBvsuS4e/jSn4Q9Qb6DzgeYtsAdkPZ47znpoNsMgZw0+tVijiv3uGNR6dgNlty6r9rzIzHjtd/A=="
-  "resolved" "https://registry.npmjs.org/@floating-ui/utils/-/utils-0.1.6.tgz"
-  "version" "0.1.6"
+"@floating-ui/dom@^1.0.1", "@floating-ui/dom@^1.5.4":
+  "integrity" "sha512-jByEsHIY+eEdCjnTVu+E3ephzTOzkQ8hgUfGwos+bg7NlH33Zc5uO+QHz1mrQUOgIKKDD1RtS201P9NvAfq3XQ=="
+  "resolved" "https://registry.npmjs.org/@floating-ui/dom/-/dom-1.5.4.tgz"
+  "version" "1.5.4"
+  dependencies:
+    "@floating-ui/core" "^1.5.3"
+    "@floating-ui/utils" "^0.2.0"
+
+"@floating-ui/react-dom@^2.0.5":
+  "integrity" "sha512-UsBK30Bg+s6+nsgblXtZmwHhgS2vmbuQK22qgt2pTQM6M3X6H1+cQcLXqgRY3ihVLcZJE6IvqDQozhsnIVqK/Q=="
+  "resolved" "https://registry.npmjs.org/@floating-ui/react-dom/-/react-dom-2.0.5.tgz"
+  "version" "2.0.5"
+  dependencies:
+    "@floating-ui/dom" "^1.5.4"
+
+"@floating-ui/utils@^0.2.0":
+  "integrity" "sha512-9TANp6GPoMtYzQdt54kfAyMmz1+osLlXdg2ENroU7zzrtflTLrrC/lgrIfaSe+Wu0b89GKccT7vxXA0MoAIO+Q=="
+  "resolved" "https://registry.npmjs.org/@floating-ui/utils/-/utils-0.2.1.tgz"
+  "version" "0.2.1"
 
 "@flopflip/adapter-utilities@13.1.7":
   "integrity" "sha512-2NRfU6myisfv7J9yJ4nkvaBuMmwisU8vgeIcucR22aXRn+NrZS7zfSGa2QwYdaI8hbTEqff31Bx0mxY+wfXAOg=="
@@ -3588,6 +4068,97 @@
     "strict-event-emitter" "^0.2.4"
     "web-encoding" "^1.1.5"
 
+"@mui/base@5.0.0-beta.31":
+  "integrity" "sha512-+uNbP3OHJuZVI00WyMg7xfLZotaEY7LgvYXDfONVJbrS+K9wyjCIPNfjy8r9XJn4fbHo/5ibiZqjWnU9LMNv+A=="
+  "resolved" "https://registry.npmjs.org/@mui/base/-/base-5.0.0-beta.31.tgz"
+  "version" "5.0.0-beta.31"
+  dependencies:
+    "@babel/runtime" "^7.23.7"
+    "@floating-ui/react-dom" "^2.0.5"
+    "@mui/types" "^7.2.13"
+    "@mui/utils" "^5.15.4"
+    "@popperjs/core" "^2.11.8"
+    "clsx" "^2.1.0"
+    "prop-types" "^15.8.1"
+
+"@mui/core-downloads-tracker@^5.15.4":
+  "integrity" "sha512-0OZN9O6hAtBpx70mMNFOPaAIol/ytwZYPY+z7Rf9dK3+1Xlzwvj5/IeShJKvtp76S1qJyhPuvZg0+BGqQaUnUw=="
+  "resolved" "https://registry.npmjs.org/@mui/core-downloads-tracker/-/core-downloads-tracker-5.15.4.tgz"
+  "version" "5.15.4"
+
+"@mui/icons-material@^5.15.0":
+  "integrity" "sha512-q/Yk7aokN8qGMpR7bwoDpBSeaNe6Bv7vaY9yHYodP37c64TM6ime05ueb/wgksOVszrKkNXC67E/XYbRWOoUFA=="
+  "resolved" "https://registry.npmjs.org/@mui/icons-material/-/icons-material-5.15.4.tgz"
+  "version" "5.15.4"
+  dependencies:
+    "@babel/runtime" "^7.23.7"
+
+"@mui/material@^5.15.0":
+  "integrity" "sha512-T/LGRAC+M0c+D3+y67eHwIN5bSje0TxbcJCWR0esNvU11T0QwrX3jedXItPNBwMupF2F5VWCDHBVLlFnN3+ABA=="
+  "resolved" "https://registry.npmjs.org/@mui/material/-/material-5.15.4.tgz"
+  "version" "5.15.4"
+  dependencies:
+    "@babel/runtime" "^7.23.7"
+    "@mui/base" "5.0.0-beta.31"
+    "@mui/core-downloads-tracker" "^5.15.4"
+    "@mui/system" "^5.15.4"
+    "@mui/types" "^7.2.13"
+    "@mui/utils" "^5.15.4"
+    "@types/react-transition-group" "^4.4.10"
+    "clsx" "^2.1.0"
+    "csstype" "^3.1.2"
+    "prop-types" "^15.8.1"
+    "react-is" "^18.2.0"
+    "react-transition-group" "^4.4.5"
+
+"@mui/private-theming@^5.15.4":
+  "integrity" "sha512-9N5myIMEEQTM5WYWPGvvYADzjFo12LgJ7S+2iTZkBNOcJpUxQYM1tvYjkHCDV+t1ocMOEgjR2EfJ9Dus30dBlg=="
+  "resolved" "https://registry.npmjs.org/@mui/private-theming/-/private-theming-5.15.4.tgz"
+  "version" "5.15.4"
+  dependencies:
+    "@babel/runtime" "^7.23.7"
+    "@mui/utils" "^5.15.4"
+    "prop-types" "^15.8.1"
+
+"@mui/styled-engine@^5.15.4":
+  "integrity" "sha512-vtrZUXG5XI8CNiNLcxjIirW4dEbOloR+ikfm6ePBo7jXpJdpXjVzBWetrfE+5eI0cHkKWlTptnJ2voKV8pBRfw=="
+  "resolved" "https://registry.npmjs.org/@mui/styled-engine/-/styled-engine-5.15.4.tgz"
+  "version" "5.15.4"
+  dependencies:
+    "@babel/runtime" "^7.23.7"
+    "@emotion/cache" "^11.11.0"
+    "csstype" "^3.1.2"
+    "prop-types" "^15.8.1"
+
+"@mui/system@^5.15.4":
+  "integrity" "sha512-KCwkHajGBXPs2TK1HJjIyab4NDk0cZoBDYN/TTlXVo1qBAmCjY0vjqrlsjeoG+wrwwcezXMLs/e6OGP66fPCog=="
+  "resolved" "https://registry.npmjs.org/@mui/system/-/system-5.15.4.tgz"
+  "version" "5.15.4"
+  dependencies:
+    "@babel/runtime" "^7.23.7"
+    "@mui/private-theming" "^5.15.4"
+    "@mui/styled-engine" "^5.15.4"
+    "@mui/types" "^7.2.13"
+    "@mui/utils" "^5.15.4"
+    "clsx" "^2.1.0"
+    "csstype" "^3.1.2"
+    "prop-types" "^15.8.1"
+
+"@mui/types@^7.2.13":
+  "integrity" "sha512-qP9OgacN62s+l8rdDhSFRe05HWtLLJ5TGclC9I1+tQngbssu0m2dmFZs+Px53AcOs9fD7TbYd4gc9AXzVqO/+g=="
+  "resolved" "https://registry.npmjs.org/@mui/types/-/types-7.2.13.tgz"
+  "version" "7.2.13"
+
+"@mui/utils@^5.15.4":
+  "integrity" "sha512-E2wLQGBcs3VR52CpMRjk46cGscC4cbf3Q2uyHNaAeL36yTTm+aVNbtsTCazXtjOP4BDd8lu6VtlTpVC8Rtl4mg=="
+  "resolved" "https://registry.npmjs.org/@mui/utils/-/utils-5.15.4.tgz"
+  "version" "5.15.4"
+  dependencies:
+    "@babel/runtime" "^7.23.7"
+    "@types/prop-types" "^15.7.11"
+    "prop-types" "^15.8.1"
+    "react-is" "^18.2.0"
+
 "@nicolo-ribaudo/eslint-scope-5-internals@5.1.1-v1":
   "integrity" "sha512-54/JRvkLIzzDWshCWfuhadfrfZVPiElY8Fcgmg1HroEly/EDSszzhBAsarCux+D/kOslTRquNzuyGSmUSTTHGg=="
   "resolved" "https://registry.npmjs.org/@nicolo-ribaudo/eslint-scope-5-internals/-/eslint-scope-5-internals-5.1.1-v1.tgz"
@@ -3640,6 +4211,11 @@
   "integrity" "sha512-C16M+IYz0rgRhWZdCmK+h58JMv8vijAA61gmz2rspCSwKwzBebpdcsiUmwrtJRdphuY30i6BSLEOP8ppbNLyLg=="
   "resolved" "https://registry.npmjs.org/@polka/url/-/url-1.0.0-next.23.tgz"
   "version" "1.0.0-next.23"
+
+"@popperjs/core@^2.11.8":
+  "integrity" "sha512-P1st0aksCrn9sGZhp8GMYwBnQsbvAWsZAX44oXNNvLHGqAOcoVxmjZiohstwQ7SqKnbR47akdNi+uleWD8+g6A=="
+  "resolved" "https://registry.npmjs.org/@popperjs/core/-/core-2.11.8.tgz"
+  "version" "2.11.8"
 
 "@react-hook/latest@^1.0.2", "@react-hook/latest@1.0.3":
   "integrity" "sha512-dy6duzl+JnAZcDbNTfmaP3xHiKtbXYOaz3G51MGVljh548Y8MWzTr+PHLOfvpypEVW9zwvl+VyKjbWKEVbV1Rg=="
@@ -4333,7 +4909,7 @@
     "@types/node" "*"
     "kleur" "^3.0.3"
 
-"@types/prop-types@*", "@types/prop-types@^15.7.5":
+"@types/prop-types@*", "@types/prop-types@^15.7.11", "@types/prop-types@^15.7.5":
   "integrity" "sha512-ga8y9v9uyeiLdpKddhxYQkxNDrfvuPrlFb0N1qnZZByvcElJaXthF1UhvCh9TLWJBEHeNtdnbysW7Y6Uq8CVng=="
   "resolved" "https://registry.npmjs.org/@types/prop-types/-/prop-types-15.7.11.tgz"
   "version" "15.7.11"
@@ -4401,10 +4977,10 @@
     "@types/history" "^4.7.11"
     "@types/react" "*"
 
-"@types/react-transition-group@^4.4.0":
-  "integrity" "sha512-ZVNmWumUIh5NhH8aMD9CR2hdW0fNuYInlocZHaZ+dgk/1K49j1w/HoAuK1ki+pgscQrOFRTlXeoURtuzEkV3dg=="
-  "resolved" "https://registry.npmjs.org/@types/react-transition-group/-/react-transition-group-4.4.9.tgz"
-  "version" "4.4.9"
+"@types/react-transition-group@^4.4.0", "@types/react-transition-group@^4.4.10":
+  "integrity" "sha512-hT/+s0VQs2ojCX823m60m5f0sL5idt9SO6Tj6Dg+rdphGPIeJbJ6CxvBYkgkGKrYeDjvIpKTR38UzmtHJOGW3Q=="
+  "resolved" "https://registry.npmjs.org/@types/react-transition-group/-/react-transition-group-4.4.10.tgz"
+  "version" "4.4.10"
   dependencies:
     "@types/react" "*"
 
@@ -5687,6 +6263,11 @@
   "resolved" "https://registry.npmjs.org/clone/-/clone-1.0.4.tgz"
   "version" "1.0.4"
 
+"clsx@^2.1.0":
+  "integrity" "sha512-m3iNNWpd9rl3jvvcBnu70ylMdrXt8Vlq4HYadnU5fwcOtvkSQWPmj7amUcDT2qYI7risszBjI5AUIUox9D16pg=="
+  "resolved" "https://registry.npmjs.org/clsx/-/clsx-2.1.0.tgz"
+  "version" "2.1.0"
+
 "co@^4.6.0":
   "integrity" "sha512-QVb0dM5HvG+uaxitm8wONl7jltx8dqhfU33DcqtOZcLSVIKSDDLDi7+0LbAKiyI8hD9u42m2YxXSkMGWThaecQ=="
   "resolved" "https://registry.npmjs.org/co/-/co-4.6.0.tgz"
@@ -6126,7 +6707,7 @@
   dependencies:
     "rrweb-cssom" "^0.6.0"
 
-"csstype@^3.0.2":
+"csstype@^3.0.2", "csstype@^3.1.2":
   "integrity" "sha512-I7K1Uu0MBPzaFKg4nI5Q7Vs2t+3gWWW648spaF+Rg7pI9ds18Ugn+lvg4SHczUdKlHI5LWBXyqfS8+DufyBsgQ=="
   "resolved" "https://registry.npmjs.org/csstype/-/csstype-3.1.2.tgz"
   "version" "3.1.2"
@@ -10852,6 +11433,11 @@
   "resolved" "https://registry.npmjs.org/react-is/-/react-is-18.2.0.tgz"
   "version" "18.2.0"
 
+"react-is@^18.2.0":
+  "integrity" "sha512-xWGDIW6x921xtzPkhiULtthJHoJvBbF3q26fzloPCK0hsvxtPVelvftw3zjbHWSkR2km9Z+4uxbDDK/6Zw9B8w=="
+  "resolved" "https://registry.npmjs.org/react-is/-/react-is-18.2.0.tgz"
+  "version" "18.2.0"
+
 "react-is@18.2.0":
   "integrity" "sha512-xWGDIW6x921xtzPkhiULtthJHoJvBbF3q26fzloPCK0hsvxtPVelvftw3zjbHWSkR2km9Z+4uxbDDK/6Zw9B8w=="
   "resolved" "https://registry.npmjs.org/react-is/-/react-is-18.2.0.tgz"
@@ -10961,7 +11547,7 @@
     "use-composed-ref" "^1.3.0"
     "use-latest" "^1.2.1"
 
-"react-transition-group@^4.3.0":
+"react-transition-group@^4.3.0", "react-transition-group@^4.4.5":
   "integrity" "sha512-pZcd1MCJoiKiBR2NRxeCRg13uCXbydPnmB4EOeRrY7480qNWO8IIgQG6zlDkm6uRMsURXPuKq0GWtiM59a5Q6g=="
   "resolved" "https://registry.npmjs.org/react-transition-group/-/react-transition-group-4.4.5.tgz"
   "version" "4.4.5"

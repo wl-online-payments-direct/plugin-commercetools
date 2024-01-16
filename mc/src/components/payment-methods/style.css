@@ -1,0 +1,141 @@
+.payment-options li {
+    width: 170px;
+    text-align: center;
+    margin: 2rem 1rem;
+    display: flex;
+    align-items: center;
+    flex-flow: column;
+    position: relative;
+}
+
+.payment-options {
+    list-style: none;
+    display: flex;
+    flex-flow: wrap;
+    clear: both;
+    padding: 0px;
+}
+
+.payment-section-wrapper {
+    padding: 2rem;   
+}
+
+.MuiAccordion-root {
+    border-bottom: 3px solid #45BEAA;
+    padding: 0px;
+    margin-bottom: 0.5rem;
+}
+
+.MuiCollapse-root {
+    border-top: 3px solid #45BEAA;
+}
+
+.accordion-header label {
+    top: 0px;
+    right: 4rem;
+}
+
+.relative {
+    position: relative
+}
+
+.flex {
+    display: flex;
+}
+.relative label {
+    position: absolute;
+}
+
+.float-right {
+    position: absolute;
+    top: 0rem;
+    right: 0px;
+    display: flex;
+}
+
+.float-right label {
+    position: relative;
+}
+
+.accordion-details {
+    padding: 2rem !important;
+}
+
+.section-header,.section-input {
+    margin: 1rem 0rem;
+}
+
+.section-wrapper {
+    width: 50%;
+}
+
+.sub-title {
+    font-size: 13px;
+    color: #9F9F9F;
+    margin-bottom: 13px;
+}
+
+.payment-options-wrapper {
+    padding: 2rem 4rem;
+    background-color: #F6F6F8;
+    border-radius: 15px;
+}
+
+.save-wrapper {
+    display: flex;
+    justify-content: space-between;
+}
+
+.save-wrapper button {
+    background-color: #45BEAA;
+    cursor: pointer;
+    padding: 1rem;
+    font-size: 18px;
+    font-weight: 400;
+    line-height: 1.5;
+    text-align: center;
+    color: #FFF;
+    border-radius: 6px;
+    height: 3rem;
+}
+
+.dropdown-container {
+    margin: 1rem 0rem 0rem 1rem;
+}
+
+.colorpicker-title {
+    margin: 4px 0rem 0rem 2rem;
+}
+
+.algin-end {
+    justify-content: end;
+}
+
+.algin-even {
+    justify-content: space-evenly;
+}
+
+.mb-2 {
+    margin-bottom: 2rem;
+}
+
+.mb-1 {
+    margin-bottom: 1rem;
+}
+
+.select-dropdown {
+    background-color: #FFF;
+    height: 40px;
+}
+
+.select-dropdown.Mui-focused .MuiOutlinedInput-notchedOutline {
+    border-color: #45BEAA !important;
+}
+
+label:focus-within::after {
+    outline: none !important;
+}
+
+.options-section div {
+    outline: none !important;
+}
