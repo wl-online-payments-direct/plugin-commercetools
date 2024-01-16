@@ -30,6 +30,7 @@ export function getHostedCheckoutPayload(
 
   // Concat with the merchant reference
   const paymentId = `${merchantReference}-${reference?.referenceId?.toString()}`;
+  const formattedReturnUrl = `${returnUrl}?orderPaymentId=${paymentId}`;
 
   return {
     order: {
@@ -63,7 +64,7 @@ export function getHostedCheckoutPayload(
       variant,
       ...locale,
       tokens,
-      returnUrl,
+      returnUrl: formattedReturnUrl,
     },
   };
 }

@@ -32,6 +32,7 @@ export function getServicePayload(
   const currencyCode = cart?.taxedPrice?.totalGross.currencyCode || '';
   const merchantCustomerId = cart?.customerId || cart?.anonymousId || '';
   const locale = cart?.locale ? { locale: cart.locale } : {};
+  const formattedReturnUrl = `${returnUrl}?orderPaymentId=${paymentId}`;
 
   return {
     hostedTokenizationId,
@@ -40,7 +41,7 @@ export function getServicePayload(
       threeDSecure: {
         skipAuthentication,
         redirectionData: {
-          returnUrl,
+          returnUrl: formattedReturnUrl,
         },
       },
     },
