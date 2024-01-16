@@ -48,7 +48,6 @@ model payments {
   updatedAt        DateTime @updatedAt
 }
 
-
 model payment_references {
   id          String   @id @default(uuid())
   storeId     String   @db.VarChar(255)
@@ -59,7 +58,6 @@ model payment_references {
 
   @@unique(storeId)
 }
-
 
 model customer_payment_tokens {
   id         String   @id @default(uuid())

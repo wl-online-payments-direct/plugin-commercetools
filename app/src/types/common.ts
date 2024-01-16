@@ -9,4 +9,14 @@ export interface CustomObjects {
   host: string;
   variant: string;
   merchantReference: string;
+  webhookKey: string;
+  webhookSecret: string;
+  webhookUrl: string;
+  redirectUrl: string;
+  paymentMethods: [
+    {
+      title: string;
+      type: string;
+    },
+  ];
 }

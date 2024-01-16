@@ -62,3 +62,19 @@ export async function deleteCustomerPaymentTokens(id: string) {
     };
   }
 }
+
+export async function getPaymentTokensByCustomerID(customerId: string) {
+  try {
+    return await prisma.customer_payment_tokens.findMany({
+      where: {
+        customerId,
+      },
+    });
+  } catch (error) {
+    throw {
+      message: 'Exception occured for fetching the customer payment token',
+      statusCode: 500,
+      details: (error as { message: string }).message,
+    };
+  }
+}

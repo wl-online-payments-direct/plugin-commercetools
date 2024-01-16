@@ -8,4 +8,5 @@ export * from './validateCart';
 export * from './webhook';
 export * from './retryPayment';
 export * from './deleteToken';
+export * from './loadPaymentMethods';
 export * from './getWebhookStatus';
