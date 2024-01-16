@@ -1,4 +1,4 @@
-import { Request } from '../types';
+import { Action, Request } from '../types';
 
 const hasAuthHeaderOrThrowError = (request: Request) => {
   if (!request.headers.authorization) {
@@ -37,8 +37,30 @@ const hasRequiredParamsInQueryString = (queryString: {
   return true;
 };
 
+const retry = async (action: Action, maxAttemptCount = 3) => {
+  let retries = maxAttemptCount;
+  while (retries > 0) {
+    retries -= 1;
+    // TODO: will fix this
+    // eslint-disable-next-line no-await-in-loop
+    const { isRetry, data = {} } = await action();
+    if (!isRetry) {
+      return data;
+    }
+  }
+  // If max retries attempted; throw error
+  if (!retries) {
+    throw {
+      statusCode: 500,
+      message: 'Failed to fetch the resource. Max retry attempt failed',
+    };
+  }
+  return null;
+};
+
 export {
   hasAuthHeaderOrThrowError,
   hasRequiredParamsInBody,
   hasRequiredParamsInQueryString,
+  retry,
 };

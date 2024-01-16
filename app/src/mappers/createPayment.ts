@@ -1,4 +1,4 @@
-import { Cart, Customer } from '@worldline/ctintegration-ct';
+import { Cart } from '@worldline/ctintegration-ct';
 import { $Enums } from '@worldline/ctintegration-db';
 import {
   CustomObjects,
@@ -14,11 +14,10 @@ const getFormattedPaymentId = (
 export function getServicePayload(
   customConfig: CustomObjects,
   reference: { referenceId: number },
-  myCart: { cart: Cart },
+  cart: Cart,
   payload: ICreatePaymentPayload,
 ) {
   const { hostedTokenizationId, returnUrl, acceptHeader, userAgent } = payload;
-  const { cart } = myCart;
   const { authorizationMode, merchantReference, skip3dsAuthentication } =
     customConfig;
 
@@ -69,12 +68,12 @@ export function getServicePayload(
 export function getDatabasePayload(
   customConfig: CustomObjects,
   reference: { referenceId: number },
-  myCart: { cart: Cart; customer: Customer },
-  payload: ICreatePaymentPayload,
-  payment: ICreatePaymentResponse,
+  cart: Cart,
+  payload: { storeId: string },
+  payment?: { id: string },
 ) {
   const { merchantReference, authorizationMode } = customConfig;
-  const cartId = myCart.cart.id;
+  const cartId = cart.id;
   const { storeId } = payload;
 
   // Concat with the merchant reference
@@ -86,10 +85,11 @@ export function getDatabasePayload(
   return {
     authMode: authorizationMode as $Enums.Modes,
     paymentId,
-    worldlineId: payment.id.toString(),
+    worldlineId: payment?.id?.toString() || '',
     storeId,
     cartId,
     orderId: '',
+    storePermanently: false, // TODO: will confirm
   };
 }
 
