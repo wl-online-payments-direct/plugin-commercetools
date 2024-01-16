@@ -5,6 +5,7 @@ import {
   ICreatePaymentPayload,
   ICreatePaymentResponse,
 } from '../types';
+import { appendAdditionalParamsToUrl } from './common';
 
 const getFormattedPaymentId = (
   merchantReference: string,
@@ -17,7 +18,7 @@ export function getServicePayload(
   cart: Cart,
   payload: ICreatePaymentPayload,
 ) {
-  const { hostedTokenizationId, returnUrl, acceptHeader, userAgent } = payload;
+  const { hostedTokenizationId, acceptHeader, userAgent } = payload;
   const { authorizationMode, merchantReference, skip3dsAuthentication } =
     customConfig;
 
@@ -32,7 +33,10 @@ export function getServicePayload(
   const currencyCode = cart?.taxedPrice?.totalGross.currencyCode || '';
   const merchantCustomerId = cart?.customerId || cart?.anonymousId || '';
   const locale = cart?.locale ? { locale: cart.locale } : {};
-  const formattedReturnUrl = `${returnUrl}?orderPaymentId=${paymentId}`;
+
+  const returnUrl = appendAdditionalParamsToUrl(payload.returnUrl, {
+    orderPaymentId: paymentId,
+  });
 
   return {
     hostedTokenizationId,
@@ -41,7 +45,7 @@ export function getServicePayload(
       threeDSecure: {
         skipAuthentication,
         redirectionData: {
-          returnUrl: formattedReturnUrl,
+          returnUrl,
         },
       },
     },
