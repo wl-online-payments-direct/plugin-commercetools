@@ -10,6 +10,12 @@ interface ConnectionProps {
   webhookSecret: string;
   webhookUrl: string;
   redirectUrl: string;
+  paymentMethods: [
+    {
+      title: string;
+      type: string;
+    },
+  ];
 }
 interface ConfigModes {
   mode: string;

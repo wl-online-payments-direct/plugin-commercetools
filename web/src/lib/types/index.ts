@@ -7,3 +7,4 @@ export * from './hostedCheckout';
 export * from './createPayment';
 export * from './webhook';
 export * from './retryPayment';
+export * from './deleteToken';

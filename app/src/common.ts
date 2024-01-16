@@ -8,7 +8,11 @@ import {
   updateCart,
   updatePayment,
 } from '@worldline/ctintegration-ct';
-import { getPayment, setPayment } from '@worldline/ctintegration-db';
+import {
+  getPayment,
+  saveCustomerPaymentToken,
+  setPayment,
+} from '@worldline/ctintegration-db';
 import { logger, retry } from '@worldline/ctintegration-util';
 import { PaymentPayload } from './types';
 import {
@@ -19,6 +23,8 @@ import {
   getMappedStatus,
   hasEqualAmounts,
   isPaymentProcessing,
+  shouldSaveToken,
+  getCustomerTokenPayload,
 } from './mappers';
 
 const createOrderWithPayment = async (payload: PaymentPayload, cart: Cart) => {
@@ -130,6 +136,15 @@ export async function orderPaymentHandler(payload: PaymentPayload) {
           : { worldlineId: payload?.payment?.id }),
         state: 'DEFAULT',
       });
+
+      //  Should save the token only:
+      //  if "storePermanently" field is received as true
+      //  and cart has a logged in customer
+      if (shouldSaveToken(cart, dbPayment)) {
+        await saveCustomerPaymentToken(
+          getCustomerTokenPayload(cart, dbPayment, payload),
+        );
+      }
 
       return { isRetry: false, data: result };
     } catch (error) {
