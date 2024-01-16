@@ -46,7 +46,7 @@
     "@commercetools-uikit/hooks": "^16.11.0",
     "@commercetools-uikit/icons": "^16.11.0",
     "@commercetools-uikit/link": "^16.12.0",
-    "@commercetools-uikit/loading-spinner": "^16.11.0",
+    "@commercetools-uikit/loading-spinner": "^16.12.1",
     "@commercetools-uikit/localized-text-field": "^16.11.0",
     "@commercetools-uikit/localized-text-input": "^16.11.0",
     "@commercetools-uikit/notifications": "^16.11.0",
@@ -75,12 +75,6 @@
     "@testing-library/jest-dom": "^5.17.0",
     "@testing-library/react": "12.1.5",
     "@testing-library/react-hooks": "8.0.1",
-    "@types/jest": "^29.5.4",
-    "@types/react": "^17.0.56",
-    "@types/react-dom": "^17.0.19",
-    "@types/react-router": "^5.1.20",
-    "@types/react-router-dom": "^5.3.3",
-    "@types/testing-library__jest-dom": "^5.14.9",
     "eslint": "8.40.0",
     "eslint-formatter-pretty": "4.1.0",
     "eslint-plugin-graphql": "^4.0.0",
@@ -102,6 +96,14 @@
     "react-router-dom": "5.3.4",
     "redux": "4.2.1",
     "sass": "^1.69.5"
+  },
+  "devDependencies": {
+    "@types/jest": "^29.5.4",
+    "@types/react": "^17.0.56",
+    "@types/react-dom": "^17.0.19",
+    "@types/react-router": "^5.1.20",
+    "@types/react-router-dom": "^5.3.3",
+    "@types/testing-library__jest-dom": "^5.14.9"
   },
   "resolutions": {
     "@emotion/react": "11.11.0",
