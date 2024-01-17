@@ -1,5 +1,6 @@
 import { Cart } from '@worldline/ctintegration-ct';
 import { CustomObjects, HostedCheckoutPayload } from '../types';
+import { appendAdditionalParamsToUrl } from './common';
 
 export function getHostedCheckoutPayload(
   customConfig: CustomObjects,
@@ -13,7 +14,7 @@ export function getHostedCheckoutPayload(
   const locale = cart?.locale ? { locale: cart.locale } : {};
 
   const { variant, merchantReference } = customConfig;
-  const { tokens, returnUrl, acceptHeader, userAgent } = payload;
+  const { tokens, acceptHeader, userAgent } = payload;
 
   // Billing address
   const {
@@ -30,6 +31,10 @@ export function getHostedCheckoutPayload(
 
   // Concat with the merchant reference
   const paymentId = `${merchantReference}-${reference?.referenceId?.toString()}`;
+
+  const returnUrl = appendAdditionalParamsToUrl(payload.returnUrl, {
+    orderPaymentId: paymentId,
+  });
 
   return {
     order: {
