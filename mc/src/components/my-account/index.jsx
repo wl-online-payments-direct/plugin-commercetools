@@ -15,6 +15,8 @@ import {
   getCustomObject,
 } from '../../ct-methods/customObject';
 import { ClipboardIcon } from '@commercetools-uikit/icons';
+import CONFIG from '../../../configuration';
+const { CONTAINER_KEY, CONTAINER_NAME } = CONFIG;
 
 const MyAccount = (props) => {
   const [selectedOption, setSelectedOption] = useState('test');
@@ -35,8 +37,8 @@ const MyAccount = (props) => {
       webhookKey: '',
       webhookSecret: '',
     },
-    webHookURL: '',
-    paymentPageURL: '',
+    webhookUrl: '',
+    redirectUrl: '',
   });
 
   const getCustomObjectData = async () => {
@@ -70,7 +72,7 @@ const MyAccount = (props) => {
   const handleInputChange = (event) => {
     const { name, value } = event.target;
     setFormData((prevData) => {
-      if (name === 'webHookURL' || name === 'paymentPageURL') {
+      if (name === 'webhookUrl' || name === 'redirectUrl') {
         return {
           ...prevData,
           [name]: value,
@@ -89,15 +91,16 @@ const MyAccount = (props) => {
 
   const handleSubmit = async () => {
     const draft = {
-      container: 'storeId',
-      key: 'storeId',
+      container: CONTAINER_NAME,
+      key: CONTAINER_KEY,
       value: {
         ...data,
-        webHookURL: formData.webHookURL,
-        paymentPageURL: formData.paymentPageURL,
+        webhookUrl: formData.webhookUrl,
+        redirectUrl: formData.redirectUrl,
         ...(selectedOption === 'live'
           ? {
               live: {
+                ...data.live,
                 merchantId: formData[selectedOption].merchantId,
                 apiKey: formData[selectedOption].apiKey,
                 apiSecret: formData[selectedOption].apiSecret,
@@ -107,6 +110,7 @@ const MyAccount = (props) => {
             }
           : {
               live: {
+                ...data.live,
                 merchantId: formData['live'].merchantId,
                 apiKey: formData['live'].apiKey,
                 apiSecret: formData['live'].apiSecret,
@@ -117,6 +121,7 @@ const MyAccount = (props) => {
         ...(selectedOption === 'test'
           ? {
               test: {
+                ...data.test,
                 merchantId: formData[selectedOption].merchantId,
                 apiKey: formData[selectedOption].apiKey,
                 apiSecret: formData[selectedOption].apiSecret,
@@ -126,6 +131,7 @@ const MyAccount = (props) => {
             }
           : {
               test: {
+                ...data.test,
                 merchantId: formData['test'].merchantId,
                 apiKey: formData['test'].apiKey,
                 apiSecret: formData['test'].apiSecret,
@@ -249,15 +255,15 @@ const MyAccount = (props) => {
                 </Label>
                 <div className="flex">
                   <TextInput
-                    name="webHookURL"
-                    value={formData.webHookURL}
+                    name="webhookUrl"
+                    value={formData.webhookUrl}
                     onChange={handleInputChange}
                   />
                   <ClipboardIcon
                     style={{ margin: 'auto' }}
                     onClick={() => {
                       setCopied(true);
-                      navigator.clipboard.writeText(formData.webHookURL);
+                      navigator.clipboard.writeText(formData.webhookUrl);
                     }}
                   />
                 </div>
@@ -277,8 +283,8 @@ const MyAccount = (props) => {
                   </p>
                 </Label>
                 <TextInput
-                  name="paymentPageURL"
-                  value={formData.paymentPageURL}
+                  name="redirectUrl"
+                  value={formData.redirectUrl}
                   onChange={handleInputChange}
                 />
                 <PrimaryButton
