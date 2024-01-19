@@ -22,7 +22,7 @@ export function getHostedCheckoutPayload(
     building = '',
     streetName = '',
     streetNumber = '',
-    additionalAddressInfo: additionalInfo = '',
+    additionalAddressInfo: additionalInfo = 'NA',
     country: countryCode = '',
     city = '',
     state = '',
