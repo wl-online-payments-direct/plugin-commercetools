@@ -25,15 +25,15 @@ const MyAccount = (props) => {
       merchantId: '',
       apiKey: '',
       apiSecret: '',
-      webHookKey: '',
-      webHookSecret: '',
+      webhookKey: '',
+      webhookSecret: '',
     },
     test: {
       merchantId: '',
       apiKey: '',
       apiSecret: '',
-      webHookKey: '',
-      webHookSecret: '',
+      webhookKey: '',
+      webhookSecret: '',
     },
     webHookURL: '',
     paymentPageURL: '',
@@ -70,7 +70,7 @@ const MyAccount = (props) => {
   const handleInputChange = (event) => {
     const { name, value } = event.target;
     setFormData((prevData) => {
-      if (name === 'webHookURL' || 'paymentPageURL') {
+      if (name === 'webHookURL' || name === 'paymentPageURL') {
         return {
           ...prevData,
           [name]: value,
@@ -101,8 +101,8 @@ const MyAccount = (props) => {
                 merchantId: formData[selectedOption].merchantId,
                 apiKey: formData[selectedOption].apiKey,
                 apiSecret: formData[selectedOption].apiSecret,
-                webHookKey: formData[selectedOption].webHookKey,
-                webHookSecret: formData[selectedOption].webHookSecret,
+                webhookKey: formData[selectedOption].webhookKey,
+                webhookSecret: formData[selectedOption].webhookSecret,
               },
             }
           : {
@@ -110,8 +110,8 @@ const MyAccount = (props) => {
                 merchantId: formData['live'].merchantId,
                 apiKey: formData['live'].apiKey,
                 apiSecret: formData['live'].apiSecret,
-                webHookKey: formData['live'].webHookKey,
-                webHookSecret: formData['live'].webHookSecret,
+                webhookKey: formData['live'].webhookKey,
+                webhookSecret: formData['live'].webhookSecret,
               },
             }),
         ...(selectedOption === 'test'
@@ -120,8 +120,8 @@ const MyAccount = (props) => {
                 merchantId: formData[selectedOption].merchantId,
                 apiKey: formData[selectedOption].apiKey,
                 apiSecret: formData[selectedOption].apiSecret,
-                webHookKey: formData[selectedOption].webHookKey,
-                webHookSecret: formData[selectedOption].webHookSecret,
+                webhookKey: formData[selectedOption].webhookKey,
+                webhookSecret: formData[selectedOption].webhookSecret,
               },
             }
           : {
@@ -129,8 +129,8 @@ const MyAccount = (props) => {
                 merchantId: formData['test'].merchantId,
                 apiKey: formData['test'].apiKey,
                 apiSecret: formData['test'].apiSecret,
-                webHookKey: formData['test'].webHookKey,
-                webHookSecret: formData['test'].webHookSecret,
+                webhookKey: formData['test'].webhookKey,
+                webhookSecret: formData['test'].webhookSecret,
               },
             }),
       },
@@ -138,7 +138,6 @@ const MyAccount = (props) => {
     try {
       const response = await createCustomObject(draft);
       if (response.id) {
-        console.log('Config settings saved successfully...');
       }
     } catch (error) {
       console.error('Error saving custom object:', error);
@@ -233,16 +232,16 @@ const MyAccount = (props) => {
                   <p className="form-label">Test Webhook Key</p>
                 </Label>
                 <TextInput
-                  name="webHookKey"
-                  value={formData[selectedOption].webHookKey}
+                  name="webhookKey"
+                  value={formData[selectedOption].webhookKey}
                   onChange={handleInputChange}
                 />
                 <Label isBold={true}>
                   <p className="form-label">Test Webhook Secret</p>
                 </Label>
                 <TextInput
-                  name="webHookSecret"
-                  value={formData[selectedOption].webHookSecret}
+                  name="webhookSecret"
+                  value={formData[selectedOption].webhookSecret}
                   onChange={handleInputChange}
                 />
                 <Label isBold={true}>
