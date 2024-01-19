@@ -18,6 +18,8 @@ import { ClipboardIcon } from '@commercetools-uikit/icons';
 
 const MyAccount = (props) => {
   const [selectedOption, setSelectedOption] = useState('test');
+  const [copied, setCopied] = useState(false);
+  const [data, setData] = useState(false);
   const [formData, setFormData] = useState({
     live: {
       merchantId: '',
