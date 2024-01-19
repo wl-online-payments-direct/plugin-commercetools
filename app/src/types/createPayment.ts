@@ -12,3 +12,13 @@ export interface ICreatePaymentResponse {
   actionType: string;
   redirectURL: string;
 }
+
+export interface ICreateUserPaymentPayload {
+  authToken: string;
+  userAgent: string;
+  acceptHeader: string;
+  storeId: string;
+  cartId: string;
+  hostedTokenizationId: string;
+  returnUrl: string;
+}

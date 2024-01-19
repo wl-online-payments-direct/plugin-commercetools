@@ -2,6 +2,7 @@ import healthController from '../api/health/controller';
 import testConnectionController from '../api/testConnection/controller';
 import hostedTokenizationController from '../api/hostedTokenization/controller';
 import createPaymentController from '../api/createPayment/controller';
+import createUserPaymentController from '../api/createUserPayment/controller';
 import getPaymentStatusController from '../api/getPaymentStatus/controller';
 import validateCartController from '../api/validateCart/controller';
 import webhookController from '../api/webhook/controller';
@@ -15,16 +16,18 @@ const routes = {
   '/': healthController.processRequest,
   '/health': healthController.processRequest,
   '/testconnection': testConnectionController.processRequest,
-  '/initiate/hostedtokenization': hostedTokenizationController.processRequest,
-  '/initiate/hostedcheckout': hostedCheckoutController.processRequest,
+  '/me/initiate/hostedtokenization':
+    hostedTokenizationController.processRequest,
+  '/me/initiate/hostedcheckout': hostedCheckoutController.processRequest,
   '/payment': createPaymentController.processRequest,
+  '/me/payment': createUserPaymentController.processRequest,
   '/payment/status': getPaymentStatusController.processRequest,
-  '/cart/validate': validateCartController.processRequest,
+  '/me/cart/validate': validateCartController.processRequest,
   '/webhook': webhookController.processRequest,
-  '/webhook/status': getWebhookStatusController.processRequest,
+  '/me/webhook/status': getWebhookStatusController.processRequest,
   '/payment/retry': retryPaymentController.processRequest,
   '/token/remove': deleteTokenController.processRequest,
-  '/payment/methods': loadPaymentMethodsController.processRequest,
+  '/me/payment/methods': loadPaymentMethodsController.processRequest,
 };
 
 export { routes };
