@@ -1,4 +1,0 @@
-#!/usr/bin/env bash
-
-bin/docker-compose -f compose.dev.web.yml up -d --remove-orphans "$@"
-bin/log
