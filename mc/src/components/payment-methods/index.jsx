@@ -164,7 +164,6 @@ const PaymentMethods = () => {
   const getCustomObjectData = async () => {
     try {
       const response = await getCustomObject();
-      console.log('response', response);
       if (response?.value) {
         setAPIData(response);
         let payload = initialState;

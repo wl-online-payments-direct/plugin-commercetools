@@ -12,7 +12,6 @@ export const createCustomObject = async (draft) => {
       },
       body: JSON.stringify(draft),
     });
-    console.log('Custom object created:', customObject);
     return customObject;
   } catch (error) {
     console.error('Error creating custom object:', error.message);
