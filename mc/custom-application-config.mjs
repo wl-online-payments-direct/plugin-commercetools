@@ -28,12 +28,6 @@ const config = {
   },
   submenuLinks: [
     {
-      uriPath: 'channels',
-      defaultLabel: 'Channels',
-      labelAllLocales: [],
-      permissions: [PERMISSIONS.View],
-    },
-    {
       uriPath: 'myaccounts',
       defaultLabel: 'My Accounts',
       labelAllLocales: [],
