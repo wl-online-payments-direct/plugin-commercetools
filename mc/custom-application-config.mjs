@@ -1,4 +1,4 @@
-import { PERMISSIONS, entryPointUriPath } from './src/constants';
+import { PERMISSIONS, entryPointUriPath, myAccountUri, paymentMethodsUri } from './src/constants';
 
 /**
  * @type {import('@commercetools-frontend/application-config').ConfigOptionsForCustomApplication}
@@ -6,14 +6,14 @@ import { PERMISSIONS, entryPointUriPath } from './src/constants';
 const config = {
   name: 'Worldline',
   entryPointUriPath,
-  cloudIdentifier: 'gcp-eu',
+  cloudIdentifier: '${env:CLOUD_IDENTIFIER}',
   env: {
     development: {
-      initialProjectKey: 'worldline-dev',
+      initialProjectKey: '${env:PROJECT_ID}',
     },
     production: {
-      applicationId: 'TODO',
-      url: 'https://your_app_hostname.com',
+      applicationId: '${env:APPLICATION_ID}',
+      url: 'https://${env:APPLICATION_URL}',
     },
   },
   oAuthScopes: {
@@ -24,20 +24,20 @@ const config = {
   mainMenuLink: {
     defaultLabel: 'Worldline Online Payments',
     labelAllLocales: [],
-    permissions: [PERMISSIONS.View],
+    permissions: [PERMISSIONS.View, PERMISSIONS.Manage],
   },
   submenuLinks: [
     {
-      uriPath: 'myaccounts',
+      uriPath: myAccountUri,
       defaultLabel: 'My Accounts',
       labelAllLocales: [],
-      permissions: [PERMISSIONS.View],
+      permissions: [PERMISSIONS.View, PERMISSIONS.Manage],
     },
     {
-      uriPath: 'paymentmethods',
+      uriPath: paymentMethodsUri,
       defaultLabel: 'Payment Methods',
       labelAllLocales: [],
-      permissions: [PERMISSIONS.View],
+      permissions: [PERMISSIONS.View, PERMISSIONS.Manage],
     },
   ],
 };

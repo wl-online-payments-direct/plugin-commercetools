@@ -247,7 +247,7 @@ const PaymentMethods = () => {
               />
             </div>
           </div>
-          <p class="supportmail">
+          <p className="supportmail">
             Support Email :{' '}
             <a href={`mailto:${emailAddress}`}>{emailAddress}</a>
           </p>
