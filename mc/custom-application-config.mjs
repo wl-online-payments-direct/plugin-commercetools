@@ -14,6 +14,7 @@ const config = {
     production: {
       applicationId: '${env:CTP_MC_APPLICATION_ID}',
       url: 'https://${env:CTP_MC_APPLICATION_URL}',
+      projectKey: '${env:CTP_MC_PROJECT_ID}'
     },
   },
   oAuthScopes: {
