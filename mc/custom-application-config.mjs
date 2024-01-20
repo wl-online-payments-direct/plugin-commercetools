@@ -6,14 +6,14 @@ import { PERMISSIONS, entryPointUriPath, myAccountUri, paymentMethodsUri } from 
 const config = {
   name: 'Worldline',
   entryPointUriPath,
-  cloudIdentifier: '${env:CLOUD_IDENTIFIER}',
+  cloudIdentifier: '${env:CTP_MC_CLOUD_IDENTIFIER}',
   env: {
     development: {
-      initialProjectKey: '${env:PROJECT_ID}',
+      initialProjectKey: '${env:CTP_MC_PROJECT_ID}',
     },
     production: {
-      applicationId: '${env:APPLICATION_ID}',
-      url: 'https://${env:APPLICATION_URL}',
+      applicationId: '${env:CTP_MC_APPLICATION_ID}',
+      url: 'https://${env:CTP_MC_APPLICATION_URL}',
     },
   },
   oAuthScopes: {
