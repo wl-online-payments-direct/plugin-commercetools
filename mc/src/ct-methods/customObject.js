@@ -1,10 +1,9 @@
 import { fetcher } from '../services/custom-api-request';
 import CONFIG from '../../configuration';
-import { projectKey } from '../constants';
 
 const { CONTAINER_NAME, CONTAINER_KEY } = CONFIG;
 
-export const createCustomObject = async (draft) => {
+export const createCustomObject = async (draft, projectKey) => {
   try {
     const customObject = await fetcher(`/proxy/ctp/${projectKey}/custom-objects`, {
       method: 'POST',
@@ -19,7 +18,7 @@ export const createCustomObject = async (draft) => {
   }
 };
 
-export const getCustomObject = async () => {
+export const getCustomObject = async (projectKey) => {
   try {
     const customObject = await fetcher(
       `/proxy/ctp/${projectKey}/custom-objects/${CONTAINER_NAME}/${CONTAINER_KEY}`,

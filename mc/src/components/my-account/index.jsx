@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import Link from '@commercetools-uikit/link';
+import { useApplicationContext } from '@commercetools-frontend/application-shell-connectors';
 import { PageContentWide } from '@commercetools-frontend/application-components';
 import SelectInput from '@commercetools-uikit/select-input';
 import Label from '@commercetools-uikit/label';
@@ -41,9 +42,9 @@ const MyAccount = (props) => {
     redirectUrl: '',
   });
 
-  const getCustomObjectData = async () => {
+  const getCustomObjectData = async (projectKey) => {
     try {
-      const response = await getCustomObject();
+      const response = await getCustomObject(projectKey);
       setData(response.value);
       if (response?.value) {
         for (const option of ['live', 'test']) {
@@ -60,9 +61,11 @@ const MyAccount = (props) => {
     }
   };
 
+  const projectKey = useApplicationContext(context => context.project.key);
+
   useEffect(() => {
-    getCustomObjectData();
-  }, []);
+    projectKey && getCustomObjectData(projectKey);
+  }, [projectKey]);
 
   const handleChange = (event) => {
     const selectedValue = event.target.value;
@@ -142,7 +145,7 @@ const MyAccount = (props) => {
       },
     };
     try {
-      const response = await createCustomObject(draft);
+      const response = await createCustomObject(draft, projectKey);
       if (response.id) {
       }
     } catch (error) {

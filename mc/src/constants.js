@@ -6,10 +6,6 @@ export const entryPointUriPath = typeof window === 'undefined'
   ? process.env.CTP_MC_APPLICATION_ENTRY_POINT
   : window.app.entryPointUriPath;
 
-  export const projectKey = typeof window === 'undefined'
-  ? process.env.CTP_MC_PROJECT_ID
-  : window.app.projectKey;
-
 export const myAccountUri = 'myaccount';
 
 export const paymentMethodsUri = '';
