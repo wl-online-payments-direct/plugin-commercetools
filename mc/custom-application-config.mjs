@@ -7,6 +7,7 @@ const config = {
   name: 'Worldline',
   entryPointUriPath,
   cloudIdentifier: '${env:CTP_MC_CLOUD_IDENTIFIER}',
+  projectKey: '${env:CTP_MC_PROJECT_ID}',
   env: {
     development: {
       initialProjectKey: '${env:CTP_MC_PROJECT_ID}',
@@ -14,7 +15,6 @@ const config = {
     production: {
       applicationId: '${env:CTP_MC_APPLICATION_ID}',
       url: 'https://${env:CTP_MC_APPLICATION_URL}',
-      projectKey: '${env:CTP_MC_PROJECT_ID}'
     },
   },
   oAuthScopes: {

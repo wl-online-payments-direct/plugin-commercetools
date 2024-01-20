@@ -8,7 +8,7 @@ export const entryPointUriPath = typeof window === 'undefined'
 
   export const projectKey = typeof window === 'undefined'
   ? process.env.CTP_MC_PROJECT_ID
-  : window.app.env.production.projectKey;
+  : window.app.projectKey;
 
 export const myAccountUri = 'myaccount';
 
