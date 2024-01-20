@@ -8,7 +8,7 @@ export const fetcher = async (url, config = {}) => {
     const data = await executeHttpClientRequest(
         async (options) => {
             headers = { ...options.headers, ...config.headers };
-            const res = await fetch(buildApiUrl(url), { ...config, headers });
+            const res = await fetch(buildApiUrl(url), { ...config, headers, credentials: 'include' });
             const data = res.json();
             return {
                 data,
