@@ -1,11 +1,11 @@
 import { Cart } from '@commercetools/platform-sdk';
-import { ApiClient } from '../../clients';
+import { MeApiClient } from '../../clients';
 import query from './query';
 import { recalculateCartResponseMapper } from '../../mappers';
 import { RecalculateCartResponse } from '../../types';
 
-export async function recalculateCart(authToken: string, cart: Cart) {
-  const apiClient = new ApiClient();
+export async function recalculateMyCart(authToken: string, cart: Cart) {
+  const apiClient = new MeApiClient({ authToken });
   apiClient.setBody({
     query,
     variables: {
@@ -14,7 +14,6 @@ export async function recalculateCart(authToken: string, cart: Cart) {
       updateProductData: true, // this should be true for recalculate
     },
   });
-  apiClient.setAuthHeader(authToken);
   const result = (await apiClient.execute()) as RecalculateCartResponse;
   return recalculateCartResponseMapper(result);
 }
