@@ -26,7 +26,7 @@ const { emailAddress } = CONFIG;
 
 const PaymentMethods = () => {
   const [apiData, setAPIData] = useState({});
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [toaster, setToaster] = useState({
     open: false,
     vertical: 'top',
@@ -146,13 +146,13 @@ const PaymentMethods = () => {
     const final_payload = {
       ...apiData,
       value: {
-        ...apiData.value,
+        ...apiData?.value,
         live: {
-          ...apiData.value.live,
+          ...apiData?.value?.live,
           ...saveData,
         },
         test: {
-          ...apiData.value.test,
+          ...apiData?.value?.test,
           ...saveData,
         },
       },
@@ -179,6 +179,7 @@ const PaymentMethods = () => {
   }, [projectKey]);
 
   const getCustomObjectData = async (projectKey) => {
+    setLoading(true);
     try {
       const response = await getCustomObject(projectKey);
       if (response?.value) {
