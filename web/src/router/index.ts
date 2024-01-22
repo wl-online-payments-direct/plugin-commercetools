@@ -19,8 +19,8 @@ const routes = {
   '/me/initiate/hostedtokenization':
     hostedTokenizationController.processRequest,
   '/me/initiate/hostedcheckout': hostedCheckoutController.processRequest,
-  '/payment': createPaymentController.processRequest,
-  '/me/payment': createUserPaymentController.processRequest,
+  '/me/payment': createPaymentController.processRequest,
+  '/payment': createUserPaymentController.processRequest,
   '/payment/status': getPaymentStatusController.processRequest,
   '/me/cart/validate': validateCartController.processRequest,
   '/webhook': webhookController.processRequest,
