@@ -76,7 +76,7 @@ const MyAccount = (props) => {
     }
   };
 
-  const projectKey = useApplicationContext(context => context.project.key);
+  const projectKey = useApplicationContext((context) => context.project.key);
 
   useEffect(() => {
     projectKey && getCustomObjectData(projectKey);
@@ -243,44 +243,86 @@ const MyAccount = (props) => {
                     <p className="form-label">Test PSPID</p>
                   </Label>
                   <TextInput
-                    name="webhookUrl"
-                    value={formData.webhookUrl}
+                    name="merchantId"
+                    value={formData[selectedOption].merchantId}
                     onChange={handleInputChange}
                   />
-                  <ClipboardIcon
-                    style={{ margin: 'auto' }}
-                    onClick={() => {
-                      setCopied(true);
-                      navigator.clipboard.writeText(formData.webhookUrl);
-                    }}
+                  <Label isBold={true}>
+                    <p className="form-label">Test API Key</p>
+                  </Label>
+                  <TextInput
+                    name="apiKey"
+                    value={formData[selectedOption].apiKey}
+                    onChange={handleInputChange}
                   />
-                </div>
-                <div
-                  className="flex"
-                  style={{ justifyContent: 'space-between' }}
-                >
-                  <p className="info">
-                    To avoid copy/paste issues, use the `copy` icon to copy the
-                    URL
-                  </p>
-                  {copied && <p>Copied!</p>}
-                </div>
-                <Label isBold={true}>
-                  <p className="form-label hook-url">
-                    Redirection Payment Page URL - Test
-                  </p>
-                </Label>
-                <TextInput
-                  name="redirectUrl"
-                  value={formData.redirectUrl}
-                  onChange={handleInputChange}
-                />
-                <PrimaryButton
-                  label="Save/Update"
-                  onClick={handleSubmit}
-                  isDisabled={false}
-                />
-              </Spacings.Stack>
+                  <Label isBold={true}>
+                    <p className="form-label">Test API Secret</p>
+                  </Label>
+                  <TextInput
+                    name="apiSecret"
+                    value={formData[selectedOption].apiSecret}
+                    onChange={handleInputChange}
+                  />
+                  <Label isBold={true}>
+                    <p className="form-label">Test Webhook Key</p>
+                  </Label>
+                  <TextInput
+                    name="webhookKey"
+                    value={formData[selectedOption].webhookKey}
+                    onChange={handleInputChange}
+                  />
+                  <Label isBold={true}>
+                    <p className="form-label">Test Webhook Secret</p>
+                  </Label>
+                  <TextInput
+                    name="webhookSecret"
+                    value={formData[selectedOption].webhookSecret}
+                    onChange={handleInputChange}
+                  />
+                  <Label isBold={true}>
+                    <p className="form-label hook-url">Webhook URL</p>
+                  </Label>
+                  <div className="flex">
+                    <TextInput
+                      name="webhookUrl"
+                      value={formData.webhookUrl}
+                      onChange={handleInputChange}
+                    />
+                    <ClipboardIcon
+                      style={{ margin: 'auto' }}
+                      onClick={() => {
+                        setCopied(true);
+                        navigator.clipboard.writeText(formData.webhookUrl);
+                      }}
+                    />
+                  </div>
+                  <div
+                    className="flex"
+                    style={{ justifyContent: 'space-between' }}
+                  >
+                    <p className="info">
+                      To avoid copy/paste issues, use the `copy` icon to copy
+                      the URL
+                    </p>
+                    {copied && <p>Copied!</p>}
+                  </div>
+                  <Label isBold={true}>
+                    <p className="form-label hook-url">
+                      Redirection Payment Page URL - Test
+                    </p>
+                  </Label>
+                  <TextInput
+                    name="redirectUrl"
+                    value={formData.redirectUrl}
+                    onChange={handleInputChange}
+                  />
+                  <PrimaryButton
+                    label="Save/Update"
+                    onClick={handleSubmit}
+                    isDisabled={false}
+                  />
+                </Spacings.Stack>
+              </div>
             </div>
           </div>
         </PageContentWide>
