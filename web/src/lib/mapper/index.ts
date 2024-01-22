@@ -9,4 +9,5 @@ export * from './validateCart';
 export * from './retryPayment';
 export * from './deleteToken';
 export * from './loadPaymentMethods';
+export * from './loadMyPaymentMethods';
 export * from './webhook';

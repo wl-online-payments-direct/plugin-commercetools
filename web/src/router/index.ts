@@ -7,6 +7,7 @@ import validateCartController from '../api/validateCart/controller';
 import webhookController from '../api/webhook/controller';
 import retryPaymentController from '../api/retryPayment/controller';
 import deleteTokenController from '../api/deleteToken/controller';
+import loadMyPaymentMethodsController from '../api/loadMyPaymentMethods/controller';
 import loadPaymentMethodsController from '../api/loadPaymentMethods/controller';
 import getWebhookStatusController from '../api/getWebhookStatus/controller';
 import hostedCheckoutController from '../api/hostedCheckout/controller';
@@ -24,6 +25,9 @@ const routes = {
   '/webhook/status': getWebhookStatusController.processRequest,
   '/payment/retry': retryPaymentController.processRequest,
   '/token/remove': deleteTokenController.processRequest,
+  '/me/payment/methods': loadMyPaymentMethodsController.processRequest,
+
+  // Using frontastic token
   '/payment/methods': loadPaymentMethodsController.processRequest,
 };
 
