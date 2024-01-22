@@ -53,7 +53,7 @@ export async function createUserPayment(
   payload: ICreateUserPaymentPayload,
 ): Promise<ICreatePaymentResponse> {
   // Fetch cart from Commercetools
-  const cart = await getCartById(payload.cartId);
+  const cart = await getCartById(payload.cartId, payload.authToken);
   if (!cart) {
     throw {
       message: 'Failed to fetch the cart or cart is empty!',
