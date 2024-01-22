@@ -139,3 +139,7 @@ label:focus-within::after {
 .options-section div {
     outline: none !important;
 }
+
+.snack-bar{
+    margin-top: 4rem;
+}
