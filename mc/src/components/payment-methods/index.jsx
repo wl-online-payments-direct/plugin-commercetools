@@ -48,7 +48,17 @@ const PaymentMethods = () => {
     if (field === 'payButtonLanguage') {
       payload['payButtonTitle'] = {
         ...payload['payButtonTitle'],
-        value: state.onSiteMode[field].values[value],
+        value: state.onSiteMode['payButtonTitle'].values[value],
+      };
+    }
+
+    if (field === 'payButtonTitle') {
+      payload['payButtonTitle'] = {
+        ...payload['payButtonTitle'],
+        values: {
+          ...state.onSiteMode['payButtonTitle'].values,
+          [state.onSiteMode['payButtonLanguage'].value]: value,
+        },
       };
     }
 
@@ -93,7 +103,17 @@ const PaymentMethods = () => {
     if (field === 'placeOrderLanguage') {
       payload['placeOrder'] = {
         ...payload['placeOrder'],
-        value: state[field].values[value],
+        value: state['placeOrder'].values[value],
+      };
+    }
+
+    if (field === 'placeOrder') {
+      payload['placeOrder'] = {
+        ...payload['placeOrder'],
+        values: {
+          ...state['placeOrder'].values,
+          [state['placeOrderLanguage'].value]: value,
+        },
       };
     }
 
@@ -194,7 +214,7 @@ const PaymentMethods = () => {
           }
         }
         dispatch({
-          type: 'UPDATE_STATE',
+          type: 'UPDATE-STATE',
           value: payload,
         });
         setLoading(false);
