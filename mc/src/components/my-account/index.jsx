@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import Link from '@commercetools-uikit/link';
+import { useApplicationContext } from '@commercetools-frontend/application-shell-connectors';
 import { PageContentWide } from '@commercetools-frontend/application-components';
 import SelectInput from '@commercetools-uikit/select-input';
 import Label from '@commercetools-uikit/label';
@@ -20,6 +21,8 @@ import CircularProgress from '@mui/material/CircularProgress';
 import Snackbar from '@mui/material/Snackbar';
 import Alert from '@mui/material/Alert';
 import Slide from '@mui/material/Slide';
+import CONFIG from '../../../configuration';
+const { CONTAINER_KEY, CONTAINER_NAME } = CONFIG;
 
 const MyAccount = (props) => {
   const [selectedOption, setSelectedOption] = useState('test');
@@ -40,8 +43,8 @@ const MyAccount = (props) => {
       webhookKey: '',
       webhookSecret: '',
     },
-    webHookURL: '',
-    paymentPageURL: '',
+    webhookUrl: '',
+    redirectUrl: '',
   });
   const [loading, setLoading] = useState(true);
   const [toaster, setToaster] = useState({
@@ -53,9 +56,9 @@ const MyAccount = (props) => {
   });
   const { vertical, horizontal, open, transition } = toaster;
 
-  const getCustomObjectData = async () => {
+  const getCustomObjectData = async (projectKey) => {
     try {
-      const response = await getCustomObject();
+      const response = await getCustomObject(projectKey);
       setData(response.value);
       if (response?.value) {
         for (const option of ['live', 'test']) {
@@ -73,9 +76,11 @@ const MyAccount = (props) => {
     }
   };
 
+  const projectKey = useApplicationContext(context => context.project.key);
+
   useEffect(() => {
-    getCustomObjectData();
-  }, []);
+    projectKey && getCustomObjectData(projectKey);
+  }, [projectKey]);
 
   const handleChange = (event) => {
     const selectedValue = event.target.value;
@@ -85,7 +90,7 @@ const MyAccount = (props) => {
   const handleInputChange = (event) => {
     const { name, value } = event.target;
     setFormData((prevData) => {
-      if (name === 'webHookURL' || name === 'paymentPageURL') {
+      if (name === 'webhookUrl' || name === 'redirectUrl') {
         return {
           ...prevData,
           [name]: value,
@@ -105,15 +110,16 @@ const MyAccount = (props) => {
   const handleSubmit = async () => {
     setLoading(true);
     const draft = {
-      container: 'storeId',
-      key: 'storeId',
+      container: CONTAINER_NAME,
+      key: CONTAINER_KEY,
       value: {
         ...data,
-        webHookURL: formData.webHookURL,
-        paymentPageURL: formData.paymentPageURL,
+        webhookUrl: formData.webhookUrl,
+        redirectUrl: formData.redirectUrl,
         ...(selectedOption === 'live'
           ? {
               live: {
+                ...data.live,
                 merchantId: formData[selectedOption].merchantId,
                 apiKey: formData[selectedOption].apiKey,
                 apiSecret: formData[selectedOption].apiSecret,
@@ -123,6 +129,7 @@ const MyAccount = (props) => {
             }
           : {
               live: {
+                ...data.live,
                 merchantId: formData['live'].merchantId,
                 apiKey: formData['live'].apiKey,
                 apiSecret: formData['live'].apiSecret,
@@ -133,6 +140,7 @@ const MyAccount = (props) => {
         ...(selectedOption === 'test'
           ? {
               test: {
+                ...data.test,
                 merchantId: formData[selectedOption].merchantId,
                 apiKey: formData[selectedOption].apiKey,
                 apiSecret: formData[selectedOption].apiSecret,
@@ -142,6 +150,7 @@ const MyAccount = (props) => {
             }
           : {
               test: {
+                ...data.test,
                 merchantId: formData['test'].merchantId,
                 apiKey: formData['test'].apiKey,
                 apiSecret: formData['test'].apiSecret,
@@ -152,7 +161,7 @@ const MyAccount = (props) => {
       },
     };
     try {
-      const response = await createCustomObject(draft);
+      const response = await createCustomObject(draft, projectKey);
       if (response.id) {
         setLoading(false);
         setToaster({ ...toaster, severity: 'success', open: true });
@@ -234,86 +243,44 @@ const MyAccount = (props) => {
                     <p className="form-label">Test PSPID</p>
                   </Label>
                   <TextInput
-                    name="merchantId"
-                    value={formData[selectedOption].merchantId}
+                    name="webhookUrl"
+                    value={formData.webhookUrl}
                     onChange={handleInputChange}
                   />
-                  <Label isBold={true}>
-                    <p className="form-label">Test API Key</p>
-                  </Label>
-                  <TextInput
-                    name="apiKey"
-                    value={formData[selectedOption].apiKey}
-                    onChange={handleInputChange}
+                  <ClipboardIcon
+                    style={{ margin: 'auto' }}
+                    onClick={() => {
+                      setCopied(true);
+                      navigator.clipboard.writeText(formData.webhookUrl);
+                    }}
                   />
-                  <Label isBold={true}>
-                    <p className="form-label">Test API Secret</p>
-                  </Label>
-                  <TextInput
-                    name="apiSecret"
-                    value={formData[selectedOption].apiSecret}
-                    onChange={handleInputChange}
-                  />
-                  <Label isBold={true}>
-                    <p className="form-label">Test Webhook Key</p>
-                  </Label>
-                  <TextInput
-                    name="webhookKey"
-                    value={formData[selectedOption].webhookKey}
-                    onChange={handleInputChange}
-                  />
-                  <Label isBold={true}>
-                    <p className="form-label">Test Webhook Secret</p>
-                  </Label>
-                  <TextInput
-                    name="webhookSecret"
-                    value={formData[selectedOption].webhookSecret}
-                    onChange={handleInputChange}
-                  />
-                  <Label isBold={true}>
-                    <p className="form-label hook-url">Webhook URL</p>
-                  </Label>
-                  <div className="flex">
-                    <TextInput
-                      name="webHookURL"
-                      value={formData.webHookURL}
-                      onChange={handleInputChange}
-                    />
-                    <ClipboardIcon
-                      style={{ margin: 'auto' }}
-                      onClick={() => {
-                        setCopied(true);
-                        navigator.clipboard.writeText(formData.webHookURL);
-                      }}
-                    />
-                  </div>
-                  <div
-                    className="flex"
-                    style={{ justifyContent: 'space-between' }}
-                  >
-                    <p className="info">
-                      To avoid copy/paste issues, use the `copy` icon to copy
-                      the URL
-                    </p>
-                    {copied && <p>Copied!</p>}
-                  </div>
-                  <Label isBold={true}>
-                    <p className="form-label hook-url">
-                      Redirection Payment Page URL - Test
-                    </p>
-                  </Label>
-                  <TextInput
-                    name="paymentPageURL"
-                    value={formData.paymentPageURL}
-                    onChange={handleInputChange}
-                  />
-                  <PrimaryButton
-                    label="Save/Update"
-                    onClick={handleSubmit}
-                    isDisabled={false}
-                  />
-                </Spacings.Stack>
-              </div>
+                </div>
+                <div
+                  className="flex"
+                  style={{ justifyContent: 'space-between' }}
+                >
+                  <p className="info">
+                    To avoid copy/paste issues, use the `copy` icon to copy the
+                    URL
+                  </p>
+                  {copied && <p>Copied!</p>}
+                </div>
+                <Label isBold={true}>
+                  <p className="form-label hook-url">
+                    Redirection Payment Page URL - Test
+                  </p>
+                </Label>
+                <TextInput
+                  name="redirectUrl"
+                  value={formData.redirectUrl}
+                  onChange={handleInputChange}
+                />
+                <PrimaryButton
+                  label="Save/Update"
+                  onClick={handleSubmit}
+                  isDisabled={false}
+                />
+              </Spacings.Stack>
             </div>
           </div>
         </PageContentWide>
