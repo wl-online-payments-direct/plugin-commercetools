@@ -1,4 +1,5 @@
 import React, { useContext, useState, useReducer, useEffect } from 'react';
+import { useApplicationContext } from '@commercetools-frontend/application-shell-connectors';
 import './style.css';
 import PageWrapper from '../page-wrapper';
 import ToggleInput from '@commercetools-uikit/toggle-input';
@@ -147,9 +148,9 @@ const PaymentMethods = () => {
 
     setAPIData(final_payload);
     try {
-      const response = await createCustomObject(final_payload);
+      const response = await createCustomObject(final_payload, projectKey);
       if (response.id) {
-        getCustomObjectData();
+        getCustomObjectData(projectKey);
       }
     } catch (error) {
       console.error('Error saving custom object:', error);
@@ -157,13 +158,15 @@ const PaymentMethods = () => {
     }
   };
 
-  useEffect(() => {
-    getCustomObjectData();
-  }, []);
+  const projectKey = useApplicationContext(context => context.project.key);
 
-  const getCustomObjectData = async () => {
+  useEffect(() => {
+    projectKey && getCustomObjectData(projectKey);
+  }, [projectKey]);
+
+  const getCustomObjectData = async (projectKey) => {
     try {
-      const response = await getCustomObject();
+      const response = await getCustomObject(projectKey);
       if (response?.value) {
         setAPIData(response);
         let payload = initialState;
@@ -247,7 +250,7 @@ const PaymentMethods = () => {
               />
             </div>
           </div>
-          <p class="supportmail">
+          <p className="supportmail">
             Support Email :{' '}
             <a href={`mailto:${emailAddress}`}>{emailAddress}</a>
           </p>
