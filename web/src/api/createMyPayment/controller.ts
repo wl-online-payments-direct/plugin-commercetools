@@ -4,7 +4,7 @@ import {
   logger,
   ResponseClient,
 } from '@worldline/ctintegration-util';
-import { createUserPaymentRequest } from '../../lib';
+import { createMyPaymentRequest } from '../../lib';
 import { ErrorProps, Request } from '../../lib/types';
 
 const processRequest = async (request: Request, response: ServerResponse) => {
@@ -13,7 +13,7 @@ const processRequest = async (request: Request, response: ServerResponse) => {
     // Only allow POST request; else throw error
     await isPostRequestOrThrowError(method);
 
-    const data = await createUserPaymentRequest(request);
+    const data = await createMyPaymentRequest(request);
 
     ResponseClient.setResponseTo200(response, data);
   } catch (e) {

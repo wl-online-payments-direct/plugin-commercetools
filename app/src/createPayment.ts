@@ -9,9 +9,9 @@ import {
   getIncrementedReference,
 } from '@worldline/ctintegration-db';
 import {
-  ICreatePaymentPayload,
+  ICreateMyPaymentPayload,
   ICreatePaymentResponse,
-  ICreateUserPaymentPayload,
+  ICreatePaymentPayload,
 } from './types';
 import {
   getDatabasePayload,
@@ -20,8 +20,8 @@ import {
   getCreatedPaymentMappedResponse,
 } from './mappers';
 
-export async function createPayment(
-  payload: ICreatePaymentPayload,
+export async function createMyPayment(
+  payload: ICreateMyPaymentPayload,
 ): Promise<ICreatePaymentResponse> {
   // Fetch cart from Commercetools
   const { cart } = await getMyCart(payload.authToken);
@@ -49,8 +49,8 @@ export async function createPayment(
   return getCreatedPaymentMappedResponse(payment, dbPayment);
 }
 
-export async function createUserPayment(
-  payload: ICreateUserPaymentPayload,
+export async function createPayment(
+  payload: ICreatePaymentPayload,
 ): Promise<ICreatePaymentResponse> {
   // Fetch cart from Commercetools
   const cart = await getCartById(payload.cartId, payload.authToken);

@@ -1,8 +1,8 @@
 import healthController from '../api/health/controller';
 import testConnectionController from '../api/testConnection/controller';
 import hostedTokenizationController from '../api/hostedTokenization/controller';
+import createMyPaymentController from '../api/createMyPayment/controller';
 import createPaymentController from '../api/createPayment/controller';
-import createUserPaymentController from '../api/createUserPayment/controller';
 import getPaymentStatusController from '../api/getPaymentStatus/controller';
 import validateCartController from '../api/validateCart/controller';
 import webhookController from '../api/webhook/controller';
@@ -19,8 +19,8 @@ const routes = {
   '/me/initiate/hostedtokenization':
     hostedTokenizationController.processRequest,
   '/me/initiate/hostedcheckout': hostedCheckoutController.processRequest,
-  '/me/payment': createPaymentController.processRequest,
-  '/payment': createUserPaymentController.processRequest,
+  '/me/payment': createMyPaymentController.processRequest,
+  '/payment': createPaymentController.processRequest,
   '/payment/status': getPaymentStatusController.processRequest,
   '/me/cart/validate': validateCartController.processRequest,
   '/webhook': webhookController.processRequest,

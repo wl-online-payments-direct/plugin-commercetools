@@ -1,5 +1,4 @@
-export interface CreateUserPaymentPayload {
-  cartId: string;
+export interface CreateMyPaymentPayload {
   storeId: string;
   hostedTokenizationId: string;
   returnUrl: string;
