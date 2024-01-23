@@ -1,13 +1,16 @@
-import { getCustomObjects, getMyCart } from '@worldline/ctintegration-ct';
+import { getCustomObjects, getCart } from '@worldline/ctintegration-ct';
 import { getPaymentTokensByCustomerID } from '@worldline/ctintegration-db';
-import { CustomerPaymentToken, LoadPaymentMethodsPayload } from './types';
+import {
+  LoadPaymentMethodsCustomerPaymentToken,
+  LoadPaymentMethodsPayload,
+} from './types';
 import { loadPaymentMethodsMappedResponse } from './mappers';
 
 export async function loadPaymentMethodsAppHandler(
   payload: LoadPaymentMethodsPayload,
 ) {
-  // Fetch customer cart from Commercetools
-  const { cart } = await getMyCart(payload.authToken);
+  // Fetch customer cart from Commercetools using frontastic token
+  const { cart } = await getCart(payload.cartId, payload.authToken);
   if (!cart) {
     throw {
       message: 'Failed to fetch the cart or cart is empty!',
@@ -15,7 +18,7 @@ export async function loadPaymentMethodsAppHandler(
     };
   }
 
-  let savedTokens: CustomerPaymentToken[] = [];
+  let savedTokens: LoadPaymentMethodsCustomerPaymentToken[] = [];
   if (cart.customerId) {
     savedTokens = await getPaymentTokensByCustomerID(cart.customerId);
   }
