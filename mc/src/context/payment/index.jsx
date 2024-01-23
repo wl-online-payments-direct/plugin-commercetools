@@ -48,16 +48,18 @@ const PaymentProvider = ({ children }) => {
     }
   };
 
-  const fetchCustomObjects = async () => {
+  const fetchCustomObjects = async (activeStore) => {
     setLoader(true);
-    if (activeStore) {
+    if (activeStore?.key) {
       try {
         const response = await getCustomObject(projectKey, activeStore?.key);
         setLoader(false);
-        if (response.statusCode !== 200) {
+        hideToaster();
+        if (response.value) {
+          return response;
+        } else {
           return {};
         }
-        return response;
       } catch (err) {
         console.error('Failed to fetch custom objects');
         showToaster({
@@ -83,7 +85,7 @@ const PaymentProvider = ({ children }) => {
             open: true,
             message: 'Payment settings saved successfully',
           });
-          const response = fetchCustomObjects();
+          const response = await fetchCustomObjects(activeStore);
           setCustomObject(response);
         }
       } catch (err) {
@@ -106,8 +108,9 @@ const PaymentProvider = ({ children }) => {
     }
   };
 
-  useEffect(() => {
-    fetchCustomObjects();
+  useEffect(async () => {
+    const response = await fetchCustomObjects(activeStore);
+    setCustomObject(response);
   }, [activeStore]);
 
   const showToaster = async (options) => {

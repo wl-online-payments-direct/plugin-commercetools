@@ -21,12 +21,12 @@ const PageWrapper = ({ children, title }) => {
 
   useEffect(async () => {
     const response = await fetchStores();
-    if (activeStore === null) setActiveStore(response[0]);
+    setActiveStore(response[0]);
     setStores(response);
   }, [projectKey]);
 
   useEffect(async () => {
-    const response = await fetchCustomObjects();
+    const response = await fetchCustomObjects(activeStore);
     setCustomObject(response);
   }, [stores]);
 

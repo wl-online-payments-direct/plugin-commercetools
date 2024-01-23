@@ -14,7 +14,6 @@ import reducer from './reducer';
 import { PaymentContext } from '../../context/payment';
 
 const { emailAddress } = CONFIG;
-
 const PaymentMethods = () => {
   const { setLoader, saveCustomObject, customObject } =
     useContext(PaymentContext);
@@ -31,7 +30,17 @@ const PaymentMethods = () => {
     if (field === 'payButtonLanguage') {
       payload['payButtonTitle'] = {
         ...payload['payButtonTitle'],
-        value: state.onSiteMode[field].values[value],
+        value: state.onSiteMode['payButtonTitle'].values[value],
+      };
+    }
+
+    if (field === 'payButtonTitle') {
+      payload['payButtonTitle'] = {
+        ...payload['payButtonTitle'],
+        values: {
+          ...state.onSiteMode['payButtonTitle'].values,
+          [state.onSiteMode['payButtonLanguage'].value]: value,
+        },
       };
     }
 
@@ -76,7 +85,17 @@ const PaymentMethods = () => {
     if (field === 'placeOrderLanguage') {
       payload['placeOrder'] = {
         ...payload['placeOrder'],
-        value: state[field].values[value],
+        value: state['placeOrder'].values[value],
+      };
+    }
+
+    if (field === 'placeOrder') {
+      payload['placeOrder'] = {
+        ...payload['placeOrder'],
+        values: {
+          ...state['placeOrder'].values,
+          [state['placeOrderLanguage'].value]: value,
+        },
       };
     }
 
@@ -143,16 +162,18 @@ const PaymentMethods = () => {
   };
 
   useEffect(() => {
-    if (customObject?.value) {
+    if (customObject) {
       let payload = initialState;
       for (let ds of Object.keys(dataFields)) {
         for (let field of dataFields[ds]) {
           if (ds !== 'general')
-            payload[ds][field].value =
-              customObject?.value?.test[payload[ds][field]?.key];
+            payload[ds][field].value = customObject?.value
+              ? customObject?.value?.test[payload[ds][field]?.key]
+              : payload[ds][field].value;
           else
-            payload[field].value =
-              customObject?.value?.test[payload[field]?.key];
+            payload[field].value = customObject?.value
+              ? customObject?.value?.test[payload[field]?.key]
+              : payload[field].value;
         }
       }
       dispatch({
