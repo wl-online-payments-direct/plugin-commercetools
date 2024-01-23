@@ -1,5 +1,6 @@
 export * from './common';
 export * from './initiatePayment';
+export * from './myHostedTokenization';
 export * from './hostedCheckout';
 export * from './createPayment';
 export * from './getPaymentStatus';

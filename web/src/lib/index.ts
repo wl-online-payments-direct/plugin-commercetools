@@ -10,3 +10,4 @@ export * from './deleteToken';
 export * from './loadMyPaymentMethods';
 export * from './loadPaymentMethods';
 export * from './getWebhookStatus';
+export * from './myHostedTokenization';
