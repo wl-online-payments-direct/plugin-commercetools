@@ -1,6 +1,7 @@
 export * from './common';
 export * from './connection';
 export * from './hostedTokenization';
+export * from './myHostedTokenization';
 export * from './hostedCheckout';
 export * from './createPayment';
 export * from './getPaymentStatus';
