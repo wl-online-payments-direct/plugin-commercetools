@@ -1,12 +1,12 @@
 import { Cart } from '@worldline/ctintegration-ct';
-import { CustomObjects, HostedCheckoutPayload } from '../types';
+import { CustomObjects, HostedMyCheckoutPayload } from '../types';
 import { appendAdditionalParamsToUrl } from './common';
 
 export function getHostedCheckoutPayload(
   customConfig: CustomObjects,
   reference: { referenceId: number },
   cart: Cart,
-  payload: HostedCheckoutPayload,
+  payload: HostedMyCheckoutPayload,
 ) {
   const amount = cart?.taxedPrice?.totalGross.centAmount || 0;
   const currencyCode = cart?.taxedPrice?.totalGross.currencyCode || '';

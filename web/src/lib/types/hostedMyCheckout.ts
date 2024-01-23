@@ -1,6 +1,5 @@
-export interface HostedCheckoutPayload {
+export interface HostedMyCheckoutPayload {
   storeId: string;
-  cartId: string;
   tokens?: string;
   returnUrl: string;
 }

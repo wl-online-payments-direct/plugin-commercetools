@@ -10,6 +10,7 @@ import deleteTokenController from '../api/deleteToken/controller';
 import loadPaymentMethodsController from '../api/loadPaymentMethods/controller';
 import getWebhookStatusController from '../api/getWebhookStatus/controller';
 import hostedCheckoutController from '../api/hostedCheckout/controller';
+import hostedMyCheckoutController from '../api/hostedMyCheckout/controller';
 
 const routes = {
   '/': healthController.processRequest,
@@ -17,6 +18,7 @@ const routes = {
   '/testconnection': testConnectionController.processRequest,
   '/initiate/hostedtokenization': hostedTokenizationController.processRequest,
   '/initiate/hostedcheckout': hostedCheckoutController.processRequest,
+  '/me/initiate/hostedcheckout': hostedMyCheckoutController.processRequest,
   '/payment': createPaymentController.processRequest,
   '/payment/status': getPaymentStatusController.processRequest,
   '/cart/validate': validateCartController.processRequest,
