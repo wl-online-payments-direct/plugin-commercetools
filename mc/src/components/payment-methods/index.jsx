@@ -26,7 +26,7 @@ const { emailAddress } = CONFIG;
 
 const PaymentMethods = () => {
   const [apiData, setAPIData] = useState({});
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [toaster, setToaster] = useState({
     open: false,
     vertical: 'top',
@@ -48,7 +48,17 @@ const PaymentMethods = () => {
     if (field === 'payButtonLanguage') {
       payload['payButtonTitle'] = {
         ...payload['payButtonTitle'],
-        value: state.onSiteMode[field].values[value],
+        value: state.onSiteMode['payButtonTitle'].values[value],
+      };
+    }
+
+    if (field === 'payButtonTitle') {
+      payload['payButtonTitle'] = {
+        ...payload['payButtonTitle'],
+        values: {
+          ...state.onSiteMode['payButtonTitle'].values,
+          [state.onSiteMode['payButtonLanguage'].value]: value,
+        },
       };
     }
 
@@ -93,7 +103,17 @@ const PaymentMethods = () => {
     if (field === 'placeOrderLanguage') {
       payload['placeOrder'] = {
         ...payload['placeOrder'],
-        value: state[field].values[value],
+        value: state['placeOrder'].values[value],
+      };
+    }
+
+    if (field === 'placeOrder') {
+      payload['placeOrder'] = {
+        ...payload['placeOrder'],
+        values: {
+          ...state['placeOrder'].values,
+          [state['placeOrderLanguage'].value]: value,
+        },
       };
     }
 
@@ -146,13 +166,13 @@ const PaymentMethods = () => {
     const final_payload = {
       ...apiData,
       value: {
-        ...apiData.value,
+        ...apiData?.value,
         live: {
-          ...apiData.value.live,
+          ...apiData?.value?.live,
           ...saveData,
         },
         test: {
-          ...apiData.value.test,
+          ...apiData?.value?.test,
           ...saveData,
         },
       },
@@ -179,6 +199,7 @@ const PaymentMethods = () => {
   }, [projectKey]);
 
   const getCustomObjectData = async (projectKey) => {
+    setLoading(true);
     try {
       const response = await getCustomObject(projectKey);
       if (response?.value) {
@@ -193,7 +214,7 @@ const PaymentMethods = () => {
           }
         }
         dispatch({
-          type: 'UPDATE_STATE',
+          type: 'UPDATE-STATE',
           value: payload,
         });
         setLoading(false);

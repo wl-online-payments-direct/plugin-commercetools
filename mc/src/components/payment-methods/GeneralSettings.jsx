@@ -115,13 +115,11 @@ const GeneralSettings = ({ state, handleCommonSettings }) => {
               inputProps={{ 'aria-label': 'Without label' }}
             >
               {state.placeOrderLanguage.values &&
-                Object.keys(state.placeOrderLanguage.values).map(
-                  (lang, index) => (
-                    <MenuItem key={`lang${index}`} value={lang}>
-                      {lang}
-                    </MenuItem>
-                  )
-                )}
+                state.placeOrderLanguage.values.map((lang, index) => (
+                  <MenuItem key={`lang${index}`} value={lang}>
+                    {lang}
+                  </MenuItem>
+                ))}
             </Select>
           </div>
         </div>
