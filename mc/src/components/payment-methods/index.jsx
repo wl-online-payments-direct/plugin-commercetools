@@ -1,40 +1,23 @@
-import React, { useContext, useState, useReducer, useEffect } from 'react';
-import { useApplicationContext } from '@commercetools-frontend/application-shell-connectors';
+import React, { useContext, useReducer, useEffect } from 'react';
 import './style.css';
 import PageWrapper from '../page-wrapper';
 import ToggleInput from '@commercetools-uikit/toggle-input';
 import PrimaryButton from '@commercetools-uikit/primary-button';
-import {
-  createCustomObject,
-  getCustomObject,
-} from '../../ct-methods/customObject';
 import CONFIG from '../../../configuration';
 import initialState from './intialState.json';
 import dataFields from './dataFields.json';
-import Backdrop from '@mui/material/Backdrop';
-import CircularProgress from '@mui/material/CircularProgress';
 import OnSiteMode from './OnSiteMode';
 import RedirectModeA from './RedirectModeA';
 import RedirectModeB from './RedirectModeB';
 import GeneralSettings from './GeneralSettings';
 import reducer from './reducer';
-import Snackbar from '@mui/material/Snackbar';
-import Alert from '@mui/material/Alert';
-import Slide from '@mui/material/Slide';
+import { PaymentContext } from '../../context/payment';
 
 const { emailAddress } = CONFIG;
 
 const PaymentMethods = () => {
-  const [apiData, setAPIData] = useState({});
-  const [loading, setLoading] = useState(false);
-  const [toaster, setToaster] = useState({
-    open: false,
-    vertical: 'top',
-    horizontal: 'right',
-    transition: Slide,
-    severity: '',
-  });
-  const { vertical, horizontal, open, transition } = toaster;
+  const { setLoader, saveCustomObject, customObject } =
+    useContext(PaymentContext);
 
   const [state, dispatch] = useReducer(reducer, initialState);
 
@@ -113,7 +96,7 @@ const PaymentMethods = () => {
   const fetchPaymentMethods = () => {};
 
   const saveFormData = async () => {
-    setLoading(true);
+    setLoader(true);
     const payload = Object.keys(state).map((key) => {
       switch (key) {
         case 'onSiteMode':
@@ -142,159 +125,104 @@ const PaymentMethods = () => {
     Object.keys(saveData).forEach((key) =>
       saveData[key] === undefined ? delete saveData[key] : {}
     );
-
     const final_payload = {
-      ...apiData,
       value: {
-        ...apiData?.value,
+        ...customObject?.value,
         live: {
-          ...apiData?.value?.live,
+          ...customObject?.value?.live,
           ...saveData,
         },
         test: {
-          ...apiData?.value?.test,
+          ...customObject?.value?.test,
           ...saveData,
         },
       },
     };
 
-    setAPIData(final_payload);
-    try {
-      const response = await createCustomObject(final_payload, projectKey);
-      if (response.id) {
-        setToaster({ ...toaster, severity: 'success', open: true });
-        getCustomObjectData(projectKey);
-      }
-    } catch (error) {
-      console.error('Error saving custom object:', error);
-      setToaster({ ...toaster, severity: 'error', open: true });
-      setLoading(false);
-    }
+    await saveCustomObject(final_payload);
   };
-
-  const projectKey = useApplicationContext((context) => context.project.key);
 
   useEffect(() => {
-    projectKey && getCustomObjectData(projectKey);
-  }, [projectKey]);
-
-  const getCustomObjectData = async (projectKey) => {
-    setLoading(true);
-    try {
-      const response = await getCustomObject(projectKey);
-      if (response?.value) {
-        setAPIData(response);
-        let payload = initialState;
-        for (let ds of Object.keys(dataFields)) {
-          for (let field of dataFields[ds]) {
-            if (ds !== 'general')
-              payload[ds][field].value =
-                response.value.test[payload[ds][field].key];
-            else payload[field].value = response.value.test[payload[field].key];
-          }
+    if (customObject?.value) {
+      let payload = initialState;
+      for (let ds of Object.keys(dataFields)) {
+        for (let field of dataFields[ds]) {
+          if (ds !== 'general')
+            payload[ds][field].value =
+              customObject?.value?.test[payload[ds][field]?.key];
+          else
+            payload[field].value =
+              customObject?.value?.test[payload[field]?.key];
         }
-        dispatch({
-          type: 'UPDATE_STATE',
-          value: payload,
-        });
-        setLoading(false);
-        setToaster({ ...toaster, open: false });
       }
-    } catch (error) {
-      console.error('Error fetching custom object:', error);
+      dispatch({
+        type: 'UPDATE-STATE',
+        value: payload,
+      });
     }
-  };
+  }, [customObject]);
 
   return (
-    <>
-      <Backdrop
-        sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
-        open={loading}
-      >
-        <CircularProgress color="inherit" />
-      </Backdrop>
-      <PageWrapper title={'Payment Methods'}>
-        <div className="enable-worldline flex algin-end mb-1">
-          <h3 className="section-header">Enable Worldline Checkout</h3>
-          <ToggleInput
-            size={'big'}
-            isDisabled={false}
-            value={state.enabled.value}
-            isChecked={state.enabled.value}
-            onChange={(e) => {
-              dispatch({
-                type: 'ENABLE-WORLDLINE',
-                value: e.target.checked,
-              });
-            }}
-          />
-        </div>
-        <div className="payment-options-wrapper mb-2">
-          <div className="save-wrapper mb-2">
-            <h2>
-              Please select a combination of one or more checkout types to
-              design your checkout experience
-            </h2>
-            <PrimaryButton
-              label="Save Changes"
-              onClick={() => saveFormData()}
-              isDisabled={false}
-            />
-          </div>
-          <OnSiteMode
-            onSiteMode={state.onSiteMode}
-            handleOnsiteMode={handleOnsiteMode}
-            handleLogoUpload={handleLogoUpload}
-          />
-          <RedirectModeA
-            redirectModeA={state.redirectModeA}
-            handleRedirectModeA={handleRedirectModeA}
-            handleOptionUpdate={handleOptionUpdate}
-            fetchPaymentMethods={fetchPaymentMethods}
-          />
-          <RedirectModeB
-            redirectModeB={state.redirectModeB}
-            handleRedirectModeB={handleRedirectModeB}
-            handleLogoUpload={handleLogoUpload}
-          />
-          <GeneralSettings
-            state={state}
-            handleCommonSettings={handleCommonSettings}
-          />
-          <div className="save-wrapper algin-end">
-            <PrimaryButton
-              label="Save Changes"
-              onClick={() => saveFormData()}
-              isDisabled={false}
-            />
-          </div>
-        </div>
-        <p className="supportmail">
-          Support Email : <a href={`mailto:${emailAddress}`}>{emailAddress}</a>
-        </p>
-      </PageWrapper>
-      <Snackbar
-        className="snack-bar"
-        anchorOrigin={{ vertical, horizontal }}
-        open={open}
-        key={vertical + horizontal}
-        autoHideDuration={6000}
-        TransitionComponent={transition}
-      >
-        <Alert
-          onClose={() => {
-            setToaster({ ...toaster, open: false });
+    <PageWrapper title={'Payment Methods'}>
+      <div className="enable-worldline flex algin-end mb-1">
+        <h3 className="section-header">Enable Worldline Checkout</h3>
+        <ToggleInput
+          size={'big'}
+          isDisabled={false}
+          value={state.enabled.value}
+          isChecked={state.enabled.value}
+          onChange={(e) => {
+            dispatch({
+              type: 'ENABLE-WORLDLINE',
+              value: e.target.checked,
+            });
           }}
-          severity={toaster.severity}
-          variant="filled"
-          sx={{ width: '100%' }}
-        >
-          {toaster.severity === 'success'
-            ? 'Payment settings saved successfully'
-            : 'Failed to save data'}
-        </Alert>
-      </Snackbar>
-    </>
+        />
+      </div>
+      <div className="payment-options-wrapper mb-2">
+        <div className="save-wrapper mb-2">
+          <h2>
+            Please select a combination of one or more checkout types to design
+            your checkout experience
+          </h2>
+          <PrimaryButton
+            label="Save Changes"
+            onClick={() => saveFormData()}
+            isDisabled={false}
+          />
+        </div>
+        <OnSiteMode
+          onSiteMode={state.onSiteMode}
+          handleOnsiteMode={handleOnsiteMode}
+          handleLogoUpload={handleLogoUpload}
+        />
+        <RedirectModeA
+          redirectModeA={state.redirectModeA}
+          handleRedirectModeA={handleRedirectModeA}
+          handleOptionUpdate={handleOptionUpdate}
+          fetchPaymentMethods={fetchPaymentMethods}
+        />
+        <RedirectModeB
+          redirectModeB={state.redirectModeB}
+          handleRedirectModeB={handleRedirectModeB}
+          handleLogoUpload={handleLogoUpload}
+        />
+        <GeneralSettings
+          state={state}
+          handleCommonSettings={handleCommonSettings}
+        />
+        <div className="save-wrapper algin-end">
+          <PrimaryButton
+            label="Save Changes"
+            onClick={() => saveFormData()}
+            isDisabled={false}
+          />
+        </div>
+      </div>
+      <p className="supportmail">
+        Support Email : <a href={`mailto:${emailAddress}`}>{emailAddress}</a>
+      </p>
+    </PageWrapper>
   );
 };
 
