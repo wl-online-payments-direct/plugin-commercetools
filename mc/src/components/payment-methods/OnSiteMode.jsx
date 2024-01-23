@@ -60,13 +60,11 @@ const OnSiteMode = ({ onSiteMode, handleOnsiteMode, handleLogoUpload }) => {
                 inputProps={{ 'aria-label': 'Without label' }}
               >
                 {onSiteMode.payButtonLanguage.values &&
-                  Object.keys(onSiteMode.payButtonLanguage.values).map(
-                    (lang, index) => (
-                      <MenuItem key={`lang${index}`} value={lang}>
-                        {lang}
-                      </MenuItem>
-                    )
-                  )}
+                  onSiteMode.payButtonLanguage.values.map((lang, index) => (
+                    <MenuItem key={`lang${index}`} value={lang}>
+                      {lang}
+                    </MenuItem>
+                  ))}
               </Select>
             </div>
           </div>

@@ -3,6 +3,7 @@ import query from './query';
 import { getCustomObjectsResponseMapper } from '../../mappers';
 import { getCustomObjectsCache, setCustomObjectsCache } from '../../cache';
 import { CustomObjects, CustomObjectsResponse } from '../../types';
+import Constants from '../../constants';
 
 export async function getCustomObjects(
   storeId: string,
@@ -17,7 +18,8 @@ export async function getCustomObjects(
   const apiClient = new ApiClient();
 
   const variables = {
-    containerName: storeId,
+    containerName: Constants.CUSTOM_OBJECT.CONTAINER_NAME,
+    key: storeId,
   };
 
   apiClient.setBody({
@@ -27,7 +29,7 @@ export async function getCustomObjects(
 
   const response = (await apiClient.execute()) as CustomObjectsResponse;
 
-  const configuration = getCustomObjectsResponseMapper(storeId, response);
+  const configuration = getCustomObjectsResponseMapper(response);
 
   if (configuration) {
     await setCustomObjectsCache(storeId, configuration);
