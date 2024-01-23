@@ -1,10 +1,9 @@
-export interface LoadPaymentMethodsPayload {
+export interface LoadMyPaymentMethodsPayload {
   authToken: string;
   storeId: string;
-  cartId: string;
 }
 
-export interface LoadPaymentMethodsCustomerPaymentToken {
+export interface CustomerPaymentToken {
   id: string;
   customerId: string;
   paymentId: string;

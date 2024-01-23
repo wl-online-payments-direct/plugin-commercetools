@@ -1,7 +1,6 @@
-export interface HostedTokenizationPayload {
+export interface MyHostedTokenizationPayload {
   authToken: string;
   storeId: string;
-  cartId: string;
   tokens: string;
   askConsumerConsent: boolean;
 }
