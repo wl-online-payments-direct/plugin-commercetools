@@ -11,18 +11,30 @@ import {
 import CONFIG from '../../../configuration';
 import initialState from './intialState.json';
 import dataFields from './dataFields.json';
-import LoadingSpinner from '@commercetools-uikit/loading-spinner';
+import Backdrop from '@mui/material/Backdrop';
+import CircularProgress from '@mui/material/CircularProgress';
 import OnSiteMode from './OnSiteMode';
 import RedirectModeA from './RedirectModeA';
 import RedirectModeB from './RedirectModeB';
 import GeneralSettings from './GeneralSettings';
 import reducer from './reducer';
+import Snackbar from '@mui/material/Snackbar';
+import Alert from '@mui/material/Alert';
+import Slide from '@mui/material/Slide';
 
 const { emailAddress } = CONFIG;
 
 const PaymentMethods = () => {
   const [apiData, setAPIData] = useState({});
   const [loading, setLoading] = useState(true);
+  const [toaster, setToaster] = useState({
+    open: false,
+    vertical: 'top',
+    horizontal: 'right',
+    transition: Slide,
+    severity: '',
+  });
+  const { vertical, horizontal, open, transition } = toaster;
 
   const [state, dispatch] = useReducer(reducer, initialState);
 
@@ -150,15 +162,17 @@ const PaymentMethods = () => {
     try {
       const response = await createCustomObject(final_payload, projectKey);
       if (response.id) {
+        setToaster({ ...toaster, severity: 'success', open: true });
         getCustomObjectData(projectKey);
       }
     } catch (error) {
       console.error('Error saving custom object:', error);
+      setToaster({ ...toaster, severity: 'error', open: true });
       setLoading(false);
     }
   };
 
-  const projectKey = useApplicationContext(context => context.project.key);
+  const projectKey = useApplicationContext((context) => context.project.key);
 
   useEffect(() => {
     projectKey && getCustomObjectData(projectKey);
@@ -183,6 +197,7 @@ const PaymentMethods = () => {
           value: payload,
         });
         setLoading(false);
+        setToaster({ ...toaster, open: false });
       }
     } catch (error) {
       console.error('Error fetching custom object:', error);
@@ -191,71 +206,93 @@ const PaymentMethods = () => {
 
   return (
     <>
-      {loading ? (
-        <LoadingSpinner size="l">Loading</LoadingSpinner>
-      ) : (
-        <PageWrapper title={'Payment Methods'}>
-          <div className="enable-worldline flex algin-end mb-1">
-            <h3 className="section-header">Enable Worldline Checkout</h3>
-            <ToggleInput
-              size={'big'}
+      <Backdrop
+        sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
+        open={loading}
+      >
+        <CircularProgress color="inherit" />
+      </Backdrop>
+      <PageWrapper title={'Payment Methods'}>
+        <div className="enable-worldline flex algin-end mb-1">
+          <h3 className="section-header">Enable Worldline Checkout</h3>
+          <ToggleInput
+            size={'big'}
+            isDisabled={false}
+            value={state.enabled.value}
+            isChecked={state.enabled.value}
+            onChange={(e) => {
+              dispatch({
+                type: 'ENABLE-WORLDLINE',
+                value: e.target.checked,
+              });
+            }}
+          />
+        </div>
+        <div className="payment-options-wrapper mb-2">
+          <div className="save-wrapper mb-2">
+            <h2>
+              Please select a combination of one or more checkout types to
+              design your checkout experience
+            </h2>
+            <PrimaryButton
+              label="Save Changes"
+              onClick={() => saveFormData()}
               isDisabled={false}
-              value={state.enabled.value}
-              isChecked={state.enabled.value}
-              onChange={(e) => {
-                dispatch({
-                  type: 'ENABLE-WORLDLINE',
-                  value: e.target.checked,
-                });
-              }}
             />
           </div>
-          <div className="payment-options-wrapper mb-2">
-            <div className="save-wrapper mb-2">
-              <h2>
-                Please select a combination of one or more checkout types to
-                design your checkout experience
-              </h2>
-              <PrimaryButton
-                label="Save Changes"
-                onClick={() => saveFormData()}
-                isDisabled={false}
-              />
-            </div>
-            <OnSiteMode
-              onSiteMode={state.onSiteMode}
-              handleOnsiteMode={handleOnsiteMode}
-              handleLogoUpload={handleLogoUpload}
+          <OnSiteMode
+            onSiteMode={state.onSiteMode}
+            handleOnsiteMode={handleOnsiteMode}
+            handleLogoUpload={handleLogoUpload}
+          />
+          <RedirectModeA
+            redirectModeA={state.redirectModeA}
+            handleRedirectModeA={handleRedirectModeA}
+            handleOptionUpdate={handleOptionUpdate}
+            fetchPaymentMethods={fetchPaymentMethods}
+          />
+          <RedirectModeB
+            redirectModeB={state.redirectModeB}
+            handleRedirectModeB={handleRedirectModeB}
+            handleLogoUpload={handleLogoUpload}
+          />
+          <GeneralSettings
+            state={state}
+            handleCommonSettings={handleCommonSettings}
+          />
+          <div className="save-wrapper algin-end">
+            <PrimaryButton
+              label="Save Changes"
+              onClick={() => saveFormData()}
+              isDisabled={false}
             />
-            <RedirectModeA
-              redirectModeA={state.redirectModeA}
-              handleRedirectModeA={handleRedirectModeA}
-              handleOptionUpdate={handleOptionUpdate}
-              fetchPaymentMethods={fetchPaymentMethods}
-            />
-            <RedirectModeB
-              redirectModeB={state.redirectModeB}
-              handleRedirectModeB={handleRedirectModeB}
-              handleLogoUpload={handleLogoUpload}
-            />
-            <GeneralSettings
-              state={state}
-              handleCommonSettings={handleCommonSettings}
-            />
-            <div className="save-wrapper algin-end">
-              <PrimaryButton
-                label="Save Changes"
-                onClick={() => saveFormData()}
-                isDisabled={false}
-              />
-            </div>
           </div>
-          <p className="supportmail">
-            Support Email :{' '}
-            <a href={`mailto:${emailAddress}`}>{emailAddress}</a>
-          </p>
-        </PageWrapper>
-      )}
+        </div>
+        <p className="supportmail">
+          Support Email : <a href={`mailto:${emailAddress}`}>{emailAddress}</a>
+        </p>
+      </PageWrapper>
+      <Snackbar
+        className="snack-bar"
+        anchorOrigin={{ vertical, horizontal }}
+        open={open}
+        key={vertical + horizontal}
+        autoHideDuration={6000}
+        TransitionComponent={transition}
+      >
+        <Alert
+          onClose={() => {
+            setToaster({ ...toaster, open: false });
+          }}
+          severity={toaster.severity}
+          variant="filled"
+          sx={{ width: '100%' }}
+        >
+          {toaster.severity === 'success'
+            ? 'Payment settings saved successfully'
+            : 'Failed to save data'}
+        </Alert>
+      </Snackbar>
     </>
   );
 };
