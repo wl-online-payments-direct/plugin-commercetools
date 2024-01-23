@@ -79,14 +79,15 @@ const MyAccount = (props) => {
   const handleSubmit = async () => {
     setLoader(true);
     const draft = {
+      ...customObject,
       value: {
-        ...customObject,
+        ...customObject.value,
         webhookUrl: formData.webhookUrl,
         redirectUrl: formData.redirectUrl,
         ...(selectedOption === 'live'
           ? {
               live: {
-                ...customObject.live,
+                ...customObject?.value?.live,
                 merchantId: formData[selectedOption].merchantId,
                 apiKey: formData[selectedOption].apiKey,
                 apiSecret: formData[selectedOption].apiSecret,
@@ -96,7 +97,7 @@ const MyAccount = (props) => {
             }
           : {
               live: {
-                ...customObject.live,
+                ...customObject?.value?.live,
                 merchantId: formData['live'].merchantId,
                 apiKey: formData['live'].apiKey,
                 apiSecret: formData['live'].apiSecret,
@@ -107,7 +108,7 @@ const MyAccount = (props) => {
         ...(selectedOption === 'test'
           ? {
               test: {
-                ...customObject.test,
+                ...customObject?.value?.test,
                 merchantId: formData[selectedOption].merchantId,
                 apiKey: formData[selectedOption].apiKey,
                 apiSecret: formData[selectedOption].apiSecret,
@@ -117,7 +118,7 @@ const MyAccount = (props) => {
             }
           : {
               test: {
-                ...customObject.test,
+                ...customObject?.value?.test,
                 merchantId: formData['test'].merchantId,
                 apiKey: formData['test'].apiKey,
                 apiSecret: formData['test'].apiSecret,

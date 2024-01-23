@@ -21,7 +21,7 @@ const PageWrapper = ({ children, title }) => {
 
   useEffect(async () => {
     const response = await fetchStores();
-    setActiveStore(response[0]);
+    if (activeStore === null) setActiveStore(response[0]);
     setStores(response);
   }, [projectKey]);
 

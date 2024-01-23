@@ -26,7 +26,7 @@ const PaymentProvider = ({ children }) => {
     vertical: 'top',
     horizontal: 'right',
     transition: Slide,
-    severity: 'info',
+    severity: 'success',
     message: '',
   });
   const { vertical, horizontal, open, transition } = toaster;

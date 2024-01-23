@@ -144,6 +144,7 @@ const PaymentMethods = () => {
     Object.keys(saveData).forEach((key) =>
       saveData[key] === undefined ? delete saveData[key] : {}
     );
+
     const final_payload = {
       value: {
         ...customObject?.value,
@@ -157,23 +158,20 @@ const PaymentMethods = () => {
         },
       },
     };
-
     await saveCustomObject(final_payload);
   };
 
   useEffect(() => {
-    if (customObject) {
-      let payload = initialState;
+    const payload = initialState;
+    if (customObject?.value) {
       for (let ds of Object.keys(dataFields)) {
         for (let field of dataFields[ds]) {
           if (ds !== 'general')
-            payload[ds][field].value = customObject?.value
-              ? customObject?.value?.test[payload[ds][field]?.key]
-              : payload[ds][field].value;
+            payload[ds][field].value =
+              customObject?.value?.test[payload[ds][field]?.key];
           else
-            payload[field].value = customObject?.value
-              ? customObject?.value?.test[payload[field]?.key]
-              : payload[field].value;
+            payload[field].value =
+              customObject?.value?.test[payload[field]?.key];
         }
       }
       dispatch({
