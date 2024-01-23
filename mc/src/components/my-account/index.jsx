@@ -1,6 +1,5 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import Link from '@commercetools-uikit/link';
-import { useApplicationContext } from '@commercetools-frontend/application-shell-connectors';
 import { PageContentWide } from '@commercetools-frontend/application-components';
 import SelectInput from '@commercetools-uikit/select-input';
 import Label from '@commercetools-uikit/label';
@@ -11,23 +10,15 @@ import PageWrapper from '../page-wrapper';
 import Spacings from '@commercetools-uikit/spacings';
 import worldlineLogo from '../../assets/worldline-logo-main.png';
 import worldlineLogoBottom from '../../assets/worldline-logo-bottom.png';
-import {
-  createCustomObject,
-  getCustomObject,
-} from '../../ct-methods/customObject';
 import { ClipboardIcon } from '@commercetools-uikit/icons';
-import Backdrop from '@mui/material/Backdrop';
-import CircularProgress from '@mui/material/CircularProgress';
-import Snackbar from '@mui/material/Snackbar';
-import Alert from '@mui/material/Alert';
-import Slide from '@mui/material/Slide';
-import CONFIG from '../../../configuration';
-const { CONTAINER_KEY, CONTAINER_NAME } = CONFIG;
+import { PaymentContext } from '../../context/payment';
 
 const MyAccount = (props) => {
+  const { setLoader, saveCustomObject, customObject } =
+    useContext(PaymentContext);
+
   const [selectedOption, setSelectedOption] = useState('test');
   const [copied, setCopied] = useState(false);
-  const [data, setData] = useState(false);
   const [formData, setFormData] = useState({
     live: {
       merchantId: '',
@@ -46,41 +37,19 @@ const MyAccount = (props) => {
     webhookUrl: '',
     redirectUrl: '',
   });
-  const [loading, setLoading] = useState(true);
-  const [toaster, setToaster] = useState({
-    open: false,
-    vertical: 'top',
-    horizontal: 'right',
-    transition: Slide,
-    severity: '',
-  });
-  const { vertical, horizontal, open, transition } = toaster;
-
-  const getCustomObjectData = async (projectKey) => {
-    try {
-      const response = await getCustomObject(projectKey);
-      setData(response.value);
-      if (response?.value) {
-        for (const option of ['live', 'test']) {
-          const optionData = response.value[option];
-          const updatedFormData = { ...formData };
-          for (const key in optionData) {
-            updatedFormData[option][key] = optionData[key];
-          }
-          setFormData(updatedFormData);
-        }
-        setLoading(false);
-      }
-    } catch (error) {
-      console.error('Error fetching custom object:', error);
-    }
-  };
-
-  const projectKey = useApplicationContext((context) => context.project.key);
 
   useEffect(() => {
-    projectKey && getCustomObjectData(projectKey);
-  }, [projectKey]);
+    if (customObject?.value) {
+      for (const option of ['live', 'test']) {
+        const optionData = customObject?.value[option];
+        const updatedFormData = { ...formData };
+        for (const key in optionData) {
+          updatedFormData[option][key] = optionData[key];
+        }
+        setFormData(updatedFormData);
+      }
+    }
+  }, [customObject]);
 
   const handleChange = (event) => {
     const selectedValue = event.target.value;
@@ -108,18 +77,17 @@ const MyAccount = (props) => {
   };
 
   const handleSubmit = async () => {
-    setLoading(true);
+    setLoader(true);
     const draft = {
-      container: CONTAINER_NAME,
-      key: CONTAINER_KEY,
+      ...customObject,
       value: {
-        ...data,
+        ...customObject.value,
         webhookUrl: formData.webhookUrl,
         redirectUrl: formData.redirectUrl,
         ...(selectedOption === 'live'
           ? {
               live: {
-                ...data.live,
+                ...customObject?.value?.live,
                 merchantId: formData[selectedOption].merchantId,
                 apiKey: formData[selectedOption].apiKey,
                 apiSecret: formData[selectedOption].apiSecret,
@@ -129,7 +97,7 @@ const MyAccount = (props) => {
             }
           : {
               live: {
-                ...data.live,
+                ...customObject?.value?.live,
                 merchantId: formData['live'].merchantId,
                 apiKey: formData['live'].apiKey,
                 apiSecret: formData['live'].apiSecret,
@@ -140,7 +108,7 @@ const MyAccount = (props) => {
         ...(selectedOption === 'test'
           ? {
               test: {
-                ...data.test,
+                ...customObject?.value?.test,
                 merchantId: formData[selectedOption].merchantId,
                 apiKey: formData[selectedOption].apiKey,
                 apiSecret: formData[selectedOption].apiSecret,
@@ -150,7 +118,7 @@ const MyAccount = (props) => {
             }
           : {
               test: {
-                ...data.test,
+                ...customObject?.value?.test,
                 merchantId: formData['test'].merchantId,
                 apiKey: formData['test'].apiKey,
                 apiSecret: formData['test'].apiSecret,
@@ -160,26 +128,11 @@ const MyAccount = (props) => {
             }),
       },
     };
-    try {
-      const response = await createCustomObject(draft, projectKey);
-      if (response.id) {
-        setLoading(false);
-        setToaster({ ...toaster, severity: 'success', open: true });
-      }
-    } catch (error) {
-      console.error('Error saving custom object:', error);
-      setToaster({ ...toaster, severity: 'error', open: true });
-    }
+    await saveCustomObject(draft);
   };
 
   return (
     <>
-      <Backdrop
-        sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
-        open={loading}
-      >
-        <CircularProgress color="inherit" />
-      </Backdrop>
       <PageWrapper title={'My Account'}>
         <PageContentWide columns="1/1">
           <div id="left-div">
@@ -327,27 +280,6 @@ const MyAccount = (props) => {
           </div>
         </PageContentWide>
       </PageWrapper>
-      <Snackbar
-        className="snack-bar"
-        anchorOrigin={{ vertical, horizontal }}
-        open={open}
-        key={vertical + horizontal}
-        autoHideDuration={6000}
-        TransitionComponent={transition}
-      >
-        <Alert
-          onClose={() => {
-            setToaster({ ...toaster, open: false });
-          }}
-          severity={toaster.severity}
-          variant="filled"
-          sx={{ width: '100%' }}
-        >
-          {toaster.severity === 'success'
-            ? 'Account settings saved successfully'
-            : 'Failed to save data'}
-        </Alert>
-      </Snackbar>
     </>
   );
 };
