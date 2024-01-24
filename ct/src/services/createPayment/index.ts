@@ -2,7 +2,7 @@ import { ApiClient } from '../../clients';
 import query from './query';
 import { createPaymentResponseMapper } from '../../mappers';
 import { CreatePaymentResponse, PaymentPayload } from '../../types';
-import { constants } from '../../constants';
+import Constants from '../../constants';
 
 export async function createPayment(payload: PaymentPayload) {
   const {
@@ -32,10 +32,10 @@ export async function createPayment(payload: PaymentPayload) {
         },
       },
       custom: {
-        typeKey: constants.CREATE_PAYMENT.TYPE_KEY,
+        typeKey: Constants.CREATE_PAYMENT.TYPE_KEY,
         fields: [
           {
-            name: constants.CREATE_PAYMENT.FIELDS.PAYMENTID,
+            name: Constants.CREATE_PAYMENT.FIELDS.PAYMENTID,
             value: `"${merchantReference}"`,
           },
         ],

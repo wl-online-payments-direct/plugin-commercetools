@@ -23,10 +23,10 @@ const ApplicationRoutes = () => {
     <Spacings.Inset scale="l">
       <Switch>
         <Route path={`${match.path}/${myAccountUri}`}>
-          <MyAccount linkToWelcome={match.url} />
+          <MyAccount />
         </Route>
         <Route path={`${match.path}/${paymentMethodsUri}`}>
-          <PaymentMethods linkToWelcome={match.url} />
+          <PaymentMethods />
         </Route>
         <Route>
           <Welcome />

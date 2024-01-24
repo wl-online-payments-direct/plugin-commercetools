@@ -1,9 +1,6 @@
 import { CustomObjects, CustomObjectsResponse } from '../types';
 
-const getCustomObjectsResponseMapper = (
-  storeId: string,
-  response: CustomObjectsResponse,
-) => {
+const getCustomObjectsResponseMapper = (response: CustomObjectsResponse) => {
   if (response?.body?.errors) {
     throw {
       message: '[CT] Failed to retrieve custom object information',
@@ -12,11 +9,7 @@ const getCustomObjectsResponseMapper = (
     };
   }
 
-  const parsedRes = response?.body?.data?.customObjects || {};
-
-  const result = parsedRes?.results.find(
-    (e: { container: string }) => e.container === storeId,
-  );
+  const result = response?.body?.data?.customObject || {};
 
   if (!result?.value) {
     throw {

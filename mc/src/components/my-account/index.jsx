@@ -1,6 +1,5 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import Link from '@commercetools-uikit/link';
-import { useApplicationContext } from '@commercetools-frontend/application-shell-connectors';
 import { PageContentWide } from '@commercetools-frontend/application-components';
 import SelectInput from '@commercetools-uikit/select-input';
 import Label from '@commercetools-uikit/label';
@@ -11,18 +10,15 @@ import PageWrapper from '../page-wrapper';
 import Spacings from '@commercetools-uikit/spacings';
 import worldlineLogo from '../../assets/worldline-logo-main.png';
 import worldlineLogoBottom from '../../assets/worldline-logo-bottom.png';
-import {
-  createCustomObject,
-  getCustomObject,
-} from '../../ct-methods/customObject';
 import { ClipboardIcon } from '@commercetools-uikit/icons';
-import CONFIG from '../../../configuration';
-const { CONTAINER_KEY, CONTAINER_NAME } = CONFIG;
+import { PaymentContext } from '../../context/payment';
 
 const MyAccount = (props) => {
+  const { setLoader, saveCustomObject, customObject } =
+    useContext(PaymentContext);
+
   const [selectedOption, setSelectedOption] = useState('test');
   const [copied, setCopied] = useState(false);
-  const [data, setData] = useState(false);
   const [formData, setFormData] = useState({
     live: {
       merchantId: '',
@@ -42,30 +38,18 @@ const MyAccount = (props) => {
     redirectUrl: '',
   });
 
-  const getCustomObjectData = async (projectKey) => {
-    try {
-      const response = await getCustomObject(projectKey);
-      setData(response.value);
-      if (response?.value) {
-        for (const option of ['live', 'test']) {
-          const optionData = response.value[option];
-          const updatedFormData = { ...formData };
-          for (const key in optionData) {
-            updatedFormData[option][key] = optionData[key];
-          }
-          setFormData(updatedFormData);
-        }
-      }
-    } catch (error) {
-      console.error('Error fetching custom object:', error);
-    }
-  };
-
-  const projectKey = useApplicationContext(context => context.project.key);
-
   useEffect(() => {
-    projectKey && getCustomObjectData(projectKey);
-  }, [projectKey]);
+    if (customObject?.value) {
+      for (const option of ['live', 'test']) {
+        const optionData = customObject?.value[option];
+        const updatedFormData = { ...formData };
+        for (const key in optionData) {
+          updatedFormData[option][key] = optionData[key];
+        }
+        setFormData(updatedFormData);
+      }
+    }
+  }, [customObject]);
 
   const handleChange = (event) => {
     const selectedValue = event.target.value;
@@ -93,17 +77,17 @@ const MyAccount = (props) => {
   };
 
   const handleSubmit = async () => {
+    setLoader(true);
     const draft = {
-      container: CONTAINER_NAME,
-      key: CONTAINER_KEY,
+      ...customObject,
       value: {
-        ...data,
+        ...customObject.value,
         webhookUrl: formData.webhookUrl,
         redirectUrl: formData.redirectUrl,
         ...(selectedOption === 'live'
           ? {
               live: {
-                ...data.live,
+                ...customObject?.value?.live,
                 merchantId: formData[selectedOption].merchantId,
                 apiKey: formData[selectedOption].apiKey,
                 apiSecret: formData[selectedOption].apiSecret,
@@ -113,7 +97,7 @@ const MyAccount = (props) => {
             }
           : {
               live: {
-                ...data.live,
+                ...customObject?.value?.live,
                 merchantId: formData['live'].merchantId,
                 apiKey: formData['live'].apiKey,
                 apiSecret: formData['live'].apiSecret,
@@ -124,7 +108,7 @@ const MyAccount = (props) => {
         ...(selectedOption === 'test'
           ? {
               test: {
-                ...data.test,
+                ...customObject?.value?.test,
                 merchantId: formData[selectedOption].merchantId,
                 apiKey: formData[selectedOption].apiKey,
                 apiSecret: formData[selectedOption].apiSecret,
@@ -134,7 +118,7 @@ const MyAccount = (props) => {
             }
           : {
               test: {
-                ...data.test,
+                ...customObject?.value?.test,
                 merchantId: formData['test'].merchantId,
                 apiKey: formData['test'].apiKey,
                 apiSecret: formData['test'].apiSecret,
@@ -144,163 +128,159 @@ const MyAccount = (props) => {
             }),
       },
     };
-    try {
-      const response = await createCustomObject(draft, projectKey);
-      if (response.id) {
-      }
-    } catch (error) {
-      console.error('Error saving custom object:', error);
-    }
+    await saveCustomObject(draft);
   };
 
   return (
-    <PageWrapper title={'My Account'}>
-      <PageContentWide columns="1/1">
-        <div id="left-div">
-          <div className="logo-section">
-            <div className="logo-container">
-              <div className="logo-wrapper">
-                <h1 className="welcome-title">Welcome!</h1>
-                <img
-                  src={worldlineLogo}
-                  alt="worldline-logo"
-                  className="worldline-logo"
-                />
+    <>
+      <PageWrapper title={'My Account'}>
+        <PageContentWide columns="1/1">
+          <div id="left-div">
+            <div className="logo-section">
+              <div className="logo-container">
+                <div className="logo-wrapper">
+                  <h1 className="welcome-title">Welcome!</h1>
+                  <img
+                    src={worldlineLogo}
+                    alt="worldline-logo"
+                    className="worldline-logo"
+                  />
+                </div>
+                <p className="welcome-description">
+                  Experience a seamless and efficient checkout process in just a
+                  matter of minutes.
+                </p>
               </div>
-              <p className="welcome-description">
-                Experience a seamless and efficient checkout process in just a
-                matter of minutes.
-              </p>
-            </div>
-            <div className="logo-bottom-container">
-              <p>Also available for</p>
-              <img src={worldlineLogoBottom} />
+              <div className="logo-bottom-container">
+                <p>Also available for</p>
+                <img src={worldlineLogoBottom} />
+              </div>
             </div>
           </div>
-        </div>
-        <div id="right-div">
-          <div className="link-wrapper">
-            <Link
-              className="external-link"
-              isExternal={true}
-              to={'https://signup.direct.preprod.worldline-solutions.com/'}
-            >
-              Sign Up
-            </Link>
-            <Link
-              className="external-link"
-              isExternal={true}
-              to={
-                'https://docs.direct.worldline-solutions.com/en/about/contact/index'
-              }
-            >
-              Contact Us
-            </Link>
-          </div>
-          <div className="form-wrapper">
-            <h1 className="connect-title">Connect to Worldline</h1>
-            <div className="myaccount-form">
-              <Spacings.Stack scale="m">
-                <Label isBold={true}>
-                  <p className="form-label">Checkout types</p>
-                </Label>
-                <SelectInput
-                  name="form-field-name"
-                  value={selectedOption}
-                  onChange={handleChange}
-                  options={[
-                    { value: 'test', label: 'Test Mode' },
-                    { value: 'live', label: 'Live Mode' },
-                  ]}
-                />
-                <Label isBold={true}>
-                  <p className="form-label">Test PSPID</p>
-                </Label>
-                <TextInput
-                  name="merchantId"
-                  value={formData[selectedOption].merchantId}
-                  onChange={handleInputChange}
-                />
-                <Label isBold={true}>
-                  <p className="form-label">Test API Key</p>
-                </Label>
-                <TextInput
-                  name="apiKey"
-                  value={formData[selectedOption].apiKey}
-                  onChange={handleInputChange}
-                />
-                <Label isBold={true}>
-                  <p className="form-label">Test API Secret</p>
-                </Label>
-                <TextInput
-                  name="apiSecret"
-                  value={formData[selectedOption].apiSecret}
-                  onChange={handleInputChange}
-                />
-                <Label isBold={true}>
-                  <p className="form-label">Test Webhook Key</p>
-                </Label>
-                <TextInput
-                  name="webhookKey"
-                  value={formData[selectedOption].webhookKey}
-                  onChange={handleInputChange}
-                />
-                <Label isBold={true}>
-                  <p className="form-label">Test Webhook Secret</p>
-                </Label>
-                <TextInput
-                  name="webhookSecret"
-                  value={formData[selectedOption].webhookSecret}
-                  onChange={handleInputChange}
-                />
-                <Label isBold={true}>
-                  <p className="form-label hook-url">Webhook URL</p>
-                </Label>
-                <div className="flex">
+          <div id="right-div">
+            <div className="link-wrapper">
+              <Link
+                className="external-link"
+                isExternal={true}
+                to={'https://signup.direct.preprod.worldline-solutions.com/'}
+              >
+                Sign Up
+              </Link>
+              <Link
+                className="external-link"
+                isExternal={true}
+                to={
+                  'https://docs.direct.worldline-solutions.com/en/about/contact/index'
+                }
+              >
+                Contact Us
+              </Link>
+            </div>
+            <div className="form-wrapper">
+              <h1 className="connect-title">Connect to Worldline</h1>
+              <div className="myaccount-form">
+                <Spacings.Stack scale="m">
+                  <Label isBold={true}>
+                    <p className="form-label">Checkout types</p>
+                  </Label>
+                  <SelectInput
+                    name="form-field-name"
+                    value={selectedOption}
+                    onChange={handleChange}
+                    options={[
+                      { value: 'test', label: 'Test Mode' },
+                      { value: 'live', label: 'Live Mode' },
+                    ]}
+                  />
+                  <Label isBold={true}>
+                    <p className="form-label">Test PSPID</p>
+                  </Label>
                   <TextInput
-                    name="webhookUrl"
-                    value={formData.webhookUrl}
+                    name="merchantId"
+                    value={formData[selectedOption].merchantId}
                     onChange={handleInputChange}
                   />
-                  <ClipboardIcon
-                    style={{ margin: 'auto' }}
-                    onClick={() => {
-                      setCopied(true);
-                      navigator.clipboard.writeText(formData.webhookUrl);
-                    }}
+                  <Label isBold={true}>
+                    <p className="form-label">Test API Key</p>
+                  </Label>
+                  <TextInput
+                    name="apiKey"
+                    value={formData[selectedOption].apiKey}
+                    onChange={handleInputChange}
                   />
-                </div>
-                <div
-                  className="flex"
-                  style={{ justifyContent: 'space-between' }}
-                >
-                  <p className="info">
-                    To avoid copy/paste issues, use the `copy` icon to copy the
-                    URL
-                  </p>
-                  {copied && <p>Copied!</p>}
-                </div>
-                <Label isBold={true}>
-                  <p className="form-label hook-url">
-                    Redirection Payment Page URL - Test
-                  </p>
-                </Label>
-                <TextInput
-                  name="redirectUrl"
-                  value={formData.redirectUrl}
-                  onChange={handleInputChange}
-                />
-                <PrimaryButton
-                  label="Save/Update"
-                  onClick={handleSubmit}
-                  isDisabled={false}
-                />
-              </Spacings.Stack>
+                  <Label isBold={true}>
+                    <p className="form-label">Test API Secret</p>
+                  </Label>
+                  <TextInput
+                    name="apiSecret"
+                    value={formData[selectedOption].apiSecret}
+                    onChange={handleInputChange}
+                  />
+                  <Label isBold={true}>
+                    <p className="form-label">Test Webhook Key</p>
+                  </Label>
+                  <TextInput
+                    name="webhookKey"
+                    value={formData[selectedOption].webhookKey}
+                    onChange={handleInputChange}
+                  />
+                  <Label isBold={true}>
+                    <p className="form-label">Test Webhook Secret</p>
+                  </Label>
+                  <TextInput
+                    name="webhookSecret"
+                    value={formData[selectedOption].webhookSecret}
+                    onChange={handleInputChange}
+                  />
+                  <Label isBold={true}>
+                    <p className="form-label hook-url">Webhook URL</p>
+                  </Label>
+                  <div className="flex">
+                    <TextInput
+                      name="webhookUrl"
+                      value={formData.webhookUrl}
+                      onChange={handleInputChange}
+                    />
+                    <ClipboardIcon
+                      style={{ margin: 'auto' }}
+                      onClick={() => {
+                        setCopied(true);
+                        navigator.clipboard.writeText(formData.webhookUrl);
+                      }}
+                    />
+                  </div>
+                  <div
+                    className="flex"
+                    style={{ justifyContent: 'space-between' }}
+                  >
+                    <p className="info">
+                      To avoid copy/paste issues, use the `copy` icon to copy
+                      the URL
+                    </p>
+                    {copied && <p>Copied!</p>}
+                  </div>
+                  <Label isBold={true}>
+                    <p className="form-label hook-url">
+                      Redirection Payment Page URL - Test
+                    </p>
+                  </Label>
+                  <TextInput
+                    name="redirectUrl"
+                    value={formData.redirectUrl}
+                    onChange={handleInputChange}
+                  />
+                  <PrimaryButton
+                    label="Save/Update"
+                    onClick={handleSubmit}
+                    isDisabled={false}
+                  />
+                </Spacings.Stack>
+              </div>
             </div>
           </div>
-        </div>
-      </PageContentWide>
-    </PageWrapper>
+        </PageContentWide>
+      </PageWrapper>
+    </>
   );
 };
 MyAccount.displayName = 'MyAccount';
