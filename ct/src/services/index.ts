@@ -2,6 +2,7 @@ export * from './getCartById';
 export * from './getCustomObjects';
 export * from './getMyCustomObjects';
 export * from './getMyCart';
+export * from './getCart';
 export * from './getMyInventory';
 export * from './recalculateMyCart';
 export * from './createOrder';

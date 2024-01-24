@@ -1,14 +1,11 @@
 // GraphQL query to get Custom objects
 const query = `
-    query($containerName: String!)  {
-        customObjects (container: $containerName) {
-            total
-            results{
-                id
-                key
-                container
-                value
-            }
+    query($containerName: String!, $key: String!)  {
+        customObject (container: $containerName, key:$key) {
+            id
+            key
+            container
+            value
         }
     }
 `;

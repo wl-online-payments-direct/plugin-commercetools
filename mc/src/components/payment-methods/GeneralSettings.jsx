@@ -23,6 +23,7 @@ const GeneralSettings = ({ state, handleCommonSettings }) => {
         <div className="options-section">
           <RadioField
             name="payment-option"
+            title="payment-option"
             value={state.paymentOption.value}
             onChange={(e) =>
               handleCommonSettings('paymentOption', e.target.value)
@@ -45,6 +46,7 @@ const GeneralSettings = ({ state, handleCommonSettings }) => {
             <div className="options-section">
               <RadioField
                 name="authorization-payment-option"
+                title="authorization-payment-option"
                 value={state.authorizationPaymentOption.value}
                 onChange={(e) =>
                   handleCommonSettings(
@@ -115,13 +117,11 @@ const GeneralSettings = ({ state, handleCommonSettings }) => {
               inputProps={{ 'aria-label': 'Without label' }}
             >
               {state.placeOrderLanguage.values &&
-                Object.keys(state.placeOrderLanguage.values).map(
-                  (lang, index) => (
-                    <MenuItem key={`lang${index}`} value={lang}>
-                      {lang}
-                    </MenuItem>
-                  )
-                )}
+                state.placeOrderLanguage.values.map((lang, index) => (
+                  <MenuItem key={`lang${index}`} value={lang}>
+                    {lang}
+                  </MenuItem>
+                ))}
             </Select>
           </div>
         </div>
