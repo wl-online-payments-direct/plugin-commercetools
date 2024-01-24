@@ -22,7 +22,7 @@ export async function hostedMyCheckoutSession(
   const { cart } = await getMyCart(payload.authToken);
   if (!cart) {
     throw {
-      message: 'Failed to fetch the cart of cart is missing',
+      message: 'Failed to fetch the cart or cart is missing',
       statusCode: 500,
     };
   }
@@ -49,7 +49,7 @@ export async function hostedCheckoutSession(payload: HostedCheckoutPayload) {
   const { cart } = await getCart(payload.cartId, payload.authToken);
   if (!cart) {
     throw {
-      message: 'Failed to fetch the cart of cart is missing',
+      message: 'Failed to fetch the cart or cart is missing',
       statusCode: 500,
     };
   }
