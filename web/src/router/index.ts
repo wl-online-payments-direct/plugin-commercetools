@@ -1,6 +1,7 @@
 import healthController from '../api/health/controller';
 import testConnectionController from '../api/testConnection/controller';
 import hostedTokenizationController from '../api/hostedTokenization/controller';
+import createMyPaymentController from '../api/createMyPayment/controller';
 import myHostedTokenizationController from '../api/myHostedTokenization/controller';
 import createPaymentController from '../api/createPayment/controller';
 import getPaymentStatusController from '../api/getPaymentStatus/controller';
@@ -19,12 +20,12 @@ const routes = {
   '/testconnection': testConnectionController.processRequest,
   '/me/initiate/hostedtokenization':
     myHostedTokenizationController.processRequest,
-  '/initiate/hostedcheckout': hostedCheckoutController.processRequest,
-  '/payment': createPaymentController.processRequest,
+  '/me/initiate/hostedcheckout': hostedCheckoutController.processRequest,
+  '/me/payment': createMyPaymentController.processRequest,
   '/payment/status': getPaymentStatusController.processRequest,
-  '/cart/validate': validateCartController.processRequest,
+  '/me/cart/validate': validateCartController.processRequest,
   '/webhook': webhookController.processRequest,
-  '/webhook/status': getWebhookStatusController.processRequest,
+  '/me/webhook/status': getWebhookStatusController.processRequest,
   '/payment/retry': retryPaymentController.processRequest,
   '/token/remove': deleteTokenController.processRequest,
   '/me/payment/methods': loadMyPaymentMethodsController.processRequest,
@@ -32,6 +33,7 @@ const routes = {
   // Using frontastic token
   '/payment/methods': loadPaymentMethodsController.processRequest,
   '/initiate/hostedtokenization': hostedTokenizationController.processRequest,
+  '/payment': createPaymentController.processRequest,
 };
 
 export { routes };

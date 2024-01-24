@@ -1,4 +1,4 @@
-export interface ICreatePaymentPayload {
+export interface ICreateMyPaymentPayload {
   authToken: string;
   userAgent: string;
   acceptHeader: string;
@@ -11,4 +11,14 @@ export interface ICreatePaymentResponse {
   id: string;
   actionType: string;
   redirectURL: string;
+}
+
+export interface ICreatePaymentPayload {
+  authToken: string;
+  userAgent: string;
+  acceptHeader: string;
+  storeId: string;
+  cartId: string;
+  hostedTokenizationId: string;
+  returnUrl: string;
 }

@@ -1,39 +1,35 @@
-import { CreatePaymentPayload, Request } from '../types';
+import { CreateMyPaymentPayload, Request } from '../types';
 
-export function getCreatePaymentRequiredProps(request: Request) {
+export function getCreateMyPaymentRequiredProps(request: Request) {
   const {
-    cartId = '',
     storeId = '',
     hostedTokenizationId = '',
     returnUrl = '',
-  } = (request?.body || {}) as CreatePaymentPayload;
+  } = (request?.body || {}) as CreateMyPaymentPayload;
 
   return {
-    cartId,
     storeId,
     hostedTokenizationId,
     returnUrl,
   };
 }
 
-export function getCreatePaymentAppPayload(request: Request) {
+export function getCreateMyPaymentAppPayload(request: Request) {
   const userAgent = request.headers['user-agent'] || '';
   const authToken = request.headers.authorization || '';
   const acceptHeader = request.headers.accept || '';
 
   const {
-    cartId = '',
     storeId = '',
     hostedTokenizationId = '',
     returnUrl = '',
-  } = (request.body || {}) as CreatePaymentPayload;
+  } = (request.body || {}) as CreateMyPaymentPayload;
 
   return {
     authToken,
     userAgent,
     acceptHeader,
     storeId,
-    cartId,
     hostedTokenizationId,
     returnUrl,
   };
