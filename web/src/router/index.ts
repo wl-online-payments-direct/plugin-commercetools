@@ -20,7 +20,6 @@ const routes = {
   '/testconnection': testConnectionController.processRequest,
   '/me/initiate/hostedtokenization':
     myHostedTokenizationController.processRequest,
-  '/initiate/hostedcheckout': hostedCheckoutController.processRequest,
   '/me/initiate/hostedcheckout': hostedMyCheckoutController.processRequest,
   '/payment': createPaymentController.processRequest,
   '/payment/status': getPaymentStatusController.processRequest,
@@ -34,6 +33,7 @@ const routes = {
   // Using frontastic token
   '/payment/methods': loadPaymentMethodsController.processRequest,
   '/initiate/hostedtokenization': hostedTokenizationController.processRequest,
+  '/initiate/hostedcheckout': hostedCheckoutController.processRequest,
 };
 
 export { routes };

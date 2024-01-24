@@ -1,5 +1,5 @@
 import {
-  getCartById,
+  getCart,
   getCustomObjects,
   getMyCart,
 } from '@worldline/ctintegration-ct';
@@ -46,7 +46,7 @@ export async function hostedMyCheckoutSession(
 
 export async function hostedCheckoutSession(payload: HostedCheckoutPayload) {
   // Fetch customer cart from Commercetools
-  const cart = await getCartById(payload.cartId, payload.authToken);
+  const { cart } = await getCart(payload.cartId, payload.authToken);
   if (!cart) {
     throw {
       message: 'Failed to fetch the cart of cart is missing',
