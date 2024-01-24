@@ -8,5 +8,6 @@ export * from './createMyPayment';
 export * from './webhook';
 export * from './retryPayment';
 export * from './deleteToken';
+export * from './validateCart';
 export * from './createPayment';
 export * from './hostedMyCheckout';

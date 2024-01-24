@@ -4,8 +4,9 @@ import {
   recalculateCart,
   Cart,
   InventoryEntry,
+  getCart,
 } from '@worldline/ctintegration-ct';
-import { ValidateCartPayload } from './types';
+import { ValidateMyCartPayload, ValidateCartPayload } from './types';
 import {
   getCartSkus,
   hasDefaultInventoryMode,
@@ -27,7 +28,7 @@ export const hasInventoryExists = (
     return !(inv?.availableQuantity < lineItem.quantity);
   });
 
-export async function validateCart(payload: ValidateCartPayload) {
+export async function validateMyCart(payload: ValidateMyCartPayload) {
   // Fetch customer cart from Commercetools
   const { cart } = await getMyCart(payload.authToken);
 
@@ -46,6 +47,29 @@ export async function validateCart(payload: ValidateCartPayload) {
   // Recalculate cart
   const recalculatedCart = await recalculateCart(payload.authToken, cart);
 
+  if (!recalculatedCart.id) {
+    return returnInventoryResponse(false);
+  }
+
+  return returnInventoryResponse(hasInventory);
+}
+
+export async function validateCart(payload: ValidateCartPayload) {
+  // Fetch customer cart from Commercetools
+  const { cart } = await getCart(payload.cartId, payload.authToken);
+  // check cart inventoryMode and lineItems inventoryMode is 'none'
+  if (hasDefaultInventoryMode(cart)) {
+    return returnInventoryResponse(true);
+  }
+  const inventory = await getInventory(payload.authToken, getCartSkus(cart));
+  if (!inventory.exists) {
+    return returnInventoryResponse(false);
+  }
+
+  const hasInventory = hasInventoryExists(cart, inventory);
+
+  // Recalculate cart
+  const recalculatedCart = await recalculateCart(payload.authToken, cart);
   if (!recalculatedCart.id) {
     return returnInventoryResponse(false);
   }

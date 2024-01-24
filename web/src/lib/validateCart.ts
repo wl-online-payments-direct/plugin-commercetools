@@ -1,9 +1,16 @@
 import { validateCart } from '@worldline/ctintegration-app';
-import { hasAuthHeaderOrThrowError } from '@worldline/ctintegration-util';
+import {
+  hasAuthHeaderOrThrowError,
+  hasRequiredParamsInBody,
+} from '@worldline/ctintegration-util';
 import { Request } from './types';
-import { getValidateCartAppPayload } from './mapper';
+import {
+  getValidateCartRequiredProps,
+  getValidateCartAppPayload,
+} from './mapper';
 
 export async function validateCartRequest(request: Request) {
   hasAuthHeaderOrThrowError(request);
+  hasRequiredParamsInBody(getValidateCartRequiredProps(request));
   return validateCart(getValidateCartAppPayload(request));
 }
