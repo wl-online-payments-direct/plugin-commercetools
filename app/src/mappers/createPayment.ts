@@ -2,7 +2,7 @@ import { Cart } from '@worldline/ctintegration-ct';
 import { $Enums } from '@worldline/ctintegration-db';
 import {
   CustomObjects,
-  ICreatePaymentPayload,
+  ICreateMyPaymentPayload,
   ICreatePaymentResponse,
 } from '../types';
 import { appendAdditionalParamsToUrl } from './common';
@@ -16,7 +16,7 @@ export function getServicePayload(
   customConfig: CustomObjects,
   reference: { referenceId: number },
   cart: Cart,
-  payload: ICreatePaymentPayload,
+  payload: ICreateMyPaymentPayload,
 ) {
   const { hostedTokenizationId, acceptHeader, userAgent } = payload;
   const { authorizationMode, merchantReference, skip3dsAuthentication } =
