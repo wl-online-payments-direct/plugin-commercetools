@@ -14,3 +14,4 @@ export * from './validateCart';
 export * from './hostedMyCheckout';
 export * from './createPayment';
 export * from './myHostedTokenization';
+export * from './getMyWebhookStatus';
