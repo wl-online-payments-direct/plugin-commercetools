@@ -1,12 +1,10 @@
 import {
   getMyCart,
   getInventory,
-  getMyInventory,
   recalculateCart,
-  recalculateMyCart,
   Cart,
   InventoryEntry,
-  getCartById,
+  getCart,
 } from '@worldline/ctintegration-ct';
 import { ValidateMyCartPayload, ValidateCartPayload } from './types';
 import {
@@ -39,7 +37,7 @@ export async function validateMyCart(payload: ValidateMyCartPayload) {
     return returnInventoryResponse(true);
   }
 
-  const inventory = await getMyInventory(payload.authToken, getCartSkus(cart));
+  const inventory = await getInventory(payload.authToken, getCartSkus(cart));
   if (!inventory.exists) {
     return returnInventoryResponse(false);
   }
@@ -47,7 +45,7 @@ export async function validateMyCart(payload: ValidateMyCartPayload) {
   const hasInventory = hasInventoryExists(cart, inventory);
 
   // Recalculate cart
-  const recalculatedCart = await recalculateMyCart(payload.authToken, cart);
+  const recalculatedCart = await recalculateCart(payload.authToken, cart);
 
   if (!recalculatedCart.id) {
     return returnInventoryResponse(false);
@@ -58,7 +56,7 @@ export async function validateMyCart(payload: ValidateMyCartPayload) {
 
 export async function validateCart(payload: ValidateCartPayload) {
   // Fetch customer cart from Commercetools
-  const cart = await getCartById(payload.cartId, payload.authToken);
+  const { cart } = await getCart(payload.cartId, payload.authToken);
   // check cart inventoryMode and lineItems inventoryMode is 'none'
   if (hasDefaultInventoryMode(cart)) {
     return returnInventoryResponse(true);

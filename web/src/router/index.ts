@@ -24,7 +24,6 @@ const routes = {
   '/payment': createPaymentController.processRequest,
   '/payment/status': getPaymentStatusController.processRequest,
   '/me/cart/validate': validateMyCartController.processRequest,
-  '/cart/validate': validateCartController.processRequest,
   '/webhook': webhookController.processRequest,
   '/webhook/status': getWebhookStatusController.processRequest,
   '/payment/retry': retryPaymentController.processRequest,
@@ -34,6 +33,7 @@ const routes = {
   // Using frontastic token
   '/payment/methods': loadPaymentMethodsController.processRequest,
   '/initiate/hostedtokenization': hostedTokenizationController.processRequest,
+  '/cart/validate': validateCartController.processRequest,
 };
 
 export { routes };
