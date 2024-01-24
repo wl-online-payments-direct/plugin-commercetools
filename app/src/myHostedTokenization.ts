@@ -1,16 +1,16 @@
-import { getCustomObjects, getCart } from '@worldline/ctintegration-ct';
+import { getCustomObjects, getMyCart } from '@worldline/ctintegration-ct';
 import { hostedTokenizationService } from '@worldline/ctintegration-psp';
-import { HostedTokenizationPayload } from './types';
+import { MyHostedTokenizationPayload } from './types';
 import {
-  getTokenizationServicePayload,
+  getMyHostedTokenizationServicePayload,
   getConnectionServiceProps,
 } from './mappers';
 
-export async function hostedTokenizationSession(
-  payload: HostedTokenizationPayload,
+export async function myHostedTokenizationSession(
+  payload: MyHostedTokenizationPayload,
 ) {
   // Fetch customer cart from Commercetools
-  const { cart } = await getCart(payload.cartId, payload.authToken);
+  const { cart } = await getMyCart(payload.authToken);
   if (!cart) {
     throw {
       message: 'Failed to fetch the cart of cart is missing',
@@ -21,7 +21,7 @@ export async function hostedTokenizationSession(
 
   const result = await hostedTokenizationService(
     getConnectionServiceProps(customConfig),
-    getTokenizationServicePayload(customConfig, cart, payload),
+    getMyHostedTokenizationServicePayload(customConfig, cart, payload),
   );
 
   return result;

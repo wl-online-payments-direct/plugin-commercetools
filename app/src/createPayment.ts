@@ -1,7 +1,7 @@
 import {
   getMyCart,
   getCustomObjects,
-  getCartById,
+  getCart,
 } from '@worldline/ctintegration-ct';
 import { createPaymentService } from '@worldline/ctintegration-psp';
 import {
@@ -53,7 +53,7 @@ export async function createPayment(
   payload: ICreatePaymentPayload,
 ): Promise<ICreatePaymentResponse> {
   // Fetch cart from Commercetools
-  const cart = await getCartById(payload.cartId, payload.authToken);
+  const { cart } = await getCart(payload.cartId, payload.authToken);
   if (!cart) {
     throw {
       message: 'Failed to fetch the cart or cart is empty!',
