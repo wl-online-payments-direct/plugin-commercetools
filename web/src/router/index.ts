@@ -12,9 +12,10 @@ import retryPaymentController from '../api/retryPayment/controller';
 import deleteTokenController from '../api/deleteToken/controller';
 import loadMyPaymentMethodsController from '../api/loadMyPaymentMethods/controller';
 import loadPaymentMethodsController from '../api/loadPaymentMethods/controller';
-import getWebhookStatusController from '../api/getWebhookStatus/controller';
+import getMyWebhookStatusController from '../api/getMyWebhookStatus/controller';
 import hostedCheckoutController from '../api/hostedCheckout/controller';
 import hostedMyCheckoutController from '../api/hostedMyCheckout/controller';
+import getWebhookStatusController from '../api/getWebhookStatus/controller';
 
 const routes = {
   '/': healthController.processRequest,
@@ -27,7 +28,7 @@ const routes = {
   '/payment/status': getPaymentStatusController.processRequest,
   '/me/cart/validate': validateMyCartController.processRequest,
   '/webhook': webhookController.processRequest,
-  '/me/webhook/status': getWebhookStatusController.processRequest,
+  '/me/webhook/status': getMyWebhookStatusController.processRequest,
   '/payment/retry': retryPaymentController.processRequest,
   '/token/remove': deleteTokenController.processRequest,
   '/me/payment/methods': loadMyPaymentMethodsController.processRequest,
@@ -38,6 +39,7 @@ const routes = {
   '/cart/validate': validateCartController.processRequest,
   '/initiate/hostedcheckout': hostedCheckoutController.processRequest,
   '/payment': createPaymentController.processRequest,
+  '/webhook/status': getWebhookStatusController.processRequest,
 };
 
 export { routes };

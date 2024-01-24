@@ -14,3 +14,4 @@ export * from './loadPaymentMethods';
 export * from './loadMyPaymentMethods';
 export * from './webhook';
 export * from './createPayment';
+export * from './getMyWebhookStatus';
