@@ -10,5 +10,6 @@ export * from './deleteToken';
 export * from './loadMyPaymentMethods';
 export * from './loadPaymentMethods';
 export * from './getWebhookStatus';
+export * from './hostedMyCheckout';
 export * from './createPayment';
 export * from './myHostedTokenization';

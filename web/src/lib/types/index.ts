@@ -9,3 +9,4 @@ export * from './webhook';
 export * from './retryPayment';
 export * from './deleteToken';
 export * from './createPayment';
+export * from './hostedMyCheckout';

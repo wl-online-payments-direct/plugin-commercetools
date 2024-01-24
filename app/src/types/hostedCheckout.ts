@@ -1,7 +1,16 @@
+export interface HostedMyCheckoutPayload {
+  authToken: string;
+  userAgent: string;
+  acceptHeader: string;
+  storeId: string;
+  tokens: string;
+  returnUrl: string;
+}
 export interface HostedCheckoutPayload {
   authToken: string;
   userAgent: string;
   acceptHeader: string;
+  cartId: string;
   storeId: string;
   tokens: string;
   returnUrl: string;
