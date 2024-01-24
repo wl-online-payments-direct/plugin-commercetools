@@ -9,6 +9,8 @@ export interface Payment {
   orderId: string;
   status: $Enums.Status;
   state: $Enums.States;
+  storePermanently: boolean;
+  errors: string | null;
   createdAt: Date;
   updatedAt: Date;
 }

@@ -6,8 +6,10 @@ export function getWebhookStatusAppPayload(
 ) {
   const { authorization: authToken = '' } = request.headers;
   const paymentId = queryString.paymentId?.toString();
+  const cartId = queryString.cartId?.toString();
   return {
     authToken,
     paymentId,
+    cartId,
   };
 }

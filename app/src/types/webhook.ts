@@ -20,6 +20,11 @@ export interface PaymentPayload {
         threeDSecureResults: {
           eci: string;
         };
+        token: string;
+      };
+      redirectPaymentMethodSpecificOutput: {
+        paymentProductId: number;
+        token: string;
       };
       paymentMethod: string;
     };

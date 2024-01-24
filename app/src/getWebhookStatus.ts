@@ -1,5 +1,5 @@
 import { getPayment } from '@worldline/ctintegration-db';
-import { getMyCart } from '@worldline/ctintegration-ct';
+import { getCart } from '@worldline/ctintegration-ct';
 import { GetWebhookStatusPayload } from './types';
 import {
   getWebhookStatusDBQuery,
@@ -8,10 +8,10 @@ import {
 
 export async function getWebhookStatus(payload: GetWebhookStatusPayload) {
   // Fetch cart from Commercetools to authenticate
-  const { cart } = await getMyCart(payload.authToken);
+  const { cart } = await getCart(payload.cartId, payload.authToken);
   if (!cart) {
     throw {
-      message: 'Failed to fetch the cart of cart is missing',
+      message: 'Failed to fetch the cart or cart is missing',
       statusCode: 500,
     };
   }

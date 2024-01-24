@@ -97,3 +97,33 @@ export function getMappedStatus(payload: PaymentPayload | RefundPayload) {
 
   return '';
 }
+
+export function shouldSaveToken(
+  cart: Cart,
+  payment: { storePermanently: boolean },
+) {
+  return cart?.customerId && payment.storePermanently;
+}
+
+export function getCustomerTokenPayload(
+  cart: Cart,
+  payment: { id: string },
+  payload: PaymentPayload,
+) {
+  const { customerId = '' } = cart || {};
+  const { id: paymentId } = payment;
+  const { token = '' } =
+    payload?.payment?.paymentOutput?.cardPaymentMethodSpecificOutput ||
+    payload?.payment?.paymentOutput?.redirectPaymentMethodSpecificOutput ||
+    {};
+  const { cardNumber: title = '' } =
+    payload?.payment?.paymentOutput?.cardPaymentMethodSpecificOutput?.card ||
+    {};
+
+  return {
+    customerId,
+    paymentId,
+    token,
+    title,
+  };
+}

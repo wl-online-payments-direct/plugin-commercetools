@@ -12,4 +12,7 @@ FROM nginx:latest
 
 COPY --from=build /build/public /usr/share/nginx/html
 
+#copy nginx conf file
+COPY ./setup/mc/docker/conf.d/default.conf /etc/nginx/conf.d/default.conf
+
 EXPOSE 80

@@ -1,8 +1,8 @@
-import { GetWebhookStatusPayload } from '../types';
+import { GetMyWebhookStatusPayload } from '../types';
 
-export function getWebhookStatusDBQuery(payload: GetWebhookStatusPayload) {
+export function getWebhookStatusDBQuery(payload: GetMyWebhookStatusPayload) {
   return {
-    id: payload?.paymentId,
+    paymentId: payload?.paymentId,
   };
 }
 

@@ -10,6 +10,12 @@ interface ConnectionProps {
   webhookSecret: string;
   webhookUrl: string;
   redirectUrl: string;
+  paymentMethods: [
+    {
+      title: string;
+      type: string;
+    },
+  ];
 }
 interface ConfigModes {
   mode: string;
@@ -29,12 +35,11 @@ type CustomObjectsValue = ConfigModes & ConnectionModes;
 export interface CustomObjectsResponse {
   body: {
     data: {
-      customObjects: {
-        results: {
-          container: string;
-          key: string;
-          value: CustomObjectsValue;
-        }[];
+      customObject: {
+        id: string;
+        container: string;
+        key: string;
+        value: CustomObjectsValue;
       };
     };
     errors: ErrorObject[];
