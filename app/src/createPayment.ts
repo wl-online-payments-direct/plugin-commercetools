@@ -46,7 +46,12 @@ export async function createMyPayment(
     getDatabasePayload(customConfig, reference, cart, payload, payment),
   );
 
-  return getCreatedPaymentMappedResponse(payment, dbPayment);
+  return getCreatedPaymentMappedResponse(
+    customConfig,
+    reference,
+    payment,
+    dbPayment,
+  );
 }
 
 export async function createPayment(
@@ -75,5 +80,10 @@ export async function createPayment(
     getDatabasePayload(customConfig, reference, cart, payload, payment),
   );
 
-  return getCreatedPaymentMappedResponse(payment, dbPayment);
+  return getCreatedPaymentMappedResponse(
+    customConfig,
+    reference,
+    payment,
+    dbPayment,
+  );
 }
