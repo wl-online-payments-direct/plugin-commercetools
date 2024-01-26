@@ -99,9 +99,18 @@ export function getDatabasePayload(
 }
 
 export async function getCreatedPaymentMappedResponse(
+  customConfig: CustomObjects,
+  reference: { referenceId: number },
   payment: ICreatePaymentResponse,
   dbPayment: { id: string },
 ) {
+  const { merchantReference } = customConfig;
+
+  // Concat with the merchant reference
+  const orderPaymentId = getFormattedPaymentId(
+    merchantReference,
+    reference.referenceId,
+  );
   const {
     id: worldlineId = '',
     actionType = '',
@@ -113,6 +122,7 @@ export async function getCreatedPaymentMappedResponse(
   return {
     id,
     worldlineId,
+    orderPaymentId,
     actionType,
     redirectURL,
   };

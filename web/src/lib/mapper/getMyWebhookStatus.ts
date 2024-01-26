@@ -1,4 +1,9 @@
 import { Request, QueryParams } from '../types';
+import { pick } from './common';
+
+export function getMyWebhookStatusRequiredProps(queryString: QueryParams) {
+  return pick(queryString, ['paymentId']);
+}
 
 export function getMyWebhookStatusAppPayload(
   request: Request,
