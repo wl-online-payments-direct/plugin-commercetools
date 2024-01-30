@@ -57,6 +57,14 @@ export async function webhookAppHandler({
 
   switch (payload.type) {
     case 'payment.created':
+    case 'payment.redirected':
+    case 'payment.authorization_requested':
+    case 'payment.pending_capture':
+    case 'payment.captured':
+    case 'payment.capture_requested':
+    case 'payment.cancelled':
+    case 'payment.rejected':
+    case 'payment.rejected_capture':
       return orderPaymentHandler(payload);
 
     default:
