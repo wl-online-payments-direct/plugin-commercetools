@@ -1,3 +1,4 @@
+import { env } from 'process';
 import { ApiClient } from '../../clients';
 import query from './query';
 import { getCustomObjectsResponseMapper } from '../../mappers';
@@ -9,9 +10,11 @@ export async function getCustomObjects(
   storeId: string,
 ): Promise<CustomObjects> {
   // Fetch from cache
-  const cache = await getCustomObjectsCache(storeId);
-  if (cache) {
-    return cache;
+  if (env.ENABLE_CACHE === 'true') {
+    const cache = await getCustomObjectsCache(storeId);
+    if (cache) {
+      return cache;
+    }
   }
 
   // Initialize api client
@@ -31,7 +34,7 @@ export async function getCustomObjects(
 
   const configuration = getCustomObjectsResponseMapper(response);
 
-  if (configuration) {
+  if (configuration && env.ENABLE_CACHE === 'true') {
     await setCustomObjectsCache(storeId, configuration);
   }
 

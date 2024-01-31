@@ -36,6 +36,8 @@ export async function webhookAppHandler({
   payload: PaymentPayload;
   signature: string;
 }) {
+  logger().debug(`[Webhook][${payload.type}] Request received`);
+
   const payment = await getPayment(getPaymentDBPayload(payload));
 
   if (!payment) {
@@ -44,6 +46,10 @@ export async function webhookAppHandler({
       statusCode: 500,
     };
   }
+
+  logger().debug(
+    `[Webhook][${payload.type}] Received payment ${payment.id} from database`,
+  );
 
   // Fetch custom objects from admin config
   const customConfig = await getCustomObjects(payment.storeId);
@@ -55,10 +61,10 @@ export async function webhookAppHandler({
     };
   }
 
+  logger().debug(`[Webhook][${payload.type}] Successfully authenticated`);
+
   switch (payload.type) {
     case 'payment.created':
-    case 'payment.redirected':
-    case 'payment.authorization_requested':
     case 'payment.pending_capture':
     case 'payment.captured':
     case 'payment.capture_requested':
@@ -68,7 +74,7 @@ export async function webhookAppHandler({
       return orderPaymentHandler(payload);
 
     default:
-      logger().warn(`[WEBHOOK] Received payload type: ${payload.type}`);
+      logger().warn(`[Webhook] Received payload type: ${payload.type}`);
   }
 
   return {};

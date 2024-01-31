@@ -1,4 +1,9 @@
-import { CustomObjects, CustomerPaymentToken } from '../types';
+import {
+  CustomObjects,
+  CustomerPaymentToken,
+  MappedRedirectModeA,
+} from '../types';
+import { camelCase } from './common';
 
 export function loadPaymentMethodsMappedResponse(
   customConfig: CustomObjects,
@@ -12,9 +17,23 @@ export function loadPaymentMethodsMappedResponse(
         }))
       : [];
 
-  const { paymentMethods = [] } = customConfig || {};
+  const { redirectModeA_payOptionUpdate = {} } = customConfig || {};
+
+  const mappedRedirectModeA: MappedRedirectModeA[] = [];
+
+  Object.values(redirectModeA_payOptionUpdate).forEach((value) => {
+    mappedRedirectModeA.push({
+      name: value.label,
+      type: 'offsite',
+      image: {
+        src: value.logo,
+      },
+      enabled: value.enabled,
+      paymentMethod: camelCase(value.label),
+    });
+  });
 
   return {
-    paymentMethods: [...tokens, ...paymentMethods],
+    paymentMethods: [...tokens, ...mappedRedirectModeA],
   };
 }

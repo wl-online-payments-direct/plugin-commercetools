@@ -25,6 +25,7 @@ export async function createPayment(payload: PaymentPayload) {
       },
       interfaceId,
       paymentMethodInfo: {
+        paymentInterface: Constants.PSP_NAME,
         method: paymentMethod,
         name: {
           locale: 'en',

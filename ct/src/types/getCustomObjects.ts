@@ -1,5 +1,9 @@
 import { ErrorObject } from '@commercetools/platform-sdk';
 
+interface RedirectModeA {
+  [key: string]: { label: string; logo: string; enabled: boolean };
+}
+
 interface ConnectionProps {
   merchantId: string;
   integrator: string;
@@ -10,12 +14,7 @@ interface ConnectionProps {
   webhookSecret: string;
   webhookUrl: string;
   redirectUrl: string;
-  paymentMethods: [
-    {
-      title: string;
-      type: string;
-    },
-  ];
+  redirectModeA_payOptionUpdate: RedirectModeA;
 }
 interface ConfigModes {
   mode: string;
