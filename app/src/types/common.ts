@@ -1,5 +1,8 @@
-export interface RedirectModeA {
-  [key: string]: { label: string; logo: string; enabled: boolean };
+export interface CheckoutProps {
+  label: string;
+  logo: string;
+  enabled: boolean;
+  payButtonTitle?: string;
 }
 export interface CustomObjects {
   mode: string;
@@ -16,10 +19,14 @@ export interface CustomObjects {
   webhookSecret: string;
   webhookUrl: string;
   redirectUrl: string;
-  redirectModeA_payOptionUpdate: RedirectModeA;
+  redirectModeA_payOptionUpdate: {
+    [key: string]: CheckoutProps;
+  };
+  redirectModeB: CheckoutProps;
+  onSiteMode: CheckoutProps;
 }
 
-export interface MappedRedirectModeA {
+export interface PaymentMethod {
   name: string;
   type: string;
   image: { src: string };

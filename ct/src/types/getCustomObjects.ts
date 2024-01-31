@@ -1,7 +1,10 @@
 import { ErrorObject } from '@commercetools/platform-sdk';
 
-interface RedirectModeA {
-  [key: string]: { label: string; logo: string; enabled: boolean };
+interface CheckoutProps {
+  label: string;
+  logo: string;
+  enabled: boolean;
+  payButtonTitle?: string;
 }
 
 interface ConnectionProps {
@@ -14,7 +17,11 @@ interface ConnectionProps {
   webhookSecret: string;
   webhookUrl: string;
   redirectUrl: string;
-  redirectModeA_payOptionUpdate: RedirectModeA;
+  redirectModeA_payOptionUpdate: {
+    [key: string]: CheckoutProps;
+  };
+  redirectModeB: CheckoutProps;
+  onSiteMode: CheckoutProps;
 }
 interface ConfigModes {
   mode: string;

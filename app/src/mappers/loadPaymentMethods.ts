@@ -1,8 +1,4 @@
-import {
-  CustomObjects,
-  CustomerPaymentToken,
-  MappedRedirectModeA,
-} from '../types';
+import { CustomObjects, CustomerPaymentToken, PaymentMethod } from '../types';
 import { camelCase } from './common';
 
 export function loadPaymentMethodsMappedResponse(
@@ -17,23 +13,47 @@ export function loadPaymentMethodsMappedResponse(
         }))
       : [];
 
-  const { redirectModeA_payOptionUpdate = {} } = customConfig || {};
+  const {
+    redirectModeA_payOptionUpdate = {},
+    redirectModeB,
+    onSiteMode,
+  } = customConfig || {};
 
-  const mappedRedirectModeA: MappedRedirectModeA[] = [];
+  const paymentMethods: PaymentMethod[] = [];
 
   Object.values(redirectModeA_payOptionUpdate).forEach((value) => {
-    mappedRedirectModeA.push({
+    paymentMethods.push({
       name: value.label,
       type: 'offsite',
       image: {
         src: value.logo,
       },
-      enabled: value.enabled,
+      enabled: value?.enabled,
       paymentMethod: camelCase(value.label),
     });
   });
 
+  paymentMethods.push({
+    name: redirectModeB?.payButtonTitle || '',
+    type: 'offsite',
+    image: {
+      src: redirectModeB?.logo || '',
+    },
+    enabled: redirectModeB?.enabled || false,
+    paymentMethod: 'worldlineOffsite',
+  });
+
+  paymentMethods.push({
+    name: onSiteMode?.payButtonTitle || '',
+    type: 'onsite',
+    image: {
+      src: onSiteMode?.logo || '',
+    },
+    enabled: onSiteMode?.enabled || false,
+    paymentMethod: 'worldlineOnsite',
+  });
+
   return {
-    paymentMethods: [...tokens, ...mappedRedirectModeA],
+    paymentMethods: [...tokens, ...paymentMethods],
   };
 }
