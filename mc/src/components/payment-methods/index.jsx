@@ -117,11 +117,21 @@ const PaymentMethods = () => {
   const saveFormData = async () => {
     setLoader(true);
     const payload = Object.keys(state).map((key) => {
+      let data;
       switch (key) {
         case 'onSiteMode':
-        case 'redirectModeA':
         case 'redirectModeB':
-          const data = state[key];
+          data = state[key];
+          const dataSet = Object.keys(data);
+          const sendLoad = {};
+          for (let dSet of dataSet) {
+            sendLoad[dSet] = data[dSet]?.value;
+          }
+          return {
+            [key]: sendLoad,
+          };
+        case 'redirectModeA':
+          data = state[key];
           return Object.keys(data)
             .map((key1) => {
               return { [key + '_' + key1]: data[key1].value };
@@ -144,7 +154,6 @@ const PaymentMethods = () => {
     Object.keys(saveData).forEach((key) =>
       saveData[key] === undefined ? delete saveData[key] : {}
     );
-
     const final_payload = {
       value: {
         ...customObject?.value,
@@ -166,12 +175,14 @@ const PaymentMethods = () => {
     if (customObject?.value) {
       for (let ds of Object.keys(dataFields)) {
         for (let field of dataFields[ds]) {
-          if (ds !== 'general')
-            payload[ds][field].value =
-              customObject?.value?.test[payload[ds][field]?.key];
-          else
+          if (ds === 'general')
             payload[field].value =
               customObject?.value?.test[payload[field]?.key];
+          else if (ds === 'onSiteMode' || ds === 'redirectModeB') {
+            payload[ds][field].value = customObject?.value?.test[ds][field];
+          } else
+            payload[ds][field].value =
+              customObject?.value?.test[payload[ds][field]?.key];
         }
       }
       dispatch({

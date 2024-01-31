@@ -42,12 +42,14 @@
       "validation": "required",
       "criteria": []
     },
-    "displayLogo": {
+    "logo": {
+      "key": "logo",
       "label": "Display Logo for Accepted Card Brands",
       "type": "file",
       "validation": "required",
       "criteria": [],
-      "tooltip": "Max size 5MB, max dimensions 200x80px,supported jpg,svg,png"
+      "tooltip": "Max size 5MB, max dimensions 200x80px,supported jpg,svg,png",
+      "value": ""
     },
     "enabled": {
       "key": "onSiteMode_enabled",
@@ -158,11 +160,13 @@
       "value": true,
       "tooltip": "Show Basket Data on Worldline Payment Page"
     },
-    "displayLogo": {
+    "logo": {
+      "key": "logo",
       "label": "Generic Logo Displayed on Your Payment Page",
       "type": "file",
       "validation": "required",
-      "criteria": []
+      "criteria": [],
+      "value": ""
     },
     "payButtonTitle": {
       "key": "redirectModeB_payButtonTitle",
