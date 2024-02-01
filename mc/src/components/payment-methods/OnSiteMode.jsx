@@ -117,8 +117,8 @@ const OnSiteMode = ({ onSiteMode, handleOnsiteMode, handleLogoUpload }) => {
         </div>
         <div className="section-wrapper">
           <h5 className="section-header">
-            {onSiteMode.displayLogo.label}
-            <Tooltip placement="top" title={onSiteMode.displayLogo.tooltip}>
+            {onSiteMode.logo.label}
+            <Tooltip placement="top" title={onSiteMode.logo.tooltip}>
               <InfoIcon />
             </Tooltip>
           </h5>
@@ -126,9 +126,9 @@ const OnSiteMode = ({ onSiteMode, handleOnsiteMode, handleLogoUpload }) => {
             <img className="" src={worldlineLogo} alt={worldlineLogo} />
             <input
               className="section-input"
-              value={onSiteMode.displayLogo.value}
-              validation={onSiteMode.displayLogo.validation}
-              type={onSiteMode.displayLogo.type}
+              value={onSiteMode.logo.value}
+              validation={onSiteMode.logo.validation}
+              type={onSiteMode.logo.type}
               onChange={(event) => handleLogoUpload(event)}
             />
           </div>
