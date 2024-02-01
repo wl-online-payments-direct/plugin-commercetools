@@ -6,7 +6,10 @@ export function getWebhookStatusDBQuery(payload: GetMyWebhookStatusPayload) {
   };
 }
 
-export function getWebhookStatusResponseMapper(payment: { status: string }) {
-  const { status = '' } = payment || {};
-  return { status };
+export function getWebhookStatusResponseMapper(payment: {
+  status: string;
+  orderId: string;
+}) {
+  const { orderId = '', status = '' } = payment || {};
+  return { orderId, status };
 }

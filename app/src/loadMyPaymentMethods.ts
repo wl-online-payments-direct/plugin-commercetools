@@ -1,7 +1,7 @@
 import { getCustomObjects, getMyCart } from '@worldline/ctintegration-ct';
 import { getPaymentTokensByCustomerID } from '@worldline/ctintegration-db';
 import { CustomerPaymentToken, LoadMyPaymentMethodsPayload } from './types';
-import { loadMyPaymentMethodsMappedResponse } from './mappers';
+import { loadPaymentMethodsMappedResponse } from './mappers';
 
 export async function loadMyPaymentMethodsAppHandler(
   payload: LoadMyPaymentMethodsPayload,
@@ -23,5 +23,5 @@ export async function loadMyPaymentMethodsAppHandler(
   // Fetch custom objects
   const customConfig = await getCustomObjects(payload.storeId);
 
-  return loadMyPaymentMethodsMappedResponse(customConfig, savedTokens);
+  return loadPaymentMethodsMappedResponse(customConfig, savedTokens);
 }

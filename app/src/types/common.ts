@@ -1,3 +1,9 @@
+export interface CheckoutProps {
+  label: string;
+  logo: string;
+  enabled: boolean;
+  payButtonTitle?: string;
+}
 export interface CustomObjects {
   mode: string;
   authorizationMode: string;
@@ -13,10 +19,17 @@ export interface CustomObjects {
   webhookSecret: string;
   webhookUrl: string;
   redirectUrl: string;
-  paymentMethods: [
-    {
-      title: string;
-      type: string;
-    },
-  ];
+  redirectModeA_payOptionUpdate: {
+    [key: string]: CheckoutProps;
+  };
+  redirectModeB: CheckoutProps;
+  onSiteMode: CheckoutProps;
+}
+
+export interface PaymentMethod {
+  name: string;
+  type: string;
+  image: { src: string };
+  enabled: boolean;
+  paymentMethod: string;
 }
