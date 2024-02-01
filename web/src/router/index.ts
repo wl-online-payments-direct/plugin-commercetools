@@ -16,6 +16,7 @@ import getMyWebhookStatusController from '../api/getMyWebhookStatus/controller';
 import hostedCheckoutController from '../api/hostedCheckout/controller';
 import hostedMyCheckoutController from '../api/hostedMyCheckout/controller';
 import getWebhookStatusController from '../api/getWebhookStatus/controller';
+import uploadImageController from '../api/uploadImage/controller';
 
 const routes = {
   '/': healthController.processRequest,
@@ -40,6 +41,9 @@ const routes = {
   '/initiate/hostedcheckout': hostedCheckoutController.processRequest,
   '/payment': createPaymentController.processRequest,
   '/webhook/status': getWebhookStatusController.processRequest,
+
+  // For uploading images
+  '/upload/images': uploadImageController.processRequest,
 };
 
 export { routes };
