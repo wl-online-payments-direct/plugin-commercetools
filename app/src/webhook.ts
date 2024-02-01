@@ -40,6 +40,8 @@ export async function webhookAppHandler({
   payload: PaymentPayload | RefundPayload;
   signature: string;
 }) {
+  logger().debug(`[Webhook][${payload.type}] Request received`);
+
   const payment = await getPayment(getPaymentDBPayload(payload));
 
   if (!payment) {
@@ -48,6 +50,10 @@ export async function webhookAppHandler({
       statusCode: 500,
     };
   }
+
+  logger().debug(
+    `[Webhook][${payload.type}] Received payment ${payment.id} from database`,
+  );
 
   // Fetch custom objects from admin config
   const customConfig = await getCustomObjects(payment.storeId);
@@ -58,18 +64,23 @@ export async function webhookAppHandler({
       statusCode: 403,
     };
   }
+  logger().debug(`[Webhook][${payload.type}] Successfully authenticated`);
 
   if ('payment' in payload) {
     // Payload is a PaymentPayload
     switch (payload.type) {
       case 'payment.created':
+      case 'payment.pending_capture':
+      case 'payment.capture_requested':
+      case 'payment.rejected':
+      case 'payment.rejected_capture':
         return orderPaymentHandler(payload);
       case 'payment.captured':
         return orderPaymentCaptureHandler(payload);
       case 'payment.cancelled':
         return orderPaymentCancelHandler(payload);
       default:
-        logger().warn(`[WEBHOOK] Received payload type: ${payload.type}`);
+        logger().warn(`[Webhook] Received payload type: ${payload.type}`);
     }
   } else if ('refund' in payload) {
     // Payload is a RefundPayload

@@ -10,3 +10,11 @@ export const appendAdditionalParamsToUrl = (
   });
   return formattedUrl?.href;
 };
+
+export const camelCase = (str: string) =>
+  str
+    ?.toLowerCase()
+    ?.replace(
+      /[^a-zA-Z0-9]+(.)/g,
+      (_m: string, chr: string) => chr?.toUpperCase(),
+    );

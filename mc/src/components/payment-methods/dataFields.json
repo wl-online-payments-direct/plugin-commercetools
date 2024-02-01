@@ -4,7 +4,8 @@
     "payButtonLanguage",
     "merchantReferenceID",
     "templateFileName",
-    "enabled"
+    "enabled",
+    "logo"
   ],
   "redirectModeA": [
     "sendOrderData",
@@ -19,7 +20,8 @@
     "merchantReferenceID",
     "templateFileName",
     "groupCards",
-    "enabled"
+    "enabled",
+    "logo"
   ],
   "general": [
     "paymentOption",
