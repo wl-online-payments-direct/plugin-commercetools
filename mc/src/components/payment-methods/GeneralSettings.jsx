@@ -73,7 +73,6 @@ const GeneralSettings = ({ state, handleCommonSettings }) => {
               <Select
                 className="select-dropdown"
                 value={state.captureConfiguration.value}
-                validation={state.captureConfiguration.validation}
                 type={state.captureConfiguration.type}
                 onChange={(e) =>
                   handleCommonSettings('captureConfiguration', e.target.value)
@@ -100,7 +99,6 @@ const GeneralSettings = ({ state, handleCommonSettings }) => {
           <TextInput
             className="section-input"
             value={state.placeOrder.value}
-            validation={state.placeOrder.validation}
             type={state.placeOrder.type}
             onChange={(e) => handleCommonSettings('placeOrder', e.target.value)}
           />
@@ -108,7 +106,6 @@ const GeneralSettings = ({ state, handleCommonSettings }) => {
             <Select
               className="select-dropdown"
               value={state.placeOrderLanguage.value}
-              validation={state.placeOrderLanguage.validation}
               type={state.placeOrderLanguage.type}
               onChange={(e) =>
                 handleCommonSettings('placeOrderLanguage', e.target.value)
@@ -132,7 +129,6 @@ const GeneralSettings = ({ state, handleCommonSettings }) => {
           <ToggleInput
             size={'small'}
             isDisabled={false}
-            value={state.advancedLogging.value}
             isChecked={state.advancedLogging.value}
             onChange={(e) =>
               handleCommonSettings('advancedLogging', e.target.checked)
@@ -149,7 +145,6 @@ const GeneralSettings = ({ state, handleCommonSettings }) => {
           <ToggleInput
             size={'small'}
             isDisabled={false}
-            value={state.force3DSv2.value}
             isChecked={state.force3DSv2.value}
             onChange={(e) =>
               handleCommonSettings('force3DSv2', e.target.checked)

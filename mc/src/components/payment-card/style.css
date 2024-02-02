@@ -3,5 +3,9 @@
 }
 
 .payment-list-img {
-    max-width: 80px
+    max-width: 80px;
+}
+
+.payment-title{
+    margin: 15px 0px;
 }

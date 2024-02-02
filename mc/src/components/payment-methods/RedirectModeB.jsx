@@ -25,14 +25,11 @@ const RedirectModeB = ({
         aria-controls="panel1a-content"
       >
         <Typography>
-          <p>
-            Redirect Mode B: Payment Method selection <b>after </b>
-            redirection
-          </p>
+          Redirect Mode B: Payment Method selection <b>after </b>
+          redirection
         </Typography>
         <ToggleInput
           size={'big'}
-          value={redirectModeB.enabled.value}
           isChecked={redirectModeB.enabled.value}
           onChange={(e) => handleRedirectModeB('enabled', e.target.checked)}
         />
@@ -43,7 +40,7 @@ const RedirectModeB = ({
         </p>
         <div className="relative">
           <span className="float-right">
-            <p>
+            <div>
               Send Order Data
               <Tooltip
                 placement="top"
@@ -51,9 +48,8 @@ const RedirectModeB = ({
               >
                 <InfoIcon />
               </Tooltip>
-            </p>
+            </div>
             <CheckboxInput
-              value={redirectModeB.sendOrderData.value}
               onChange={(e) =>
                 handleRedirectModeB('sendOrderData', e.target.checked)
               }
@@ -68,7 +64,6 @@ const RedirectModeB = ({
             <input
               className="section-input"
               value={redirectModeB.logo.value}
-              validation={redirectModeB.logo.validation}
               type={redirectModeB.logo.type}
               onChange={(event) => handleLogoUpload(event)}
             />
@@ -82,7 +77,6 @@ const RedirectModeB = ({
             <TextInput
               className="section-input"
               value={redirectModeB.payButtonTitle.value}
-              validation={redirectModeB.payButtonTitle.validation}
               type={redirectModeB.payButtonTitle.type}
               onChange={(e) =>
                 handleRedirectModeB('payButtonTitle', e.target.value)
@@ -104,7 +98,6 @@ const RedirectModeB = ({
             <TextInput
               className="section-input"
               value={redirectModeB.merchantReferenceID.value}
-              validation={redirectModeB.merchantReferenceID.validation}
               type={redirectModeB.merchantReferenceID.type}
               placeholder={redirectModeB.merchantReferenceID.placeholder}
               onChange={(e) =>
@@ -121,7 +114,6 @@ const RedirectModeB = ({
             <TextInput
               className="section-input"
               value={redirectModeB.templateFileName.value}
-              validation={redirectModeB.templateFileName.validation}
               type={redirectModeB.templateFileName.type}
               placeholder={redirectModeB.templateFileName.placeholder}
               onChange={(e) =>
@@ -139,18 +131,17 @@ const RedirectModeB = ({
 
         <div className="section-wrapper flex">
           <CheckboxInput
-            value={redirectModeB.groupCards.value}
             onChange={(e) =>
               handleRedirectModeB('groupCards', e.target.checked)
             }
             isChecked={redirectModeB.groupCards.value}
           />
-          <p>
+          <div>
             {redirectModeB.groupCards.label}
             <Tooltip placement="top" title={redirectModeB.groupCards.tooltip}>
               <InfoIcon />
             </Tooltip>
-          </p>
+          </div>
         </div>
       </AccordionDetails>
     </Accordion>

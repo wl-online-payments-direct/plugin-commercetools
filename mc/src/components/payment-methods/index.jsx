@@ -52,10 +52,13 @@ const PaymentMethods = () => {
 
   const handleRedirectModeA = (field, value) => {
     const payload = { ...state.redirectModeA };
-    payload[field] = {
-      ...payload[field],
-      value: value,
-    };
+    if (field === 'paymentOptions') payload['paymentOptions'] = value;
+    else
+      payload[field] = {
+        ...payload[field],
+        value: value,
+      };
+
     dispatch({
       type: 'REDIRECT-MODE-A',
       value: payload,
@@ -105,10 +108,13 @@ const PaymentMethods = () => {
     });
   };
 
-  const handleOptionUpdate = (option, field, value) => {
-    const payload = state.redirectModeA.paymentOptions;
-    payload[option][field] = value;
-    handleRedirectModeA('payOptionUpdate', payload);
+  const handleOptionUpdate = (methods) => {
+    handleRedirectModeA(
+      'paymentOptions',
+      methods.map((method, index) => {
+        return { ...method, displayOrder: index };
+      })
+    );
   };
 
   const handleLogoUpload = (e) => {};
@@ -118,42 +124,34 @@ const PaymentMethods = () => {
     setLoader(true);
     const payload = Object.keys(state).map((key) => {
       let data;
+      const sendLoad = {};
       switch (key) {
         case 'onSiteMode':
         case 'redirectModeB':
+        case 'redirectModeA':
           data = state[key];
           const dataSet = Object.keys(data);
-          const sendLoad = {};
           for (let dSet of dataSet) {
-            sendLoad[dSet] = data[dSet]?.value;
+            if (dSet === 'paymentOptions') sendLoad[dSet] = data[dSet];
+            else sendLoad[dSet] = data[dSet]?.value;
           }
           return {
             [key]: sendLoad,
           };
-        case 'redirectModeA':
-          data = state[key];
-          return Object.keys(data)
-            .map((key1) => {
-              return { [key + '_' + key1]: data[key1].value };
-            })
-            .flat();
         default:
           return { [key]: state[key].value };
       }
     });
 
     let saveData = {};
-
     for (let pData of payload) {
-      if (Array.isArray(pData)) {
-        pData.forEach((pValue) => Object.assign(saveData, pValue));
-      } else {
-        Object.assign(saveData, pData);
-      }
+      saveData = { ...saveData, ...pData };
     }
+
     Object.keys(saveData).forEach((key) =>
       saveData[key] === undefined ? delete saveData[key] : {}
     );
+
     const final_payload = {
       value: {
         ...customObject?.value,
@@ -171,25 +169,35 @@ const PaymentMethods = () => {
   };
 
   useEffect(() => {
-    const payload = initialState;
+    const payload = JSON.parse(JSON.stringify(initialState));
     if (customObject?.value) {
+      const customValue = customObject?.value?.test;
       for (let ds of Object.keys(dataFields)) {
         for (let field of dataFields[ds]) {
-          if (ds === 'general')
-            payload[field].value =
-              customObject?.value?.test[payload[field]?.key];
-          else if (ds === 'onSiteMode' || ds === 'redirectModeB') {
-            payload[ds][field].value = customObject?.value?.test[ds][field];
-          } else
-            payload[ds][field].value =
-              customObject?.value?.test[payload[ds][field]?.key];
+          switch (ds) {
+            case 'onSiteMode':
+            case 'redirectModeA':
+            case 'redirectModeB':
+              if (field === 'paymentOptions' && customValue?.[ds]?.[field]) {
+                payload[ds][field] = customValue?.[ds]?.[field];
+                break;
+              } else {
+                if (customValue?.[ds]?.[field])
+                  payload[ds][field].value = customValue?.[ds]?.[field];
+                break;
+              }
+            case 'general':
+              if (customValue?.[field])
+                payload[field].value = customValue?.[field];
+              break;
+          }
         }
       }
-      dispatch({
-        type: 'UPDATE-STATE',
-        value: payload,
-      });
     }
+    dispatch({
+      type: 'UPDATE-STATE',
+      value: payload,
+    });
   }, [customObject]);
 
   return (
@@ -199,7 +207,6 @@ const PaymentMethods = () => {
         <ToggleInput
           size={'big'}
           isDisabled={false}
-          value={state.enabled.value}
           isChecked={state.enabled.value}
           onChange={(e) => {
             dispatch({
