@@ -17,6 +17,7 @@ import hostedCheckoutController from '../api/hostedCheckout/controller';
 import hostedMyCheckoutController from '../api/hostedMyCheckout/controller';
 import getWebhookStatusController from '../api/getWebhookStatus/controller';
 import uploadImageController from '../api/uploadImage/controller';
+import getPaymentProductsController from '../api/getPaymentProducts/controller';
 
 const routes = {
   '/': healthController.processRequest,
@@ -44,6 +45,8 @@ const routes = {
 
   // For uploading images
   '/upload/images': uploadImageController.processRequest,
+  // Merchant Center API
+  '/payment/products': getPaymentProductsController.processRequest,
 };
 
 export { routes };

@@ -1,10 +1,31 @@
 import { ErrorObject } from '@commercetools/platform-sdk';
 
-interface CheckoutProps {
-  label: string;
-  logo: string;
+export interface RedirectModeAPaymentOptions {
   enabled: boolean;
-  payButtonTitle?: string;
+  merchantReferenceID: string;
+  paymentOptions: {
+    displayOrder: number;
+    label: string;
+    enabled: boolean;
+    logo: string;
+  }[];
+}
+
+export interface RedirectModeBPaymentOptions {
+  enabled: boolean;
+  logo: string;
+  payButtonTitle: string;
+  merchantReferenceID: string;
+  templateFileName: string;
+}
+
+export interface OnSiteModePaymentOptions {
+  enabled: boolean;
+  logo: string;
+  payButtonTitle: string;
+  payButtonLanguage: string;
+  merchantReferenceID: string;
+  templateFileName: string;
 }
 
 interface ConnectionProps {
@@ -17,11 +38,9 @@ interface ConnectionProps {
   webhookSecret: string;
   webhookUrl: string;
   redirectUrl: string;
-  redirectModeA_payOptionUpdate: {
-    [key: string]: CheckoutProps;
-  };
-  redirectModeB: CheckoutProps;
-  onSiteMode: CheckoutProps;
+  redirectModeA: RedirectModeAPaymentOptions;
+  redirectModeB: RedirectModeBPaymentOptions;
+  onSiteMode: OnSiteModePaymentOptions;
 }
 interface ConfigModes {
   mode: string;
