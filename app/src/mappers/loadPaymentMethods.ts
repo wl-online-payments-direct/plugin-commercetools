@@ -14,16 +14,17 @@ export function loadPaymentMethodsMappedResponse(
       : [];
 
   const {
-    redirectModeA_payOptionUpdate = {},
+    redirectModeA = { paymentOptions: [] },
     redirectModeB,
     onSiteMode,
   } = customConfig || {};
 
   const paymentMethods: PaymentMethod[] = [];
 
-  Object.values(redirectModeA_payOptionUpdate).forEach((value) => {
+  Object.values(redirectModeA.paymentOptions).forEach((value) => {
     paymentMethods.push({
       name: value.label,
+      displayOrder: value.displayOrder,
       type: 'offsite',
       image: {
         src: value.logo,
