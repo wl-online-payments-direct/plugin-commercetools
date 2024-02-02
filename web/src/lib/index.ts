@@ -15,3 +15,4 @@ export * from './hostedMyCheckout';
 export * from './createPayment';
 export * from './myHostedTokenization';
 export * from './getMyWebhookStatus';
+export * from './getPaymentProducts';
