@@ -124,17 +124,17 @@ const GeneralSettings = ({ state, handleCommonSettings }) => {
         </div>
       </div>
       <div className="section-wrapper">
-        <div className="advanced-loging flex">
-          <h5 className="section-header">{state.advancedLogging.label}</h5>
+        <div className="debug-loging flex">
+          <h5 className="section-header">{state.debugLogging.label}</h5>
           <ToggleInput
             size={'small'}
             isDisabled={false}
-            isChecked={state.advancedLogging.value}
+            isChecked={state.debugLogging.value}
             onChange={(e) =>
-              handleCommonSettings('advancedLogging', e.target.checked)
+              handleCommonSettings('debugLogging', e.target.checked)
             }
           />
-          {state.advancedLogging.value && (
+          {state.debugLogging.value && (
             <DownloadIcon style={{ margin: 'auto' }} />
           )}
         </div>

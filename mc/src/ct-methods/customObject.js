@@ -51,3 +51,14 @@ export const getStores = async (projectKey) => {
     console.error('Error custom object:', error.message);
   }
 };
+
+export const getPaymentMethods = async (storeId) => {
+  try {
+    const { result } = await fetch(
+      `https://dev-worldline-cto.tryzens-ignite.com/payment/products?storeId=${storeId}&countryCode=UK&currencyCode=EUR`
+    );
+    return result.json();
+  } catch (error) {
+    console.error('Error custom object:', error.message);
+  }
+};

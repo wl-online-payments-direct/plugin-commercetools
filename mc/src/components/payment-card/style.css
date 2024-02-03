@@ -9,3 +9,7 @@
 .payment-title{
     margin: 15px 0px;
 }
+
+.settings-payment{
+    cursor: pointer;
+}

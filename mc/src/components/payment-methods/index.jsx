@@ -15,8 +15,13 @@ import { PaymentContext } from '../../context/payment';
 
 const { emailAddress } = CONFIG;
 const PaymentMethods = () => {
-  const { setLoader, saveCustomObject, customObject } =
-    useContext(PaymentContext);
+  const {
+    setLoader,
+    saveCustomObject,
+    customObject,
+    fetchWorldlinePaymentOptions,
+    activeStore,
+  } = useContext(PaymentContext);
 
   const [state, dispatch] = useReducer(reducer, initialState);
 
@@ -72,6 +77,23 @@ const PaymentMethods = () => {
       value: value,
     };
 
+    if (field === 'payButtonLanguage') {
+      payload['payButtonTitle'] = {
+        ...payload['payButtonTitle'],
+        value: state.redirectModeB['payButtonTitle'].values[value],
+      };
+    }
+
+    if (field === 'payButtonTitle') {
+      payload['payButtonTitle'] = {
+        ...payload['payButtonTitle'],
+        values: {
+          ...state.redirectModeB['payButtonTitle'].values,
+          [state.redirectModeB['payButtonLanguage'].value]: value,
+        },
+      };
+    }
+
     dispatch({
       type: 'REDIRECT-MODE-B',
       value: payload,
@@ -118,7 +140,20 @@ const PaymentMethods = () => {
   };
 
   const handleLogoUpload = (e) => {};
-  const fetchPaymentMethods = () => {};
+
+  const fetchPaymentMethods = async () => {
+    setLoader(true);
+    const result = await fetchWorldlinePaymentOptions(activeStore);
+    if (result) {
+      handleRedirectModeA('paymentOptions', result);
+    } else {
+      handleRedirectModeA(
+        'paymentOptions',
+        initialState.redirectModeA.paymentOptions
+      );
+    }
+    setLoader(false);
+  };
 
   const saveFormData = async () => {
     setLoader(true);

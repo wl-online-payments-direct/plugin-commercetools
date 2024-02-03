@@ -1,6 +1,5 @@
 import React from 'react';
 import './style.css';
-import PaymentCard from '../payment-card';
 import CheckboxInput from '@commercetools-uikit/checkbox-input';
 import SecondaryButton from '@commercetools-uikit/secondary-button';
 import ToggleInput from '@commercetools-uikit/toggle-input';
@@ -58,14 +57,16 @@ const RedirectModeA = ({
             />
           </span>
         </div>
-        <SecondaryButton
-          label={redirectModeA.refresh.label}
-          onClick={() => fetchPaymentMethods()}
-        >
+        <div>
+          <SecondaryButton
+            label={redirectModeA.refresh.label}
+            onClick={() => fetchPaymentMethods()}
+          ></SecondaryButton>
           <Tooltip placement="top" title={redirectModeA.refresh.tooltip}>
             <InfoIcon />
           </Tooltip>
-        </SecondaryButton>
+        </div>
+
         <PaymentOptions
           methods={redirectModeA.paymentOptions}
           handleOptionUpdate={handleOptionUpdate}

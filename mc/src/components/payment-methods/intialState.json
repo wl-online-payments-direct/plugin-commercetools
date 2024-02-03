@@ -168,8 +168,22 @@
     "payButtonTitle": {
       "label": "Pay Button Title",
       "type": "text",
-      "value": "Pay by Worldline",
-      "criteria": ["alpha"]
+      "value": "Pay with credit cards",
+      "criteria": ["alpha"],
+      "values": {
+        "EN": "Pay with credit cards",
+        "ES": "Pagar con tarjetas de crédito",
+        "FR": "Payer par carte de crédit",
+        "NL": "Betaal met creditcards",
+        "DE": "Bezahlen Sie mit Kreditkarten",
+        "IT": "Paga con carte di credito"
+      }
+    },
+    "payButtonLanguage": {
+      "label": "",
+      "type": "text",
+      "value": "EN",
+      "values": ["EN", "ES", "FR", "NL", "DE", "IT"]
     },
     "merchantReferenceID": {
       "label": " Merchant Reference ID",
@@ -245,8 +259,8 @@
     "value": "EN",
     "values": ["EN", "ES", "FR", "NL", "DE", "IT"]
   },
-  "advancedLogging": {
-    "label": "Enable advanced logging",
+  "debugLogging": {
+    "label": "Enable Debug Logging",
     "type": "boolean",
     "value": false,
     "criteria": []

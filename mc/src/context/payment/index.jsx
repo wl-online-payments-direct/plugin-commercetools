@@ -3,6 +3,7 @@ import {
   getStores,
   getCustomObject,
   createCustomObject,
+  getPaymentMethods,
 } from '../../ct-methods/customObject';
 import { useApplicationContext } from '@commercetools-frontend/application-shell-connectors';
 import Snackbar from '@mui/material/Snackbar';
@@ -108,8 +109,40 @@ const PaymentProvider = ({ children }) => {
     }
   };
 
+  const fetchWorldlinePaymentOptions = async (activeStore) => {
+    setLoader(true);
+    if (activeStore?.key) {
+      try {
+        const response = await getPaymentMethods(activeStore?.key);
+        if (response) {
+          const { result } = response;
+          setLoader(false);
+          showToaster({
+            severity: 'success',
+            open: true,
+            message: 'Refresh Payment Methods: Success',
+          });
+          return result;
+        }
+      } catch (err) {
+        setLoader(false);
+        showToaster({
+          severity: 'error',
+          open: true,
+          message: 'Failed to refresh payment methods',
+        });
+        return null;
+      }
+    }
+  };
+
   useEffect(async () => {
     const response = await fetchCustomObjects(activeStore);
+    const paymentOptions = await fetchWorldlinePaymentOptions(activeStore);
+    if (paymentOptions) {
+      response.value.test.redirectModeA.paymentOptions = paymentOptions;
+      response.value.live.redirectModeA.paymentOptions = paymentOptions;
+    }
     setCustomObject(response);
   }, [activeStore]);
 
@@ -140,6 +173,7 @@ const PaymentProvider = ({ children }) => {
         setActiveStore,
         setCustomObject,
         saveCustomObject,
+        fetchWorldlinePaymentOptions,
         customObject,
         activeStore,
         stores,

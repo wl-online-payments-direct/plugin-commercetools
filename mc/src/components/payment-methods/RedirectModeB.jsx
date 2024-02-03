@@ -11,6 +11,8 @@ import TextInput from '@commercetools-uikit/text-input';
 import worldlineLogo from '../../assets/worldline-logo-main.png';
 import InfoIcon from '@mui/icons-material/Info';
 import Tooltip from '@commercetools-uikit/tooltip';
+import MenuItem from '@mui/material/MenuItem';
+import Select from '@mui/material/Select';
 
 const RedirectModeB = ({
   redirectModeB,
@@ -70,10 +72,7 @@ const RedirectModeB = ({
           </div>
         </div>
         <div className="section-wrapper">
-          <h5 className="section-header">
-            {redirectModeB.payButtonTitle.label}
-          </h5>
-          <div className="template-section">
+          <div className="template-section flex">
             <TextInput
               className="section-input"
               value={redirectModeB.payButtonTitle.value}
@@ -82,6 +81,25 @@ const RedirectModeB = ({
                 handleRedirectModeB('payButtonTitle', e.target.value)
               }
             />
+            <div className="dropdown-container">
+              <Select
+                className="select-dropdown"
+                value={redirectModeB.payButtonLanguage.value}
+                type={redirectModeB.payButtonLanguage.type}
+                onChange={(e) =>
+                  handleRedirectModeB('payButtonLanguage', e.target.value)
+                }
+                displayEmpty
+                inputProps={{ 'aria-label': 'Without label' }}
+              >
+                {redirectModeB.payButtonLanguage.values &&
+                  redirectModeB.payButtonLanguage.values.map((lang, index) => (
+                    <MenuItem key={`lang${index}`} value={lang}>
+                      {lang}
+                    </MenuItem>
+                  ))}
+              </Select>
+            </div>
           </div>
         </div>
         <div className="section-wrapper">

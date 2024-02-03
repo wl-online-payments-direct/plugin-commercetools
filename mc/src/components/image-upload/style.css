@@ -1,0 +1,7 @@
+.image-upload {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    margin: 4rem 0px;
+
+}
