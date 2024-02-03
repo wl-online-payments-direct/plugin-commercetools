@@ -40,7 +40,8 @@
       "type": "file",
       "criteria": [],
       "tooltip": "Max size 5MB, max dimensions 200x80px,supported jpg,svg,png",
-      "value": ""
+      "value": "",
+      "alt": "Display logo for onsite payment method"
     },
     "enabled": {
       "value": false
@@ -163,7 +164,8 @@
       "label": "Generic Logo Displayed on Your Payment Page",
       "type": "file",
       "criteria": [],
-      "value": ""
+      "value": "",
+      "alt": "Display logo for redirect payment method"
     },
     "payButtonTitle": {
       "label": "Pay Button Title",

@@ -4,6 +4,7 @@ import {
   getCustomObject,
   createCustomObject,
   getPaymentMethods,
+  uploadImages,
 } from '../../ct-methods/customObject';
 import { useApplicationContext } from '@commercetools-frontend/application-shell-connectors';
 import Snackbar from '@mui/material/Snackbar';
@@ -136,6 +137,31 @@ const PaymentProvider = ({ children }) => {
     }
   };
 
+  const imageUploader = async (file) => {
+    setLoader(true);
+    try {
+      const response = await uploadImages(file);
+      if (response) {
+        const { result } = response;
+        setLoader(false);
+        showToaster({
+          severity: 'success',
+          open: true,
+          message: 'Image uploaded',
+        });
+        return result;
+      }
+    } catch (err) {
+      console.error('Error saving image', err);
+      showToaster({
+        severity: 'error',
+        open: true,
+        message: 'Failed to upload Image',
+      });
+      setLoader(false);
+    }
+  };
+
   useEffect(async () => {
     const response = await fetchCustomObjects(activeStore);
     const paymentOptions = await fetchWorldlinePaymentOptions(activeStore);
@@ -175,6 +201,7 @@ const PaymentProvider = ({ children }) => {
         setCustomObject,
         saveCustomObject,
         fetchWorldlinePaymentOptions,
+        imageUploader,
         customObject,
         activeStore,
         stores,

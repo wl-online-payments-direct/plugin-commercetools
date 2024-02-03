@@ -7,18 +7,7 @@ import Modal from '@mui/material/Modal';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import ImageUpload from '../image-upload';
-
-const style = {
-  position: 'absolute',
-  top: '50%',
-  left: '50%',
-  transform: 'translate(-50%, -50%)',
-  width: 400,
-  bgcolor: 'background.paper',
-  border: '2px solid #000',
-  boxShadow: 24,
-  p: 4,
-};
+import { CloseIcon } from '@commercetools-uikit/icons';
 
 const PaymentCard = ({ logo, label, enabled, handlePaymentOptionUpdate }) => {
   const [open, setOpen] = useState(false);
@@ -54,12 +43,22 @@ const PaymentCard = ({ logo, label, enabled, handlePaymentOptionUpdate }) => {
           onClose={handleClose}
           aria-labelledby="modal-modal-title"
           aria-describedby="modal-modal-description"
+          className="payment-logo-wrapper"
         >
-          <Box sx={style}>
+          <Box className="payment-logo-modal">
+            <span className="close-button" onClick={handleClose}>
+              <CloseIcon />
+            </span>
             <Typography id="modal-modal-title" variant="h6" component="h2">
               {label}
             </Typography>
-            <ImageUpload src={logo} alt={label} />
+            <ImageUpload
+              src={logo}
+              alt={label}
+              source="modal"
+              saveImage={(url) => handlePaymentOptionUpdate(label, 'logo', url)}
+              handleClose={handleClose}
+            />
           </Box>
         </Modal>
       )}

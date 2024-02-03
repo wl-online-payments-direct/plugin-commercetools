@@ -8,17 +8,13 @@ import AccordionDetails from '@mui/material/AccordionDetails';
 import Typography from '@mui/material/Typography';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import TextInput from '@commercetools-uikit/text-input';
-import worldlineLogo from '../../assets/worldline-logo-main.png';
 import InfoIcon from '@mui/icons-material/Info';
 import Tooltip from '@commercetools-uikit/tooltip';
 import MenuItem from '@mui/material/MenuItem';
 import Select from '@mui/material/Select';
+import ImageUpload from '../image-upload';
 
-const RedirectModeB = ({
-  redirectModeB,
-  handleRedirectModeB,
-  handleLogoUpload,
-}) => {
+const RedirectModeB = ({ redirectModeB, handleRedirectModeB }) => {
   return (
     <Accordion className="payment-redirect payment-section-wrapper">
       <AccordionSummary
@@ -62,12 +58,11 @@ const RedirectModeB = ({
         <div className="section-wrapper">
           <h5 className="section-header">{redirectModeB.logo.label}</h5>
           <div className="template-section flex">
-            <img className="" src={worldlineLogo} alt={worldlineLogo} />
-            <input
-              className="section-input"
-              value={redirectModeB.logo.value}
-              type={redirectModeB.logo.type}
-              onChange={(event) => handleLogoUpload(event)}
+            <ImageUpload
+              src={redirectModeB.logo.value}
+              alt={redirectModeB.logo.alt}
+              source="redirectModeB"
+              saveImage={(url) => handleRedirectModeB('logo', url)}
             />
           </div>
         </div>

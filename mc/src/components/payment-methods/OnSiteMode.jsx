@@ -7,13 +7,13 @@ import AccordionDetails from '@mui/material/AccordionDetails';
 import Typography from '@mui/material/Typography';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import TextInput from '@commercetools-uikit/text-input';
-import worldlineLogo from '../../assets/worldline-logo-main.png';
 import InfoIcon from '@mui/icons-material/Info';
 import Tooltip from '@commercetools-uikit/tooltip';
 import MenuItem from '@mui/material/MenuItem';
 import Select from '@mui/material/Select';
+import ImageUpload from '../image-upload';
 
-const OnSiteMode = ({ onSiteMode, handleOnsiteMode, handleLogoUpload }) => {
+const OnSiteMode = ({ onSiteMode, handleOnsiteMode }) => {
   return (
     <Accordion className="payment-on-site payment-section-wrapper">
       <AccordionSummary
@@ -116,12 +116,11 @@ const OnSiteMode = ({ onSiteMode, handleOnsiteMode, handleLogoUpload }) => {
             </Tooltip>
           </h5>
           <div className="template-section flex">
-            <img className="" src={worldlineLogo} alt={worldlineLogo} />
-            <input
-              className="section-input"
-              value={onSiteMode.logo.value}
-              type={onSiteMode.logo.type}
-              onChange={(event) => handleLogoUpload(event)}
+            <ImageUpload
+              src={onSiteMode.logo.value}
+              alt={onSiteMode.logo.alt}
+              source="onsite"
+              saveImage={(url) => handleOnsiteMode('logo', url)}
             />
           </div>
         </div>
