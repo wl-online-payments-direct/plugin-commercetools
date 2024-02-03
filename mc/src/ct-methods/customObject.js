@@ -1,7 +1,7 @@
 import { fetcher } from '../services/custom-api-request';
 import CONFIG from '../../configuration';
 
-const { CONTAINER_NAME, CONTAINER_KEY } = CONFIG;
+const { CONTAINER_NAME, apiHost } = CONFIG;
 
 export const createCustomObject = async (payload, projectKey) => {
   try {
@@ -55,7 +55,7 @@ export const getStores = async (projectKey) => {
 export const getPaymentMethods = async (storeId) => {
   try {
     const { result } = await fetch(
-      `https://dev-worldline-cto.tryzens-ignite.com/payment/products?storeId=${storeId}&countryCode=UK&currencyCode=EUR`
+      `${apiHost}/payment/products?storeId=${storeId}&countryCode=UK&currencyCode=EUR`
     );
     return result.json();
   } catch (error) {

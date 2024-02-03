@@ -72,6 +72,9 @@ const RedirectModeB = ({
           </div>
         </div>
         <div className="section-wrapper">
+          <h5 className="section-header">
+            {redirectModeB.payButtonTitle.label}
+          </h5>
           <div className="template-section flex">
             <TextInput
               className="section-input"

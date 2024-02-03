@@ -144,6 +144,7 @@ const PaymentProvider = ({ children }) => {
       response.value.live.redirectModeA.paymentOptions = paymentOptions;
     }
     setCustomObject(response);
+    setLoader(false);
   }, [activeStore]);
 
   const showToaster = async (options) => {
