@@ -100,11 +100,6 @@ const Welcome = () => {
               linkTo="https://uikit.commercetools.com"
               isExternal
             />
-            <InfoCard
-              title={intl.formatMessage(messages.cardChannelsTitle)}
-              content={intl.formatMessage(messages.cardChannelsContent)}
-              linkTo={`${match.url}/channels`}
-            />
           </Grid>
         </Spacings.Stack>
       </Spacings.Stack>

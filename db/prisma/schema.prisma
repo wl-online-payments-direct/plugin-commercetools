@@ -10,9 +10,14 @@ datasource db {
 
 enum Status {
   INITIAL // on create
-  SUCCESS
+  REDIRECTED
+  AUTHORIZATION_REQUESTED
+  AUTHORIZED
+  CAPTURE_REQUESTED
+  CAPTURED
+  REFUND_REQUESTED
+  REFUNDED
   FAILED
-  PENDING
   IN_REVIEW
 }
 
@@ -28,18 +33,19 @@ enum Modes {
 }
 
 model payments {
-  id          String   @id @default(uuid())
-  authMode    Modes
-  paymentId   String
-  worldlineId String
-  storeId     String   @db.VarChar(255)
-  cartId      String   @db.VarChar(255)
-  orderId     String   @db.VarChar(255)
-  status      Status   @default(INITIAL)
-  state       States   @default(DEFAULT)
-  errors      String?  @db.Text
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  id               String   @id @default(uuid())
+  authMode         Modes
+  paymentId        String
+  worldlineId      String
+  storeId          String   @db.VarChar(255)
+  cartId           String   @db.VarChar(255)
+  orderId          String   @db.VarChar(255)
+  status           Status   @default(INITIAL)
+  state            States   @default(DEFAULT)
+  storePermanently Boolean  @default(false)
+  errors           String?  @db.Text
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
 }
 
 model payment_references {
@@ -51,4 +57,14 @@ model payment_references {
   updatedAt   DateTime @updatedAt
 
   @@unique(storeId)
+}
+
+model customer_payment_tokens {
+  id         String   @id @default(uuid())
+  customerId String
+  paymentId  String
+  title      String
+  token      String   @db.VarChar(255)
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
 }

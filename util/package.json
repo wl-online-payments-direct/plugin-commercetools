@@ -6,11 +6,11 @@
   "types": "dist/types/index.d.ts",
   "scripts": {
     "build": "tsc",
+    "typecheck": "tsc --noEmit",
     "dev": "tsc -w -preserveWatchOutput",
     "lint": "eslint src/**/*.ts",
     "lint-fix": "eslint --fix src/**/*.ts",
     "pretty": "prettier --write 'src/**/*.ts'",
-    "prepare": "cd .. && husky install util/.husky",
     "precommit": "npm run lint-fix && npm run pretty",
     "prepush": "npm run lint"
   },
@@ -33,5 +33,12 @@
   },
   "engines": {
     "node": ">=18.0.0"
+  },
+  "lint-staged": {
+    "src/**/*.ts":[
+      "npm run lint-fix",
+      "npm run pretty",
+      "npm run typecheck"
+    ]
   }
 }

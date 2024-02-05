@@ -6,17 +6,18 @@
   "types": "dist/types/index.d.ts",
   "scripts": {
     "build": "tsc",
+    "typecheck": "tsc --noEmit",
     "dev": "tsc -w -preserveWatchOutput",
     "lint": "eslint src/**/*.ts",
     "lint-fix": "eslint --fix src/**/*.ts",
     "pretty": "prettier --write 'src/**/*.ts'",
-    "prepare": "cd .. && husky install psp/.husky",
     "precommit": "npm run lint-fix && npm run pretty",
     "prepush": "npm run lint"
   },
   "keywords": [],
   "license": "ISC",
   "dependencies": {
+    "@worldline/ctintegration-util": "^1.0.0",
     "onlinepayments-sdk-nodejs": "^4.16.0"
   },
   "devDependencies": {
@@ -33,5 +34,12 @@
   },
   "engines": {
     "node": ">=18.0.0"
+  },
+  "lint-staged": {
+    "src/**/*.ts":[
+      "npm run lint-fix",
+      "npm run pretty",
+      "npm run typecheck"
+    ]
   }
 }

@@ -1,11 +1,46 @@
 import { ErrorObject } from '@commercetools/platform-sdk';
 
+export interface RedirectModeAPaymentOptions {
+  enabled: boolean;
+  merchantReferenceID: string;
+  paymentOptions: {
+    displayOrder: number;
+    label: string;
+    enabled: boolean;
+    logo: string;
+  }[];
+}
+
+export interface RedirectModeBPaymentOptions {
+  enabled: boolean;
+  logo: string;
+  payButtonTitle: string;
+  merchantReferenceID: string;
+  templateFileName: string;
+}
+
+export interface OnSiteModePaymentOptions {
+  enabled: boolean;
+  logo: string;
+  payButtonTitle: string;
+  payButtonLanguage: string;
+  merchantReferenceID: string;
+  templateFileName: string;
+}
+
 interface ConnectionProps {
   merchantId: string;
   integrator: string;
   apiKey: string;
   apiSecret: string;
   host: string;
+  webhookKey: string;
+  webhookSecret: string;
+  webhookUrl: string;
+  redirectUrl: string;
+  redirectModeA: RedirectModeAPaymentOptions;
+  redirectModeB: RedirectModeBPaymentOptions;
+  onSiteMode: OnSiteModePaymentOptions;
 }
 interface ConfigModes {
   mode: string;
@@ -25,12 +60,11 @@ type CustomObjectsValue = ConfigModes & ConnectionModes;
 export interface CustomObjectsResponse {
   body: {
     data: {
-      customObjects: {
-        results: {
-          container: string;
-          key: string;
-          value: CustomObjectsValue;
-        }[];
+      customObject: {
+        id: string;
+        container: string;
+        key: string;
+        value: CustomObjectsValue;
       };
     };
     errors: ErrorObject[];

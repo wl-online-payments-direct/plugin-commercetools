@@ -4,6 +4,7 @@ import {
   setupGlobalErrorListener,
 } from '@commercetools-frontend/application-shell';
 import loadMessages from '../../load-messages';
+import PaymentProvider from '../../context/payment';
 
 // Here we split up the main (app) bundle with the actual application business logic.
 // Splitting by route is usually recommended and you can potentially have a splitting
@@ -18,7 +19,9 @@ setupGlobalErrorListener();
 
 const EntryPoint = () => (
   <ApplicationShell environment={window.app} applicationMessages={loadMessages}>
-    <AsyncApplicationRoutes />
+    <PaymentProvider>
+      <AsyncApplicationRoutes />
+    </PaymentProvider>
   </ApplicationShell>
 );
 EntryPoint.displayName = 'EntryPoint';

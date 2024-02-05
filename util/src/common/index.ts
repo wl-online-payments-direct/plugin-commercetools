@@ -1,4 +1,4 @@
-import { Request } from '../types';
+import { Action, Request } from '../types';
 
 const hasAuthHeaderOrThrowError = (request: Request) => {
   if (!request.headers.authorization) {
@@ -10,15 +10,14 @@ const hasAuthHeaderOrThrowError = (request: Request) => {
 };
 
 const hasRequiredParamsInBody = (body: { [key: string]: string }) => {
-  // eslint-disable-next-line no-restricted-syntax
-  for (const attribute in body) {
-    if (!body[attribute]) {
+  Object.keys(body).forEach((key) => {
+    if (!body[key]) {
       throw {
-        message: `Required parameter '${attribute}' is missing or empty`,
+        message: `Required parameter '${key}' is missing or empty`,
         statusCode: 400,
       };
     }
-  }
+  });
   // All checked out, request body is OK
   return true;
 };
@@ -26,21 +25,42 @@ const hasRequiredParamsInBody = (body: { [key: string]: string }) => {
 const hasRequiredParamsInQueryString = (queryString: {
   [key: string]: string | string[];
 }) => {
-  // eslint-disable-next-line no-restricted-syntax
-  for (const attribute in queryString) {
-    if (!queryString[attribute]) {
+  Object.keys(queryString).forEach((key) => {
+    if (!queryString[key]) {
       throw {
-        message: `Required query string '${attribute}' is missing or empty`,
+        message: `Required query string '${key}' is missing or empty`,
         statusCode: 400,
       };
     }
-  }
+  });
   // All checked out, data is OK
   return true;
+};
+
+const retry = async (action: Action, maxAttemptCount = 3) => {
+  let retries = maxAttemptCount;
+  while (retries > 0) {
+    retries -= 1;
+    // TODO: will fix this
+    // eslint-disable-next-line no-await-in-loop
+    const { isRetry, data = {} } = await action();
+    if (!isRetry) {
+      return data;
+    }
+  }
+  // If max retries attempted; throw error
+  if (!retries) {
+    throw {
+      statusCode: 500,
+      message: 'Failed to fetch the resource. Max retry attempt failed',
+    };
+  }
+  return null;
 };
 
 export {
   hasAuthHeaderOrThrowError,
   hasRequiredParamsInBody,
   hasRequiredParamsInQueryString,
+  retry,
 };

@@ -6,11 +6,11 @@
   "types": "dist/types/index.d.ts",
   "scripts": {
     "build": "tsc",
+    "typecheck": "tsc --noEmit",
     "dev": "tsc -w -preserveWatchOutput",
     "lint": "eslint src/**/*.ts",
     "lint-fix": "eslint --fix src/**/*.ts",
     "pretty": "prettier --write 'src/**/*.ts'",
-    "prepare": "cd .. && husky install app/.husky",
     "precommit": "npm run lint-fix && npm run pretty",
     "prepush": "npm run lint"
   },
@@ -39,5 +39,12 @@
     "@worldline/ctintegration-db": "^1.0.0",
     "@worldline/ctintegration-psp": "^1.0.0",
     "@worldline/ctintegration-util": "^1.0.0"
+  },
+  "lint-staged": {
+    "src/**/*.ts":[
+      "npm run lint-fix",
+      "npm run pretty",
+      "npm run typecheck"
+    ]
   }
 }

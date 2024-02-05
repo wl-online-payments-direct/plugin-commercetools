@@ -5,6 +5,7 @@ import { GetPaymentStatusPayload } from './types';
 import {
   getConnectionServiceProps,
   getPaymentStatusDBPayload,
+  getPaymentStatusResponseMapper,
 } from './mappers';
 
 export async function getPaymentStatus(payload: GetPaymentStatusPayload) {
@@ -16,10 +17,10 @@ export async function getPaymentStatus(payload: GetPaymentStatusPayload) {
     };
   }
   // Prepare service payload for get payment status
-  const paymentServiceResponse = await getPaymentStatusService(
+  const serviceResponse = await getPaymentStatusService(
     getConnectionServiceProps(await getCustomObjects(payload.storeId)),
     payment.worldlineId,
   );
-  // Response only have status
-  return paymentServiceResponse;
+
+  return getPaymentStatusResponseMapper(serviceResponse, payment);
 }

@@ -1,0 +1,31 @@
+FROM node:18-alpine as server
+
+ENV NODE_ENV development
+
+RUN apk update && apk upgrade
+RUN apk --update --no-cache add curl
+
+WORKDIR /app
+
+RUN mkdir app ct db psp util web
+COPY app/package*.json ./app
+COPY ct/package*.json ./ct
+COPY db/package*.json ./db
+COPY psp/package*.json ./psp
+COPY util/package*.json ./util
+COPY web/package*.json ./web
+COPY package*.json .
+
+RUN npm ci
+
+COPY ./app ./app
+COPY ./ct ./ct
+COPY ./db ./db
+COPY ./psp ./psp
+COPY ./util ./util
+COPY ./web ./web
+
+RUN npm run prisma:generate
+
+EXPOSE 3000
+CMD ["npm", "run", "dev"]

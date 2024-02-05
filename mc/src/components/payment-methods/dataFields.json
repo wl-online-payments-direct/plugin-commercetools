@@ -1,0 +1,39 @@
+{
+  "onSiteMode": [
+    "payButtonTitle",
+    "payButtonLanguage",
+    "merchantReferenceID",
+    "templateFileName",
+    "enabled",
+    "logo"
+  ],
+  "redirectModeA": [
+    "sendOrderData",
+    "merchantReferenceID",
+    "templateFileName",
+    "refresh",
+    "enabled"
+  ],
+  "redirectModeB": [
+    "sendOrderData",
+    "payButtonTitle",
+    "merchantReferenceID",
+    "templateFileName",
+    "groupCards",
+    "enabled",
+    "logo"
+  ],
+  "general": [
+    "paymentOption",
+    "authorizationPaymentOption",
+    "captureConfiguration",
+    "placeOrder",
+    "placeOrderLanguage",
+    "advancedLogging",
+    "force3DSv2",
+    "bgColor",
+    "textColor",
+    "outlineColor",
+    "enabled"
+  ]
+}

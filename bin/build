@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+
+workspaces=""
+for workspace in "$@"
+do
+    workspaces+="--workspace=$workspace "
+done
+
+echo "bin/cli npm run $workspaces build"
+eval "bin/cli npm run $workspaces build"

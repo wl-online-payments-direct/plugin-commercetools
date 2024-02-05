@@ -2,9 +2,9 @@
     "compilerOptions": {
         "incremental": true,
         "rootDir": "src",
-        "module": "ES2022",
-        "target": "ES2022",
-        "moduleResolution": "Bundler",
+        "module": "CommonJS",
+        "target": "ES6",
+        "moduleResolution": "Node",
         "declaration": true,
         "declarationDir": "./dist/types",
         "outDir": "./dist",
@@ -28,7 +28,7 @@
     },
     "include": [
       "src/**/*.ts",
-      "node-bigcommerce.d.ts"
+      "node-bigcommerce.d.ts",
     ],
     "exclude": ["node_modules/**"],
   }

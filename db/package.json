@@ -6,6 +6,7 @@
   "types": "dist/types/index.d.ts",
   "scripts": {
     "build": "tsc",
+    "typecheck": "tsc --noEmit",
     "dev": "tsc -w -preserveWatchOutput",
     "prisma:generate": "prisma generate",
     "prisma:push": "prisma db push",
@@ -13,7 +14,6 @@
     "lint": "eslint src/**/*.ts",
     "lint-fix": "eslint --fix src/**/*.ts",
     "pretty": "prettier --write 'src/**/*.ts'",
-    "prepare": "cd .. && husky install db/.husky",
     "precommit": "npm run lint-fix && npm run pretty",
     "prepush": "npm run lint"
   },
@@ -21,6 +21,7 @@
   "license": "ISC",
   "dependencies": {
     "@prisma/client": "^5.5.0",
+    "@worldline/ctintegration-util": "^1.0.0",
     "dotenv": "^16.3.1"
   },
   "devDependencies": {
@@ -38,5 +39,12 @@
   },
   "engines": {
     "node": ">=18.0.0"
+  },
+  "lint-staged": {
+    "src/**/*.ts": [
+      "npm run lint-fix",
+      "npm run pretty",
+      "npm run typecheck"
+    ]
   }
 }

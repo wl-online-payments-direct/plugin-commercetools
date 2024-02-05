@@ -63,23 +63,6 @@ export async function createPaymentInDB(
   }
 }
 
-export async function getPayment(
-  where: Prisma.paymentsWhereInput,
-): Promise<Payment | null> {
-  try {
-    const payment = await prisma.payments.findFirst({
-      where,
-    });
-    return payment;
-  } catch (error) {
-    throw {
-      message: 'Exception occured for fetching the payment',
-      statusCode: 400,
-      details: (error as { message: string }).message,
-    };
-  }
-}
-
 export async function getIncrementedReference(storeId: string) {
   try {
     const INITIAL_REFERENCE = 100000;
@@ -146,7 +129,43 @@ export async function getIncrementedReference(storeId: string) {
   } catch (error) {
     throw {
       message: 'Failed to increment the payment id',
-      statusCode: 400,
+      statusCode: 500,
+      details: (error as { message: string }).message,
+    };
+  }
+}
+
+export async function getPayment(where: {
+  [key: string]: string;
+}): Promise<Payment | null> {
+  try {
+    const payment = await prisma.payments.findFirst({
+      where: where as unknown as Prisma.paymentsWhereUniqueInput,
+    });
+    return payment;
+  } catch (error) {
+    throw {
+      message: 'Exception occured for fetching the payment',
+      statusCode: 500,
+      details: (error as { message: string }).message,
+    };
+  }
+}
+
+export async function setPayment(
+  where: { [key: string]: string },
+  data: { [key: string]: string },
+): Promise<Payment> {
+  try {
+    const result = await prisma.payments.update({
+      where: where as unknown as Prisma.paymentsWhereUniqueInput,
+      data,
+    });
+    return result;
+  } catch (error) {
+    throw {
+      message: 'Failed to update payment',
+      statusCode: 500,
       details: (error as { message: string }).message,
     };
   }

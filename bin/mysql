@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+
+source ./compose.env
+bin/docker-compose exec db mysql -h"${MYSQL_HOST}" -u"${MYSQL_USER}" -p"${MYSQL_PASSWORD}" "${MYSQL_DATABASE}" "$@"
