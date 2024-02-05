@@ -123,13 +123,10 @@ const OnSiteMode = ({ onSiteMode, handleOnsiteMode, handleLogoUpload }) => {
             </Tooltip>
           </h5>
           <div className="template-section flex">
-            <img className="" src={worldlineLogo} alt={worldlineLogo} />
-            <input
-              className="section-input"
-              value={onSiteMode.logo.value}
-              validation={onSiteMode.logo.validation}
-              type={onSiteMode.logo.type}
-              onChange={(event) => handleLogoUpload(event)}
+            <ImageUpload
+              images={[onSiteMode.logo]}
+              source="onsite"
+              saveImage={(urls) => handleOnsiteMode('logo', urls)}
             />
           </div>
         </div>

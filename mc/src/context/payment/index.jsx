@@ -108,6 +108,70 @@ const PaymentProvider = ({ children }) => {
     }
   };
 
+  const fetchWorldlinePaymentOptions = async (activeStore) => {
+    setLoader(true);
+    if (activeStore?.key) {
+      try {
+        const response = await getPaymentMethods(activeStore?.key);
+        if (response) {
+          const { result } = response;
+          setLoader(false);
+          showToaster({
+            severity: 'success',
+            open: true,
+            message: 'Refresh Payment Methods: Success',
+          });
+          return result;
+        }
+      } catch (err) {
+        setLoader(false);
+        showToaster({
+          severity: 'error',
+          open: true,
+          message: 'Failed to refresh payment methods',
+        });
+        return null;
+      }
+    }
+  };
+
+  const imageUploader = async (files) => {
+    setLoader(true);
+    try {
+      var formdata = new FormData();
+      for (let file of files) {
+        formdata.append('images', file, file.name);
+      }
+      const response = await uploadImages(formdata);
+      if (response) {
+        const { result, statusCode } = response;
+        if (statusCode === 200) {
+          setLoader(false);
+          showToaster({
+            severity: 'success',
+            open: true,
+            message: 'Image uploaded',
+          });
+          return result;
+        } else {
+          showToaster({
+            severity: 'error',
+            open: true,
+            message: response?.message,
+          });
+        }
+      }
+    } catch (err) {
+      console.error('Error saving image', err);
+      showToaster({
+        severity: 'error',
+        open: true,
+        message: 'Failed to upload Image',
+      });
+      setLoader(false);
+    }
+  };
+
   useEffect(async () => {
     const response = await fetchCustomObjects(activeStore);
     setCustomObject(response);
@@ -140,6 +204,8 @@ const PaymentProvider = ({ children }) => {
         setActiveStore,
         setCustomObject,
         saveCustomObject,
+        fetchWorldlinePaymentOptions,
+        imageUploader,
         customObject,
         activeStore,
         stores,

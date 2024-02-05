@@ -49,7 +49,8 @@
       "validation": "required",
       "criteria": [],
       "tooltip": "Max size 5MB, max dimensions 200x80px,supported jpg,svg,png",
-      "value": ""
+      "value": [],
+      "alt": "Display logo for onsite payment method"
     },
     "enabled": {
       "key": "onSiteMode_enabled",
@@ -177,7 +178,8 @@
       "type": "file",
       "validation": "required",
       "criteria": [],
-      "value": ""
+      "value": [],
+      "alt": "Display logo for redirect payment method"
     },
     "payButtonTitle": {
       "key": "redirectModeB_payButtonTitle",

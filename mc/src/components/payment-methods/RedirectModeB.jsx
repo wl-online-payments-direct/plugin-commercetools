@@ -64,13 +64,10 @@ const RedirectModeB = ({
         <div className="section-wrapper">
           <h5 className="section-header">{redirectModeB.logo.label}</h5>
           <div className="template-section flex">
-            <img className="" src={worldlineLogo} alt={worldlineLogo} />
-            <input
-              className="section-input"
-              value={redirectModeB.logo.value}
-              validation={redirectModeB.logo.validation}
-              type={redirectModeB.logo.type}
-              onChange={(event) => handleLogoUpload(event)}
+            <ImageUpload
+              images={[redirectModeB.logo]}
+              source="redirectModeB"
+              saveImage={(url) => handleRedirectModeB('logo', url)}
             />
           </div>
         </div>
