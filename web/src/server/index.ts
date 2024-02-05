@@ -50,7 +50,9 @@ const createServer = () =>
         }
       } else if (
         isGetRequest(method) &&
-        filePath.includes(process.env.DIR_IMAGE_UPLOAD as string)
+        filePath.includes(
+          (process.env.DIR_IMAGE_UPLOAD as string) || 'uploadedImages',
+        )
       ) {
         // Serve the static file
         fs.readFile(filePath, (err, content) => {
