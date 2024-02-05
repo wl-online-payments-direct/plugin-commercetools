@@ -1,4 +1,5 @@
 import WorldLineSDK from 'onlinepayments-sdk-nodejs';
+import { logger } from '@worldline/ctintegration-util';
 import { ConnectOpts } from '../types';
 
 const connectService = async (props: ConnectOpts) => {
@@ -8,6 +9,7 @@ const connectService = async (props: ConnectOpts) => {
   return WorldLineSDK.init({
     integrator, // used for identification in logs
     host, // Note: Use the endpoint without the /v2/ part here.
+    logger: logger(),
     enableLogging,
     apiKeyId: apiKey,
     secretApiKey: apiSecret,
