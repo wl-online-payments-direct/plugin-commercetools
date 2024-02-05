@@ -24,7 +24,7 @@ export async function getDBOrders(
         ...(query.orderId ? { orderId: query.orderId } : {}),
       },
     };
-    const [totalCount, data] = await prisma.$transaction([
+    const [totalCount, data] = await Promise.all([
       prisma.payments.count(params),
       prisma.payments.findMany({
         skip,
@@ -41,8 +41,8 @@ export async function getDBOrders(
     };
   } catch (error) {
     throw {
-      message: 'Failed to fetch list of orders',
-      statusCode: 400,
+      message: 'Failed to fetch orders list',
+      statusCode: 500,
       details: (error as { message: string }).message,
     };
   }
