@@ -4,12 +4,12 @@ import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 import Button from '@mui/material/Button';
 import { PaymentContext } from '../../context/payment';
 import ImageIcon from '@mui/icons-material/Image';
-import CONFIG from '../../../configuration';
 import { CloseIcon } from '@commercetools-uikit/icons';
 import Modal from '@mui/material/Modal';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Alert from '@mui/material/Alert';
+import { apiHost } from '../../constants';
 
 const ImageUpload = ({ images, source, saveImage, handleClose }) => {
   const [imagesData, setImgesData] = useState(images);
@@ -18,7 +18,6 @@ const ImageUpload = ({ images, source, saveImage, handleClose }) => {
   const handleOpenModal = () => setOpenmodal(true);
   const handleCloseModal = () => setOpenmodal(false);
   const { setLoader, imageUploader } = useContext(PaymentContext);
-  const { host } = CONFIG;
 
   const handleImageUpload = async (files) => {
     if (!files) {
@@ -30,12 +29,12 @@ const ImageUpload = ({ images, source, saveImage, handleClose }) => {
     if (res && res.length >= 0) {
       setImgesData(
         res.map((img) => {
-          return { value: `${host}/${img}` };
+          return { value: `${apiHost}/${img}` };
         })
       );
 
       if (source !== 'modal') {
-        saveImage(res.map((img) => `${host}/${img}`));
+        saveImage(res.map((img) => `${apiHost}/${img}`));
       }
     }
     setDimError(false);
@@ -47,16 +46,10 @@ const ImageUpload = ({ images, source, saveImage, handleClose }) => {
     if (files && files.length) {
       const reader = new FileReader();
 
-      //Read the contents of Image File.
       reader.readAsDataURL(files[0]);
       reader.onload = function (e) {
-        //Initiate the JavaScript Image object.
         const image = new Image();
-
-        //Set the Base64 string return from FileReader as source.
         image.src = e.target.result;
-
-        //Validate the File Height and Width.
         image.onload = function () {
           const height = this.height;
           const width = this.width;

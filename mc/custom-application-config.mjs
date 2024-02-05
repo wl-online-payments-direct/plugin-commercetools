@@ -7,6 +7,7 @@ const config = {
   name: 'Worldline',
   entryPointUriPath: '${env:CTP_MC_APPLICATION_ENTRY_POINT}',
   cloudIdentifier: '${env:CTP_MC_CLOUD_IDENTIFIER}',
+  apiHost: '${env:CTP_MC_APPLICATION_API_HOST}',
   env: {
     development: {
       initialProjectKey: 'worldline',
