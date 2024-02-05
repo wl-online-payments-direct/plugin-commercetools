@@ -1,6 +1,5 @@
 import { fetcher } from '../services/custom-api-request';
 import CONFIG from '../../configuration';
-import { apiHost } from '../constants';
 const { CONTAINER_NAME } = CONFIG;
 
 export const createCustomObject = async (payload, projectKey) => {
@@ -52,7 +51,7 @@ export const getStores = async (projectKey) => {
   }
 };
 
-export const getPaymentMethods = async (storeId) => {
+export const getPaymentMethods = async (storeId, apiHost) => {
   try {
     const response = await fetch(
       `${apiHost}/payment/products?storeId=${storeId}&countryCode=UK&currencyCode=EUR`
@@ -63,7 +62,7 @@ export const getPaymentMethods = async (storeId) => {
   }
 };
 
-export const uploadImages = async (formdata) => {
+export const uploadImages = async (formdata, apiHost) => {
   try {
     const response = await fetch(`${apiHost}/upload/images`, {
       method: 'POST',

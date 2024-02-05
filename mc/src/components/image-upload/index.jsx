@@ -9,7 +9,7 @@ import Modal from '@mui/material/Modal';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Alert from '@mui/material/Alert';
-import { apiHost } from '../../constants';
+import { useApplicationContext } from '@commercetools-frontend/application-shell-connectors';
 
 const ImageUpload = ({ images = [], source, saveImage, handleClose }) => {
   const [imagesData, setImagesData] = useState([...new Set(images)]);
@@ -19,6 +19,7 @@ const ImageUpload = ({ images = [], source, saveImage, handleClose }) => {
   const handleCloseModal = () => setOpenmodal(false);
   const [deleteUrl, setDeleteUrl] = useState('');
   const { setLoader, imageUploader } = useContext(PaymentContext);
+  const apiHost = useApplicationContext((context) => context.environment.apiHost);
 
   const handleImageUpload = async (files) => {
     if (!files) {
