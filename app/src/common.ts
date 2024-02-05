@@ -118,10 +118,7 @@ export async function orderPaymentHandler(payload: PaymentPayload) {
         };
       }
 
-      await setPayment(
-        { id: dbPayment.id },
-        { status: mappedStatus, state: 'PROCESSING' },
-      );
+      await setPayment({ id: dbPayment.id }, { state: 'PROCESSING' });
 
       // TODO: What happens when one of the webhook arrive out of sync?
       // E.g. a payment got authorized and then captured, but the webhooks reached in reverse order
@@ -135,6 +132,7 @@ export async function orderPaymentHandler(payload: PaymentPayload) {
           ? { orderId: result.order.id, worldlineId: payload?.payment?.id }
           : { worldlineId: payload?.payment?.id }),
         state: 'DEFAULT',
+        status: mappedStatus,
       });
 
       //  Should save the token only:
