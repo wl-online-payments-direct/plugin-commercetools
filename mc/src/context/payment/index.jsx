@@ -3,7 +3,9 @@ import {
   getStores,
   getCustomObject,
   createCustomObject,
-} from '../../ct-methods/customObject';
+  getPaymentMethods,
+  uploadImages,
+} from '../../ct-methods';
 import { useApplicationContext } from '@commercetools-frontend/application-shell-connectors';
 import Snackbar from '@mui/material/Snackbar';
 import Alert from '@mui/material/Alert';
@@ -28,6 +30,7 @@ const PaymentProvider = ({ children }) => {
     transition: Slide,
     severity: 'success',
     message: '',
+    autoHideDuration: 3000,
   });
   const { vertical, horizontal, open, transition } = toaster;
 
@@ -174,7 +177,14 @@ const PaymentProvider = ({ children }) => {
 
   useEffect(async () => {
     const response = await fetchCustomObjects(activeStore);
+    const paymentOptions = await fetchWorldlinePaymentOptions(activeStore);
+    if (paymentOptions) {
+      response.value.test.redirectModeA.paymentOptions = paymentOptions;
+      response.value.live.redirectModeA.paymentOptions = paymentOptions;
+    }
     setCustomObject(response);
+    setLoader(false);
+    hideToaster();
   }, [activeStore]);
 
   const showToaster = async (options) => {
@@ -223,7 +233,7 @@ const PaymentProvider = ({ children }) => {
         anchorOrigin={{ vertical, horizontal }}
         open={open}
         key={vertical + horizontal}
-        autoHideDuration={6000}
+        autoHideDuration={3000}
         TransitionComponent={transition}
       >
         <Alert

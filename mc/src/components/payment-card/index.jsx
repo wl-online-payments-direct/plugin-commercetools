@@ -1,10 +1,18 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import Card from '@commercetools-uikit/card';
 import ToggleInput from '@commercetools-uikit/toggle-input';
 import './style.css';
 import { GearIcon } from '@commercetools-uikit/icons';
+import Modal from '@mui/material/Modal';
+import Box from '@mui/material/Box';
+import Typography from '@mui/material/Typography';
+import ImageUpload from '../image-upload';
+import { CloseIcon } from '@commercetools-uikit/icons';
 
-const PaymentCard = ({ logo }) => {
+const PaymentCard = ({ logo, label, enabled, handlePaymentOptionUpdate }) => {
+  const [open, setOpen] = useState(false);
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
   return (
     <>
       <Card theme="light" type="raised" className="payment-options-card">

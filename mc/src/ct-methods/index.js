@@ -1,7 +1,7 @@
 import { fetcher } from '../services/custom-api-request';
 import CONFIG from '../../configuration';
 
-const { CONTAINER_NAME, CONTAINER_KEY } = CONFIG;
+const { CONTAINER_NAME, host } = CONFIG;
 
 export const createCustomObject = async (payload, projectKey) => {
   try {
@@ -49,5 +49,30 @@ export const getStores = async (projectKey) => {
     return stores;
   } catch (error) {
     console.error('Error custom object:', error.message);
+  }
+};
+
+export const getPaymentMethods = async (storeId) => {
+  try {
+    const response = await fetch(
+      `${host}/payment/products?storeId=${storeId}&countryCode=UK&currencyCode=EUR`
+    );
+    return response.json();
+  } catch (error) {
+    console.error('Error custom object:', error.message);
+  }
+};
+
+export const uploadImages = async (formdata) => {
+  try {
+    const response = await fetch(`${host}/upload/images`, {
+      method: 'POST',
+      body: formdata,
+      redirect: 'follow',
+    });
+
+    return response.json();
+  } catch (error) {
+    console.error('Error uploading image:', error.message);
   }
 };

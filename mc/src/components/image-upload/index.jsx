@@ -53,10 +53,8 @@ const ImageUpload = ({ images, source, saveImage, handleClose }) => {
       image.onload = function () {
         const height = this.height;
         const width = this.width;
-        if(height > 200 || width > 80){
-
-        } else if(height > 80 && width > 200) {
-
+        if (height > 200 || width > 80) {
+        } else if (height > 80 && width > 200) {
         }
         console.log('Image Height: ' + height + ' Width: ' + width);
       };
@@ -118,7 +116,6 @@ const ImageUpload = ({ images, source, saveImage, handleClose }) => {
           Upload a file
           <input
             type="file"
-            id="upload-file"
             className="hidden-input"
             onChange={handleFileChange}
             accept="image/png, image/gif, image/jpeg"

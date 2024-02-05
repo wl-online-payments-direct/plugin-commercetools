@@ -1,6 +1,5 @@
 import React from 'react';
 import './style.css';
-import PaymentCard from '../payment-card';
 import CheckboxInput from '@commercetools-uikit/checkbox-input';
 import SecondaryButton from '@commercetools-uikit/secondary-button';
 import ToggleInput from '@commercetools-uikit/toggle-input';
@@ -12,6 +11,7 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import TextInput from '@commercetools-uikit/text-input';
 import InfoIcon from '@mui/icons-material/Info';
 import Tooltip from '@commercetools-uikit/tooltip';
+import PaymentOptions from './PaymentOptions';
 
 const RedirectModeA = ({
   redirectModeA,
@@ -27,14 +27,11 @@ const RedirectModeA = ({
         aria-controls="panel1a-content"
       >
         <Typography>
-          <p>
-            Redirect Mode A: Payment Method selection <b>before </b>
-            redirection
-          </p>
+          Redirect Mode A: Payment Method selection <b>before </b>
+          redirection
         </Typography>
         <ToggleInput
           size={'big'}
-          value={redirectModeA.enabled.value}
           isChecked={redirectModeA.enabled.value}
           onChange={(e) => handleRedirectModeA('enabled', e.target.checked)}
         />
@@ -43,7 +40,7 @@ const RedirectModeA = ({
         <p className="sub-title">Single payment buttons selected on site</p>
         <div className="relative">
           <span className="float-right">
-            <p>
+            <div>
               Send Order Data
               <Tooltip
                 placement="top"
@@ -51,9 +48,8 @@ const RedirectModeA = ({
               >
                 <InfoIcon />
               </Tooltip>
-            </p>
+            </div>
             <CheckboxInput
-              value={redirectModeA.sendOrderData.value}
               onChange={(e) =>
                 handleRedirectModeA('sendOrderData', e.target.checked)
               }
@@ -61,27 +57,20 @@ const RedirectModeA = ({
             />
           </span>
         </div>
-        <SecondaryButton
-          label={redirectModeA.refresh.label}
-          onClick={() => fetchPaymentMethods()}
-        >
+        <div>
+          <SecondaryButton
+            label={redirectModeA.refresh.label}
+            onClick={() => fetchPaymentMethods()}
+          ></SecondaryButton>
           <Tooltip placement="top" title={redirectModeA.refresh.tooltip}>
             <InfoIcon />
           </Tooltip>
-        </SecondaryButton>
+        </div>
 
-        <ol className="payment-options">
-          {redirectModeA.paymentOptions &&
-            Object.keys(redirectModeA.paymentOptions).map((option, index) => (
-              <li key={`payment-options-${index}`}>
-                <PaymentCard
-                  logo={redirectModeA.paymentOptions[option].label}
-                  active={redirectModeA.paymentOptions[option].enabled}
-                  handleChange={handleOptionUpdate}
-                />
-              </li>
-            ))}
-        </ol>
+        <PaymentOptions
+          methods={redirectModeA.paymentOptions}
+          handleOptionUpdate={handleOptionUpdate}
+        />
         <div className="section-wrapper">
           <h5 className="section-header">
             {redirectModeA.merchantReferenceID.label}
@@ -96,7 +85,6 @@ const RedirectModeA = ({
             <TextInput
               className="section-input"
               value={redirectModeA.merchantReferenceID.value}
-              validation={redirectModeA.merchantReferenceID.validation}
               type={redirectModeA.merchantReferenceID.type}
               placeholder={redirectModeA.merchantReferenceID.placeholder}
               onChange={(e) =>
@@ -113,7 +101,6 @@ const RedirectModeA = ({
             <TextInput
               className="section-input"
               value={redirectModeA.templateFileName.value}
-              validation={redirectModeA.templateFileName.validation}
               type={redirectModeA.templateFileName.type}
               onChange={(e) =>
                 handleRedirectModeA('templateFileName', e.target.value)

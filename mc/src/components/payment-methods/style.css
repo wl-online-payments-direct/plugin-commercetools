@@ -1,4 +1,4 @@
-.payment-options li {
+.payment-options .pay-option {
     width: 170px;
     text-align: center;
     margin: 2rem 1rem;
@@ -9,11 +9,8 @@
 }
 
 .payment-options {
-    list-style: none;
     display: flex;
     flex-flow: wrap;
-    clear: both;
-    padding: 0px;
 }
 
 .payment-section-wrapper {
