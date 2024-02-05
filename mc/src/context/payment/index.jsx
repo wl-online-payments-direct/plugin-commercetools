@@ -138,7 +138,7 @@ const PaymentProvider = ({ children }) => {
     }
   };
 
-  const imageUploader = async (files) => {
+  const imageUploader = async (files, toasterFlag) => {
     setLoader(true);
     try {
       var formdata = new FormData();
@@ -150,11 +150,12 @@ const PaymentProvider = ({ children }) => {
         const { result, statusCode } = response;
         if (statusCode === 200) {
           setLoader(false);
-          showToaster({
-            severity: 'success',
-            open: true,
-            message: 'Image uploaded',
-          });
+          if (toasterFlag)
+            showToaster({
+              severity: 'success',
+              open: true,
+              message: 'Image uploaded',
+            });
           return result;
         } else {
           showToaster({

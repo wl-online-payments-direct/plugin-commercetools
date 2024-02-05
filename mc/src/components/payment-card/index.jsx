@@ -55,8 +55,7 @@ const PaymentCard = ({ logo, label, enabled, handlePaymentOptionUpdate }) => {
             <ImageUpload
               images={[
                 {
-                  src: logo,
-                  alt: label,
+                  value: logo,
                 },
               ]}
               source="modal"

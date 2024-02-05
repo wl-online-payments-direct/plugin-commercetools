@@ -21,6 +21,7 @@ const PaymentMethods = () => {
     customObject,
     fetchWorldlinePaymentOptions,
     activeStore,
+    hideToaster,
   } = useContext(PaymentContext);
 
   const [state, dispatch] = useReducer(reducer, initialState);
@@ -53,6 +54,10 @@ const PaymentMethods = () => {
       type: 'ONSITE-MODE',
       value: payload,
     });
+
+    setTimeout(() => {
+      hideToaster();
+    }, 3000);
   };
 
   const handleRedirectModeA = (field, value) => {
@@ -98,6 +103,10 @@ const PaymentMethods = () => {
       type: 'REDIRECT-MODE-B',
       value: payload,
     });
+
+    setTimeout(() => {
+      hideToaster();
+    }, 3000);
   };
 
   const handleCommonSettings = (field, value) => {

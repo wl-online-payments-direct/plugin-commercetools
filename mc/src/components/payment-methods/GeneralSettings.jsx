@@ -5,7 +5,7 @@ import RadioField from '@commercetools-uikit/radio-field';
 import RadioInput from '@commercetools-uikit/radio-input';
 import TextInput from '@commercetools-uikit/text-input';
 import InfoIcon from '@mui/icons-material/Info';
-import Tooltip from '@commercetools-uikit/tooltip';
+import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 import Select from '@mui/material/Select';
 import { DownloadIcon } from '@commercetools-uikit/icons';

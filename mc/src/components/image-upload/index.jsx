@@ -9,68 +9,73 @@ import { CloseIcon } from '@commercetools-uikit/icons';
 import Modal from '@mui/material/Modal';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
+import Alert from '@mui/material/Alert';
 
 const ImageUpload = ({ images, source, saveImage, handleClose }) => {
-  console.log(source, 'images', images);
   const [imagesData, setImgesData] = useState(images);
   const [openModal, setOpenmodal] = useState(false);
+  const [dimError, setDimError] = useState(false);
   const handleOpenModal = () => setOpenmodal(true);
   const handleCloseModal = () => setOpenmodal(false);
-  const { setLoader, imageUploader, hideToaster } = useContext(PaymentContext);
+  const { setLoader, imageUploader } = useContext(PaymentContext);
   const { host } = CONFIG;
 
   const handleImageUpload = async (files) => {
     if (!files) {
       return;
     }
-    const res = await imageUploader(files);
+    const toasterFlag = source !== 'modal' ? true : false;
+    const res = await imageUploader(files, toasterFlag);
     setLoader(false);
     if (res && res.length >= 0) {
-      setImgesData(res);
-      console.log('Upload', res);
+      setImgesData(
+        res.map((img) => {
+          return { value: `${host}/${img}` };
+        })
+      );
+
       if (source !== 'modal') {
         saveImage(res.map((img) => `${host}/${img}`));
       }
     }
-    setTimeout(() => {
-      hideToaster();
-    }, 3000);
+    setDimError(false);
   };
 
-  const checkDimension = (files) => {
-    const reader = new FileReader();
+  const handleFileChange = async (e) => {
+    setDimError(false);
+    let files = e.target.files;
+    if (files && files.length) {
+      const reader = new FileReader();
 
-    //Read the contents of Image File.
-    reader.readAsDataURL(files[0]);
-    reader.onload = function (e) {
-      //Initiate the JavaScript Image object.
-      const image = new Image();
+      //Read the contents of Image File.
+      reader.readAsDataURL(files[0]);
+      reader.onload = function (e) {
+        //Initiate the JavaScript Image object.
+        const image = new Image();
 
-      //Set the Base64 string return from FileReader as source.
-      image.src = e.target.result;
+        //Set the Base64 string return from FileReader as source.
+        image.src = e.target.result;
 
-      //Validate the File Height and Width.
-      image.onload = function () {
-        const height = this.height;
-        const width = this.width;
-        if (height > 200 || width > 80) {
-        } else if (height > 80 && width > 200) {
-        }
-        console.log('Image Height: ' + height + ' Width: ' + width);
+        //Validate the File Height and Width.
+        image.onload = function () {
+          const height = this.height;
+          const width = this.width;
+          if (
+            (height <= 2000 && width <= 3000) ||
+            (width <= 2000 && height <= 3000)
+          ) {
+            handleImageUpload(files);
+          } else {
+            setDimError(true);
+          }
+        };
       };
-    };
-  };
-
-  const handleFileChange = (e) => {
-    console.log('e', e.target.files);
-    if (e.target.files) {
-      checkDimension(e.target.files);
-      // handleImageUpload(e.target.files);
     }
   };
 
   const handleSaveImage = () => {
-    // saveImage(imgData.src);
+    saveImage(imagesData[0].value);
+    setDimError(false);
     handleClose();
   };
 
@@ -84,7 +89,7 @@ const ImageUpload = ({ images, source, saveImage, handleClose }) => {
         {url ? (
           <div className="image-container">
             <img src={url} alt={url} className="logo-img" />
-            {source !== 'modal' && (
+            {source !== 'modal' && url.length > 0 && (
               <span className="close-button" onClick={handleOpenModal}>
                 <CloseIcon />
               </span>
@@ -100,13 +105,16 @@ const ImageUpload = ({ images, source, saveImage, handleClose }) => {
   return (
     <div>
       <div className="image-upload">
-        {source === 'modal' ? (
-          <ImageContainer {...imagesData[0]} />
-        ) : (
-          imagesData.map((image, key) => (
+        <div>
+          {imagesData.map((image, key) => (
             <ImageContainer key={`image-${key}`} {...image} />
-          ))
-        )}
+          ))}
+          {dimError && (
+            <div>
+              <Alert severity="error">{'Upload logo maximum 200x80px.'}</Alert>
+            </div>
+          )}
+        </div>
         <Button
           component="label"
           variant="contained"
@@ -116,6 +124,7 @@ const ImageUpload = ({ images, source, saveImage, handleClose }) => {
           Upload a file
           <input
             type="file"
+            id="upload-file"
             className="hidden-input"
             onChange={handleFileChange}
             accept="image/png, image/gif, image/jpeg"
@@ -134,7 +143,10 @@ const ImageUpload = ({ images, source, saveImage, handleClose }) => {
           <Button
             className="cancel-btn"
             variant="soft"
-            onClick={() => handleClose()}
+            onClick={() => {
+              setDimError(false);
+              handleClose();
+            }}
           >
             Cancel
           </Button>
@@ -143,13 +155,22 @@ const ImageUpload = ({ images, source, saveImage, handleClose }) => {
 
       <Modal
         open={openModal}
-        onClose={handleCloseModal}
+        onClose={() => {
+          setDimError(false);
+          handleCloseModal();
+        }}
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
         className="payment-logo-wrapper"
       >
         <Box className="payment-logo-modal">
-          <span className="close-button" onClick={handleCloseModal}>
+          <span
+            className="close-button"
+            onClick={() => {
+              setDimError(false);
+              handleCloseModal();
+            }}
+          >
             <CloseIcon />
           </span>
           <Typography id="modal-modal-title" variant="h6" component="h2">
@@ -160,6 +181,8 @@ const ImageUpload = ({ images, source, saveImage, handleClose }) => {
               className="save-btn"
               variant="solid"
               onClick={() => {
+                setDimError(false);
+                saveImage([]);
                 handleCloseModal();
               }}
             >
@@ -168,7 +191,10 @@ const ImageUpload = ({ images, source, saveImage, handleClose }) => {
             <Button
               className="cancel-btn"
               variant="soft"
-              onClick={handleCloseModal}
+              onClick={() => {
+                setDimError(false);
+                handleCloseModal;
+              }}
             >
               Cancel
             </Button>
