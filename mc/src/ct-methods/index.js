@@ -68,7 +68,6 @@ export const uploadImages = async (formdata) => {
     const response = await fetch(`${apiHost}/upload/images`, {
       method: 'POST',
       body: formdata,
-      redirect: 'follow',
     });
 
     return response.json();

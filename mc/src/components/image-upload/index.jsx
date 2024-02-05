@@ -11,12 +11,13 @@ import Typography from '@mui/material/Typography';
 import Alert from '@mui/material/Alert';
 import { apiHost } from '../../constants';
 
-const ImageUpload = ({ images, source, saveImage, handleClose }) => {
-  const [imagesData, setImgesData] = useState(images);
+const ImageUpload = ({ images = [], source, saveImage, handleClose }) => {
+  const [imagesData, setImagesData] = useState([...new Set(images)]);
   const [openModal, setOpenmodal] = useState(false);
   const [dimError, setDimError] = useState(false);
   const handleOpenModal = () => setOpenmodal(true);
   const handleCloseModal = () => setOpenmodal(false);
+  const [deleteUrl, setDeleteUrl] = useState('');
   const { setLoader, imageUploader } = useContext(PaymentContext);
 
   const handleImageUpload = async (files) => {
@@ -27,14 +28,11 @@ const ImageUpload = ({ images, source, saveImage, handleClose }) => {
     const res = await imageUploader(files, toasterFlag);
     setLoader(false);
     if (res && res.length >= 0) {
-      setImgesData(
-        res.map((img) => {
-          return { value: `${apiHost}/${img}` };
-        })
-      );
-
       if (source !== 'modal') {
-        saveImage(res.map((img) => `${apiHost}/${img}`));
+        setImagesData(imagesData.concat(`${apiHost}/${res[0]}`));
+        saveImage(imagesData.concat(`${apiHost}/${res[0]}`));
+      } else {
+        setImagesData([`${apiHost}/${res[0]}`]);
       }
     }
     setDimError(false);
@@ -54,8 +52,8 @@ const ImageUpload = ({ images, source, saveImage, handleClose }) => {
           const height = this.height;
           const width = this.width;
           if (
-            (height <= 2000 && width <= 3000) ||
-            (width <= 2000 && height <= 3000)
+            (height <= 200 && width <= 80) ||
+            (width <= 200 && height <= 80)
           ) {
             handleImageUpload(files);
           } else {
@@ -67,30 +65,34 @@ const ImageUpload = ({ images, source, saveImage, handleClose }) => {
   };
 
   const handleSaveImage = () => {
-    saveImage(imagesData[0].value);
+    saveImage(imagesData[0]);
     setDimError(false);
     handleClose();
   };
 
   useEffect(() => {
-    setImgesData(images);
+    setImagesData(images);
   }, [images]);
 
-  const ImageContainer = ({ value: url }) => {
+  const ImageContainer = ({ url }) => {
     return (
       <div className="image-wrapper">
         {url ? (
           <div className="image-container">
             <img src={url} alt={url} className="logo-img" />
-            {source !== 'modal' && url.length > 0 && (
-              <span className="close-button" onClick={handleOpenModal}>
+            {source !== 'modal' && (
+              <span
+                className="close-button"
+                onClick={() => {
+                  setDeleteUrl(url);
+                  handleOpenModal();
+                }}
+              >
                 <CloseIcon />
               </span>
             )}
           </div>
-        ) : (
-          <ImageIcon className="logo-placeholder" sx={{ opacity: 0.2 }} />
-        )}
+        ) : null}
       </div>
     );
   };
@@ -98,16 +100,20 @@ const ImageUpload = ({ images, source, saveImage, handleClose }) => {
   return (
     <div>
       <div className="image-upload">
-        <div>
-          {imagesData.map((image, key) => (
-            <ImageContainer key={`image-${key}`} {...image} />
-          ))}
-          {dimError && (
-            <div>
-              <Alert severity="error">{'Upload logo maximum 200x80px.'}</Alert>
-            </div>
-          )}
-        </div>
+        {imagesData && imagesData.length > 0 ? (
+          imagesData.map((image, key) => (
+            <ImageContainer key={`image-${key}`} url={image} />
+          ))
+        ) : (
+          <ImageIcon className="logo-placeholder" sx={{ opacity: 0.2 }} />
+        )}
+      </div>
+      <div className="logo-actions">
+        {dimError && (
+          <div style={{ margin: '10px' }}>
+            <Alert severity="error">{'Upload logo maximum 200x80px.'}</Alert>
+          </div>
+        )}
         <Button
           component="label"
           variant="contained"
@@ -175,7 +181,7 @@ const ImageUpload = ({ images, source, saveImage, handleClose }) => {
               variant="solid"
               onClick={() => {
                 setDimError(false);
-                saveImage([]);
+                saveImage(imagesData.splice(imagesData.indexOf(deleteUrl), 1));
                 handleCloseModal();
               }}
             >
