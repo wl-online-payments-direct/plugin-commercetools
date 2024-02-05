@@ -28,25 +28,30 @@ const PaymentMethods = () => {
 
   const handleOnsiteMode = (field, value) => {
     const payload = { ...state.onSiteMode };
-    payload[field] = {
-      ...payload[field],
-      value: value,
-    };
 
-    if (field === 'payButtonLanguage') {
+    if (field === 'logo') {
+      const imgSet = new Set(payload.logo.value.concat(value));
+      payload['logo'] = {
+        ...payload['logo'],
+        value: [...imgSet],
+      };
+    } else if (field === 'payButtonLanguage') {
       payload['payButtonTitle'] = {
         ...payload['payButtonTitle'],
         value: state.onSiteMode['payButtonTitle'].values[value],
       };
-    }
-
-    if (field === 'payButtonTitle') {
+    } else if (field === 'payButtonTitle') {
       payload['payButtonTitle'] = {
         ...payload['payButtonTitle'],
         values: {
           ...state.onSiteMode['payButtonTitle'].values,
           [state.onSiteMode['payButtonLanguage'].value]: value,
         },
+      };
+    } else {
+      payload[field] = {
+        ...payload[field],
+        value: value,
       };
     }
 
@@ -77,25 +82,30 @@ const PaymentMethods = () => {
 
   const handleRedirectModeB = (field, value) => {
     const payload = { ...state.redirectModeB };
-    payload[field] = {
-      ...payload[field],
-      value: value,
-    };
 
-    if (field === 'payButtonLanguage') {
+    if (field === 'logo') {
+      const imgSet = new Set(payload.logo.value.concat(value));
+      payload['logo'] = {
+        ...payload['logo'],
+        value: [...imgSet],
+      };
+    } else if (field === 'payButtonLanguage') {
       payload['payButtonTitle'] = {
         ...payload['payButtonTitle'],
         value: state.redirectModeB['payButtonTitle'].values[value],
       };
-    }
-
-    if (field === 'payButtonTitle') {
+    } else if (field === 'payButtonTitle') {
       payload['payButtonTitle'] = {
         ...payload['payButtonTitle'],
         values: {
           ...state.redirectModeB['payButtonTitle'].values,
           [state.redirectModeB['payButtonLanguage'].value]: value,
         },
+      };
+    } else {
+      payload[field] = {
+        ...payload[field],
+        value: value,
       };
     }
 

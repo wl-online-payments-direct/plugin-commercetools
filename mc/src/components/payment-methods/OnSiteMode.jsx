@@ -117,7 +117,7 @@ const OnSiteMode = ({ onSiteMode, handleOnsiteMode }) => {
           </h5>
           <div className="template-section flex">
             <ImageUpload
-              images={[onSiteMode.logo]}
+              images={onSiteMode.logo.value}
               source="onsite"
               saveImage={(urls) => handleOnsiteMode('logo', urls)}
             />
