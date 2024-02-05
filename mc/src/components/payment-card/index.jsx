@@ -53,7 +53,7 @@ const PaymentCard = ({ logo, label, enabled, handlePaymentOptionUpdate }) => {
               {label}
             </Typography>
             <ImageUpload
-              src={logo}
+              value={logo}
               alt={label}
               source="modal"
               saveImage={(url) => handlePaymentOptionUpdate(label, 'logo', url)}

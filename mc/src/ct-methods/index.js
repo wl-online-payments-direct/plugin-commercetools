@@ -63,15 +63,12 @@ export const getPaymentMethods = async (storeId) => {
   }
 };
 
-export const uploadImages = async (file) => {
+export const uploadImages = async (formdata) => {
   try {
     const response = await fetch(`${host}/upload/images`, {
       method: 'POST',
-      body: file,
-      headers: {
-        'Content-Type': file.type,
-        'Content-Length': `${file.size}`,
-      },
+      body: formdata,
+      redirect: 'follow',
     });
 
     return response.json();

@@ -59,8 +59,7 @@ const RedirectModeB = ({ redirectModeB, handleRedirectModeB }) => {
           <h5 className="section-header">{redirectModeB.logo.label}</h5>
           <div className="template-section flex">
             <ImageUpload
-              src={redirectModeB.logo.value}
-              alt={redirectModeB.logo.alt}
+              {...redirectModeB.logo}
               source="redirectModeB"
               saveImage={(url) => handleRedirectModeB('logo', url)}
             />

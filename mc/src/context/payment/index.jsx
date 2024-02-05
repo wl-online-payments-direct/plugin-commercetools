@@ -5,7 +5,7 @@ import {
   createCustomObject,
   getPaymentMethods,
   uploadImages,
-} from '../../ct-methods/customObject';
+} from '../../ct-methods';
 import { useApplicationContext } from '@commercetools-frontend/application-shell-connectors';
 import Snackbar from '@mui/material/Snackbar';
 import Alert from '@mui/material/Alert';
@@ -30,6 +30,7 @@ const PaymentProvider = ({ children }) => {
     transition: Slide,
     severity: 'success',
     message: '',
+    autoHideDuration: 3000,
   });
   const { vertical, horizontal, open, transition } = toaster;
 
@@ -140,16 +141,26 @@ const PaymentProvider = ({ children }) => {
   const imageUploader = async (file) => {
     setLoader(true);
     try {
-      const response = await uploadImages(file);
+      var formdata = new FormData();
+      formdata.append('images', file, file.name);
+      const response = await uploadImages(formdata);
       if (response) {
-        const { result } = response;
-        setLoader(false);
-        showToaster({
-          severity: 'success',
-          open: true,
-          message: 'Image uploaded',
-        });
-        return result;
+        const { result, statusCode } = response;
+        if (statusCode === 200) {
+          setLoader(false);
+          showToaster({
+            severity: 'success',
+            open: true,
+            message: 'Image uploaded',
+          });
+          return result;
+        } else {
+          showToaster({
+            severity: 'error',
+            open: true,
+            message: response?.message,
+          });
+        }
       }
     } catch (err) {
       console.error('Error saving image', err);
@@ -171,6 +182,7 @@ const PaymentProvider = ({ children }) => {
     }
     setCustomObject(response);
     setLoader(false);
+    hideToaster();
   }, [activeStore]);
 
   const showToaster = async (options) => {
@@ -219,7 +231,7 @@ const PaymentProvider = ({ children }) => {
         anchorOrigin={{ vertical, horizontal }}
         open={open}
         key={vertical + horizontal}
-        autoHideDuration={6000}
+        autoHideDuration={3000}
         TransitionComponent={transition}
       >
         <Alert

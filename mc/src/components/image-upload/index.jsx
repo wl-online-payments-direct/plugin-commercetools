@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import './style.css';
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 import Button from '@mui/material/Button';
@@ -10,15 +10,15 @@ import Modal from '@mui/material/Modal';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 
-const ImageUpload = ({ src, alt, source, saveImage, handleClose }) => {
+const ImageUpload = ({ value, alt, source, saveImage, handleClose }) => {
   const [imgData, setImgData] = useState({
-    src: src,
+    src: value,
     alt: alt,
   });
   const [openModal, setOpenmodal] = useState(false);
   const handleOpenModal = () => setOpenmodal(true);
   const handleCloseModal = () => setOpenmodal(false);
-  const { setLoader, imageUploader } = useContext(PaymentContext);
+  const { setLoader, imageUploader, hideToaster } = useContext(PaymentContext);
   const { host } = CONFIG;
 
   const handleImageUpload = async (file) => {
@@ -36,6 +36,9 @@ const ImageUpload = ({ src, alt, source, saveImage, handleClose }) => {
         saveImage(`${host}/${res[0]}`);
       }
     }
+    setTimeout(() => {
+      hideToaster();
+    }, 3000);
   };
 
   const handleFileChange = (e) => {
@@ -49,12 +52,19 @@ const ImageUpload = ({ src, alt, source, saveImage, handleClose }) => {
     handleClose();
   };
 
+  useEffect(() => {
+    setImgData({
+      src: value,
+      alt: alt,
+    });
+  }, [value]);
+
   return (
     <div>
       <div className="image-upload">
-        {imgData?.src ? (
+        {imgData.src ? (
           <div className="image-container">
-            <img src={imgData?.src} alt={imgData?.alt} className="logo-img" />
+            <img src={imgData.src} alt={imgData?.alt} className="logo-img" />
             {source !== 'modal' && (
               <span className="close-button" onClick={handleOpenModal}>
                 <CloseIcon />
