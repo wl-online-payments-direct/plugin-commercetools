@@ -178,11 +178,9 @@ const PaymentMethods = () => {
           if (ds === 'general')
             payload[field].value =
               customObject?.value?.test[payload[field]?.key];
-          else if (ds === 'onSiteMode' || ds === 'redirectModeB') {
+          else {
             payload[ds][field].value = customObject?.value?.test[ds][field];
-          } else
-            payload[ds][field].value =
-              customObject?.value?.test[payload[ds][field]?.key];
+          }
         }
       }
       dispatch({
@@ -199,7 +197,6 @@ const PaymentMethods = () => {
         <ToggleInput
           size={'big'}
           isDisabled={false}
-          value={state.enabled.value}
           isChecked={state.enabled.value}
           onChange={(e) => {
             dispatch({

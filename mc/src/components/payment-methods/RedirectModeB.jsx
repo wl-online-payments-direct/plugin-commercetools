@@ -25,14 +25,11 @@ const RedirectModeB = ({
         aria-controls="panel1a-content"
       >
         <Typography>
-          <p>
-            Redirect Mode B: Payment Method selection <b>after </b>
-            redirection
-          </p>
+          Redirect Mode B: Payment Method selection <b>after </b>
+          redirection
         </Typography>
         <ToggleInput
           size={'big'}
-          value={redirectModeB.enabled.value}
           isChecked={redirectModeB.enabled.value}
           onChange={(e) => handleRedirectModeB('enabled', e.target.checked)}
         />
@@ -43,17 +40,14 @@ const RedirectModeB = ({
         </p>
         <div className="relative">
           <span className="float-right">
-            <p>
-              Send Order Data
-              <Tooltip
-                placement="top"
-                title={redirectModeB.sendOrderData.tooltip}
-              >
-                <InfoIcon />
-              </Tooltip>
-            </p>
+            Send Order Data
+            <Tooltip
+              placement="top"
+              title={redirectModeB.sendOrderData.tooltip}
+            >
+              <InfoIcon />
+            </Tooltip>
             <CheckboxInput
-              value={redirectModeB.sendOrderData.value}
               onChange={(e) =>
                 handleRedirectModeB('sendOrderData', e.target.checked)
               }
@@ -67,9 +61,9 @@ const RedirectModeB = ({
             <img className="" src={worldlineLogo} alt={worldlineLogo} />
             <input
               className="section-input"
-              value={redirectModeB.logo.value}
               validation={redirectModeB.logo.validation}
               type={redirectModeB.logo.type}
+              name={'redirectModeB-img-upload'}
               onChange={(event) => handleLogoUpload(event)}
             />
           </div>
@@ -139,18 +133,15 @@ const RedirectModeB = ({
 
         <div className="section-wrapper flex">
           <CheckboxInput
-            value={redirectModeB.groupCards.value}
             onChange={(e) =>
               handleRedirectModeB('groupCards', e.target.checked)
             }
             isChecked={redirectModeB.groupCards.value}
           />
-          <p>
-            {redirectModeB.groupCards.label}
-            <Tooltip placement="top" title={redirectModeB.groupCards.tooltip}>
-              <InfoIcon />
-            </Tooltip>
-          </p>
+          {redirectModeB.groupCards.label}
+          <Tooltip placement="top" title={redirectModeB.groupCards.tooltip}>
+            <InfoIcon />
+          </Tooltip>
         </div>
       </AccordionDetails>
     </Accordion>

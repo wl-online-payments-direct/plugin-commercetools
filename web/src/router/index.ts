@@ -5,6 +5,7 @@ import createMyPaymentController from '../api/createMyPayment/controller';
 import myHostedTokenizationController from '../api/myHostedTokenization/controller';
 import createPaymentController from '../api/createPayment/controller';
 import getPaymentStatusController from '../api/getPaymentStatus/controller';
+import listOrdersController from '../api/listOrders/controller';
 import validateMyCartController from '../api/validateMyCart/controller';
 import validateCartController from '../api/validateCart/controller';
 import webhookController from '../api/webhook/controller';
@@ -53,6 +54,7 @@ const routes = {
   '/upload/images': uploadImageController.processRequest,
   // Merchant Center API
   '/payment/products': getPaymentProductsController.processRequest,
+  '/orders': listOrdersController.processRequest,
 };
 
 export { routes };

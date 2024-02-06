@@ -3,6 +3,7 @@ export * from './hostedTokenization';
 export * from './hostedCheckout';
 export * from './createMyPayment';
 export * from './getPaymentStatus';
+export * from './listOrders';
 export * from './validateMyCart';
 export * from './webhook';
 export * from './retryPayment';

@@ -7,6 +7,7 @@ export * from './createMyPayment';
 export * from './getPaymentStatus';
 export * from './getWebhookStatus';
 export * from './testConnection';
+export * from './listOrders';
 export * from './validateCart';
 export * from './retryPayment';
 export * from './deleteToken';
