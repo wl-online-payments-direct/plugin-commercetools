@@ -19,7 +19,9 @@ const { CONTAINER_NAME } = CONFIG;
 
 const PaymentProvider = ({ children }) => {
   const projectKey = useApplicationContext((context) => context.project.key);
-  const apiHost = useApplicationContext((context) => context.environment.apiHost);
+  const apiHost = useApplicationContext(
+    (context) => context.environment.apiHost
+  );
   const [activeStore, setActiveStore] = useState(null);
   const [stores, setStores] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -116,7 +118,11 @@ const PaymentProvider = ({ children }) => {
     setLoader(true);
     if (activeStore?.key) {
       try {
-        const response = await getPaymentMethods(activeStore?.key, apiHost);
+        const response = await getPaymentMethods(
+          projectKey,
+          activeStore?.key,
+          apiHost
+        );
         if (response) {
           const { result } = response;
           setLoader(false);
@@ -146,7 +152,7 @@ const PaymentProvider = ({ children }) => {
       for (let file of files) {
         formdata.append('images', file, file.name);
       }
-      const response = await uploadImages(formdata, apiHost);
+      const response = await uploadImages(projectKey, formdata, apiHost);
       if (response) {
         const { result, statusCode } = response;
         if (statusCode === 200) {

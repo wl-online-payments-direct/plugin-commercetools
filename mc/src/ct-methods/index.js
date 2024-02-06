@@ -51,25 +51,37 @@ export const getStores = async (projectKey) => {
   }
 };
 
-export const getPaymentMethods = async (storeId, apiHost) => {
+export const getPaymentMethods = async (projectKey, storeId, apiHost) => {
   try {
-    const response = await fetch(
-      `${apiHost}/payment/products?storeId=${storeId}&countryCode=UK&currencyCode=EUR`
-    );
-    return response.json();
+    const response = await fetcher(`/proxy/forward-to`, {
+      method: 'GET',
+      headers: {
+        'Accept-version': 'v2',
+        'X-Forward-To': `${apiHost}/payment/products?storeId=${storeId}&countryCode=UK&currencyCode=EUR`,
+        'X-Forward-To-Audience-Policy': 'forward-url-full-path', // default config policy
+        'X-Project-Key': projectKey,
+      },
+    });
+    return response;
   } catch (error) {
     console.error('Error custom object:', error.message);
   }
 };
 
-export const uploadImages = async (formdata, apiHost) => {
+export const uploadImages = async (projectKey, formdata, apiHost) => {
   try {
-    const response = await fetch(`${apiHost}/upload/images`, {
+    const response = await fetcher(`/proxy/forward-to`, {
       method: 'POST',
       body: formdata,
+      headers: {
+        'Accept-version': 'v2',
+        'X-Forward-To': `${apiHost}/upload/images`,
+        'X-Forward-To-Audience-Policy': 'forward-url-full-path', // default config policy
+        'X-Project-Key': projectKey,
+      },
     });
 
-    return response.json();
+    return response;
   } catch (error) {
     console.error('Error uploading image:', error.message);
   }
