@@ -19,6 +19,8 @@ import getWebhookStatusController from '../api/getWebhookStatus/controller';
 import capturePaymentController from '../api/capturePayment/controller';
 import cancelPaymentController from '../api/cancelPayment/controller';
 import refundPaymentController from '../api/refundPayment/controller';
+import uploadImageController from '../api/uploadImage/controller';
+import getPaymentProductsController from '../api/getPaymentProducts/controller';
 
 const routes = {
   '/': healthController.processRequest,
@@ -46,6 +48,11 @@ const routes = {
   '/initiate/hostedcheckout': hostedCheckoutController.processRequest,
   '/payment': createPaymentController.processRequest,
   '/webhook/status': getWebhookStatusController.processRequest,
+
+  // For uploading images
+  '/upload/images': uploadImageController.processRequest,
+  // Merchant Center API
+  '/payment/products': getPaymentProductsController.processRequest,
 };
 
 export { routes };

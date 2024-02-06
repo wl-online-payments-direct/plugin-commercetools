@@ -33,6 +33,7 @@ import {
   shouldSaveToken,
   getCustomerTokenPayload,
 } from './mappers';
+import Constants from './constants';
 
 const createOrderWithPayment = async (payload: PaymentPayload, cart: Cart) => {
   // Create order and payment
@@ -78,6 +79,8 @@ export async function orderPaymentHandler(payload: PaymentPayload) {
   // log the payload
   logger().debug(`[orderPaymentHandler] payload: ${JSON.stringify(payload)}`);
 
+  const { PAYMENT } = Constants;
+
   return retry(async () => {
     // Fetch DB payment
     const dbPayment = await getPayment(getPaymentDBPayload(payload));
@@ -115,7 +118,7 @@ export async function orderPaymentHandler(payload: PaymentPayload) {
 
       const mappedStatus = getMappedStatus(payload);
 
-      if (mappedStatus === 'FAILED') {
+      if (mappedStatus === PAYMENT.DATABASE.STATUS.FAILED) {
         await setPayment({ id: dbPayment.id }, { status: mappedStatus });
         return {
           isRetry: false,
@@ -127,7 +130,7 @@ export async function orderPaymentHandler(payload: PaymentPayload) {
 
       await setPayment(
         { id: dbPayment.id },
-        { status: mappedStatus, state: 'PROCESSING' },
+        { state: PAYMENT.DATABASE.STATE.PROCESSING },
       );
 
       // TODO: What happens when one of the webhook arrive out of sync?
@@ -141,7 +144,8 @@ export async function orderPaymentHandler(payload: PaymentPayload) {
         ...(!dbPayment.orderId && result?.order?.id
           ? { orderId: result.order.id, worldlineId: payload?.payment?.id }
           : { worldlineId: payload?.payment?.id }),
-        state: 'DEFAULT',
+        state: PAYMENT.DATABASE.STATE.DEFAULT,
+        status: mappedStatus,
       });
 
       //  Should save the token only:
@@ -157,7 +161,7 @@ export async function orderPaymentHandler(payload: PaymentPayload) {
     } catch (error) {
       // If any exception happens, reset to default state
       await setPayment(getPaymentFilterQuery(dbPayment), {
-        state: 'DEFAULT',
+        state: PAYMENT.DATABASE.STATE.DEFAULT,
       });
       throw error;
     }
