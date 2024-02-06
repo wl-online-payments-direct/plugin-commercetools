@@ -42,7 +42,6 @@ const routes = {
   '/cart/validate': validateCartController.processRequest,
   '/initiate/hostedcheckout': hostedCheckoutController.processRequest,
   '/payment': createPaymentController.processRequest,
-  '/getPaymentStatus': getPaymentStatusController.processRequest,
   '/webhook/status': getWebhookStatusController.processRequest,
 
   // For uploading images
