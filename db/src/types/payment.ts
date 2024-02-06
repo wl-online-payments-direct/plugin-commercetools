@@ -14,6 +14,10 @@ export interface Payment {
   createdAt: Date;
   updatedAt: Date;
 }
+export interface PaymentQueryParams {
+  orderId: string;
+  page: number;
+}
 
 export interface PaymentReference {
   id: string;
@@ -42,4 +46,13 @@ export interface CreatePaymentResponse {
   orderId: string;
   status: $Enums.Status;
   state: $Enums.States;
+}
+
+export interface GetOrders {
+  meta: {
+    orderId: string;
+    page: number;
+    totalCount: number;
+  };
+  data: Payment[];
 }

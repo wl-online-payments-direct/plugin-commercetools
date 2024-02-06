@@ -8,8 +8,45 @@ import {
 import type {
   CreatePaymentRequest,
   CreatePaymentResponse,
+  GetOrders,
   Payment,
+  PaymentQueryParams,
 } from './types';
+
+export async function getDBOrders(
+  query: PaymentQueryParams,
+): Promise<GetOrders> {
+  try {
+    const take = 10;
+    const skip = (query.page - 1) * take;
+    const params = {
+      where: {
+        ...(query.orderId ? { orderId: query.orderId } : {}),
+      },
+    };
+    const [totalCount, data] = await Promise.all([
+      prisma.payments.count(params),
+      prisma.payments.findMany({
+        skip,
+        take,
+        ...params,
+      }),
+    ]);
+    return {
+      meta: {
+        ...query,
+        totalCount,
+      },
+      data,
+    };
+  } catch (error) {
+    throw {
+      message: 'Failed to fetch orders list',
+      statusCode: 500,
+      details: (error as { message: string }).message,
+    };
+  }
+}
 
 export async function createPaymentInDB(
   data: CreatePaymentRequest,
