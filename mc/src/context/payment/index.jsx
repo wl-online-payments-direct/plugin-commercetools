@@ -185,11 +185,6 @@ const PaymentProvider = ({ children }) => {
 
   useEffect(async () => {
     const response = await fetchCustomObjects(activeStore);
-    const paymentOptions = await fetchWorldlinePaymentOptions(activeStore);
-    if (paymentOptions) {
-      response.value.test.redirectModeA.paymentOptions = paymentOptions;
-      response.value.live.redirectModeA.paymentOptions = paymentOptions;
-    }
     setCustomObject(response);
     setLoader(false);
     hideToaster();

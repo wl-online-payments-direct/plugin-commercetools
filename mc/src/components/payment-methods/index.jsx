@@ -222,7 +222,7 @@ const PaymentMethods = () => {
     await saveCustomObject(final_payload);
   };
 
-  useEffect(() => {
+  useEffect(async () => {
     const payload = JSON.parse(JSON.stringify(initialState));
     if (customObject?.value) {
       const customValue = customObject?.value?.test;
@@ -232,8 +232,15 @@ const PaymentMethods = () => {
             case 'onSiteMode':
             case 'redirectModeA':
             case 'redirectModeB':
-              if (field === 'paymentOptions' && customValue?.[ds]?.[field]) {
-                payload[ds][field] = customValue?.[ds]?.[field];
+              if (field === 'paymentOptions') {
+                if (customValue?.[ds]?.[field])
+                  payload[ds][field] = customValue?.[ds]?.[field];
+                else {
+                  const response = await fetchWorldlinePaymentOptions(
+                    activeStore
+                  );
+                  payload[ds][field] = response;
+                }
                 break;
               } else {
                 if (customValue?.[ds]?.[field])

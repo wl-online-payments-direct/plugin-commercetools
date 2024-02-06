@@ -138,7 +138,7 @@ const ImageUpload = ({ images = [], source, saveImage, handleClose }) => {
             id="upload-file"
             className="hidden-input"
             onChange={handleFileChange}
-            accept="image/png, image/gif, image/jpeg"
+            accept="image/png, image/gif, image/jpeg, image/svg, image/jpg"
             name="img-file"
           />
         </Button>
