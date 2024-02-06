@@ -132,7 +132,6 @@ const GeneralSettings = ({ state, handleCommonSettings }) => {
           <ToggleInput
             size={'small'}
             isDisabled={false}
-            value={state.advancedLogging.value}
             isChecked={state.advancedLogging.value}
             onChange={(e) =>
               handleCommonSettings('advancedLogging', e.target.checked)
@@ -149,7 +148,6 @@ const GeneralSettings = ({ state, handleCommonSettings }) => {
           <ToggleInput
             size={'small'}
             isDisabled={false}
-            value={state.force3DSv2.value}
             isChecked={state.force3DSv2.value}
             onChange={(e) =>
               handleCommonSettings('force3DSv2', e.target.checked)
