@@ -27,14 +27,11 @@ const RedirectModeA = ({
         aria-controls="panel1a-content"
       >
         <Typography>
-          <p>
-            Redirect Mode A: Payment Method selection <b>before </b>
-            redirection
-          </p>
+          Redirect Mode A: Payment Method selection <b>before </b>
+          redirection
         </Typography>
         <ToggleInput
           size={'big'}
-          value={redirectModeA.enabled.value}
           isChecked={redirectModeA.enabled.value}
           onChange={(e) => handleRedirectModeA('enabled', e.target.checked)}
         />
@@ -43,17 +40,14 @@ const RedirectModeA = ({
         <p className="sub-title">Single payment buttons selected on site</p>
         <div className="relative">
           <span className="float-right">
-            <p>
-              Send Order Data
-              <Tooltip
-                placement="top"
-                title={redirectModeA.sendOrderData.tooltip}
-              >
-                <InfoIcon />
-              </Tooltip>
-            </p>
+            Send Order Data
+            <Tooltip
+              placement="top"
+              title={redirectModeA.sendOrderData.tooltip}
+            >
+              <InfoIcon />
+            </Tooltip>
             <CheckboxInput
-              value={redirectModeA.sendOrderData.value}
               onChange={(e) =>
                 handleRedirectModeA('sendOrderData', e.target.checked)
               }

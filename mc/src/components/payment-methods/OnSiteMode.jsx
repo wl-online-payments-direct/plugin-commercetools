@@ -21,12 +21,9 @@ const OnSiteMode = ({ onSiteMode, handleOnsiteMode, handleLogoUpload }) => {
         expandIcon={<ExpandMoreIcon />}
         aria-controls="panel1a-content"
       >
-        <Typography>
-          <p>On Site Mode: Card Payments Only</p>
-        </Typography>
+        <Typography>On Site Mode: Card Payments Only</Typography>
         <ToggleInput
           size={'big'}
-          value={onSiteMode.enabled.value}
           isChecked={onSiteMode.enabled.value}
           onChange={(e) => handleOnsiteMode('enabled', e.target.checked)}
         />
@@ -126,9 +123,9 @@ const OnSiteMode = ({ onSiteMode, handleOnsiteMode, handleLogoUpload }) => {
             <img className="" src={worldlineLogo} alt={worldlineLogo} />
             <input
               className="section-input"
-              value={onSiteMode.logo.value}
               validation={onSiteMode.logo.validation}
               type={onSiteMode.logo.type}
+              name={'onSiteMode-img-upload'}
               onChange={(event) => handleLogoUpload(event)}
             />
           </div>
