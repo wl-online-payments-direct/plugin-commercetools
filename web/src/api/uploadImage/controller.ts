@@ -38,19 +38,23 @@ const processRequest = async (request: Request, response: ServerResponse) => {
     });
     const maxSize = parseInt(process.env.LIMIT_FILE_SIZE as string, 10) || 1;
 
+    // Read allowed file types from environment variable and split into an array
+    const allowedFileTypes = (
+      process.env.ALLOWED_FILE_TYPES ||
+      'image/png,image/jpeg,image/jpg,image/svg+xml,image/gif'
+    ).split(',');
+
     // Add file type checks to fileFilter function
     const fileFilter = (
       _req: Req,
       file: Express.Multer.File,
       cb: multer.FileFilterCallback,
     ) => {
-      const allowedFileTypes = ['image/png', 'image/jpeg', 'image/jpg'];
-
       // Check if file type is allowed
       if (!allowedFileTypes.includes(file.mimetype)) {
         return cb(
           new Error(
-            'Invalid file type. Only PNG, JPEG, and JPG files are allowed.',
+            'Invalid file type. Only PNG, JPEG, JPG, SVG, and GIF files are allowed.',
           ),
         );
       }

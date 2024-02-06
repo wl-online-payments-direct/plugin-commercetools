@@ -54,17 +54,19 @@ const createServer = () =>
           (process.env.DIR_IMAGE_UPLOAD as string) || 'uploadedImages',
         )
       ) {
-        // Serve the static file
-        fs.readFile(filePath, (err, content) => {
-          if (err) {
-            logger().error(JSON.stringify(err));
-            ResponseClient.setResponseError(response, {
-              statusCode: StatusCodes.NOT_FOUND,
-              message: 'Image is not available',
-            });
-          }
-          response.end(content);
-        });
+        const content = await fs.promises.readFile(filePath);
+        let contentType = 'application/octet-stream';
+        if (filePath.endsWith('.svg')) {
+          contentType = 'image/svg+xml';
+        } else if (
+          ['.jpg', '.jpeg', '.png', '.gif'].some((ext) =>
+            filePath.toLowerCase().endsWith(ext),
+          )
+        ) {
+          contentType = `image/${path.extname(filePath).slice(1)}`;
+        }
+        response.writeHead(200, { 'Content-Type': contentType });
+        response.end(content);
       } else {
         ResponseClient.setResponseError(response, {
           statusCode: StatusCodes.NOT_FOUND,
