@@ -5,6 +5,7 @@ export * from './myHostedTokenization';
 export * from './hostedCheckout';
 export * from './createPayment';
 export * from './getPaymentStatus';
+export * from './listOrders';
 export * from './validateCart';
 export * from './webhook';
 export * from './retryPayment';

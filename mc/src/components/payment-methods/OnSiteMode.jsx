@@ -7,13 +7,13 @@ import AccordionDetails from '@mui/material/AccordionDetails';
 import Typography from '@mui/material/Typography';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import TextInput from '@commercetools-uikit/text-input';
-import worldlineLogo from '../../assets/worldline-logo-main.png';
 import InfoIcon from '@mui/icons-material/Info';
-import Tooltip from '@commercetools-uikit/tooltip';
+import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 import Select from '@mui/material/Select';
+import ImageUpload from '../image-upload';
 
-const OnSiteMode = ({ onSiteMode, handleOnsiteMode, handleLogoUpload }) => {
+const OnSiteMode = ({ onSiteMode, handleOnsiteMode }) => {
   return (
     <Accordion className="payment-on-site payment-section-wrapper">
       <AccordionSummary
@@ -21,12 +21,9 @@ const OnSiteMode = ({ onSiteMode, handleOnsiteMode, handleLogoUpload }) => {
         expandIcon={<ExpandMoreIcon />}
         aria-controls="panel1a-content"
       >
-        <Typography>
-          <p>On Site Mode: Card Payments Only</p>
-        </Typography>
+        <Typography>On Site Mode: Card Payments Only</Typography>
         <ToggleInput
           size={'big'}
-          value={onSiteMode.enabled.value}
           isChecked={onSiteMode.enabled.value}
           onChange={(e) => handleOnsiteMode('enabled', e.target.checked)}
         />
@@ -41,7 +38,6 @@ const OnSiteMode = ({ onSiteMode, handleOnsiteMode, handleLogoUpload }) => {
             <TextInput
               className="section-input"
               value={onSiteMode.payButtonTitle.value}
-              validation={onSiteMode.payButtonTitle.validation}
               type={onSiteMode.payButtonTitle.type}
               onChange={(e) =>
                 handleOnsiteMode('payButtonTitle', e.target.value)
@@ -51,7 +47,6 @@ const OnSiteMode = ({ onSiteMode, handleOnsiteMode, handleLogoUpload }) => {
               <Select
                 className="select-dropdown"
                 value={onSiteMode.payButtonLanguage.value}
-                validation={onSiteMode.payButtonLanguage.validation}
                 type={onSiteMode.payButtonLanguage.type}
                 onChange={(e) =>
                   handleOnsiteMode('payButtonLanguage', e.target.value)
@@ -83,7 +78,6 @@ const OnSiteMode = ({ onSiteMode, handleOnsiteMode, handleLogoUpload }) => {
             <TextInput
               className="section-input"
               value={onSiteMode.merchantReferenceID.value}
-              validation={onSiteMode.merchantReferenceID.validation}
               type={onSiteMode.merchantReferenceID.type}
               placeholder={onSiteMode.merchantReferenceID.placeholder}
               onChange={(e) =>
@@ -100,7 +94,6 @@ const OnSiteMode = ({ onSiteMode, handleOnsiteMode, handleLogoUpload }) => {
             <TextInput
               className="section-input"
               value={onSiteMode.templateFileName.value}
-              validation={onSiteMode.templateFileName.validation}
               type={onSiteMode.templateFileName.type}
               placeholder={onSiteMode.templateFileName.placeholder}
               onChange={(e) =>
@@ -123,13 +116,10 @@ const OnSiteMode = ({ onSiteMode, handleOnsiteMode, handleLogoUpload }) => {
             </Tooltip>
           </h5>
           <div className="template-section flex">
-            <img className="" src={worldlineLogo} alt={worldlineLogo} />
-            <input
-              className="section-input"
-              value={onSiteMode.logo.value}
-              validation={onSiteMode.logo.validation}
-              type={onSiteMode.logo.type}
-              onChange={(event) => handleLogoUpload(event)}
+            <ImageUpload
+              images={onSiteMode.logo.value}
+              source="onsite"
+              saveImage={(urls) => handleOnsiteMode('logo', urls)}
             />
           </div>
         </div>

@@ -1,7 +1,6 @@
 import { fetcher } from '../services/custom-api-request';
 import CONFIG from '../../configuration';
-
-const { CONTAINER_NAME, CONTAINER_KEY } = CONFIG;
+const { CONTAINER_NAME } = CONFIG;
 
 export const createCustomObject = async (payload, projectKey) => {
   try {
@@ -49,5 +48,41 @@ export const getStores = async (projectKey) => {
     return stores;
   } catch (error) {
     console.error('Error custom object:', error.message);
+  }
+};
+
+export const getPaymentMethods = async (projectKey, storeId, apiHost) => {
+  try {
+    const response = await fetcher(`/proxy/forward-to`, {
+      method: 'GET',
+      headers: {
+        'Accept-version': 'v2',
+        'X-Forward-To': `${apiHost}/payment/products?storeId=${storeId}&countryCode=UK&currencyCode=EUR`,
+        'X-Forward-To-Audience-Policy': 'forward-url-full-path', // default config policy
+        'X-Project-Key': projectKey,
+      },
+    });
+    return response;
+  } catch (error) {
+    console.error('Error custom object:', error.message);
+  }
+};
+
+export const uploadImages = async (projectKey, formdata, apiHost) => {
+  try {
+    const response = await fetcher(`/proxy/forward-to`, {
+      method: 'POST',
+      body: formdata,
+      headers: {
+        'Accept-version': 'v2',
+        'X-Forward-To': `${apiHost}/upload/images`,
+        'X-Forward-To-Audience-Policy': 'forward-url-full-path', // default config policy
+        'X-Project-Key': projectKey,
+      },
+    });
+
+    return response;
+  } catch (error) {
+    console.error('Error uploading image:', error.message);
   }
 };
