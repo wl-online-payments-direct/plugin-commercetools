@@ -1,11 +1,9 @@
 {
   "onSiteMode": {
     "payButtonTitle": {
-      "key": "onSiteMode_payButtonTitle",
       "label": "Pay Button Title",
       "type": "text",
       "value": "Pay with credit cards",
-      "validation": "required",
       "criteria": ["alpha"],
       "values": {
         "EN": "Pay with credit cards",
@@ -17,226 +15,217 @@
       }
     },
     "payButtonLanguage": {
-      "key": "onSiteMode_payButtonLanguage",
       "label": "",
       "type": "text",
       "value": "EN",
       "values": ["EN", "ES", "FR", "NL", "DE", "IT"]
     },
     "merchantReferenceID": {
-      "key": "onSiteMode_merchantReferenceID",
       "label": " Merchant Reference ID",
       "type": "text",
       "value": "SampleReferenceId",
       "placeholder": "Enter Merchant Reference",
-      "validation": "required",
       "criteria": [],
       "tooltip": "If you want to show the Merchant ID in Bank statement on their Customer bank account., then you should limit the Merchant ID length to 12 characters"
     },
     "templateFileName": {
-      "key": "onSiteMode_templateFileName",
       "label": " Template File Name",
       "type": "text",
       "value": "SimplifiedCustomPaymentPage",
       "placeholder": "Enter templated file name",
-      "validation": "required",
       "criteria": []
     },
     "logo": {
-      "key": "logo",
       "label": "Display Logo for Accepted Card Brands",
       "type": "file",
-      "validation": "required",
       "criteria": [],
       "tooltip": "Max size 5MB, max dimensions 200x80px,supported jpg,svg,png",
-      "value": ""
+      "value": [],
+      "alt": "Display logo for onsite payment method"
     },
     "enabled": {
-      "key": "onSiteMode_enabled",
       "value": false
     }
   },
   "redirectModeA": {
     "sendOrderData": {
-      "key": "redirectModeB_sendOrderData",
       "label": "Send Order Data",
       "type": "boolean",
       "value": true,
       "tooltip": "Show Basket Data on Worldline Payment Page"
     },
     "merchantReferenceID": {
-      "key": "redirectModeA_merchantReferenceID",
       "label": " Merchant Reference ID",
       "type": "text",
       "value": "SampleReferenceId",
       "placeholder": "Enter Merchant Reference",
-      "validation": "required",
       "criteria": [],
       "tooltip": "If you want to show the Merchant ID in Bank statement on their Customer bank account., then you should limit the Merchant ID length to 12 characters"
     },
     "templateFileName": {
-      "key": "redirectModeB_templateFileName",
-      "label": " Template File Name",
+      "label": "Template File Name",
       "type": "text",
       "value": "SimplifiedCustomPaymentPage",
       "placeholder": "Enter templated file name",
-      "validation": "required",
       "criteria": []
     },
     "refresh": {
-      "key": "redirectModeA_refresh",
       "label": "Refresh list of available payment methods",
       "type": "boolean",
       "value": true,
       "tooltip": "New payment methods added to your worldline account will be added to the list below"
     },
-    "paymentOptions": {
-      "AmericanExpress": {
+    "paymentOptions": [
+      {
+        "displayOrder": 0,
         "label": "American Express",
-        "key": "americanExpress",
-        "logo": "",
-        "enabled": true
+        "enabled": true,
+        "logo": "https://assets.test.cdn.v-psp.com/s2s/6befa5cada1d3ab38899/images/pm/American Express.gif"
       },
-      "BCMC": {
+      {
+        "displayOrder": 1,
         "label": "BCMC",
-        "key": "bcmc",
-        "logo": "",
-        "enabled": true
+        "enabled": true,
+        "logo": "https://assets.test.cdn.v-psp.com/s2s/6befa5cada1d3ab38899/images/pm/BCMC.gif"
       },
-      "CB": {
+      {
+        "displayOrder": 2,
         "label": "CB",
-        "key": "cb",
-        "logo": "",
-        "enabled": false
+        "enabled": true,
+        "logo": "https://assets.test.cdn.v-psp.com/s2s/6befa5cada1d3ab38899/images/pm/CB.gif"
       },
-      "DinersClub": {
+      {
+        "displayOrder": 3,
         "label": "Diners Club",
-        "key": "dinersClub",
-        "logo": "",
-        "enabled": false
+        "enabled": true,
+        "logo": "https://assets.test.cdn.v-psp.com/s2s/6befa5cada1d3ab38899/images/pm/Diners Club.gif"
       },
-      "Eurocard": {
-        "label": "Eurocard",
-        "key": "eurocard",
-        "logo": "",
-        "enabled": false
+      {
+        "displayOrder": 4,
+        "label": "MasterCard",
+        "enabled": true,
+        "logo": "https://assets.test.cdn.v-psp.com/s2s/6befa5cada1d3ab38899/images/pm/Eurocard.gif"
       },
-      "GOOGLEPAY": {
+      {
+        "displayOrder": 5,
         "label": "GOOGLEPAY",
-        "key": "googlePay",
-        "logo": "",
-        "enabled": false
+        "enabled": true,
+        "logo": "https://assets.test.cdn.v-psp.com/s2s/6befa5cada1d3ab38899/images/pm/GOOGLEPAY.gif"
       },
-      "JCB": {
+      {
+        "displayOrder": 6,
+        "label": "iDeal",
+        "enabled": true,
+        "logo": "https://assets.test.cdn.v-psp.com/s2s/6befa5cada1d3ab38899/images/pm/iDeal.gif"
+      },
+      {
+        "displayOrder": 7,
         "label": "JCB",
-        "key": "jcb",
-        "logo": "",
-        "enabled": false
+        "enabled": true,
+        "logo": "https://assets.test.cdn.v-psp.com/s2s/6befa5cada1d3ab38899/images/pm/JCB.gif"
       },
-      "Maestro": {
+      {
+        "displayOrder": 8,
         "label": "Maestro",
-        "key": "maestro",
-        "logo": "",
-        "enabled": false
+        "enabled": true,
+        "logo": "https://assets.test.cdn.v-psp.com/s2s/6befa5cada1d3ab38899/images/pm/Maestro.gif"
       },
-      "PAYPAL": {
+      {
+        "displayOrder": 9,
         "label": "PAYPAL",
-        "key": "paypal",
-        "logo": "",
-        "enabled": false
+        "enabled": true,
+        "logo": "https://assets.test.cdn.v-psp.com/s2s/6befa5cada1d3ab38899/images/pm/PAYPAL.gif"
       },
-      "VISA": {
+      {
+        "displayOrder": 10,
         "label": "VISA",
-        "key": "visa",
-        "logo": "",
-        "enabled": false
+        "enabled": true,
+        "logo": "https://assets.test.cdn.v-psp.com/s2s/6befa5cada1d3ab38899/images/pm/VISA.gif"
       },
-      "WeChatPay": {
+      {
+        "displayOrder": 11,
         "label": "WeChatPay",
-        "key": "wechatPay",
-        "logo": "",
-        "enabled": false
+        "enabled": true,
+        "logo": "https://assets.test.cdn.v-psp.com/s2s/6befa5cada1d3ab38899/images/pm/WeChatPay.gif"
       }
-    },
+    ],
     "enabled": {
-      "key": "redirectModeA_enabled",
       "value": false
     }
   },
   "redirectModeB": {
     "sendOrderData": {
-      "key": "redirectModeB_sendOrderData",
       "label": "Send Order Data",
       "type": "boolean",
       "value": true,
       "tooltip": "Show Basket Data on Worldline Payment Page"
     },
     "logo": {
-      "key": "logo",
       "label": "Generic Logo Displayed on Your Payment Page",
       "type": "file",
-      "validation": "required",
       "criteria": [],
-      "value": ""
+      "value": [],
+      "alt": "Display logo for redirect payment method"
     },
     "payButtonTitle": {
-      "key": "redirectModeB_payButtonTitle",
       "label": "Pay Button Title",
       "type": "text",
-      "value": "Pay by Worldline",
-      "validation": "required",
-      "criteria": ["alpha"]
+      "value": "Pay with credit cards",
+      "criteria": ["alpha"],
+      "values": {
+        "EN": "Pay with credit cards",
+        "ES": "Pagar con tarjetas de crédito",
+        "FR": "Payer par carte de crédit",
+        "NL": "Betaal met creditcards",
+        "DE": "Bezahlen Sie mit Kreditkarten",
+        "IT": "Paga con carte di credito"
+      }
+    },
+    "payButtonLanguage": {
+      "label": "",
+      "type": "text",
+      "value": "EN",
+      "values": ["EN", "ES", "FR", "NL", "DE", "IT"]
     },
     "merchantReferenceID": {
-      "key": "redirectModeB_merchantReferenceID",
       "label": " Merchant Reference ID",
       "type": "text",
       "value": "SampleReferenceId",
       "placeholder": "Enter Merchant Reference",
-      "validation": "required",
       "criteria": [],
       "tooltip": "If you want to show the Merchant ID in Bank statement on their Customer bank account., then you should limit the Merchant ID length to 12 characters"
     },
     "templateFileName": {
-      "key": "redirectModeB_templateFileName",
       "label": " Template File Name",
       "type": "text",
       "value": "SimplifiedCustomPaymentPage",
       "placeholder": "Enter templated file name",
-      "validation": "required",
       "criteria": []
     },
     "groupCards": {
-      "key": "redirectModeB_groupCards",
       "label": "Group Cards",
       "type": "boolean",
       "value": false,
       "tooltip": "Enabling this setting will group and co-badge card brands when relevant"
     },
     "enabled": {
-      "key": "redirectModeB_enabled",
       "value": false
     }
   },
   "paymentOption": {
-    "key": "paymentOption",
     "label": "Payment Option",
     "type": "boolean",
     "value": "1",
-    "validation": "required",
     "criteria": [],
     "tooltip": "Final execution of the payment"
   },
   "authorizationPaymentOption": {
-    "key": "authorizationPaymentOption",
     "label": "Authorization Payment Option",
     "type": "boolean",
     "value": "1",
-    "validation": "required",
     "criteria": []
   },
   "captureConfiguration": {
-    "key": "captureConfiguration",
     "label": "Capture Configuration",
     "type": "text",
     "value": "-1",
@@ -250,15 +239,12 @@
       "5": "After 5 days",
       "6": "After 6 days",
       "7": "After 7 days"
-    },
-    "validation": "required"
+    }
   },
   "placeOrder": {
-    "key": "placeOrder",
     "label": "Place Order",
     "type": "text",
     "value": "Place an Order",
-    "validation": "required",
     "criteria": ["alpha"],
     "values": {
       "EN": "Place an order",
@@ -270,55 +256,42 @@
     }
   },
   "placeOrderLanguage": {
-    "key": "placeOrderLanguage",
     "label": "",
     "type": "text",
     "value": "EN",
-    "values": ["EN", "ES", "FR", "NL", "DE", "IT"],
-    "validation": "required"
+    "values": ["EN", "ES", "FR", "NL", "DE", "IT"]
   },
-  "advancedLogging": {
-    "key": "advancedLogging",
-    "label": "Enable advanced logging",
+  "debugLogging": {
+    "label": "Enable Debug Logging",
     "type": "boolean",
     "value": false,
-    "validation": "required",
     "criteria": []
   },
   "force3DSv2": {
-    "key": "force3DSv2",
     "label": "Force 3DSv2",
     "type": "boolean",
     "value": false,
-    "validation": "required",
     "criteria": []
   },
   "bgColor": {
-    "key": "bgColor",
     "label": "Background Color",
     "type": "color",
     "value": "#fff",
-    "validation": "required",
     "criteria": []
   },
   "textColor": {
-    "key": "textColor",
     "label": "Text Color",
     "type": "color",
     "value": "#fff",
-    "validation": "required",
     "criteria": []
   },
   "outlineColor": {
-    "key": "outlineColor",
     "label": "Outline Color",
     "type": "color",
     "value": "#fff",
-    "validation": "required",
     "criteria": []
   },
   "enabled": {
-    "key": "enabled",
     "value": false
   }
 }

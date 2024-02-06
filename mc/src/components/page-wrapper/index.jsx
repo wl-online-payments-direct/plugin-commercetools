@@ -1,11 +1,11 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext, useEffect } from 'react';
 import './style.css';
 import MenuItem from '@mui/material/MenuItem';
 import Select from '@mui/material/Select';
 import { useApplicationContext } from '@commercetools-frontend/application-shell-connectors';
 import { PaymentContext } from '../../context/payment/index';
 
-const PageWrapper = ({ children, title }) => {
+const PageWrapper = ({ children }) => {
   const projectKey = useApplicationContext((context) => context.project.key);
   const locale = useApplicationContext((context) => context.dataLocale);
 
