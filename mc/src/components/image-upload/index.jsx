@@ -16,10 +16,15 @@ const ImageUpload = ({ images = [], source, saveImage, handleClose }) => {
   const [openModal, setOpenmodal] = useState(false);
   const [dimError, setDimError] = useState(false);
   const handleOpenModal = () => setOpenmodal(true);
-  const handleCloseModal = () => setOpenmodal(false);
+  const handleCloseModal = () => {
+    setDimError(false);
+    setOpenmodal(false);
+  };
   const [deleteUrl, setDeleteUrl] = useState('');
   const { setLoader, imageUploader } = useContext(PaymentContext);
-  const apiHost = useApplicationContext((context) => context.environment.apiHost);
+  const apiHost = useApplicationContext(
+    (context) => context.environment.apiHost
+  );
 
   const handleImageUpload = async (files) => {
     if (!files) {
@@ -98,6 +103,12 @@ const ImageUpload = ({ images = [], source, saveImage, handleClose }) => {
     );
   };
 
+  const handleImageDelete = () => {
+    const deleteIndex = imagesData.indexOf(deleteUrl);
+    const newDataSet = [...imagesData.splice(deleteIndex, 1)];
+    handleCloseModal();
+  };
+
   return (
     <div>
       <div className="image-upload">
@@ -128,7 +139,7 @@ const ImageUpload = ({ images = [], source, saveImage, handleClose }) => {
             className="hidden-input"
             onChange={handleFileChange}
             accept="image/png, image/gif, image/jpeg"
-            name="img-file" 
+            name="img-file"
           />
         </Button>
       </div>
@@ -157,7 +168,6 @@ const ImageUpload = ({ images = [], source, saveImage, handleClose }) => {
       <Modal
         open={openModal}
         onClose={() => {
-          setDimError(false);
           handleCloseModal();
         }}
         aria-labelledby="modal-modal-title"
@@ -168,7 +178,6 @@ const ImageUpload = ({ images = [], source, saveImage, handleClose }) => {
           <span
             className="close-button"
             onClick={() => {
-              setDimError(false);
               handleCloseModal();
             }}
           >
@@ -182,9 +191,7 @@ const ImageUpload = ({ images = [], source, saveImage, handleClose }) => {
               className="save-btn"
               variant="solid"
               onClick={() => {
-                setDimError(false);
-                saveImage(imagesData.splice(imagesData.indexOf(deleteUrl), 1));
-                handleCloseModal();
+                handleImageDelete();
               }}
             >
               Yes
@@ -193,7 +200,6 @@ const ImageUpload = ({ images = [], source, saveImage, handleClose }) => {
               className="cancel-btn"
               variant="soft"
               onClick={() => {
-                setDimError(false);
                 handleCloseModal;
               }}
             >
