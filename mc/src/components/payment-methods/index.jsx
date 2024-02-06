@@ -186,7 +186,8 @@ const PaymentMethods = () => {
           data = state[key];
           const dataSet = Object.keys(data);
           for (let dSet of dataSet) {
-            if (dSet === 'paymentOptions') sendLoad[dSet] = data[dSet];
+            if (dSet === 'paymentOptions')
+              sendLoad[dSet] = data[dSet].filter((payOpt) => payOpt.enabled);
             else sendLoad[dSet] = data[dSet]?.value;
           }
           return {
@@ -205,7 +206,6 @@ const PaymentMethods = () => {
     Object.keys(saveData).forEach((key) =>
       saveData[key] === undefined ? delete saveData[key] : {}
     );
-
     const final_payload = {
       value: {
         ...customObject?.value,
@@ -233,12 +233,19 @@ const PaymentMethods = () => {
             case 'redirectModeA':
             case 'redirectModeB':
               if (field === 'paymentOptions') {
-                if (customValue?.[ds]?.[field])
-                  payload[ds][field] = customValue?.[ds]?.[field];
-                else {
-                  const response = await fetchWorldlinePaymentOptions(
-                    activeStore
-                  );
+                const response = await fetchWorldlinePaymentOptions(
+                  activeStore
+                );
+
+                if (customValue?.[ds]?.[field]) {
+                  for (let payOpt of payload[ds][field]) {
+                    payOpt.enabled = customValue?.[ds]?.[field].find(
+                      (pay) => pay.label === payOpt.label
+                    )
+                      ? true
+                      : false;
+                  }
+                } else if (response && response.length) {
                   payload[ds][field] = response;
                 }
                 break;
