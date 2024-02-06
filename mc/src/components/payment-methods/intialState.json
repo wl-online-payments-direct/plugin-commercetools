@@ -23,7 +23,7 @@
     "merchantReferenceID": {
       "label": " Merchant Reference ID",
       "type": "text",
-      "value": "SampleMerchantReferenceID",
+      "value": "SampleReferenceId",
       "placeholder": "Enter Merchant Reference",
       "criteria": [],
       "tooltip": "If you want to show the Merchant ID in Bank statement on their Customer bank account., then you should limit the Merchant ID length to 12 characters"
@@ -57,7 +57,7 @@
     "merchantReferenceID": {
       "label": " Merchant Reference ID",
       "type": "text",
-      "value": "SampleMerchantReferenceID",
+      "value": "SampleReferenceId",
       "placeholder": "Enter Merchant Reference",
       "criteria": [],
       "tooltip": "If you want to show the Merchant ID in Bank statement on their Customer bank account., then you should limit the Merchant ID length to 12 characters"
@@ -190,7 +190,7 @@
     "merchantReferenceID": {
       "label": " Merchant Reference ID",
       "type": "text",
-      "value": "SampleMerchantReferenceID",
+      "value": "SampleReferenceId",
       "placeholder": "Enter Merchant Reference",
       "criteria": [],
       "tooltip": "If you want to show the Merchant ID in Bank statement on their Customer bank account., then you should limit the Merchant ID length to 12 characters"
