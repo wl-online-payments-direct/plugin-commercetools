@@ -14,24 +14,32 @@ export function loadPaymentMethodsMappedResponse(
       : [];
 
   const {
+    enableWorldlineCheckout,
     redirectModeA = { paymentOptions: [] },
     redirectModeB,
     onSiteMode,
   } = customConfig || {};
 
+  // Return empty payment methods if checkout is disabled
+  if (!enableWorldlineCheckout) {
+    return { paymentMethods: [] };
+  }
+
   const paymentMethods: PaymentMethod[] = [];
 
   Object.values(redirectModeA.paymentOptions).forEach((value) => {
-    paymentMethods.push({
-      name: value.label,
-      displayOrder: value.displayOrder,
-      type: 'offsite',
-      image: {
-        src: value.logo,
-      },
-      enabled: value?.enabled,
-      paymentMethod: camelCase(value.label),
-    });
+    if (value) {
+      paymentMethods.push({
+        name: value.label,
+        displayOrder: value.displayOrder,
+        type: 'offsite',
+        image: {
+          src: value.logo,
+        },
+        enabled: value?.enabled || false,
+        paymentMethod: camelCase(value.label),
+      });
+    }
   });
 
   paymentMethods.push({

@@ -41,6 +41,7 @@ export interface CustomObjects {
   webhookSecret: string;
   webhookUrl: string;
   redirectUrl: string;
+  enableWorldlineCheckout: boolean;
   redirectModeA: RedirectModeAPaymentOptions;
   redirectModeB: RedirectModeBPaymentOptions;
   onSiteMode: OnSiteModePaymentOptions;
