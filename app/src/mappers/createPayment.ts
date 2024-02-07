@@ -6,6 +6,7 @@ import {
   ICreatePaymentResponse,
 } from '../types';
 import { appendAdditionalParamsToUrl } from './common';
+import Constants from '../constants';
 
 const getFormattedPaymentId = (
   merchantReference: string,
@@ -70,16 +71,35 @@ export function getServicePayload(
   };
 }
 
-export function getDatabasePayload(
-  customConfig: CustomObjects,
-  reference: { referenceId: number },
-  cart: Cart,
-  payload: { storeId: string },
-  payment?: { id: string },
-) {
+export function getDatabasePayload({
+  customConfig,
+  reference,
+  cart,
+  payload,
+  payment,
+  isHostedCheckout,
+  isHostedTokenization,
+}: {
+  customConfig: CustomObjects;
+  reference: { referenceId: number };
+  cart: Cart;
+  payload: { storeId: string };
+  payment?: { id: string };
+  isHostedCheckout?: boolean;
+  isHostedTokenization?: boolean;
+}) {
   const { merchantReference, authorizationMode } = customConfig;
   const cartId = cart.id;
   const { storeId } = payload;
+
+  let paymentOption = null;
+
+  if (isHostedCheckout) {
+    paymentOption = Constants.getRedirectWorldlineOption();
+  }
+  if (isHostedTokenization) {
+    paymentOption = Constants.getHostedAndAPMOption();
+  }
 
   // Concat with the merchant reference
   const paymentId = getFormattedPaymentId(
@@ -89,6 +109,7 @@ export function getDatabasePayload(
 
   return {
     authMode: authorizationMode as $Enums.Modes,
+    paymentOption: paymentOption as $Enums.PaymentOptions,
     paymentId,
     worldlineId: payment?.id?.toString() || '',
     storeId,

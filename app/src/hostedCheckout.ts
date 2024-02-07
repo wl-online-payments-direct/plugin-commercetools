@@ -13,6 +13,7 @@ import {
   getHostedCheckoutPayload,
   getConnectionServiceProps,
   getDatabasePayload,
+  isCartActive,
 } from './mappers';
 
 export async function hostedMyCheckoutSession(
@@ -20,9 +21,9 @@ export async function hostedMyCheckoutSession(
 ) {
   // Fetch customer cart from Commercetools
   const { cart } = await getMyCart(payload.authToken);
-  if (!cart) {
+  if (!cart || !isCartActive(cart)) {
     throw {
-      message: 'Failed to fetch the cart or cart is missing',
+      message: 'Failed to fetch the cart or cart is not active',
       statusCode: 500,
     };
   }
@@ -38,7 +39,13 @@ export async function hostedMyCheckoutSession(
 
   // save payment information in the database
   await createPaymentInDB(
-    getDatabasePayload(customConfig, reference, cart, payload),
+    getDatabasePayload({
+      customConfig,
+      reference,
+      cart,
+      payload,
+      isHostedCheckout: true,
+    }),
   );
 
   return result;
@@ -47,9 +54,9 @@ export async function hostedMyCheckoutSession(
 export async function hostedCheckoutSession(payload: HostedCheckoutPayload) {
   // Fetch customer cart from Commercetools
   const { cart } = await getCart(payload.cartId, payload.authToken);
-  if (!cart) {
+  if (!cart || !isCartActive(cart)) {
     throw {
-      message: 'Failed to fetch the cart or cart is missing',
+      message: 'Failed to fetch the cart or cart is not active',
       statusCode: 500,
     };
   }
@@ -65,7 +72,13 @@ export async function hostedCheckoutSession(payload: HostedCheckoutPayload) {
 
   // save payment information in the database
   await createPaymentInDB(
-    getDatabasePayload(customConfig, reference, cart, payload),
+    getDatabasePayload({
+      customConfig,
+      reference,
+      cart,
+      payload,
+      isHostedCheckout: true,
+    }),
   );
 
   return result;
