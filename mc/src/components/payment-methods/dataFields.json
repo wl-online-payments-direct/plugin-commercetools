@@ -29,7 +29,7 @@
     "authorizationPaymentOption",
     "bgColor",
     "captureConfiguration",
-    "enabled",
+    "enableWorldlineCheckout",
     "force3DSv2",
     "outlineColor",
     "paymentOption",
