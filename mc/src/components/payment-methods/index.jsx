@@ -186,9 +186,11 @@ const PaymentMethods = () => {
           data = state[key];
           const dataSet = Object.keys(data);
           for (let dSet of dataSet) {
-            if (dSet === 'paymentOptions')
-              sendLoad[dSet] = data[dSet].filter((payOpt) => payOpt.enabled);
-            else sendLoad[dSet] = data[dSet]?.value;
+            if (dSet === 'paymentOptions') {
+              sendLoad[dSet] = data[dSet].map((pDat) => {
+                if (!data.enabled.value) return { ...pDat, enabled: false };
+              });
+            } else sendLoad[dSet] = data[dSet]?.value;
           }
           return {
             [key]: sendLoad,
@@ -236,17 +238,14 @@ const PaymentMethods = () => {
                 const response = await fetchWorldlinePaymentOptions(
                   activeStore
                 );
-
                 if (customValue?.[ds]?.[field]) {
-                  for (let payOpt of payload[ds][field]) {
-                    payOpt.enabled = customValue?.[ds]?.[field].find(
-                      (pay) => pay.label === payOpt.label
-                    )
-                      ? true
-                      : false;
-                  }
+                  payload[ds][field] = payload[ds][field].map((opt) => {
+                    return { ...opt, ...customValue?.[ds]?.[field][opt.label] };
+                  });
                 } else if (response && response.length) {
-                  payload[ds][field] = response;
+                  payload[ds][field] = payload[ds][field].map((opt) => {
+                    return { ...opt, ...response[opt.label] };
+                  });
                 }
                 break;
               } else {
@@ -275,7 +274,7 @@ const PaymentMethods = () => {
         <ToggleInput
           size={'big'}
           isDisabled={false}
-          isChecked={state.enabled.value}
+          isChecked={state.enableWorldlineCheckout.value}
           onChange={(e) => {
             dispatch({
               type: 'ENABLE-WORLDLINE',
