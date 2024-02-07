@@ -1,3 +1,4 @@
+import { logger } from '@worldline/ctintegration-util';
 import { connectService } from '../client';
 import {
   RefundPaymentRequest,
@@ -19,6 +20,11 @@ export async function createRefundPaymentService(
     {},
   );
   if (result.body?.errors) {
+    logger().error(
+      `[createRefundPaymentService] Failed to process the service: ${JSON.stringify(
+        result?.body?.errors,
+      )}`,
+    );
     throw {
       message: 'Failed to process the refund payment service',
       statusCode: result.body.errors[0]?.httpStatusCode || 500,

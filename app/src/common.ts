@@ -223,19 +223,25 @@ export async function orderPaymentCaptureHandler(payload: PaymentPayload) {
     // Fetch DB payment
     const payment = await getPayment(getPaymentDBPayload(payload));
     if (!payment) {
-      logger().error('Failed to fetch the payment');
+      logger().error(
+        '[orderPaymentCaptureHandler] Failed to fetch the payment',
+      );
       return { isRetry: true };
     }
 
     // Fetch CT order
     const order = await getOrderById(payment.orderId);
     if (!order) {
-      logger().error(`Order with id: '${payment.orderId}' is missing in CT!`);
-      return { isRetry: true };
+      logger().error(
+        `[orderPaymentCaptureHandler] Order with id: '${payment.orderId}' is missing in CT!`,
+      );
+      return { isRetry: false };
     }
     if (!hasEqualAmountOrder(payload, order)) {
-      logger().error("Order amount doesn't match with the paid amount");
-      return { isRetry: true };
+      logger().error(
+        "[orderPaymentCaptureHandler] Order amount doesn't match with the paid amount",
+      );
+      return { isRetry: false };
     }
     const mappedStatus = getMappedStatus(payload);
     if (mappedStatus === 'FAILED') {
@@ -273,6 +279,8 @@ export async function orderPaymentCaptureHandler(payload: PaymentPayload) {
           'Charge',
         ),
       );
+      // Update payment table
+      await setPayment({ id: payment.id }, { status: mappedStatus });
     }
     return { isRetry: false, data: result };
   });
@@ -286,23 +294,27 @@ export async function refundPaymentHandler(payload: RefundPayload) {
     const payment = await getPayment(getPaymentDBPayload(payload));
 
     if (!payment) {
-      logger().error('Failed to fetch the payment');
+      logger().error('[refundPaymentHandler] Failed to fetch the payment');
       return { isRetry: true };
     }
     const refundAmount = payload.refund.refundOutput.amountOfMoney.amount;
     // Fetch CT order
     const order = await getOrderById(payment.orderId);
     if (!order) {
-      logger().error(`Order with id: '${payment.orderId}' is missing!`);
-      return { isRetry: true };
+      logger().error(
+        `[refundPaymentHandler] Order with id: '${payment.orderId}' is missing!`,
+      );
+      return { isRetry: false };
     }
 
     // Validate refund amount
     const hasValidRefund = hasValidAmount(order, refundAmount);
 
     if (hasValidRefund.isGreater) {
-      logger().error('Refund amount cannot be greater than the order amount!');
-      return { isRetry: true };
+      logger().error(
+        '[refundPaymentHandler] Refund amount cannot be greater than the order amount!',
+      );
+      return { isRetry: false };
     }
 
     const mappedStatus = getMappedStatus(payload);
@@ -338,6 +350,8 @@ export async function refundPaymentHandler(payload: RefundPayload) {
           'Refund',
         ),
       );
+      // Update payment table
+      await setPayment({ id: payment.id }, { status: mappedStatus });
     }
 
     // if refund is equal to order amount
@@ -362,22 +376,24 @@ export async function orderPaymentCancelHandler(payload: PaymentPayload) {
     // Fetch DB payment
     const payment = await getPayment(getPaymentDBPayload(payload));
     if (!payment) {
-      logger().error('Failed to fetch the payment');
+      logger().error('[orderPaymentCancelHandler] Failed to fetch the payment');
       return { isRetry: true };
     }
     const cancelAmount = payload.payment?.paymentOutput?.amountOfMoney?.amount;
     // Fetch CT order
     const order = await getOrderById(payment.orderId);
     if (!order) {
-      logger().error(`Order with id: '${payment.orderId}' is missing!`);
-      return { isRetry: true };
+      logger().error(
+        `[orderPaymentCancelHandler] Order with id: '${payment.orderId}' is missing!`,
+      );
+      return { isRetry: false };
     }
 
     // Validate amount
     const amount = hasValidAmount(order, cancelAmount);
     if (amount.isGreater) {
-      logger().error('Cancel amount is not valid!');
-      return { isRetry: true };
+      logger().error('[orderPaymentCancelHandler] Cancel amount is not valid!');
+      return { isRetry: false };
     }
 
     const mappedStatus = getMappedStatus(payload);
@@ -405,7 +421,7 @@ export async function orderPaymentCancelHandler(payload: PaymentPayload) {
       );
       if (response.payment.id) {
         logger().info(
-          'Successfully created cancelled payment transaction in CT!',
+          '[orderPaymentCancelHandler] Successfully created cancelled payment transaction in CT!',
         );
       }
       await capturePaymentInDB(
@@ -416,6 +432,8 @@ export async function orderPaymentCancelHandler(payload: PaymentPayload) {
           'CancelAuthorization',
         ),
       );
+      // Update payment table
+      await setPayment({ id: payment.id }, { status: mappedStatus });
     }
     let result;
     // if cancel amount is equal to order amount
@@ -424,7 +442,7 @@ export async function orderPaymentCancelHandler(payload: PaymentPayload) {
       result = await updateOrderStatus(payment.orderId, 'Cancelled');
       if (result.order.orderState === 'Cancelled') {
         logger().info(
-          `Successfully updated order status to : ${result.order.orderState}`,
+          `[orderPaymentCancelHandler] Successfully updated order status to : ${result.order.orderState}`,
         );
       }
     }

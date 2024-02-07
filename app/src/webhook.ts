@@ -66,26 +66,17 @@ export async function webhookAppHandler({
   }
   logger().debug(`[Webhook][${payload.type}] Successfully authenticated`);
 
-  if ('payment' in payload) {
-    // Payload is a PaymentPayload
-    switch (payload.type) {
-      case 'payment.created':
-      case 'payment.pending_capture':
-      case 'payment.capture_requested':
-      case 'payment.rejected':
-      case 'payment.rejected_capture':
-        return orderPaymentHandler(payload);
-      case 'payment.captured':
-        return orderPaymentCaptureHandler(payload);
-      case 'payment.cancelled':
-        return orderPaymentCancelHandler(payload);
-      default:
-        logger().warn(`[Webhook] Received payload type: ${payload.type}`);
-    }
-  } else if ('refund' in payload) {
-    // Payload is a RefundPayload
-    return refundPaymentHandler(payload);
+  switch (payload.type) {
+    case 'payment.created':
+      return orderPaymentHandler(payload as PaymentPayload);
+    case 'payment.captured':
+      return orderPaymentCaptureHandler(payload as PaymentPayload);
+    case 'payment.cancelled':
+      return orderPaymentCancelHandler(payload as PaymentPayload);
+    case 'payment.refunded':
+      return refundPaymentHandler(payload as RefundPayload);
+    default:
+      logger().warn(`[Webhook] Received payload type: ${payload.type}`);
+      return {};
   }
-
-  return {};
 }

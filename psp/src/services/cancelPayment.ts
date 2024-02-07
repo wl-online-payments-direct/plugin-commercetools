@@ -1,3 +1,4 @@
+import { logger } from '@worldline/ctintegration-util';
 import { connectService } from '../client';
 import {
   CancelPaymentRequest,
@@ -19,6 +20,11 @@ export async function cancelPaymentService(
     {},
   );
   if (result.body?.errors) {
+    logger().error(
+      `[cancelPaymentService] Failed to process the service: ${JSON.stringify(
+        result?.body?.errors,
+      )}`,
+    );
     throw {
       message: 'Failed to process the cancel payment service',
       statusCode: result.body.errors[0]?.httpStatusCode || 500,

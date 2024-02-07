@@ -12,6 +12,12 @@ export async function refundPayment(
 ): Promise<ICreateRefundResponse> {
   // Fetch CT order
   const order = await getOrderById(payload.orderId);
+  if (!order) {
+    throw {
+      message: 'Failed to fetch the order or order is missing!',
+      statusCode: 500,
+    };
+  }
   //  Check refund amount is vaild or not
   const hasValidRefund = hasValidAmount(order, payload.amount);
   if (hasValidRefund.isGreater) {

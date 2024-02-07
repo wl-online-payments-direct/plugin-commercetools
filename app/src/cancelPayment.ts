@@ -10,6 +10,12 @@ import {
 export async function cancelPayment(payload: ICancelPaymentPayload) {
   // Fetch CT order
   const order = await getOrderById(payload.orderId);
+  if (!order) {
+    throw {
+      message: 'Failed to fetch the order or order is missing!',
+      statusCode: 500,
+    };
+  }
   //  Check cancel amount is vaild or not
   const amount = hasValidAmount(order, payload.amount);
   if (amount.isGreater) {
