@@ -28,7 +28,7 @@ export function loadPaymentMethodsMappedResponse(
   const paymentMethods: PaymentMethod[] = [];
 
   Object.values(redirectModeA.paymentOptions).forEach((value) => {
-    if (value) {
+    if (value && value?.enabled) {
       paymentMethods.push({
         name: value.label,
         displayOrder: value.displayOrder,
@@ -36,31 +36,35 @@ export function loadPaymentMethodsMappedResponse(
         image: {
           src: value.logo,
         },
-        enabled: value?.enabled || false,
+        enabled: value?.enabled,
         paymentMethod: camelCase(value.label),
       });
     }
   });
 
-  paymentMethods.push({
-    name: redirectModeB?.payButtonTitle || '',
-    type: 'offsite',
-    image: {
-      src: redirectModeB?.logo || '',
-    },
-    enabled: redirectModeB?.enabled || false,
-    paymentMethod: 'worldlineOffsite',
-  });
+  if (redirectModeB?.enabled) {
+    paymentMethods.push({
+      name: redirectModeB?.payButtonTitle || '',
+      type: 'offsite',
+      image: {
+        src: redirectModeB?.logo || '',
+      },
+      enabled: redirectModeB?.enabled,
+      paymentMethod: 'worldlineOffsite',
+    });
+  }
 
-  paymentMethods.push({
-    name: onSiteMode?.payButtonTitle || '',
-    type: 'onsite',
-    image: {
-      src: onSiteMode?.logo || '',
-    },
-    enabled: onSiteMode?.enabled || false,
-    paymentMethod: 'worldlineOnsite',
-  });
+  if (onSiteMode?.enabled) {
+    paymentMethods.push({
+      name: onSiteMode?.payButtonTitle || '',
+      type: 'onsite',
+      image: {
+        src: onSiteMode?.logo || '',
+      },
+      enabled: onSiteMode?.enabled,
+      paymentMethod: 'worldlineOnsite',
+    });
+  }
 
   return {
     paymentMethods: [...tokens, ...paymentMethods],
