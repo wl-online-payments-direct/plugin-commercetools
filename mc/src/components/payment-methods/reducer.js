@@ -8,7 +8,7 @@ const reducer = (state, action) => {
     case 'ENABLE-WORLDLINE':
       return {
         ...state,
-        enabled: {
+        enableWorldlineCheckout: {
           value: action.value,
         },
       };

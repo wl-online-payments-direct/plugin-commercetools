@@ -186,11 +186,11 @@ const PaymentMethods = () => {
           data = state[key];
           const dataSet = Object.keys(data);
           for (let dSet of dataSet) {
-            if (dSet === 'paymentOptions')
+            if (dSet === 'paymentOptions') {
               sendLoad[dSet] = data[dSet].map((pDat) => {
-                if (!data.enabled.value) pDat.enabled = false;
+                if (!data.enabled.value) return { ...pDat, enabled: false };
               });
-            else sendLoad[dSet] = data[dSet]?.value;
+            } else sendLoad[dSet] = data[dSet]?.value;
           }
           return {
             [key]: sendLoad,

@@ -38,6 +38,7 @@ interface ConnectionProps {
   webhookSecret: string;
   webhookUrl: string;
   redirectUrl: string;
+  enableWorldlineCheckout: boolean;
   redirectModeA: RedirectModeAPaymentOptions;
   redirectModeB: RedirectModeBPaymentOptions;
   onSiteMode: OnSiteModePaymentOptions;
