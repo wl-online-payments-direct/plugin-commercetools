@@ -3,7 +3,9 @@ import {
   getStores,
   getCustomObject,
   createCustomObject,
-} from '../../ct-methods/customObject';
+  getPaymentMethods,
+  uploadImages,
+} from '../../ct-methods';
 import { useApplicationContext } from '@commercetools-frontend/application-shell-connectors';
 import Snackbar from '@mui/material/Snackbar';
 import Alert from '@mui/material/Alert';
@@ -17,6 +19,9 @@ const { CONTAINER_NAME } = CONFIG;
 
 const PaymentProvider = ({ children }) => {
   const projectKey = useApplicationContext((context) => context.project.key);
+  const apiHost = useApplicationContext(
+    (context) => context.environment.apiHost
+  );
   const [activeStore, setActiveStore] = useState(null);
   const [stores, setStores] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -28,6 +33,7 @@ const PaymentProvider = ({ children }) => {
     transition: Slide,
     severity: 'success',
     message: '',
+    autoHideDuration: 3000,
   });
   const { vertical, horizontal, open, transition } = toaster;
 
@@ -108,9 +114,80 @@ const PaymentProvider = ({ children }) => {
     }
   };
 
+  const fetchWorldlinePaymentOptions = async (activeStore) => {
+    setLoader(true);
+    if (activeStore?.key) {
+      try {
+        const response = await getPaymentMethods(
+          projectKey,
+          activeStore?.key,
+          apiHost
+        );
+        if (response) {
+          const { result } = response;
+          setLoader(false);
+          showToaster({
+            severity: 'success',
+            open: true,
+            message: 'Refresh Payment Methods: Success',
+          });
+          return result;
+        }
+      } catch (err) {
+        setLoader(false);
+        showToaster({
+          severity: 'error',
+          open: true,
+          message: 'Failed to refresh payment methods',
+        });
+        return null;
+      }
+    }
+  };
+
+  const imageUploader = async (files, toasterFlag) => {
+    setLoader(true);
+    try {
+      var formdata = new FormData();
+      for (let file of files) {
+        formdata.append('images', file, file.name);
+      }
+      const response = await uploadImages(projectKey, formdata, apiHost);
+      if (response) {
+        const { result, statusCode } = response;
+        if (statusCode === 200) {
+          setLoader(false);
+          if (toasterFlag)
+            showToaster({
+              severity: 'success',
+              open: true,
+              message: 'Image uploaded',
+            });
+          return result;
+        } else {
+          showToaster({
+            severity: 'error',
+            open: true,
+            message: response?.message,
+          });
+        }
+      }
+    } catch (err) {
+      console.error('Error saving image', err);
+      showToaster({
+        severity: 'error',
+        open: true,
+        message: 'Failed to upload Image',
+      });
+      setLoader(false);
+    }
+  };
+
   useEffect(async () => {
     const response = await fetchCustomObjects(activeStore);
     setCustomObject(response);
+    setLoader(false);
+    hideToaster();
   }, [activeStore]);
 
   const showToaster = async (options) => {
@@ -140,6 +217,8 @@ const PaymentProvider = ({ children }) => {
         setActiveStore,
         setCustomObject,
         saveCustomObject,
+        fetchWorldlinePaymentOptions,
+        imageUploader,
         customObject,
         activeStore,
         stores,
@@ -157,7 +236,7 @@ const PaymentProvider = ({ children }) => {
         anchorOrigin={{ vertical, horizontal }}
         open={open}
         key={vertical + horizontal}
-        autoHideDuration={6000}
+        autoHideDuration={3000}
         TransitionComponent={transition}
       >
         <Alert

@@ -1,3 +1,11 @@
 .store-dropdown-container .select-dropdown{
     width: 20%;
 }
+
+.MuiTooltip-tooltip {
+    background-color: black;
+}
+
+.section-header svg {
+    cursor: pointer;
+}

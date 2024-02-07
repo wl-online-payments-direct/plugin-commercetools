@@ -8,15 +8,13 @@ import AccordionDetails from '@mui/material/AccordionDetails';
 import Typography from '@mui/material/Typography';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import TextInput from '@commercetools-uikit/text-input';
-import worldlineLogo from '../../assets/worldline-logo-main.png';
 import InfoIcon from '@mui/icons-material/Info';
-import Tooltip from '@commercetools-uikit/tooltip';
+import Tooltip from '@mui/material/Tooltip';
+import MenuItem from '@mui/material/MenuItem';
+import Select from '@mui/material/Select';
+import ImageUpload from '../image-upload';
 
-const RedirectModeB = ({
-  redirectModeB,
-  handleRedirectModeB,
-  handleLogoUpload,
-}) => {
+const RedirectModeB = ({ redirectModeB, handleRedirectModeB }) => {
   return (
     <Accordion className="payment-redirect payment-section-wrapper">
       <AccordionSummary
@@ -40,13 +38,15 @@ const RedirectModeB = ({
         </p>
         <div className="relative">
           <span className="float-right">
-            Send Order Data
-            <Tooltip
-              placement="top"
-              title={redirectModeB.sendOrderData.tooltip}
-            >
-              <InfoIcon />
-            </Tooltip>
+            <div>
+              Send Order Data
+              <Tooltip
+                placement="top"
+                title={redirectModeB.sendOrderData.tooltip}
+              >
+                <InfoIcon />
+              </Tooltip>
+            </div>
             <CheckboxInput
               onChange={(e) =>
                 handleRedirectModeB('sendOrderData', e.target.checked)
@@ -58,13 +58,10 @@ const RedirectModeB = ({
         <div className="section-wrapper">
           <h5 className="section-header">{redirectModeB.logo.label}</h5>
           <div className="template-section flex">
-            <img className="" src={worldlineLogo} alt={worldlineLogo} />
-            <input
-              className="section-input"
-              validation={redirectModeB.logo.validation}
-              type={redirectModeB.logo.type}
-              name={'redirectModeB-img-upload'}
-              onChange={(event) => handleLogoUpload(event)}
+            <ImageUpload
+              images={redirectModeB.logo.value}
+              source="redirectModeB"
+              saveImage={(url) => handleRedirectModeB('logo', url)}
             />
           </div>
         </div>
@@ -72,16 +69,34 @@ const RedirectModeB = ({
           <h5 className="section-header">
             {redirectModeB.payButtonTitle.label}
           </h5>
-          <div className="template-section">
+          <div className="template-section flex">
             <TextInput
               className="section-input"
               value={redirectModeB.payButtonTitle.value}
-              validation={redirectModeB.payButtonTitle.validation}
               type={redirectModeB.payButtonTitle.type}
               onChange={(e) =>
                 handleRedirectModeB('payButtonTitle', e.target.value)
               }
             />
+            <div className="dropdown-container">
+              <Select
+                className="select-dropdown"
+                value={redirectModeB.payButtonLanguage.value}
+                type={redirectModeB.payButtonLanguage.type}
+                onChange={(e) =>
+                  handleRedirectModeB('payButtonLanguage', e.target.value)
+                }
+                displayEmpty
+                inputProps={{ 'aria-label': 'Without label' }}
+              >
+                {redirectModeB.payButtonLanguage.values &&
+                  redirectModeB.payButtonLanguage.values.map((lang, index) => (
+                    <MenuItem key={`lang${index}`} value={lang}>
+                      {lang}
+                    </MenuItem>
+                  ))}
+              </Select>
+            </div>
           </div>
         </div>
         <div className="section-wrapper">
@@ -98,7 +113,6 @@ const RedirectModeB = ({
             <TextInput
               className="section-input"
               value={redirectModeB.merchantReferenceID.value}
-              validation={redirectModeB.merchantReferenceID.validation}
               type={redirectModeB.merchantReferenceID.type}
               placeholder={redirectModeB.merchantReferenceID.placeholder}
               onChange={(e) =>
@@ -115,7 +129,6 @@ const RedirectModeB = ({
             <TextInput
               className="section-input"
               value={redirectModeB.templateFileName.value}
-              validation={redirectModeB.templateFileName.validation}
               type={redirectModeB.templateFileName.type}
               placeholder={redirectModeB.templateFileName.placeholder}
               onChange={(e) =>
@@ -138,10 +151,12 @@ const RedirectModeB = ({
             }
             isChecked={redirectModeB.groupCards.value}
           />
-          {redirectModeB.groupCards.label}
-          <Tooltip placement="top" title={redirectModeB.groupCards.tooltip}>
-            <InfoIcon />
-          </Tooltip>
+          <div>
+            {redirectModeB.groupCards.label}
+            <Tooltip placement="top" title={redirectModeB.groupCards.tooltip}>
+              <InfoIcon />
+            </Tooltip>
+          </div>
         </div>
       </AccordionDetails>
     </Accordion>

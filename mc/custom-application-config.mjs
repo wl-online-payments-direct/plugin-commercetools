@@ -16,6 +16,14 @@ const config = {
       url: 'https://${env:CTP_MC_APPLICATION_URL}',
     },
   },
+  headers: {
+    csp: {
+      'connect-src': [
+        'mc-api.europe-west1.gcp.commercetools.com',
+        'dev-worldline-cto.tryzens-ignite.com',
+      ],
+    },
+  },
   oAuthScopes: {
     view: [
       'view_products',
@@ -51,6 +59,9 @@ const config = {
       permissions: [PERMISSIONS.View, PERMISSIONS.Manage],
     },
   ],
+  additionalEnv: {
+    apiHost: '${env:CTP_MC_APPLICATION_API_HOST}'
+  }
 };
 
 export default config;

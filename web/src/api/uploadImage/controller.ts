@@ -14,7 +14,7 @@ import { Request, ErrorProps } from '../../lib/types';
 const processRequest = async (request: Request, response: ServerResponse) => {
   try {
     const { method } = request;
-    logger().debug(`[UploadImages] Request initiated with method: ${method}`);
+    logger().debug(`[UploadImage] Request initiated with method: ${method}`);
 
     // Only allow POST request; else throw error
     await isPostRequestOrThrowError(method);
@@ -37,15 +37,35 @@ const processRequest = async (request: Request, response: ServerResponse) => {
       },
     });
     const maxSize = parseInt(process.env.LIMIT_FILE_SIZE as string, 10) || 1;
+
+    // Read allowed file types from environment variable and split into an array
+    const allowedFileTypes = (
+      process.env.ALLOWED_FILE_TYPES ||
+      'image/png,image/jpeg,image/jpg,image/svg+xml,image/gif'
+    ).split(',');
+
+    // Add file type checks to fileFilter function
+    const fileFilter = (
+      _req: Req,
+      file: Express.Multer.File,
+      cb: multer.FileFilterCallback,
+    ) => {
+      // Check if file type is allowed
+      if (!allowedFileTypes.includes(file.mimetype)) {
+        return cb(
+          new Error(
+            'Invalid file type. Only PNG, JPEG, JPG, SVG, and GIF files are allowed.',
+          ),
+        );
+      }
+      // File is valid
+      return cb(null, true);
+    };
+
     const uploadImage = multer({
       storage: fileStorage,
       limits: { fileSize: maxSize * 1024 * 1024 /* bytes */ },
-      fileFilter: (_req, file, cb) => {
-        if (!file.originalname.match(/\.(png|jpg|jpeg)$/)) {
-          return cb(new Error('Please upload an Image file!'));
-        }
-        return cb(null, true);
-      },
+      fileFilter,
     }).array('images');
 
     // Handle file upload
