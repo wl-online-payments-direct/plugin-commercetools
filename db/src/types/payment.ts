@@ -48,28 +48,6 @@ export interface CreatePaymentResponse {
   state: $Enums.States;
 }
 
-export interface CapturePaymentRequest {
-  storeId: string;
-  orderId: string;
-  paymentId: string;
-  worldlineId: string;
-  amount: number;
-  type?: string | null;
-  status?: string | null;
-  errors?: string | null;
-}
-
-export interface CapturePaymentResponse {
-  id: string;
-  storeId: string;
-  orderId: string;
-  paymentId: string;
-  worldlineId: string;
-  amount: number;
-  type: string | null;
-  status: string | null;
-  errors: string | null;
-}
 export interface GetOrders {
   meta: {
     orderId: string;

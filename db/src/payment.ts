@@ -1,4 +1,3 @@
-import { logger } from '@worldline/ctintegration-util';
 import { Prisma } from '@prisma/client';
 import prisma from './connection';
 import {
@@ -9,8 +8,6 @@ import {
 import type {
   CreatePaymentRequest,
   CreatePaymentResponse,
-  CapturePaymentRequest,
-  CapturePaymentResponse,
   GetOrders,
   Payment,
   PaymentQueryParams,
@@ -168,22 +165,6 @@ export async function setPayment(
   } catch (error) {
     throw {
       message: 'Failed to update payment',
-      statusCode: 500,
-      details: (error as { message: string }).message,
-    };
-  }
-}
-
-export async function capturePaymentInDB(
-  data: CapturePaymentRequest,
-): Promise<CapturePaymentResponse> {
-  try {
-    const result = await prisma.payment_transactions.create({ data });
-    return result;
-  } catch (error) {
-    logger().error('Failed to capture payment in DB', JSON.stringify(error));
-    throw {
-      message: 'Failed to capture payment in DB',
       statusCode: 500,
       details: (error as { message: string }).message,
     };
