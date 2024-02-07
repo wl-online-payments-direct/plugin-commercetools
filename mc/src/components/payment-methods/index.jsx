@@ -15,26 +15,32 @@ import { PaymentContext } from '../../context/payment';
 
 const { emailAddress } = CONFIG;
 const PaymentMethods = () => {
-  const { setLoader, saveCustomObject, customObject } =
-    useContext(PaymentContext);
+  const {
+    setLoader,
+    saveCustomObject,
+    customObject,
+    fetchWorldlinePaymentOptions,
+    activeStore,
+    hideToaster,
+  } = useContext(PaymentContext);
 
   const [state, dispatch] = useReducer(reducer, initialState);
 
   const handleOnsiteMode = (field, value) => {
     const payload = { ...state.onSiteMode };
-    payload[field] = {
-      ...payload[field],
-      value: value,
-    };
 
-    if (field === 'payButtonLanguage') {
+    if (field === 'logo') {
+      const imgSet = new Set(payload.logo.value.concat(value));
+      payload['logo'] = {
+        ...payload['logo'],
+        value: [...imgSet],
+      };
+    } else if (field === 'payButtonLanguage') {
       payload['payButtonTitle'] = {
         ...payload['payButtonTitle'],
         value: state.onSiteMode['payButtonTitle'].values[value],
       };
-    }
-
-    if (field === 'payButtonTitle') {
+    } else if (field === 'payButtonTitle') {
       payload['payButtonTitle'] = {
         ...payload['payButtonTitle'],
         values: {
@@ -42,20 +48,32 @@ const PaymentMethods = () => {
           [state.onSiteMode['payButtonLanguage'].value]: value,
         },
       };
+    } else {
+      payload[field] = {
+        ...payload[field],
+        value: value,
+      };
     }
 
     dispatch({
       type: 'ONSITE-MODE',
       value: payload,
     });
+
+    setTimeout(() => {
+      hideToaster();
+    }, 3000);
   };
 
   const handleRedirectModeA = (field, value) => {
     const payload = { ...state.redirectModeA };
-    payload[field] = {
-      ...payload[field],
-      value: value,
-    };
+    if (field === 'paymentOptions') payload['paymentOptions'] = value;
+    else
+      payload[field] = {
+        ...payload[field],
+        value: value,
+      };
+
     dispatch({
       type: 'REDIRECT-MODE-A',
       value: payload,
@@ -64,15 +82,41 @@ const PaymentMethods = () => {
 
   const handleRedirectModeB = (field, value) => {
     const payload = { ...state.redirectModeB };
-    payload[field] = {
-      ...payload[field],
-      value: value,
-    };
+
+    if (field === 'logo') {
+      const imgSet = new Set(payload.logo.value.concat(value));
+      payload['logo'] = {
+        ...payload['logo'],
+        value: [...imgSet],
+      };
+    } else if (field === 'payButtonLanguage') {
+      payload['payButtonTitle'] = {
+        ...payload['payButtonTitle'],
+        value: state.redirectModeB['payButtonTitle'].values[value],
+      };
+    } else if (field === 'payButtonTitle') {
+      payload['payButtonTitle'] = {
+        ...payload['payButtonTitle'],
+        values: {
+          ...state.redirectModeB['payButtonTitle'].values,
+          [state.redirectModeB['payButtonLanguage'].value]: value,
+        },
+      };
+    } else {
+      payload[field] = {
+        ...payload[field],
+        value: value,
+      };
+    }
 
     dispatch({
       type: 'REDIRECT-MODE-B',
       value: payload,
     });
+
+    setTimeout(() => {
+      hideToaster();
+    }, 3000);
   };
 
   const handleCommonSettings = (field, value) => {
@@ -105,52 +149,60 @@ const PaymentMethods = () => {
     });
   };
 
-  const handleOptionUpdate = (option, field, value) => {
-    const payload = state.redirectModeA.paymentOptions;
-    payload[option][field] = value;
-    handleRedirectModeA('payOptionUpdate', payload);
+  const handleOptionUpdate = (methods) => {
+    handleRedirectModeA(
+      'paymentOptions',
+      methods.map((method, index) => {
+        return { ...method, displayOrder: index };
+      })
+    );
   };
 
   const handleLogoUpload = (e) => {};
-  const fetchPaymentMethods = () => {};
+
+  const fetchPaymentMethods = async () => {
+    setLoader(true);
+    const result = await fetchWorldlinePaymentOptions(activeStore);
+    if (result) {
+      handleRedirectModeA('paymentOptions', result);
+    } else {
+      handleRedirectModeA(
+        'paymentOptions',
+        initialState.redirectModeA.paymentOptions
+      );
+    }
+    setLoader(false);
+  };
 
   const saveFormData = async () => {
     setLoader(true);
     const payload = Object.keys(state).map((key) => {
       let data;
+      const sendLoad = {};
       switch (key) {
         case 'onSiteMode':
         case 'redirectModeB':
+        case 'redirectModeA':
           data = state[key];
           const dataSet = Object.keys(data);
-          const sendLoad = {};
           for (let dSet of dataSet) {
-            sendLoad[dSet] = data[dSet]?.value;
+            if (dSet === 'paymentOptions')
+              sendLoad[dSet] = data[dSet].filter((payOpt) => payOpt.enabled);
+            else sendLoad[dSet] = data[dSet]?.value;
           }
           return {
             [key]: sendLoad,
           };
-        case 'redirectModeA':
-          data = state[key];
-          return Object.keys(data)
-            .map((key1) => {
-              return { [key + '_' + key1]: data[key1].value };
-            })
-            .flat();
         default:
           return { [key]: state[key].value };
       }
     });
 
     let saveData = {};
-
     for (let pData of payload) {
-      if (Array.isArray(pData)) {
-        pData.forEach((pValue) => Object.assign(saveData, pValue));
-      } else {
-        Object.assign(saveData, pData);
-      }
+      saveData = { ...saveData, ...pData };
     }
+
     Object.keys(saveData).forEach((key) =>
       saveData[key] === undefined ? delete saveData[key] : {}
     );
@@ -170,26 +222,50 @@ const PaymentMethods = () => {
     await saveCustomObject(final_payload);
   };
 
-  useEffect(() => {
-    const payload = initialState;
+  useEffect(async () => {
+    const payload = JSON.parse(JSON.stringify(initialState));
     if (customObject?.value) {
+      const customValue = customObject?.value?.test;
       for (let ds of Object.keys(dataFields)) {
         for (let field of dataFields[ds]) {
-          if (ds === 'general')
-            payload[field].value =
-              customObject?.value?.test[payload[field]?.key];
-          else if (ds === 'onSiteMode' || ds === 'redirectModeB') {
-            payload[ds][field].value = customObject?.value?.test[ds][field];
-          } else
-            payload[ds][field].value =
-              customObject?.value?.test[payload[ds][field]?.key];
+          switch (ds) {
+            case 'onSiteMode':
+            case 'redirectModeA':
+            case 'redirectModeB':
+              if (field === 'paymentOptions') {
+                const response = await fetchWorldlinePaymentOptions(
+                  activeStore
+                );
+
+                if (customValue?.[ds]?.[field]) {
+                  for (let payOpt of payload[ds][field]) {
+                    payOpt.enabled = customValue?.[ds]?.[field].find(
+                      (pay) => pay.label === payOpt.label
+                    )
+                      ? true
+                      : false;
+                  }
+                } else if (response && response.length) {
+                  payload[ds][field] = response;
+                }
+                break;
+              } else {
+                if (customValue?.[ds]?.[field])
+                  payload[ds][field].value = customValue?.[ds]?.[field];
+                break;
+              }
+            case 'general':
+              if (customValue?.[field])
+                payload[field].value = customValue?.[field];
+              break;
+          }
         }
       }
-      dispatch({
-        type: 'UPDATE-STATE',
-        value: payload,
-      });
     }
+    dispatch({
+      type: 'UPDATE-STATE',
+      value: payload,
+    });
   }, [customObject]);
 
   return (
@@ -199,7 +275,6 @@ const PaymentMethods = () => {
         <ToggleInput
           size={'big'}
           isDisabled={false}
-          value={state.enabled.value}
           isChecked={state.enabled.value}
           onChange={(e) => {
             dispatch({
