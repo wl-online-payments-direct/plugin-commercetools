@@ -143,7 +143,6 @@ const RedirectModeB = ({ redirectModeB, handleRedirectModeB }) => {
             </p>
           </div>
         </div>
-
         <div className="section-wrapper flex">
           <CheckboxInput
             onChange={(e) =>
@@ -156,6 +155,52 @@ const RedirectModeB = ({ redirectModeB, handleRedirectModeB }) => {
             <Tooltip placement="top" title={redirectModeB.groupCards.tooltip}>
               <InfoIcon />
             </Tooltip>
+          </div>
+        </div>
+        <div className="section-wrapper">
+          <h5 className="section-header">
+            {redirectModeB['3dsEnablement'].label}
+          </h5>
+          <div className="3ds-enablement flex">
+            <h5 className="section-title">
+              {redirectModeB['3dsEnablement'].label}
+            </h5>
+            <ToggleInput
+              size={'small'}
+              isDisabled={false}
+              isChecked={redirectModeB['3dsEnablement'].value}
+              onChange={(e) =>
+                handleRedirectModeB('3dsEnablement', e.target.checked)
+              }
+            />
+          </div>
+        </div>
+        <div className="section-wrapper flex">
+          <div className="3ds-challenge flex">
+            <h5 className="section-title">
+              {redirectModeB['3dsChallenge'].label}
+            </h5>
+            <ToggleInput
+              size={'small'}
+              isDisabled={redirectModeB['3dsEnablement'].value ? false : true}
+              isChecked={redirectModeB['3dsChallenge'].value}
+              onChange={(e) =>
+                handleRedirectModeB('3dsChallenge', e.target.checked)
+              }
+            />
+          </div>
+          <div className="3ds-excemption flex">
+            <h5 className="section-title">
+              {redirectModeB['3dsExemption'].label}
+            </h5>
+            <ToggleInput
+              size={'small'}
+              isDisabled={redirectModeB['3dsEnablement'].value ? false : true}
+              isChecked={redirectModeB['3dsExemption'].value}
+              onChange={(e) =>
+                handleRedirectModeB('3dsExemption', e.target.checked)
+              }
+            />
           </div>
         </div>
       </AccordionDetails>

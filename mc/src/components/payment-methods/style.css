@@ -58,6 +58,14 @@
     padding: 2rem !important;
 }
 
+.section-header{
+font-size: medium;
+}
+
+.section-title {
+padding-top: 5px;
+}
+
 .section-header,.section-input {
     margin: 1rem 0rem;
 }
