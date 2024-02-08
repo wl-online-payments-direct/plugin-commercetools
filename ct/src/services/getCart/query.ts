@@ -86,6 +86,7 @@ const query = `
         country
         locale
         inventoryMode
+        cartState
       }
   }
 `;
