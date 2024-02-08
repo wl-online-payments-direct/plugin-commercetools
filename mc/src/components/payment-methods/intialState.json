@@ -32,7 +32,7 @@
       "label": " Template File Name",
       "type": "text",
       "value": "SimplifiedCustomPaymentPage",
-      "placeholder": "Enter templated file name",
+      "placeholder": "Enter Template file name",
       "criteria": []
     },
     "logo": {
@@ -66,7 +66,7 @@
       "label": "Template File Name",
       "type": "text",
       "value": "SimplifiedCustomPaymentPage",
-      "placeholder": "Enter templated file name",
+      "placeholder": "Enter Template file name",
       "criteria": []
     },
     "refresh": {
@@ -163,6 +163,7 @@
     "logo": {
       "label": "Generic Logo Displayed on Your Payment Page",
       "type": "file",
+      "tooltip": "Max size 5MB, max dimensions 200x80px,supported jpg,svg,png",
       "criteria": [],
       "value": [],
       "alt": "Display logo for redirect payment method"
@@ -199,7 +200,7 @@
       "label": " Template File Name",
       "type": "text",
       "value": "SimplifiedCustomPaymentPage",
-      "placeholder": "Enter templated file name",
+      "placeholder": "Enter Template file name",
       "criteria": []
     },
     "groupCards": {

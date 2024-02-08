@@ -56,7 +56,12 @@ const RedirectModeB = ({ redirectModeB, handleRedirectModeB }) => {
           </span>
         </div>
         <div className="section-wrapper">
-          <h5 className="section-header">{redirectModeB.logo.label}</h5>
+          <h5 className="section-header">
+            {redirectModeB.logo.label}
+            <Tooltip placement="top" title={redirectModeB.logo.tooltip}>
+              <InfoIcon />
+            </Tooltip>
+          </h5>
           <div className="template-section flex">
             <ImageUpload
               images={redirectModeB.logo.value}

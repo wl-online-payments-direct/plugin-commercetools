@@ -40,14 +40,21 @@ const PaymentMethods = () => {
         ...payload['payButtonTitle'],
         value: state.onSiteMode['payButtonTitle'].values[value],
       };
+      payload['payButtonLanguage'] = {
+        ...payload['payButtonLanguage'],
+        value: value,
+      };
     } else if (field === 'payButtonTitle') {
       payload['payButtonTitle'] = {
         ...payload['payButtonTitle'],
         values: {
           ...state.onSiteMode['payButtonTitle'].values,
-          [state.onSiteMode['payButtonLanguage'].value]: value,
         },
+        value: value,
       };
+      payload['payButtonTitle'].values[
+        state.onSiteMode['payButtonLanguage'].value
+      ] = value;
     } else {
       payload[field] = {
         ...payload[field],
@@ -94,14 +101,21 @@ const PaymentMethods = () => {
         ...payload['payButtonTitle'],
         value: state.redirectModeB['payButtonTitle'].values[value],
       };
+      payload['payButtonLanguage'] = {
+        ...payload['payButtonLanguage'],
+        value: value,
+      };
     } else if (field === 'payButtonTitle') {
       payload['payButtonTitle'] = {
         ...payload['payButtonTitle'],
         values: {
           ...state.redirectModeB['payButtonTitle'].values,
-          [state.redirectModeB['payButtonLanguage'].value]: value,
         },
+        value: value,
       };
+      payload['payButtonTitle'].values[
+        state.redirectModeB['payButtonLanguage'].value
+      ] = value;
     } else {
       payload[field] = {
         ...payload[field],
