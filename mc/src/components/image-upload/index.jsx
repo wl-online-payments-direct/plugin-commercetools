@@ -40,6 +40,8 @@ const ImageUpload = ({ images = [], source, saveImage, handleClose }) => {
       } else {
         setImagesData([`${apiHost}/${res[0]}`]);
       }
+      const uploadEle = document.getElementById('upload-file');
+      uploadEle?.value = '';
     }
     setDimError(false);
   };
