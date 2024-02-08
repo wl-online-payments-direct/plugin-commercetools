@@ -15,6 +15,7 @@ export interface RedirectModeBPaymentOptions {
   payButtonTitle: string;
   merchantReferenceID: string;
   templateFileName: string;
+  groupCards?: boolean;
 }
 
 export interface OnSiteModePaymentOptions {

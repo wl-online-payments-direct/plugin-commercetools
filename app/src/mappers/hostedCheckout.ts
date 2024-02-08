@@ -13,7 +13,7 @@ export function getHostedCheckoutPayload(
   const merchantCustomerId = cart?.customerId || cart?.anonymousId || '';
   const locale = cart?.locale ? { locale: cart.locale } : {};
 
-  const { variant, merchantReference } = customConfig;
+  const { variant, merchantReference, redirectModeB } = customConfig;
   const { tokens, acceptHeader, userAgent } = payload;
 
   // Billing address
@@ -35,6 +35,9 @@ export function getHostedCheckoutPayload(
   const returnUrl = appendAdditionalParamsToUrl(payload.returnUrl, {
     orderPaymentId: paymentId,
   });
+
+  // Advanced Admin Settings: option to group all hosted checkout cards
+  const groupCards = !!redirectModeB?.groupCards;
 
   return {
     order: {
@@ -69,6 +72,9 @@ export function getHostedCheckoutPayload(
       ...locale,
       tokens,
       returnUrl,
+      cardPaymentMethodSpecificInput: {
+        groupCards,
+      },
     },
   };
 }
