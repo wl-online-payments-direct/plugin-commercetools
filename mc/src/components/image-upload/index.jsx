@@ -105,7 +105,7 @@ const ImageUpload = ({ images = [], source, saveImage, handleClose }) => {
 
   const handleImageDelete = () => {
     const deleteIndex = imagesData.indexOf(deleteUrl);
-    const newDataSet = [...imagesData.splice(deleteIndex, 1)];
+    imagesData.splice(deleteIndex, 1);
     handleCloseModal();
   };
 
@@ -184,7 +184,7 @@ const ImageUpload = ({ images = [], source, saveImage, handleClose }) => {
             <CloseIcon />
           </span>
           <Typography id="modal-modal-title" variant="h6" component="h2">
-            {'Do you want to delete the image?'}
+            {'Do you want to delete the image ?'}
           </Typography>
           <div className="image-upload">
             <Button
@@ -200,7 +200,7 @@ const ImageUpload = ({ images = [], source, saveImage, handleClose }) => {
               className="cancel-btn"
               variant="soft"
               onClick={() => {
-                handleCloseModal;
+                handleCloseModal();
               }}
             >
               Cancel
