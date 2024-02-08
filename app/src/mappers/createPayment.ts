@@ -98,7 +98,7 @@ export function getDatabasePayload({
     paymentOption = Constants.getRedirectWorldlineOption();
   }
   if (isHostedTokenization) {
-    paymentOption = Constants.getHostedAndAPMOption();
+    paymentOption = Constants.getWordlineCreditCardOption();
   }
 
   // Concat with the merchant reference
