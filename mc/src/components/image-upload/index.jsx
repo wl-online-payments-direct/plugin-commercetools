@@ -41,7 +41,7 @@ const ImageUpload = ({ images = [], source, saveImage, handleClose }) => {
         setImagesData([`${apiHost}/${res[0]}`]);
       }
       const uploadEle = document.getElementById('upload-file');
-      uploadEle?.value = '';
+      if (uploadEle) uploadEle.value = '';
     }
     setDimError(false);
   };
