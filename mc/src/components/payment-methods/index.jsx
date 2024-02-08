@@ -194,6 +194,7 @@ const PaymentMethods = () => {
             if (dSet === 'paymentOptions') {
               sendLoad[dSet] = data[dSet].map((pDat) => {
                 if (!data.enabled.value) return { ...pDat, enabled: false };
+                else return { ...pDat };
               });
             } else sendLoad[dSet] = data[dSet]?.value;
           }
@@ -240,17 +241,24 @@ const PaymentMethods = () => {
             case 'redirectModeA':
             case 'redirectModeB':
               if (field === 'paymentOptions') {
-                const response = await fetchWorldlinePaymentOptions(
-                  activeStore
-                );
                 if (customValue?.[ds]?.[field]) {
                   payload[ds][field] = payload[ds][field].map((opt) => {
-                    return { ...opt, ...customValue?.[ds]?.[field][opt.label] };
+                    return {
+                      ...opt,
+                      ...customValue?.[ds]?.[field].find(
+                        (custVal) => custVal.label === opt.label
+                      ),
+                    };
                   });
-                } else if (response && response.length) {
-                  payload[ds][field] = payload[ds][field].map((opt) => {
-                    return { ...opt, ...response[opt.label] };
-                  });
+                } else {
+                  const response = await fetchWorldlinePaymentOptions(
+                    activeStore
+                  );
+                  if (response && response.length) {
+                    payload[ds][field] = payload[ds][field].map((opt) => {
+                      return { ...opt, ...response[opt.label] };
+                    });
+                  }
                 }
                 break;
               } else {
