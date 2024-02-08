@@ -40,6 +40,10 @@ const PaymentMethods = () => {
         ...payload['payButtonTitle'],
         value: state.onSiteMode['payButtonTitle'].values[value],
       };
+      payload['payButtonLanguage'] = {
+        ...payload['payButtonLanguage'],
+        value: value,
+      };
     } else if (field === 'payButtonTitle') {
       payload['payButtonTitle'] = {
         ...payload['payButtonTitle'],
@@ -93,6 +97,10 @@ const PaymentMethods = () => {
       payload['payButtonTitle'] = {
         ...payload['payButtonTitle'],
         value: state.redirectModeB['payButtonTitle'].values[value],
+      };
+      payload['payButtonLanguage'] = {
+        ...payload['payButtonLanguage'],
+        value: value,
       };
     } else if (field === 'payButtonTitle') {
       payload['payButtonTitle'] = {
