@@ -222,7 +222,7 @@
   "authorizationPaymentOption": {
     "label": "Authorization Payment Option",
     "type": "boolean",
-    "value": "1",
+    "value": "2",
     "criteria": []
   },
   "captureConfiguration": {

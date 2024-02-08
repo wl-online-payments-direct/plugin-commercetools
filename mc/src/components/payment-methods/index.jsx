@@ -131,9 +131,7 @@ const PaymentMethods = () => {
         ...payload['placeOrder'],
         value: state['placeOrder'].values[value],
       };
-    }
-
-    if (field === 'placeOrder') {
+    } else if (field === 'placeOrder') {
       payload['placeOrder'] = {
         ...payload['placeOrder'],
         values: {
@@ -141,6 +139,13 @@ const PaymentMethods = () => {
           [state['placeOrderLanguage'].value]: value,
         },
       };
+    } else if (field === 'paymentOption') {
+      if (value === '1') {
+        payload['authorizationPaymentOption'] = {
+          ...payload[field],
+          value: '2',
+        };
+      }
     }
 
     dispatch({
