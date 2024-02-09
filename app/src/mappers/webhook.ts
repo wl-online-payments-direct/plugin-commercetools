@@ -10,7 +10,10 @@ export function getPaymentDBPayload(payload: PaymentPayload | RefundPayload) {
     merchantReference =
       payload.refund.refundOutput.references.merchantReference;
   } else {
-    throw new Error('Invalid payload type');
+    throw {
+      message: '[getPaymentDBPayload] Invalid payload type',
+      statusCode: 500,
+    };
   }
 
   return {
