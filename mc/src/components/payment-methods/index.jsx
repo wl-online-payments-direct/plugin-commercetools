@@ -40,14 +40,21 @@ const PaymentMethods = () => {
         ...payload['payButtonTitle'],
         value: state.onSiteMode['payButtonTitle'].values[value],
       };
+      payload['payButtonLanguage'] = {
+        ...payload['payButtonLanguage'],
+        value: value,
+      };
     } else if (field === 'payButtonTitle') {
       payload['payButtonTitle'] = {
         ...payload['payButtonTitle'],
         values: {
           ...state.onSiteMode['payButtonTitle'].values,
-          [state.onSiteMode['payButtonLanguage'].value]: value,
         },
+        value: value,
       };
+      payload['payButtonTitle'].values[
+        state.onSiteMode['payButtonLanguage'].value
+      ] = value;
     } else {
       payload[field] = {
         ...payload[field],
@@ -94,14 +101,21 @@ const PaymentMethods = () => {
         ...payload['payButtonTitle'],
         value: state.redirectModeB['payButtonTitle'].values[value],
       };
+      payload['payButtonLanguage'] = {
+        ...payload['payButtonLanguage'],
+        value: value,
+      };
     } else if (field === 'payButtonTitle') {
       payload['payButtonTitle'] = {
         ...payload['payButtonTitle'],
         values: {
           ...state.redirectModeB['payButtonTitle'].values,
-          [state.redirectModeB['payButtonLanguage'].value]: value,
         },
+        value: value,
       };
+      payload['payButtonTitle'].values[
+        state.redirectModeB['payButtonLanguage'].value
+      ] = value;
     } else {
       payload[field] = {
         ...payload[field],
@@ -131,9 +145,7 @@ const PaymentMethods = () => {
         ...payload['placeOrder'],
         value: state['placeOrder'].values[value],
       };
-    }
-
-    if (field === 'placeOrder') {
+    } else if (field === 'placeOrder') {
       payload['placeOrder'] = {
         ...payload['placeOrder'],
         values: {
@@ -141,6 +153,13 @@ const PaymentMethods = () => {
           [state['placeOrderLanguage'].value]: value,
         },
       };
+    } else if (field === 'paymentOption') {
+      if (value === '1') {
+        payload['authorizationPaymentOption'] = {
+          ...payload[field],
+          value: '2',
+        };
+      }
     }
 
     dispatch({
@@ -189,6 +208,7 @@ const PaymentMethods = () => {
             if (dSet === 'paymentOptions') {
               sendLoad[dSet] = data[dSet].map((pDat) => {
                 if (!data.enabled.value) return { ...pDat, enabled: false };
+                else return { ...pDat };
               });
             } else sendLoad[dSet] = data[dSet]?.value;
           }
@@ -235,17 +255,32 @@ const PaymentMethods = () => {
             case 'redirectModeA':
             case 'redirectModeB':
               if (field === 'paymentOptions') {
-                const response = await fetchWorldlinePaymentOptions(
-                  activeStore
-                );
                 if (customValue?.[ds]?.[field]) {
                   payload[ds][field] = payload[ds][field].map((opt) => {
-                    return { ...opt, ...customValue?.[ds]?.[field][opt.label] };
+                    return {
+                      ...opt,
+                      ...customValue?.[ds]?.[field].find(
+                        (custVal) => custVal.label === opt.label
+                      ),
+                    };
                   });
-                } else if (response && response.length) {
-                  payload[ds][field] = payload[ds][field].map((opt) => {
-                    return { ...opt, ...response[opt.label] };
-                  });
+                } else {
+                  const response = await fetchWorldlinePaymentOptions(
+                    activeStore
+                  );
+                  if (response && response.length) {
+                    payload[ds][field] = payload[ds][field].map((opt) => {
+                      return { ...opt, ...response[opt.label] };
+                    });
+                  }
+                }
+                break;
+              } else if (field === 'payButtonTitle') {
+                if (customValue?.[ds]?.[field]) {
+                  payload[ds][field].value = customValue?.[ds]?.[field];
+                  payload[ds][field].values[
+                    payload[ds]['payButtonLanguage'].value
+                  ] = customValue?.[ds]?.[field];
                 }
                 break;
               } else {
@@ -255,7 +290,11 @@ const PaymentMethods = () => {
               }
             case 'general':
               if (customValue?.[field])
-                payload[field].value = customValue?.[field];
+                if (field === 'placeOrder') {
+                  payload[field].values[payload['placeOrderLanguage'].value] =
+                    customValue?.[field];
+                }
+              payload[field].value = customValue?.[field];
               break;
           }
         }
