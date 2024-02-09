@@ -6,8 +6,8 @@
   "scripts": {
     "build": "tsc",
     "typecheck": "tsc --noEmit",
-    "dev": "nodemon src/index.ts",
-    "start": "node dist/index.js",
+    "dev": "nodemon src/initiateCapturePayment.ts",
+    "start": "node ./dist/initiateCapturePayment.js",
     "lint": "eslint src/**/*.ts",
     "lint-fix": "eslint --fix src/**/*.ts",
     "pretty": "prettier --write 'src/**/*.ts'",
@@ -19,6 +19,8 @@
   "license": "ISC",
   "devDependencies": {
     "@types/node": "^20.8.7",
+    "@types/node-cron": "^3.0.11",
+    "@types/node-schedule": "^2.1.6",
     "@typescript-eslint/eslint-plugin": "^6.12.0",
     "@typescript-eslint/parser": "^6.12.0",
     "eslint": "^8.54.0",
@@ -31,14 +33,19 @@
     "typescript": "^5.2.2"
   },
   "dependencies": {
-    "dotenv": "^16.3.1",
-    "nodemon": "^3.0.1",
-    "npm-run-all": "^4.1.5",
+    "@commercetools/platform-sdk": "^7.2.0-alpha.4",
     "@worldline/ctintegration-app": "^1.0.0",
-    "@worldline/ctintegration-util": "^1.0.0"
+    "@worldline/ctintegration-ct": "^1.0.0",
+    "@worldline/ctintegration-db": "^1.0.0",
+    "@worldline/ctintegration-util": "^1.0.0",
+    "dotenv": "^16.3.1",
+    "node-cron": "^3.0.3",
+    "node-schedule": "^2.1.1",
+    "nodemon": "^3.0.1",
+    "npm-run-all": "^4.1.5"
   },
   "lint-staged": {
-    "src/**/*.ts":[
+    "src/**/*.ts": [
       "npm run lint-fix",
       "npm run pretty",
       "npm run typecheck"

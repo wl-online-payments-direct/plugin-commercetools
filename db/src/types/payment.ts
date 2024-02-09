@@ -65,3 +65,8 @@ export interface GetOrders {
   };
   data: Payment[];
 }
+
+export enum Status {
+  INITIAL = 'INITIAL',
+  AUTHORIZED = 'AUTHORIZED',
+}

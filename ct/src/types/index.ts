@@ -13,3 +13,4 @@ export * from './common';
 export * from './createTransaction';
 export * from './getPaymentById';
 export * from './updateOrder';
+export * from './getAllCustomObjects';

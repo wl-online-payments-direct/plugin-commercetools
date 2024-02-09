@@ -12,6 +12,7 @@ import type {
   GetOrders,
   Payment,
   PaymentQueryParams,
+  Status,
 } from './types';
 
 export async function getDBOrders(
@@ -177,6 +178,29 @@ export async function setPayment(
   } catch (error) {
     throw {
       message: 'Failed to update payment',
+      statusCode: 500,
+      details: (error as { message: string }).message,
+    };
+  }
+}
+
+export async function getPaymentsByStatus(
+  storeId: string,
+  statuses: Status[],
+): Promise<Payment[]> {
+  try {
+    const payments = await prisma.payments.findMany({
+      where: {
+        storeId,
+        status: {
+          in: statuses,
+        },
+      },
+    });
+    return payments;
+  } catch (error) {
+    throw {
+      message: 'Exception occurred while fetching the payments',
       statusCode: 500,
       details: (error as { message: string }).message,
     };
