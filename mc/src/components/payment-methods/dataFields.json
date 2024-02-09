@@ -21,6 +21,7 @@
     "logo",
     "merchantReferenceID",
     "payButtonTitle",
+    "payButtonLanguage",
     "sendOrderData",
     "templateFileName"
   ],
