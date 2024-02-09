@@ -1,5 +1,5 @@
 import { getCustomObjects } from '@worldline/ctintegration-ct';
-import { getPaymentStatusService } from '@worldline/ctintegration-psp';
+import { getPaymentService } from '@worldline/ctintegration-psp';
 import { getPayment } from '@worldline/ctintegration-db';
 import { GetPaymentStatusPayload } from './types';
 import {
@@ -17,7 +17,7 @@ export async function getPaymentStatus(payload: GetPaymentStatusPayload) {
     };
   }
   // Prepare service payload for get payment status
-  const serviceResponse = await getPaymentStatusService(
+  const serviceResponse = await getPaymentService(
     getConnectionServiceProps(await getCustomObjects(payload.storeId)),
     payment.worldlineId,
   );
