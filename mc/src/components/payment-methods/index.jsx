@@ -275,6 +275,14 @@ const PaymentMethods = () => {
                   }
                 }
                 break;
+              } else if (field === 'payButtonTitle') {
+                if (customValue?.[ds]?.[field]) {
+                  payload[ds][field].value = customValue?.[ds]?.[field];
+                  payload[ds][field].values[
+                    payload[ds]['payButtonLanguage'].value
+                  ] = customValue?.[ds]?.[field];
+                }
+                break;
               } else {
                 if (customValue?.[ds]?.[field])
                   payload[ds][field].value = customValue?.[ds]?.[field];
@@ -282,7 +290,11 @@ const PaymentMethods = () => {
               }
             case 'general':
               if (customValue?.[field])
-                payload[field].value = customValue?.[field];
+                if (field === 'placeOrder') {
+                  payload[field].values[payload['placeOrderLanguage'].value] =
+                    customValue?.[field];
+                }
+              payload[field].value = customValue?.[field];
               break;
           }
         }
