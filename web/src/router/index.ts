@@ -17,6 +17,9 @@ import getMyWebhookStatusController from '../api/getMyWebhookStatus/controller';
 import hostedCheckoutController from '../api/hostedCheckout/controller';
 import hostedMyCheckoutController from '../api/hostedMyCheckout/controller';
 import getWebhookStatusController from '../api/getWebhookStatus/controller';
+import capturePaymentController from '../api/capturePayment/controller';
+import cancelPaymentController from '../api/cancelPayment/controller';
+import refundPaymentController from '../api/refundPayment/controller';
 import uploadImageController from '../api/uploadImage/controller';
 import getPaymentProductsController from '../api/getPaymentProducts/controller';
 import getOrderController from '../api/getOrder/controller';
@@ -34,6 +37,9 @@ const routes = {
   '/webhook': webhookController.processRequest,
   '/me/webhook/status': getMyWebhookStatusController.processRequest,
   '/payment/retry': retryPaymentController.processRequest,
+  '/payment/capture': capturePaymentController.processRequest,
+  '/payment/cancel': cancelPaymentController.processRequest,
+  '/payment/refund': refundPaymentController.processRequest,
   '/token/remove': deleteTokenController.processRequest,
   '/me/payment/methods': loadMyPaymentMethodsController.processRequest,
 
