@@ -3,5 +3,4 @@ export interface CapturePaymentPayload {
   orderId: string;
   amount: number;
   paymentId: string;
-  isFinal: boolean;
 }

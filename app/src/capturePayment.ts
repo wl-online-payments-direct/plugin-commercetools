@@ -1,4 +1,9 @@
-import { getCustomObjects, getOrderById } from '@worldline/ctintegration-ct';
+import {
+  getCustomObjects,
+  getOrderById,
+  Order,
+  getPaymentById,
+} from '@worldline/ctintegration-ct';
 import { capturePaymentService } from '@worldline/ctintegration-psp';
 import { logger } from '@worldline/ctintegration-util';
 import { ICapturePaymentPayload } from './types';
@@ -6,8 +11,38 @@ import {
   getConnectionServiceProps,
   getCaptureServicePayload,
   calculateRemainingOrderAmount,
-  calculateTotalCaptureAmount,
 } from './mappers';
+
+export async function calculateTotalCaptureAmount(
+  orderPayload: Order,
+): Promise<number> {
+  // Check if paymentInfo is present and it has an array of payments
+  const payments = orderPayload.paymentInfo?.payments || [];
+
+  const totalCaptureAmount = await Promise.all(
+    payments.map(async (payment) => {
+      // Fetch payment details from CT
+      const ctPayment = await getPaymentById(payment.id);
+
+      // Check if there are transactions and if they are of type 'Charge'
+      if (
+        ctPayment.transactions &&
+        ctPayment.transactions.some(
+          (transaction) => transaction.type === 'Charge',
+        )
+      ) {
+        // Calculate total capture amount by summing up 'Charge' transactions
+        return ctPayment.transactions
+          .filter((transaction) => transaction.type === 'Charge')
+          .reduce((acc, transaction) => acc + transaction.amount.centAmount, 0);
+      }
+
+      return 0; // Return 0 if there are no 'Charge' transactions
+    }),
+  );
+
+  return totalCaptureAmount.reduce((acc, amount) => acc + amount, 0);
+}
 
 export async function capturePayment(payload: ICapturePaymentPayload) {
   // Fetch CT order
@@ -28,9 +63,13 @@ export async function capturePayment(payload: ICapturePaymentPayload) {
   // Check if the capture amount is valid
   const diffAmount = calculateRemainingOrderAmount(ctOrder, totalCaptureAmount);
   if (diffAmount > 0) {
+    let isFinal = false;
+    if (diffAmount === payload.amount) {
+      isFinal = true;
+    }
     payment = await capturePaymentService(
       getConnectionServiceProps(customConfig),
-      getCaptureServicePayload(payload),
+      getCaptureServicePayload(payload, isFinal),
       payload.paymentId,
     );
     return payment;

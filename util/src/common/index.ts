@@ -9,27 +9,15 @@ const hasAuthHeaderOrThrowError = (request: Request) => {
   }
 };
 
-const hasRequiredParamsInBody = (body: {
-  [key: string]: string | number | boolean;
-}) => {
+const hasRequiredParamsInBody = (body: { [key: string]: string | number }) => {
   Object.keys(body).forEach((key) => {
-    const value = body[key];
-
-    if (typeof value === 'boolean') {
-      if (value == null) {
-        throw {
-          message: `Required parameter '${key}' is missing or empty`,
-          statusCode: 400,
-        };
-      }
-    } else if (!value) {
+    if (!body[key]) {
       throw {
         message: `Required parameter '${key}' is missing or empty`,
         statusCode: 400,
       };
     }
   });
-
   // All checked out, request body is OK
   return true;
 };
