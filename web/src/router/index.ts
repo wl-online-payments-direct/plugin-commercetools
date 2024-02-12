@@ -22,6 +22,7 @@ import cancelPaymentController from '../api/cancelPayment/controller';
 import refundPaymentController from '../api/refundPayment/controller';
 import uploadImageController from '../api/uploadImage/controller';
 import getPaymentProductsController from '../api/getPaymentProducts/controller';
+import getOrderController from '../api/getOrder/controller';
 
 const routes = {
   '/': healthController.processRequest,
@@ -50,11 +51,11 @@ const routes = {
   '/payment': createPaymentController.processRequest,
   '/webhook/status': getWebhookStatusController.processRequest,
 
-  // For uploading images
+  /* Merchant Center API */
   '/upload/images': uploadImageController.processRequest,
-  // Merchant Center API
   '/payment/products': getPaymentProductsController.processRequest,
   '/orders': listOrdersController.processRequest,
+  '/order': getOrderController.processRequest,
 };
 
 export { routes };

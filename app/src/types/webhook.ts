@@ -13,12 +13,15 @@ export interface PaymentPayload {
         card: {
           cardNumber: string;
           expiryDate: string;
+          bin: string;
         };
         fraudResults: {
           fraudServiceResult: string;
         };
         threeDSecureResults: {
           eci: string;
+          liability: string;
+          authenticationStatus: string;
         };
         token: string;
       };
