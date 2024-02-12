@@ -9,7 +9,9 @@ const hasAuthHeaderOrThrowError = (request: Request) => {
   }
 };
 
-const hasRequiredParamsInBody = (body: { [key: string]: string }) => {
+const hasRequiredParamsInBody = (body: {
+  [key: string]: string | number | boolean;
+}) => {
   Object.keys(body).forEach((key) => {
     if (!body[key]) {
       throw {
