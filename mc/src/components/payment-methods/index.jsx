@@ -269,7 +269,7 @@ const PaymentMethods = () => {
             case 'redirectModeA':
             case 'redirectModeB':
               if (field === 'paymentOptions') {
-                if (customValue?.[ds]?.[field]) {
+                if (customValue?.[ds]?.[field] !== undefined) {
                   payload[ds][field] = payload[ds][field].map((opt) => {
                     return {
                       ...opt,
@@ -290,12 +290,12 @@ const PaymentMethods = () => {
                 }
                 break;
               } else {
-                if (customValue?.[ds]?.[field])
+                if (customValue?.[ds]?.[field] !== undefined)
                   payload[ds][field].value = customValue?.[ds]?.[field];
                 break;
               }
             case 'general':
-              if (customValue?.[field])
+              if (customValue?.[field] !== undefined)
                 payload[field].value = customValue?.[field];
               break;
           }
