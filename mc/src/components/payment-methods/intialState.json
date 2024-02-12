@@ -20,14 +20,6 @@
       "value": "EN",
       "values": ["EN", "ES", "FR", "NL", "DE", "IT"]
     },
-    "merchantReferenceID": {
-      "label": " Merchant Reference ID",
-      "type": "text",
-      "value": "SampleReferenceId",
-      "placeholder": "Enter Merchant Reference",
-      "criteria": [],
-      "tooltip": "If you want to show the Merchant ID in Bank statement on their Customer bank account., then you should limit the Merchant ID length to 12 characters"
-    },
     "templateFileName": {
       "label": " Template File Name",
       "type": "text",
@@ -53,14 +45,6 @@
       "type": "boolean",
       "value": true,
       "tooltip": "Show Basket Data on Worldline Payment Page"
-    },
-    "merchantReferenceID": {
-      "label": " Merchant Reference ID",
-      "type": "text",
-      "value": "SampleReferenceId",
-      "placeholder": "Enter Merchant Reference",
-      "criteria": [],
-      "tooltip": "If you want to show the Merchant ID in Bank statement on their Customer bank account., then you should limit the Merchant ID length to 12 characters"
     },
     "templateFileName": {
       "label": "Template File Name",
@@ -188,14 +172,6 @@
       "value": "EN",
       "values": ["EN", "ES", "FR", "NL", "DE", "IT"]
     },
-    "merchantReferenceID": {
-      "label": " Merchant Reference ID",
-      "type": "text",
-      "value": "SampleReferenceId",
-      "placeholder": "Enter Merchant Reference",
-      "criteria": [],
-      "tooltip": "If you want to show the Merchant ID in Bank statement on their Customer bank account., then you should limit the Merchant ID length to 12 characters"
-    },
     "templateFileName": {
       "label": " Template File Name",
       "type": "text",
@@ -213,20 +189,29 @@
       "value": false
     }
   },
+  "merchantReferenceID": {
+    "label": " Merchant Reference ID",
+    "type": "text",
+    "value": "SampleReferenceId",
+    "placeholder": "Enter Merchant Reference",
+    "criteria": [],
+    "maxLength": 12,
+    "tooltip": "If you want to show the Merchant ID in Bank statement on their Customer bank account., then you should limit the Merchant ID length to 12 characters"
+  },
   "paymentOption": {
     "label": "Payment Option",
     "type": "boolean",
-    "value": "1",
+    "value": "SALE",
     "criteria": [],
     "tooltip": "Final execution of the payment"
   },
-  "authorizationPaymentOption": {
+  "authorizationMode": {
     "label": "Authorization Payment Option",
     "type": "boolean",
-    "value": "2",
+    "value": "FINAL_AUTHORIZATION",
     "criteria": []
   },
-  "captureConfiguration": {
+  "captureAuthorizationMode": {
     "label": "Capture Configuration",
     "type": "text",
     "value": "-1",
@@ -262,13 +247,13 @@
     "value": "EN",
     "values": ["EN", "ES", "FR", "NL", "DE", "IT"]
   },
-  "debugLogging": {
+  "enableLogs": {
     "label": "Enable Debug Logging",
     "type": "boolean",
     "value": false,
     "criteria": []
   },
-  "force3DSv2": {
+  "skip3dsAuthentication": {
     "label": "Force 3DSv2",
     "type": "boolean",
     "value": false,

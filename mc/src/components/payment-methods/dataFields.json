@@ -2,14 +2,12 @@
   "onSiteMode": [
     "enabled",
     "logo",
-    "merchantReferenceID",
     "payButtonLanguage",
     "payButtonTitle",
     "templateFileName"
   ],
   "redirectModeA": [
     "enabled",
-    "merchantReferenceID",
     "paymentOptions",
     "refresh",
     "sendOrderData",
@@ -19,18 +17,18 @@
     "enabled",
     "groupCards",
     "logo",
-    "merchantReferenceID",
     "payButtonTitle",
     "sendOrderData",
     "templateFileName"
   ],
   "general": [
-    "debugLogging",
-    "authorizationPaymentOption",
+    "enableLogs",
+    "authorizationMode",
     "bgColor",
-    "captureConfiguration",
+    "captureAuthorizationMode",
     "enableWorldlineCheckout",
-    "force3DSv2",
+    "skip3dsAuthentication",
+    "merchantReferenceID",
     "outlineColor",
     "paymentOption",
     "placeOrder",

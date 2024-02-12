@@ -22,6 +22,7 @@ const PaymentMethods = () => {
     fetchWorldlinePaymentOptions,
     activeStore,
     hideToaster,
+    showToaster,
   } = useContext(PaymentContext);
 
   const [state, dispatch] = useReducer(reducer, initialState);
@@ -139,7 +140,6 @@ const PaymentMethods = () => {
       ...payload[field],
       value: value,
     };
-
     if (field === 'placeOrderLanguage') {
       payload['placeOrder'] = {
         ...payload['placeOrder'],
@@ -154,10 +154,15 @@ const PaymentMethods = () => {
         },
       };
     } else if (field === 'paymentOption') {
-      if (value === '1') {
-        payload['authorizationPaymentOption'] = {
+      if (value === 'AUTH') {
+        payload['authorizationMode'] = {
           ...payload[field],
-          value: '2',
+          value: 'FINAL_AUTHORIZATION',
+        };
+      } else {
+        payload['authorizationMode'] = {
+          ...payload[field],
+          value: value,
         };
       }
     }
@@ -195,6 +200,15 @@ const PaymentMethods = () => {
 
   const saveFormData = async () => {
     setLoader(true);
+    if (state?.merchantReferenceID?.value.trim().length > 12) {
+      showToaster({
+        severity: 'error',
+        open: true,
+        message: 'Merchant Reference ID should be maximum 12 characters.',
+      });
+      setLoader(false);
+      return;
+    }
     const payload = Object.keys(state).map((key) => {
       let data;
       const sendLoad = {};
