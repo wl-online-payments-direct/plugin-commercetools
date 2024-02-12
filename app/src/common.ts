@@ -277,12 +277,19 @@ export async function orderPaymentCaptureHandler(payload: PaymentPayload) {
       'Charge',
     );
   }
-  let result;
+  const result = {
+    status: 'Partial capture requested',
+  };
   // if order id exists
   if (diffAmount === 0 || hasValidCapture.isEqual) {
-    result = await updateOrderStatus(payment.orderId, 'Confirmed', 'Paid');
+    const response = await updateOrderStatus(
+      payment.orderId,
+      'Confirmed',
+      'Paid',
+    );
     // Update payment table
     await setPayment({ id: payment.id }, { status: mappedStatus });
+    return response;
   }
   return result;
 }
