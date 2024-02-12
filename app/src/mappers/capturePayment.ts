@@ -1,5 +1,5 @@
 import { Order, getPaymentById } from '@worldline/ctintegration-ct';
-import { ICapturePaymentPayload, ICaptureDbPaymentPayload } from '../types';
+import { ICapturePaymentPayload } from '../types';
 
 export function getCaptureServicePayload(payload: ICapturePaymentPayload) {
   const { amount, isFinal } = payload;
@@ -9,25 +9,6 @@ export function getCaptureServicePayload(payload: ICapturePaymentPayload) {
     isFinal,
   };
 }
-
-export function getCaptureDatabasePayload(
-  payload: ICaptureDbPaymentPayload,
-  amount: number,
-  status: string,
-  type: string,
-) {
-  const { storeId, orderId, paymentId, worldlineId } = payload;
-  return {
-    paymentId,
-    storeId,
-    orderId,
-    worldlineId,
-    type,
-    amount,
-    status,
-  };
-}
-
 export async function calculateTotalCaptureAmount(
   orderPayload: Order,
 ): Promise<number> {

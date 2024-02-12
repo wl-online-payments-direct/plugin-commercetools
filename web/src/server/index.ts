@@ -1,5 +1,7 @@
 import http, { ServerResponse } from 'http';
 import url from 'url';
+import path from 'path';
+import fs from 'fs';
 import { StatusCodes } from 'http-status-codes';
 import {
   cors,
@@ -7,6 +9,7 @@ import {
   ResponseClient,
   isOptionsRequest,
   isPostRequest,
+  isGetRequest,
   isMultiPartRequest,
 } from '@worldline/ctintegration-util';
 import { routes } from '../router';
@@ -18,7 +21,9 @@ const createServer = () =>
       const requestUrl = request.url || '/';
       const parts = url.parse(requestUrl);
       const route = routes[parts.pathname as keyof typeof routes];
-
+      const filePath = decodeURIComponent(
+        path.join(path.resolve(__dirname, '../..'), parts.pathname as string),
+      );
       const { method } = request;
 
       if (route) {
@@ -43,6 +48,25 @@ const createServer = () =>
         } else {
           await route(request, response);
         }
+      } else if (
+        isGetRequest(method) &&
+        filePath.includes(
+          (process.env.DIR_IMAGE_UPLOAD as string) || 'uploadedImages',
+        )
+      ) {
+        const content = await fs.promises.readFile(filePath);
+        let contentType = 'application/octet-stream';
+        if (filePath.endsWith('.svg')) {
+          contentType = 'image/svg+xml';
+        } else if (
+          ['.jpg', '.jpeg', '.png', '.gif'].some((ext) =>
+            filePath.toLowerCase().endsWith(ext),
+          )
+        ) {
+          contentType = `image/${path.extname(filePath).slice(1)}`;
+        }
+        response.writeHead(200, { 'Content-Type': contentType });
+        response.end(content);
       } else {
         ResponseClient.setResponseError(response, {
           statusCode: StatusCodes.NOT_FOUND,

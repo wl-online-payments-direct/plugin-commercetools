@@ -1,18 +1,53 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import './style.css';
 import ToggleInput from '@commercetools-uikit/toggle-input';
 import RadioField from '@commercetools-uikit/radio-field';
 import RadioInput from '@commercetools-uikit/radio-input';
 import TextInput from '@commercetools-uikit/text-input';
 import InfoIcon from '@mui/icons-material/Info';
-import Tooltip from '@commercetools-uikit/tooltip';
+import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 import Select from '@mui/material/Select';
 import { DownloadIcon } from '@commercetools-uikit/icons';
+import Alert from '@mui/material/Alert';
 
 const GeneralSettings = ({ state, handleCommonSettings }) => {
+  const [merchREfError, setmerchRefError] = useState(
+    state.merchantReferenceID.value.trim().length > 12 ? true : false
+  );
+  useEffect(() => {
+    setmerchRefError(
+      state.merchantReferenceID.value.trim().length > 12 ? true : false
+    );
+  }, [state.merchantReferenceID.value]);
+
   return (
     <>
+      <div className="section-wrapper">
+        <h5 className="section-header">
+          {state.merchantReferenceID.label}
+          <Tooltip placement="top" title={state.merchantReferenceID.tooltip}>
+            <InfoIcon />
+          </Tooltip>
+        </h5>
+        <div className="template-section">
+          {merchREfError && (
+            <div style={{ margin: '10px' }}>
+              <Alert severity="error">{'Maximum 12 characters.'}</Alert>
+            </div>
+          )}
+          <TextInput
+            className="section-input"
+            value={state.merchantReferenceID.value.trim()}
+            type={state.merchantReferenceID.type}
+            placeholder={state.merchantReferenceID.placeholder}
+            hasError={merchREfError}
+            onChange={(e) =>
+              handleCommonSettings('merchantReferenceID', e.target.value.trim())
+            }
+          />
+        </div>
+      </div>
       <div className="section-wrapper">
         <h5 className="section-header">
           {state.paymentOption.label}
@@ -30,36 +65,33 @@ const GeneralSettings = ({ state, handleCommonSettings }) => {
             }
             direction="inline"
           >
-            <RadioInput.Option value={'1'}>{'Direct Sale'}</RadioInput.Option>
-            <RadioInput.Option value={'2'}>
+            <RadioInput.Option value={'SALE'}>
+              {'Direct Sale'}
+            </RadioInput.Option>
+            <RadioInput.Option value={'AUTH'}>
               {'Authorization only'}
             </RadioInput.Option>
           </RadioField>
         </div>
       </div>
-      {state.paymentOption.value === '2' && (
+      {state.paymentOption.value === 'AUTH' && (
         <div className="section-wrapper flex">
           <div className="section-wrapper">
-            <h5 className="section-header">
-              {state.authorizationPaymentOption.label}
-            </h5>
+            <h5 className="section-header">{state.authorizationMode.label}</h5>
             <div className="options-section">
               <RadioField
                 name="authorization-payment-option"
                 title="authorization-payment-option"
-                value={state.authorizationPaymentOption.value}
+                value={state.authorizationMode.value}
                 onChange={(e) =>
-                  handleCommonSettings(
-                    'authorizationPaymentOption',
-                    e.target.value
-                  )
+                  handleCommonSettings('authorizationMode', e.target.value)
                 }
                 direction="inline"
               >
-                <RadioInput.Option value={'1'}>
+                <RadioInput.Option value={'PRE_AUTHORIZATION'}>
                   {'Pre Authorization'}
                 </RadioInput.Option>
-                <RadioInput.Option value={'2'}>
+                <RadioInput.Option value={'FINAL_AUTHORIZATION'}>
                   {'Final Authorization'}
                 </RadioInput.Option>
               </RadioField>
@@ -67,25 +99,27 @@ const GeneralSettings = ({ state, handleCommonSettings }) => {
           </div>
           <div className="section-wrapper">
             <h5 className="section-header">
-              {state.captureConfiguration.label}
+              {state.captureAuthorizationMode.label}
             </h5>
             <div className="dropdown-container">
               <Select
                 className="select-dropdown"
-                value={state.captureConfiguration.value}
-                validation={state.captureConfiguration.validation}
-                type={state.captureConfiguration.type}
+                value={state.captureAuthorizationMode.value}
+                type={state.captureAuthorizationMode.type}
                 onChange={(e) =>
-                  handleCommonSettings('captureConfiguration', e.target.value)
+                  handleCommonSettings(
+                    'captureAuthorizationMode',
+                    e.target.value
+                  )
                 }
                 displayEmpty
                 inputProps={{ 'aria-label': 'Without label' }}
               >
-                {state.captureConfiguration.values &&
-                  Object.keys(state.captureConfiguration.values).map(
+                {state.captureAuthorizationMode.values &&
+                  Object.keys(state.captureAuthorizationMode.values).map(
                     (lang, index) => (
                       <MenuItem key={`lang${index}`} value={lang}>
-                        {state.captureConfiguration.values[lang]}
+                        {state.captureAuthorizationMode.values[lang]}
                       </MenuItem>
                     )
                   )}
@@ -100,7 +134,6 @@ const GeneralSettings = ({ state, handleCommonSettings }) => {
           <TextInput
             className="section-input"
             value={state.placeOrder.value}
-            validation={state.placeOrder.validation}
             type={state.placeOrder.type}
             onChange={(e) => handleCommonSettings('placeOrder', e.target.value)}
           />
@@ -108,7 +141,6 @@ const GeneralSettings = ({ state, handleCommonSettings }) => {
             <Select
               className="select-dropdown"
               value={state.placeOrderLanguage.value}
-              validation={state.placeOrderLanguage.validation}
               type={state.placeOrderLanguage.type}
               onChange={(e) =>
                 handleCommonSettings('placeOrderLanguage', e.target.value)
@@ -127,32 +159,32 @@ const GeneralSettings = ({ state, handleCommonSettings }) => {
         </div>
       </div>
       <div className="section-wrapper">
-        <div className="advanced-loging flex">
-          <h5 className="section-header">{state.advancedLogging.label}</h5>
+        <div className="debug-loging flex">
+          <h5 className="section-header">{state.enableLogs.label}</h5>
           <ToggleInput
             size={'small'}
             isDisabled={false}
-            value={state.advancedLogging.value}
-            isChecked={state.advancedLogging.value}
+            isChecked={state.enableLogs.value}
             onChange={(e) =>
-              handleCommonSettings('advancedLogging', e.target.checked)
+              handleCommonSettings('enableLogs', e.target.checked)
             }
           />
-          {state.advancedLogging.value && (
+          {state.enableLogs.value && (
             <DownloadIcon style={{ margin: 'auto' }} />
           )}
         </div>
       </div>
       <div className="section-wrapper">
         <div className="force-s3sv2 flex mb-2">
-          <h5 className="section-header">{state.force3DSv2.label}</h5>
+          <h5 className="section-header">
+            {state.skip3dsAuthentication.label}
+          </h5>
           <ToggleInput
             size={'small'}
             isDisabled={false}
-            value={state.force3DSv2.value}
-            isChecked={state.force3DSv2.value}
+            isChecked={state.skip3dsAuthentication.value}
             onChange={(e) =>
-              handleCommonSettings('force3DSv2', e.target.checked)
+              handleCommonSettings('skip3dsAuthentication', e.target.checked)
             }
           />
         </div>

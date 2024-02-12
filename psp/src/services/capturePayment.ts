@@ -1,3 +1,4 @@
+import { logger } from '@worldline/ctintegration-util';
 import { connectService } from '../client';
 import {
   CapturePaymentRequest,
@@ -19,6 +20,11 @@ export async function capturePaymentService(
     {},
   );
   if (result.body?.errors) {
+    logger().error(
+      `[capturePaymentService] Failed to process the service: ${JSON.stringify(
+        result?.body?.errors,
+      )}`,
+    );
     throw {
       message: 'Failed to process the capture payment service',
       statusCode: result.body.errors[0]?.httpStatusCode || 500,

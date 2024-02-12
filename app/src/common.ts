@@ -15,7 +15,6 @@ import {
   getPayment,
   saveCustomerPaymentToken,
   setPayment,
-  capturePaymentInDB,
 } from '@worldline/ctintegration-db';
 import { logger, retry } from '@worldline/ctintegration-util';
 import { PaymentPayload, RefundPayload } from './types';
@@ -25,13 +24,13 @@ import {
   getCreateOrderCTPayload,
   getUpdateCartPayload,
   getMappedStatus,
-  getCaptureDatabasePayload,
   hasEqualAmounts,
   hasValidAmount,
   isPaymentProcessing,
   shouldSaveToken,
   getCustomerTokenPayload,
 } from './mappers';
+import Constants from './constants';
 
 const createOrderWithPayment = async (payload: PaymentPayload, cart: Cart) => {
   // Create order and payment
@@ -77,6 +76,8 @@ export async function orderPaymentHandler(payload: PaymentPayload) {
   // log the payload
   logger().debug(`[orderPaymentHandler] payload: ${JSON.stringify(payload)}`);
 
+  const { PAYMENT } = Constants;
+
   return retry(async () => {
     // Fetch DB payment
     const dbPayment = await getPayment(getPaymentDBPayload(payload));
@@ -114,7 +115,7 @@ export async function orderPaymentHandler(payload: PaymentPayload) {
 
       const mappedStatus = getMappedStatus(payload);
 
-      if (mappedStatus === 'FAILED') {
+      if (mappedStatus === PAYMENT.DATABASE.STATUS.FAILED) {
         await setPayment({ id: dbPayment.id }, { status: mappedStatus });
         return {
           isRetry: false,
@@ -126,7 +127,7 @@ export async function orderPaymentHandler(payload: PaymentPayload) {
 
       await setPayment(
         { id: dbPayment.id },
-        { status: mappedStatus, state: 'PROCESSING' },
+        { state: PAYMENT.DATABASE.STATE.PROCESSING },
       );
 
       // TODO: What happens when one of the webhook arrive out of sync?
@@ -140,7 +141,8 @@ export async function orderPaymentHandler(payload: PaymentPayload) {
         ...(!dbPayment.orderId && result?.order?.id
           ? { orderId: result.order.id, worldlineId: payload?.payment?.id }
           : { worldlineId: payload?.payment?.id }),
-        state: 'DEFAULT',
+        state: PAYMENT.DATABASE.STATE.DEFAULT,
+        status: mappedStatus,
       });
 
       //  Should save the token only:
@@ -156,7 +158,7 @@ export async function orderPaymentHandler(payload: PaymentPayload) {
     } catch (error) {
       // If any exception happens, reset to default state
       await setPayment(getPaymentFilterQuery(dbPayment), {
-        state: 'DEFAULT',
+        state: PAYMENT.DATABASE.STATE.DEFAULT,
       });
       throw error;
     }
@@ -214,150 +216,141 @@ export async function orderPaymentCaptureHandler(payload: PaymentPayload) {
   logger().debug(
     `[orderPaymentCaptureHandler]: payload: ${JSON.stringify(payload)}`,
   );
-  return retry(async () => {
-    // Fetch DB payment
-    const payment = await getPayment(getPaymentDBPayload(payload));
-    if (!payment) {
-      logger().error('Failed to fetch the payment');
-      return { isRetry: true };
-    }
+  // Fetch DB payment
+  const payment = await getPayment(getPaymentDBPayload(payload));
+  if (!payment) {
+    logger().error('[orderPaymentCaptureHandler] Failed to fetch the payment');
+    throw {
+      message: 'Failed to fetch payment from the DB',
+      statusCode: 500,
+    };
+  }
 
-    // Fetch CT order
-    const order = await getOrderById(payment.orderId);
-    if (!order) {
-      logger().error(`Order with id: '${payment.orderId}' is missing in CT!`);
-      return { isRetry: true };
-    }
-    const captureAmount = payload.payment.paymentOutput.amountOfMoney.amount;
-    // Validate capture amount
-    const hasValidCapture = hasValidAmount(order, captureAmount);
+  // Fetch CT order
+  const order = await getOrderById(payment.orderId);
+  if (!order) {
+    logger().error(
+      `[orderPaymentCaptureHandler] Order with id: '${payment.orderId}' is missing in CT!`,
+    );
+    throw {
+      message: 'Failed to fetch order from CT',
+      statusCode: 500,
+    };
+  }
+  // Validate capture amount
+  if (!hasEqualAmountOrder(payload, order)) {
+    logger().error(
+      "[orderPaymentCaptureHandler] Order amount doesn't match with the paid amount",
+    );
+    throw {
+      message: "Order amount doesn't match with the paid amount",
+      statusCode: 500,
+    };
+  }
 
-    if (hasValidCapture.isGreater) {
-      logger().error('Capture amount cannot be greater than the order amount!');
-      return { isRetry: true };
-    }
-    const mappedStatus = getMappedStatus(payload);
-    if (mappedStatus === 'FAILED') {
-      await capturePaymentInDB(
-        getCaptureDatabasePayload(
-          payment,
-          payload.payment?.paymentOutput?.amountOfMoney?.amount,
-          mappedStatus,
-          'Charge',
-        ),
-      );
-      return {
-        isRetry: false,
-        data: {
-          message: `Updated capture payment status as ${mappedStatus} as we received status as ${payload.payment.status}`,
-        },
-      };
-    }
-    let response;
-    if (order.paymentInfo?.payments[0].id) {
-      response = await createTransactionInPayment(
+  const mappedStatus = getMappedStatus(payload);
+  if (mappedStatus === 'FAILED') {
+    logger().error(
+      '[orderPaymentCaptureHandler] Received mappedStatus as :',
+      JSON.stringify(mappedStatus),
+    );
+    await setPayment({ id: payment.id }, { status: mappedStatus });
+    throw {
+      message: 'Received mapped status as : FAILED',
+      statusCode: 500,
+    };
+  }
+  let result;
+  // if order id exists
+  if (payment.orderId) {
+    result = await updateOrderStatus(payment.orderId, 'Confirmed', 'Paid');
+    if (order.paymentInfo?.payments[0]?.id) {
+      await createTransactionInPayment(
         order.paymentInfo.payments[0].id,
         payload,
         'Charge',
       );
     }
-    await capturePaymentInDB(
-      getCaptureDatabasePayload(
-        payment,
-        payload.payment?.paymentOutput?.amountOfMoney?.amount,
-        mappedStatus,
-        'Charge',
-      ),
-    );
-    // if capture amount is equal to order amount
-    if (hasValidCapture.isEqual) {
-      // update order status
-      const result = await updateOrderStatus(
-        payment.orderId,
-        'Confirmed',
-        'Paid',
-      );
-      if (result.order.orderState === 'Confirmed') {
-        logger().info(`Order status update to : ${result.order.orderState}`);
-      }
-    }
-    return { isRetry: false, data: response };
-  });
+    // Update payment table
+    await setPayment({ id: payment.id }, { status: mappedStatus });
+  }
+  return result;
 }
 
 export async function refundPaymentHandler(payload: RefundPayload) {
   // log the payload
   logger().debug(`[refundPaymentHandler]:payload: ${JSON.stringify(payload)}`);
-  return retry(async () => {
-    // Fetch DB payment
-    const payment = await getPayment(getPaymentDBPayload(payload));
 
-    if (!payment) {
-      logger().error('Failed to fetch the payment');
-      return { isRetry: true };
+  // Fetch DB payment
+  const payment = await getPayment(getPaymentDBPayload(payload));
+
+  if (!payment) {
+    logger().error('[refundPaymentHandler] Failed to fetch the payment');
+    throw {
+      message: 'Failed to fetch payment from the DB',
+      statusCode: 500,
+    };
+  }
+  const refundAmount = payload.refund.refundOutput.amountOfMoney.amount;
+
+  // Fetch CT order
+  const order = await getOrderById(payment.orderId);
+  if (!order) {
+    logger().error(
+      `[refundPaymentHandler] Order with id: '${payment.orderId}' is missing!`,
+    );
+    throw {
+      message: 'Failed to fetch order from CT',
+      statusCode: 500,
+    };
+  }
+
+  // Validate refund amount
+  const hasValidRefund = hasValidAmount(order, refundAmount);
+
+  if (hasValidRefund.isGreater) {
+    logger().error(
+      '[refundPaymentHandler] Refund amount cannot be greater than the order amount!',
+    );
+    throw {
+      message: 'Refund amount cannot be greater than the order amount!',
+      statusCode: 500,
+    };
+  }
+
+  const mappedStatus = getMappedStatus(payload);
+
+  if (mappedStatus === 'FAILED') {
+    logger().error(
+      '[refundPaymentHandler] Received mappedStatus as :',
+      JSON.stringify(mappedStatus),
+    );
+    await setPayment({ id: payment.id }, { status: mappedStatus });
+    throw {
+      message: 'Received mapped status as : FAILED',
+      statusCode: 500,
+    };
+  }
+  let response;
+  if (order.paymentInfo?.payments[0].id) {
+    response = createTransactionInPayment(
+      order.paymentInfo?.payments[0].id,
+      payload,
+      'Refund',
+    );
+    // Update payment table
+    await setPayment({ id: payment.id }, { status: mappedStatus });
+  }
+
+  // if refund is equal to order amount
+  if (hasValidRefund.isEqual) {
+    // update order status
+    const result = await updateOrderStatus(payment.orderId, 'Complete');
+    if (result.order.orderState === 'Complete') {
+      logger().info(`Order status update to : ${result.order.orderState}`);
     }
-    const refundAmount = payload.refund.refundOutput.amountOfMoney.amount;
-    // Fetch CT order
-    const order = await getOrderById(payment.orderId);
-    if (!order) {
-      logger().error(`Order with id: '${payment.orderId}' is missing!`);
-      return { isRetry: true };
-    }
-
-    // Validate refund amount
-    const hasValidRefund = hasValidAmount(order, refundAmount);
-
-    if (hasValidRefund.isGreater) {
-      logger().error('Refund amount cannot be greater than the order amount!');
-      return { isRetry: true };
-    }
-
-    const mappedStatus = getMappedStatus(payload);
-
-    if (mappedStatus === 'FAILED') {
-      await capturePaymentInDB(
-        getCaptureDatabasePayload(
-          payment,
-          refundAmount,
-          mappedStatus,
-          'Refund',
-        ),
-      );
-      return {
-        isRetry: false,
-        data: {
-          message: `Updated refund payment status as ${mappedStatus} as we received status as ${payload.refund.status}`,
-        },
-      };
-    }
-    let response;
-    if (order.paymentInfo?.payments[0].id) {
-      response = await createTransactionInPayment(
-        order.paymentInfo?.payments[0].id,
-        payload,
-        'Refund',
-      );
-      await capturePaymentInDB(
-        getCaptureDatabasePayload(
-          payment,
-          refundAmount,
-          mappedStatus,
-          'Refund',
-        ),
-      );
-    }
-
-    // if refund is equal to order amount
-    if (hasValidRefund.isEqual) {
-      // update order status
-      const result = await updateOrderStatus(payment.orderId, 'Complete');
-      if (result.order.orderState === 'Complete') {
-        logger().info(`Order status update to : ${result.order.orderState}`);
-      }
-    }
-
-    return { isRetry: false, data: response };
-  });
+  }
+  return response;
 }
 
 export async function orderPaymentCancelHandler(payload: PaymentPayload) {
@@ -365,77 +358,76 @@ export async function orderPaymentCancelHandler(payload: PaymentPayload) {
   logger().debug(
     `[orderPaymentCancelHandler]:payload: ${JSON.stringify(payload)}`,
   );
-  return retry(async () => {
-    // Fetch DB payment
-    const payment = await getPayment(getPaymentDBPayload(payload));
-    if (!payment) {
-      logger().error('Failed to fetch the payment');
-      return { isRetry: true };
-    }
-    const cancelAmount = payload.payment?.paymentOutput?.amountOfMoney?.amount;
-    // Fetch CT order
-    const order = await getOrderById(payment.orderId);
-    if (!order) {
-      logger().error(`Order with id: '${payment.orderId}' is missing!`);
-      return { isRetry: true };
-    }
 
-    // Validate amount
-    const amount = hasValidAmount(order, cancelAmount);
-    if (amount.isGreater) {
-      logger().error('Cancel amount is not valid!');
-      return { isRetry: true };
-    }
+  // Fetch DB payment
+  const payment = await getPayment(getPaymentDBPayload(payload));
+  if (!payment) {
+    logger().error('[orderPaymentCancelHandler] Failed to fetch the payment');
+    throw {
+      message: 'Failed to fetch payment from the DB',
+      statusCode: 500,
+    };
+  }
 
-    const mappedStatus = getMappedStatus(payload);
-    if (mappedStatus === 'FAILED') {
-      await capturePaymentInDB(
-        getCaptureDatabasePayload(
-          payment,
-          cancelAmount,
-          mappedStatus,
-          'CancelAuthorization',
-        ),
-      );
-      return {
-        isRetry: false,
-        data: {
-          message: `Updated cancel payment status as ${mappedStatus} as we received status as ${payload.payment.status}`,
-        },
-      };
-    }
-    if (order.paymentInfo?.payments[0].id) {
-      const response = await createTransactionInPayment(
-        order.paymentInfo?.payments[0].id,
-        payload,
-        'CancelAuthorization',
-      );
-      if (response.payment.id) {
-        logger().info(
-          'Successfully created cancelled payment transaction in CT!',
-        );
-      }
-      await capturePaymentInDB(
-        getCaptureDatabasePayload(
-          payment,
-          cancelAmount,
-          mappedStatus,
-          'CancelAuthorization',
-        ),
+  const cancelAmount = payload.payment?.paymentOutput?.amountOfMoney?.amount;
+  // Fetch CT order
+  const order = await getOrderById(payment.orderId);
+  if (!order) {
+    logger().error(
+      `[orderPaymentCancelHandler] Order with id: '${payment.orderId}' is missing!`,
+    );
+    throw {
+      message: 'Failed to fetch order from CT',
+      statusCode: 500,
+    };
+  }
+
+  // Validate amount
+  const amount = hasValidAmount(order, cancelAmount);
+  if (amount.isGreater) {
+    logger().error('[orderPaymentCancelHandler] Cancel amount is not valid!');
+    throw {
+      message: 'Cancel amount is not valid!',
+      statusCode: 500,
+    };
+  }
+
+  const mappedStatus = getMappedStatus(payload);
+  if (mappedStatus === 'FAILED') {
+    logger().error(
+      '[orderPaymentCancelHandler] Received mappedStatus as :',
+      JSON.stringify(mappedStatus),
+    );
+    await setPayment({ id: payment.id }, { status: mappedStatus });
+    throw {
+      message: 'Received mapped status as : FAILED',
+      statusCode: 500,
+    };
+  }
+  if (order.paymentInfo?.payments[0].id) {
+    const response = await createTransactionInPayment(
+      order.paymentInfo?.payments[0].id,
+      payload,
+      'CancelAuthorization',
+    );
+    if (response.payment.id) {
+      logger().info(
+        '[orderPaymentCancelHandler] Successfully created cancelled payment transaction in CT!',
       );
     }
-    let result;
-    // if cancel amount is equal to order amount
-    if (amount.isEqual) {
-      // update order status
-      result = await updateOrderStatus(payment.orderId, 'Cancelled');
-      if (result.order.orderState === 'Cancelled') {
-        logger().info(
-          `Successfully updated order status to : ${result.order.orderState}`,
-        );
-      }
+    // Update payment table
+    await setPayment({ id: payment.id }, { status: mappedStatus });
+  }
+  let result;
+  // if cancel amount is equal to order amount
+  if (amount.isEqual) {
+    // update order status
+    result = await updateOrderStatus(payment.orderId, 'Cancelled');
+    if (result.order.orderState === 'Cancelled') {
+      logger().info(
+        `[orderPaymentCancelHandler] Successfully updated order status to : ${result.order.orderState}`,
+      );
     }
-
-    return { isRetry: false, data: result };
-  });
+  }
+  return result;
 }

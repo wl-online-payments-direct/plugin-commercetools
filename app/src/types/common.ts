@@ -1,9 +1,32 @@
-export interface CheckoutProps {
-  label: string;
-  logo: string;
+export interface RedirectModeAPaymentOptions {
   enabled: boolean;
-  payButtonTitle?: string;
+  merchantReferenceID: string;
+  paymentOptions: {
+    displayOrder: number;
+    label: string;
+    enabled: boolean;
+    logo: string;
+  }[];
 }
+
+export interface RedirectModeBPaymentOptions {
+  enabled: boolean;
+  logo: string;
+  payButtonTitle: string;
+  merchantReferenceID: string;
+  templateFileName: string;
+  groupCards?: boolean;
+}
+
+export interface OnSiteModePaymentOptions {
+  enabled: boolean;
+  logo: string;
+  payButtonTitle: string;
+  payButtonLanguage: string;
+  merchantReferenceID: string;
+  templateFileName: string;
+}
+
 export interface CustomObjects {
   mode: string;
   authorizationMode: string;
@@ -19,16 +42,16 @@ export interface CustomObjects {
   webhookSecret: string;
   webhookUrl: string;
   redirectUrl: string;
-  redirectModeA_payOptionUpdate: {
-    [key: string]: CheckoutProps;
-  };
-  redirectModeB: CheckoutProps;
-  onSiteMode: CheckoutProps;
+  enableWorldlineCheckout: boolean;
+  redirectModeA: RedirectModeAPaymentOptions;
+  redirectModeB: RedirectModeBPaymentOptions;
+  onSiteMode: OnSiteModePaymentOptions;
 }
 
 export interface PaymentMethod {
   name: string;
   type: string;
+  displayOrder?: number;
   image: { src: string };
   enabled: boolean;
   paymentMethod: string;

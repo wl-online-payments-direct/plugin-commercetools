@@ -46,6 +46,12 @@ const MyAccount = (props) => {
         for (const key in optionData) {
           updatedFormData[option][key] = optionData[key];
         }
+        if (customObject?.value?.webhookUrl) {
+          updatedFormData.webhookUrl = customObject?.value?.webhookUrl;
+        }
+        if (customObject?.value?.redirectUrl) {
+          updatedFormData.redirectUrl = customObject?.value?.redirectUrl;
+        }
         setFormData(updatedFormData);
       }
     }

@@ -1,4 +1,5 @@
 import { Prisma } from '@prisma/client';
+import { logger } from '@worldline/ctintegration-util';
 import prisma from './connection';
 import {
   createPaymentResponseMapper,
@@ -8,10 +9,55 @@ import {
 import type {
   CreatePaymentRequest,
   CreatePaymentResponse,
-  CapturePaymentRequest,
-  CapturePaymentResponse,
+  GetOrders,
   Payment,
+  PaymentQueryParams,
 } from './types';
+
+export async function getDBOrders(
+  query: PaymentQueryParams,
+): Promise<GetOrders> {
+  try {
+    // Prepare
+    const page = query.page || 1;
+    const limit = query.limit || 20;
+
+    const skip = (page - 1) * limit;
+    const params = {
+      where: {
+        ...(query.orderId ? { orderId: query.orderId } : {}),
+        ...((query.filterOption
+          ? { paymentOption: query.filterOption }
+          : {}) as Prisma.paymentsWhereUniqueInput),
+      },
+    };
+    const [totalCount, data] = await Promise.all([
+      prisma.payments.count(params),
+      prisma.payments.findMany({
+        skip,
+        take: limit,
+        ...params,
+      }),
+    ]);
+    return {
+      meta: {
+        ...query,
+        ...{ page },
+        ...{ limit },
+        totalCount,
+      },
+      data,
+    };
+  } catch (error) {
+    logger().error(`Failed to fetch orders list: ${JSON.stringify(error)}`);
+
+    throw {
+      message: 'Failed to fetch orders list',
+      statusCode: 500,
+      details: (error as { message: string }).message,
+    };
+  }
+}
 
 export async function createPaymentInDB(
   data: CreatePaymentRequest,
@@ -130,21 +176,6 @@ export async function setPayment(
   } catch (error) {
     throw {
       message: 'Failed to update payment',
-      statusCode: 500,
-      details: (error as { message: string }).message,
-    };
-  }
-}
-
-export async function capturePaymentInDB(
-  data: CapturePaymentRequest,
-): Promise<CapturePaymentResponse> {
-  try {
-    const result = await prisma.payment_transactions.create({ data });
-    return result;
-  } catch (error) {
-    throw {
-      message: 'Failed to capture payment in DB',
       statusCode: 500,
       details: (error as { message: string }).message,
     };

@@ -13,3 +13,5 @@ export * from './cancelPayment';
 export * from './refundPayment';
 export * from './capturePayment';
 export * from './common';
+export * from './getPaymentProducts';
+export * from './getOrder';

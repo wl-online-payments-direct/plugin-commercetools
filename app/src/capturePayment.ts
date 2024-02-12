@@ -14,6 +14,14 @@ export async function capturePayment(payload: ICapturePaymentPayload) {
   const ctOrder = await getOrderById(payload.orderId);
   // Fetch custom objects from admin config
   const customConfig = await getCustomObjects(payload.storeId);
+
+  if (!customConfig) {
+    logger().error('Failed to fetch configuration from CT custom object');
+    throw {
+      message: 'Failed to fetch configuration',
+      statusCode: 500,
+    };
+  }
   // Calculating all capture amount in order
   const totalCaptureAmount = await calculateTotalCaptureAmount(ctOrder);
   let payment;
@@ -29,6 +37,10 @@ export async function capturePayment(payload: ICapturePaymentPayload) {
   }
   if (payload.amount > diffAmount) {
     logger().error('Capture amount cannot be greater than the order amount!');
+    throw {
+      message: 'Capture amount is not valid!',
+      statusCode: 500,
+    };
   }
   return {};
 }
