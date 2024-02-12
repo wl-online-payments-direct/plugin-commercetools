@@ -18,6 +18,7 @@
     "groupCards",
     "logo",
     "payButtonTitle",
+    "payButtonLanguage",
     "sendOrderData",
     "templateFileName"
   ],

@@ -112,3 +112,7 @@ p.info {
 .form-wrapper {
     margin-top: 4rem;
 }
+
+.myaccount-form button {
+    background-color: #45BEAA;
+}

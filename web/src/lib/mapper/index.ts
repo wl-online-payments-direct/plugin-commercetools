@@ -17,3 +17,4 @@ export * from './webhook';
 export * from './createPayment';
 export * from './getMyWebhookStatus';
 export * from './getPaymentProducts';
+export * from './getOrder';
