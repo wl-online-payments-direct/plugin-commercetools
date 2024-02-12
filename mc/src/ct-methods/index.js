@@ -86,3 +86,44 @@ export const uploadImages = async (projectKey, formdata, apiHost) => {
     console.error('Error uploading image:', error.message);
   }
 };
+
+export const getOrderList = async (apiHost, projectKey, storeId, page, orderId, limit, filterOption) => {
+  const storeQuery = `storeId=${storeId}`
+  const pageQuery = page ? `&page=${page}` : ''
+  const orderQuery = orderId ? `&orderId=${orderId}` : ''
+  const filterQuery = filterOption !== 'ALL' ? `&filterOption=${filterOption}` : ''
+  const limitQuery = limit ? `&limit=${limit}` : ''
+
+  try {
+    const response = await fetcher(`/proxy/forward-to`, {
+      method: 'GET',
+      headers: {
+        'Accept-version': 'v2',
+        'X-Forward-To': `${apiHost}/orders?${storeQuery}${pageQuery}${orderQuery}${limitQuery}${filterQuery}`,
+        'X-Forward-To-Audience-Policy': 'forward-url-full-path',
+        'X-Project-Key': projectKey,
+      },
+    });
+    return response;
+  } catch (error) {
+    console.error('Error custom object:', error.message);
+  }
+};
+
+export const getOrderDetails = async (apiHost, projectKey, paymentId) => {
+
+  try {
+    const response = await fetcher(`/proxy/forward-to`, {
+      method: 'GET',
+      headers: {
+        'Accept-version': 'v2',
+        'X-Forward-To': `${apiHost}/order?paymentId=${paymentId}`,
+        'X-Forward-To-Audience-Policy': 'forward-url-full-path',
+        'X-Project-Key': projectKey,
+      },
+    });
+    return response;
+  } catch (error) {
+    console.error('Error custom object:', error.message);
+  }
+};

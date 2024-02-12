@@ -11,4 +11,8 @@ export const myAccountUri = 'myaccount';
 
 export const paymentMethodsUri = '';
 
+export const orderUri = 'orders';
+
 export const PERMISSIONS = entryPointUriPathToPermissionKeys(entryPointUriPath);
+
+export const MERCHANT_URL = 'https://mc.europe-west1.gcp.commercetools.com'
