@@ -66,28 +66,6 @@ const OnSiteMode = ({ onSiteMode, handleOnsiteMode }) => {
         </div>
         <div className="section-wrapper">
           <h5 className="section-header">
-            {onSiteMode.merchantReferenceID.label}
-            <Tooltip
-              placement="top"
-              title={onSiteMode.merchantReferenceID.tooltip}
-            >
-              <InfoIcon />
-            </Tooltip>
-          </h5>
-          <div className="template-section">
-            <TextInput
-              className="section-input"
-              value={onSiteMode.merchantReferenceID.value}
-              type={onSiteMode.merchantReferenceID.type}
-              placeholder={onSiteMode.merchantReferenceID.placeholder}
-              onChange={(e) =>
-                handleOnsiteMode('merchantReferenceID', e.target.value)
-              }
-            />
-          </div>
-        </div>
-        <div className="section-wrapper">
-          <h5 className="section-header">
             {onSiteMode.templateFileName.label}
           </h5>
           <div className="template-section">
