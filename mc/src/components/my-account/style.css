@@ -67,12 +67,6 @@
     letter-spacing: -0.26px;
 }
 
-.logo-bottom-container {
-    position: absolute;
-    bottom: 0px;
-    margin-bottom: 3rem;
-}
-
 .logo-bottom-container p {
     color: #4d4c5a;
     font: normal normal bold 1rem/34px Inter;
@@ -115,4 +109,18 @@ p.info {
 
 .myaccount-form button {
     background-color: #45BEAA;
+}
+
+.required {
+    color: red;
+}
+
+.bottom-section {
+    position: absolute;
+    bottom: 0px;
+    margin-bottom: 3rem;
+}
+
+.contact-wrapper{
+    margin-bottom: 10px;
 }

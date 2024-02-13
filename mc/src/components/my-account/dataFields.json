@@ -1,0 +1,188 @@
+{
+  "live": {
+    "integrator": {
+      "hasError": false,
+      "label": "Integrator",
+      "placeholder": "Enter your Integrator",
+      "value": "Worldline",
+      "required": true,
+      "type": "text"
+    },
+    "merchantId": {
+      "hasError": false,
+      "label": "PSPID",
+      "placeholder": "Enter your PSPID",
+      "value": "",
+      "required": true,
+      "type": "text"
+    },
+    "apiKey": {
+      "hasError": false,
+      "label": "API Key",
+      "placeholder": "Enter your API Key",
+      "value": "",
+      "required": true,
+      "type": "text"
+    },
+    "apiSecret": {
+      "hasError": false,
+      "label": "API Secret",
+      "placeholder": "Enter your API Secret",
+      "value": "",
+      "required": true,
+      "type": "text"
+    },
+    "host": {
+      "hasError": false,
+      "label": "API End Point",
+      "placeholder": "Enter your API End Point",
+      "value": "",
+      "required": true,
+      "type": "text"
+    },
+    "webhookKey": {
+      "hasError": false,
+      "label": "Webhook Key",
+      "placeholder": "Enter your Webhook Key",
+      "value": "",
+      "required": true,
+      "type": "text"
+    },
+    "webhookSecret": {
+      "hasError": false,
+      "label": "Webhook Secret",
+      "placeholder": "Enter your Webhook Secret",
+      "value": "",
+      "required": true,
+      "type": "text"
+    },
+    "timeOut": {
+      "hasError": false,
+      "label": "Time Out in Minutes",
+      "placeholder": "Enter your Time Out in Minutes",
+      "value": 180,
+      "required": true,
+      "type": "number"
+    },
+    "webhookUrl": {
+      "hasError": false,
+      "label": "Webhook URL",
+      "placeholder": "Enter your Webhook URL",
+      "value": "",
+      "disabled": true,
+      "required": true,
+      "type": "text"
+    },
+    "redirectSuccessUrl": {
+      "hasError": false,
+      "label": "Redirection Payment Page Success URL",
+      "placeholder": "Enter your Redirect Success URL",
+      "value": "",
+      "disabled": true,
+      "required": true,
+      "type": "text"
+    },
+    "redirectFailureUrl": {
+      "hasError": false,
+      "label": "Redirection Payment Page Failure URL",
+      "placeholder": "Enter your Redirect Failure URL",
+      "value": "",
+      "disabled": true,
+      "required": true,
+      "type": "text"
+    }
+  },
+  "test": {
+    "integrator": {
+      "hasError": false,
+      "label": "Integrator",
+      "placeholder": "Enter your Integrator",
+      "value": "Worldline",
+      "required": true,
+      "type": "text"
+    },
+    "merchantId": {
+      "hasError": false,
+      "label": "PSPID",
+      "placeholder": "Enter your PSPID",
+      "value": "",
+      "required": true,
+      "type": "text"
+    },
+    "apiKey": {
+      "hasError": false,
+      "label": "API Key",
+      "placeholder": "Enter your API Key",
+      "value": "",
+      "required": true,
+      "type": "text"
+    },
+    "apiSecret": {
+      "hasError": false,
+      "label": "API Secret",
+      "placeholder": "Enter your API Secret",
+      "value": "",
+      "required": true,
+      "type": "text"
+    },
+    "host": {
+      "hasError": false,
+      "label": "API End Point",
+      "placeholder": "Enter your API End Point",
+      "value": "",
+      "required": true,
+      "type": "text"
+    },
+    "webhookKey": {
+      "hasError": false,
+      "label": "Webhook Key",
+      "placeholder": "Enter your Webhook Key",
+      "value": "",
+      "required": true,
+      "type": "text"
+    },
+    "webhookSecret": {
+      "hasError": false,
+      "label": "Webhook Secret",
+      "placeholder": "Enter your Webhook Secret",
+      "value": "",
+      "required": true,
+      "type": "text"
+    },
+    "timeOut": {
+      "hasError": false,
+      "label": "Time Out in Minutes",
+      "placeholder": "Enter your Time Out in Minutes",
+      "value": 180,
+      "required": true,
+      "type": "number"
+    },
+    "webhookUrl": {
+      "hasError": false,
+      "label": "Webhook URL",
+      "placeholder": "Enter your Webhook URL",
+      "value": "",
+      "disabled": true,
+      "required": true,
+      "type": "text"
+    },
+    "redirectSuccessUrl": {
+      "hasError": false,
+      "label": "Redirection Payment Page Success URL",
+      "placeholder": "Enter your Redirect Success URL",
+      "value": "",
+      "disabled": true,
+      "required": true,
+      "type": "text"
+    },
+    "redirectFailureUrl": {
+      "hasError": false,
+      "label": "Redirection Payment Page Failure URL",
+      "placeholder": "Enter your Redirect Failure URL",
+      "value": "",
+      "disabled": true,
+      "required": true,
+      "type": "text"
+    }
+  }
+}
