@@ -26,6 +26,7 @@ export async function getDBOrders(
     const params = {
       where: {
         ...(query.orderId ? { orderId: query.orderId } : {}),
+        ...(query.storeId ? { storeId: query.storeId } : {}),
         ...((query.filterOption
           ? { paymentOption: query.filterOption }
           : {}) as Prisma.paymentsWhereUniqueInput),

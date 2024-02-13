@@ -19,6 +19,7 @@ export interface PaymentQueryParams {
   limit?: number;
   filterOption?: string;
   orderId?: string;
+  storeId?: string;
 }
 
 export interface PaymentReference {
