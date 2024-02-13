@@ -183,6 +183,22 @@ const PaymentProvider = ({ children }) => {
     }
   };
 
+  const sendRequest = async (payload) => {
+    setLoader(true);
+    try {
+      const response = await createCustomObject(payload, projectKey);
+      if (response)
+        showToaster({
+          severity: 'success',
+          open: true,
+          message: 'Request send successfully',
+        });
+    } catch (err) {
+      console.error(err);
+    }
+    setLoader(false);
+  };
+
   useEffect(async () => {
     const response = await fetchCustomObjects(activeStore);
     setCustomObject(response);
@@ -219,6 +235,7 @@ const PaymentProvider = ({ children }) => {
         saveCustomObject,
         fetchWorldlinePaymentOptions,
         imageUploader,
+        sendRequest,
         customObject,
         activeStore,
         stores,

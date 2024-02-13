@@ -1,0 +1,29 @@
+.web-form-modal {
+    border-radius: 15px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 50%;
+    border: 2px solid #000;
+    background-color: #fff;
+    padding: 40px;
+}
+
+.web-form {
+    padding-right: 40px;
+}
+
+.webform-action {
+    display: flex;
+    justify-content: space-between;
+}
+
+.request-feature-wrapper{
+    display: flex;
+    justify-content: flex-end;
+}
+
+.field-wrapper{
+    display: flex;
+}

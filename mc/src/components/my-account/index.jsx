@@ -12,6 +12,7 @@ import worldlineLogo from '../../assets/worldline-logo-main.png';
 import worldlineLogoBottom from '../../assets/worldline-logo-bottom.png';
 import { ClipboardIcon } from '@commercetools-uikit/icons';
 import { PaymentContext } from '../../context/payment';
+import RequestNewFeature from '../request-new-feature';
 
 const MyAccount = (props) => {
   const { setLoader, saveCustomObject, customObject } =
@@ -161,6 +162,7 @@ const MyAccount = (props) => {
                 <p>Also available for</p>
                 <img src={worldlineLogoBottom} />
               </div>
+              <RequestNewFeature />
             </div>
           </div>
           <div id="right-div">
