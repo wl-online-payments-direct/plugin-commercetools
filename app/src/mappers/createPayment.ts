@@ -84,7 +84,13 @@ export function getDatabasePayload({
   reference: { referenceId: number };
   cart: Cart;
   payload: { storeId: string };
-  payment?: { id: string };
+  payment?: {
+    id: string;
+    status?: string;
+    statusCode?: number;
+    amount?: number;
+    currencyCode?: string;
+  };
   isHostedCheckout?: boolean;
   isHostedTokenization?: boolean;
 }) {
@@ -92,7 +98,15 @@ export function getDatabasePayload({
   const cartId = cart.id;
   const { storeId } = payload;
 
-  let paymentOption = null;
+  const {
+    id: worldlineId = '',
+    status: worldlineStatus = '',
+    statusCode: worldlineStatusCode = 0,
+    amount: total = 0,
+    currencyCode: currency = '',
+  } = payment || {};
+
+  let paymentOption;
 
   if (isHostedCheckout) {
     paymentOption = Constants.getRedirectWorldlineOption();
@@ -111,11 +125,16 @@ export function getDatabasePayload({
     authMode: authorizationMode as $Enums.Modes,
     paymentOption: paymentOption as $Enums.PaymentOptions,
     paymentId,
-    worldlineId: payment?.id?.toString() || '',
     storeId,
     cartId,
     orderId: '',
     storePermanently: false, // TODO: will confirm
+    // save worldline response
+    worldlineId,
+    worldlineStatus,
+    worldlineStatusCode,
+    currency,
+    total,
   };
 }
 

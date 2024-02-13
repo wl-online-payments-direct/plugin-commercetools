@@ -77,7 +77,7 @@ export async function orderPaymentHandler(payload: PaymentPayload) {
   // log the payload
   logger().debug(`[orderPaymentHandler] payload: ${JSON.stringify(payload)}`);
 
-  const { PAYMENT } = Constants;
+  const { PAYMENT, STATUS } = Constants;
 
   return retry(async () => {
     // Fetch DB payment
@@ -116,16 +116,6 @@ export async function orderPaymentHandler(payload: PaymentPayload) {
 
       const mappedStatus = getMappedStatus(payload);
 
-      if (mappedStatus === PAYMENT.DATABASE.STATUS.FAILED) {
-        await setPayment({ id: dbPayment.id }, { status: mappedStatus });
-        return {
-          isRetry: false,
-          data: {
-            message: `Updated payment status as ${mappedStatus} as we received status as ${payload.payment.status}`,
-          },
-        };
-      }
-
       await setPayment(
         { id: dbPayment.id },
         { state: PAYMENT.DATABASE.STATE.PROCESSING },
@@ -133,18 +123,31 @@ export async function orderPaymentHandler(payload: PaymentPayload) {
 
       // TODO: What happens when one of the webhook arrive out of sync?
       // E.g. a payment got authorized and then captured, but the webhooks reached in reverse order
-      const result = !dbPayment?.orderId
-        ? await createOrderWithPayment(payload, cart)
-        : await updateOrderWithPayment(payload, dbPayment);
+      let result;
+      if (payload.type === STATUS.PENDING_CAPTURE) {
+        result = !dbPayment?.orderId
+          ? await createOrderWithPayment(payload, cart)
+          : await updateOrderWithPayment(payload, dbPayment);
+      }
 
       // update order id and reset the state as DEFAULT
-      await setPayment(getPaymentFilterQuery(dbPayment), {
+      const updateQuery = {
         ...(!dbPayment.orderId && result?.order?.id
-          ? { orderId: result.order.id, worldlineId: payload?.payment?.id }
-          : { worldlineId: payload?.payment?.id }),
+          ? { orderId: result.order.id }
+          : {}),
+        worldlineId: payload?.payment?.id,
+        worldlineStatus: payload?.payment?.status || '',
+        worldlineStatusCode: payload?.payment?.statusOutput?.statusCode || 0,
+        currency: payload?.payment?.paymentOutput.amountOfMoney.currencyCode,
+        total: payload?.payment?.paymentOutput.amountOfMoney.amount,
         state: PAYMENT.DATABASE.STATE.DEFAULT,
         status: mappedStatus,
-      });
+        errors: payload?.payment?.statusOutput?.errors
+          ? JSON.stringify(payload?.payment?.statusOutput?.errors)
+          : '',
+      };
+
+      await setPayment(getPaymentFilterQuery(dbPayment), updateQuery);
 
       //  Should save the token only:
       //  if "storePermanently" field is received as true
