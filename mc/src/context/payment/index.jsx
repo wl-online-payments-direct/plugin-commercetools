@@ -13,6 +13,7 @@ import Slide from '@mui/material/Slide';
 import Backdrop from '@mui/material/Backdrop';
 import CircularProgress from '@mui/material/CircularProgress';
 import CONFIG from '../../../configuration';
+import releseNotes from './releasenotes.md';
 
 export const PaymentContext = createContext();
 const { CONTAINER_NAME } = CONFIG;
@@ -183,6 +184,11 @@ const PaymentProvider = ({ children }) => {
     }
   };
 
+  const fetchReleaseNotes = async () => {
+    const response = await fetch(releseNotes);
+    return response.text();
+  };
+
   useEffect(async () => {
     const response = await fetchCustomObjects(activeStore);
     setCustomObject(response);
@@ -219,6 +225,7 @@ const PaymentProvider = ({ children }) => {
         saveCustomObject,
         fetchWorldlinePaymentOptions,
         imageUploader,
+        fetchReleaseNotes,
         customObject,
         activeStore,
         stores,
