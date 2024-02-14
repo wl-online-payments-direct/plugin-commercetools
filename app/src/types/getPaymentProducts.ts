@@ -7,6 +7,9 @@ export interface GetPaymentProductsPayload {
 export interface GetPaymentProductsResponse {
   paymentProducts: [
     {
+      id: number;
+      paymentMethod: string;
+      paymentProductGroup: string;
       displayHints: {
         displayOrder: number;
         label: string;
