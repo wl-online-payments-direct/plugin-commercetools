@@ -13,6 +13,16 @@ query {
       id
       version
       customerId
+      customer {
+        id
+        version
+        salutation
+        firstName
+        middleName
+        lastName
+        dateOfBirth
+        email
+      }
       anonymousId
       taxCalculationMode
       totalPrice {
@@ -39,6 +49,20 @@ query {
         state
         country
         additionalAddressInfo
+      }
+      shippingAddress{
+        title
+        firstName
+        lastName
+        apartment
+        building
+        streetName
+        streetNumber
+        additionalStreetInfo
+        country
+        city
+        state
+        postalCode
       }
       lineItems {
         id

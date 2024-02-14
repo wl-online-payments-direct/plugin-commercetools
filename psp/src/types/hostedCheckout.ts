@@ -17,10 +17,45 @@ export interface HostedCheckoutPayload {
       };
     };
   };
-  hostedCheckoutSpecificInput: {
-    variant: string;
+  cardPaymentMethodSpecificInput: {
+    paymentProductId?: number;
+    authorizationMode?: string;
+  };
+  hostedCheckoutSpecificInput?: {
+    variant?: string;
     locale?: string;
-    tokens: string;
+    tokens?: string;
+    returnUrl?: string;
+    paymentProductFilters?: {
+      restrictTo: {
+        products: [];
+      };
+    };
+    cardPaymentMethodSpecificInput?: {
+      groupCards: boolean;
+    };
+  };
+  redirectPaymentMethodSpecificInput?: {
+    paymentProductId?: number;
+    returnUrl?: string;
+    redirectionData?: {
+      returnUrl?: string;
+    };
+    requiresApproval?: boolean;
+  };
+  mobilePaymentMethodSpecificInput?: {
+    paymentProductId?: number;
+    authorizationMode?: string;
+  };
+  sepaDirectDebitPaymentMethodSpecificInput: {
+    paymentProduct771SpecificInput?: {
+      mandate?: {
+        returnUrl?: string;
+        customerReference: string;
+        recurrenceType: string;
+        signatureType: string;
+      };
+    };
   };
 }
 
