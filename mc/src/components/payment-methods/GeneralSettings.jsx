@@ -13,11 +13,11 @@ import Alert from '@mui/material/Alert';
 
 const GeneralSettings = ({ state, handleCommonSettings }) => {
   const [merchREfError, setmerchRefError] = useState(
-    state.merchantReferenceID.value.trim().length > 12 ? true : false
+    state.merchantReferenceID.value?.trim().length > 12 ? true : false
   );
   useEffect(() => {
     setmerchRefError(
-      state.merchantReferenceID.value.trim().length > 12 ? true : false
+      state.merchantReferenceID.value?.trim().length > 12 ? true : false
     );
   }, [state.merchantReferenceID.value]);
 
@@ -38,12 +38,15 @@ const GeneralSettings = ({ state, handleCommonSettings }) => {
           )}
           <TextInput
             className="section-input"
-            value={state.merchantReferenceID.value.trim()}
+            value={state.merchantReferenceID.value?.trim()}
             type={state.merchantReferenceID.type}
             placeholder={state.merchantReferenceID.placeholder}
             hasError={merchREfError}
             onChange={(e) =>
-              handleCommonSettings('merchantReferenceID', e.target.value.trim())
+              handleCommonSettings(
+                'merchantReferenceID',
+                e.target.value?.trim()
+              )
             }
           />
         </div>
@@ -118,7 +121,7 @@ const GeneralSettings = ({ state, handleCommonSettings }) => {
                 {state.captureAuthorizationMode.values &&
                   Object.keys(state.captureAuthorizationMode.values).map(
                     (lang, index) => (
-                      <MenuItem key={`lang${index}`} value={lang}>
+                      <MenuItem key={`capture-${index}`} value={lang}>
                         {state.captureAuthorizationMode.values[lang]}
                       </MenuItem>
                     )
@@ -150,7 +153,7 @@ const GeneralSettings = ({ state, handleCommonSettings }) => {
             >
               {state.placeOrderLanguage.values &&
                 state.placeOrderLanguage.values.map((lang, index) => (
-                  <MenuItem key={`lang${index}`} value={lang}>
+                  <MenuItem key={`placeOrderlang${index}`} value={lang}>
                     {lang}
                   </MenuItem>
                 ))}

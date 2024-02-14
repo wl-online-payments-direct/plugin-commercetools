@@ -41,7 +41,7 @@ const PaymentOptions = ({ methods, handleOptionUpdate }) => {
           >
             {methods.map((item, index) => (
               <Draggable
-                key={item.displayOrder}
+                key={`draggable${item.displayOrder}`}
                 draggableId={`draggeble-${item.displayOrder}`}
                 index={index}
               >
