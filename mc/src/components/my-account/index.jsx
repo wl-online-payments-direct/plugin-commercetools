@@ -167,7 +167,7 @@ const MyAccount = (props) => {
           ) {
             payload.value = {
               ...payload.value,
-              [fData]: formData[fData].value.trim(),
+              [fData]: formData[fData].value?.trim(),
             };
           } else {
             payload.value[selectedOption] = {
@@ -175,7 +175,7 @@ const MyAccount = (props) => {
               [fData]:
                 fData === 'timeOut'
                   ? formData[fData].value
-                  : formData[fData].value.trim(),
+                  : formData[fData].value?.trim(),
             };
           }
         }

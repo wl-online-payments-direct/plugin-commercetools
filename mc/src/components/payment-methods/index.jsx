@@ -200,7 +200,7 @@ const PaymentMethods = () => {
 
   const saveFormData = async () => {
     setLoader(true);
-    if (state?.merchantReferenceID?.value.trim().length > 12) {
+    if (state?.merchantReferenceID?.value?.trim().length > 12) { 
       showToaster({
         severity: 'error',
         open: true,
@@ -293,7 +293,7 @@ const PaymentMethods = () => {
                 if (customValue?.[ds]?.[field]) {
                   payload[ds][field].value = customValue?.[ds]?.[field];
                   payload[ds][field].values[
-                    customValue[ds]['payButtonLanguage']
+                    customValue[ds]['payButtonLanguage'].value
                   ] = customValue?.[ds]?.[field];
                 }
                 break;
