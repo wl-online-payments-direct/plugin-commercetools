@@ -17,13 +17,8 @@ import { PaymentContext } from '../../context/payment';
 import dataFields from './dataFields.json';
 
 const MyAccount = (props) => {
-  const {
-    setLoader,
-    saveCustomObject,
-    customObject,
-    checkConnection,
-    hideToaster,
-  } = useContext(PaymentContext);
+  const { setLoader, saveCustomObject, customObject, checkConnection } =
+    useContext(PaymentContext);
 
   const [selectedOption, setSelectedOption] = useState('test');
   const [copied, setCopied] = useState(false);
@@ -94,7 +89,7 @@ const MyAccount = (props) => {
               value:
                 custValue[pData] !== undefined
                   ? custValue[pData]
-                  : prevData[pData].value,
+                  : dataFields[selectedOption][pData].value,
             };
           }
         }
