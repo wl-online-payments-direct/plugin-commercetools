@@ -293,7 +293,7 @@ const PaymentMethods = () => {
                 if (customValue?.[ds]?.[field]) {
                   payload[ds][field].value = customValue?.[ds]?.[field];
                   payload[ds][field].values[
-                    customValue[ds]['payButtonLanguage'].value
+                    customValue[ds]['payButtonLanguage']
                   ] = customValue?.[ds]?.[field];
                 }
                 break;

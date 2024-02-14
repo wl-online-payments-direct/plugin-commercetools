@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useContext } from 'react';
 import Link from '@commercetools-uikit/link';
 import { PageContentWide } from '@commercetools-frontend/application-components';
+import { useApplicationContext } from '@commercetools-frontend/application-shell-connectors';
 import SelectInput from '@commercetools-uikit/select-input';
 import Label from '@commercetools-uikit/label';
 import TextInput from '@commercetools-uikit/text-input';
@@ -16,18 +17,18 @@ import { PaymentContext } from '../../context/payment';
 import dataFields from './dataFields.json';
 
 const MyAccount = (props) => {
-  const {
-    setLoader,
-    saveCustomObject,
-    customObject,
-    checkConnection,
-    hideToaster,
-  } = useContext(PaymentContext);
+  const { setLoader, saveCustomObject, customObject, checkConnection } =
+    useContext(PaymentContext);
 
   const [selectedOption, setSelectedOption] = useState('test');
   const [copied, setCopied] = useState(false);
   const [formData, setFormData] = useState(dataFields[selectedOption]);
-
+  const {
+    signUpLink,
+    documentationLink,
+    contactSalesLink,
+    contactSupportLink,
+  } = useApplicationContext((context) => context.environment);
   useEffect(() => {
     if (customObject?.value) {
       const custValue = customObject?.value[selectedOption];
@@ -88,7 +89,7 @@ const MyAccount = (props) => {
               value:
                 custValue[pData] !== undefined
                   ? custValue[pData]
-                  : prevData[pData].value,
+                  : dataFields[selectedOption][pData].value,
             };
           }
         }
@@ -212,11 +213,9 @@ const MyAccount = (props) => {
                     <Link
                       className="external-link"
                       isExternal={true}
-                      to={
-                        'https://signup.direct.preprod.worldline-solutions.com/'
-                      }
+                      to={signUpLink}
                     >
-                      https://signup.direct.preprod.worldline-solutions.com/
+                      {signUpLink}
                     </Link>
                   </div>
                   <div className="contact-wrapper">
@@ -224,11 +223,9 @@ const MyAccount = (props) => {
                     <Link
                       className="external-link"
                       isExternal={true}
-                      to={
-                        'https://docs.direct.worldline-solutions.com/en/index'
-                      }
+                      to={documentationLink}
                     >
-                      https://docs.direct.worldline-solutions.com/en/index
+                      {documentationLink}
                     </Link>
                   </div>
                   <div className="contact-wrapper">
@@ -236,11 +233,9 @@ const MyAccount = (props) => {
                     <Link
                       className="external-link"
                       isExternal={true}
-                      to={
-                        'https://worldline.com/en/home/solutions/online-payments/wl-online-payments.html'
-                      }
+                      to={contactSalesLink}
                     >
-                      https://worldline.com/en/home/solutions/online-payments/wl-online-payments.html
+                      {contactSalesLink}
                     </Link>
                   </div>
                   <div className="contact-wrapper">
@@ -248,11 +243,9 @@ const MyAccount = (props) => {
                     <Link
                       className="external-link"
                       isExternal={true}
-                      to={
-                        'https://docs.direct.worldline-solutions.com/en/about/contact/index'
-                      }
+                      to={contactSupportLink}
                     >
-                      https://docs.direct.worldline-solutions.com/en/about/contact/index
+                      {contactSupportLink}
                     </Link>
                   </div>
                 </div>
@@ -265,19 +258,13 @@ const MyAccount = (props) => {
           </div>
           <div id="right-div">
             <div className="link-wrapper">
-              <Link
-                className="external-link"
-                isExternal={true}
-                to={'https://signup.direct.preprod.worldline-solutions.com/'}
-              >
+              <Link className="external-link" isExternal={true} to={signUpLink}>
                 Sign Up
               </Link>
               <Link
                 className="external-link"
                 isExternal={true}
-                to={
-                  'https://docs.direct.worldline-solutions.com/en/about/contact/index'
-                }
+                to={contactSupportLink}
               >
                 Contact Us
               </Link>
