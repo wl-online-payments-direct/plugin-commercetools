@@ -1,6 +1,8 @@
-import { Cart } from '@worldline/ctintegration-ct';
+import { Cart, Customer } from '@worldline/ctintegration-ct';
 import { CustomObjects, HostedMyCheckoutPayload } from '../types';
 import { appendAdditionalParamsToUrl } from './common';
+
+type CartWithCustomer = Cart & { customer: Customer };
 
 export function getHostedCheckoutPayload(
   customConfig: CustomObjects,
@@ -23,15 +25,14 @@ export function getHostedCheckoutPayload(
   const { tokens, acceptHeader, userAgent, paymentProductId } = payload;
 
   // Personal information
-  // Todo: due to type error cart.customer trigger error
+  const { customer } = cart as CartWithCustomer;
   const personalInformation = {
     name: {
-      title: cart,
-      firstName: '',
-      surname: '',
+      title: customer?.title,
+      firstName: customer?.firstName,
+      surname: customer?.lastName,
     },
-    gender: '',
-    dateOfBirth: '',
+    dateOfBirth: customer?.dateOfBirth || '',
   };
 
   // Billing address
@@ -65,11 +66,12 @@ export function getHostedCheckoutPayload(
   // Line items
   const items = cart.lineItems.map((lineItem) => ({
     amountOfMoney: {
-      currencyCode: lineItem.totalPrice.currencyCode,
-      amount: lineItem.totalPrice.centAmount,
+      currencyCode: lineItem?.totalPrice?.currencyCode,
+      amount: lineItem?.totalPrice?.centAmount,
     },
     invoiceData: {
-      description: lineItem.productType.obj?.description,
+      description: (lineItem.productType as unknown as { description: string })
+        .description,
     },
     orderLineDetails: {
       productName: '', // Todo, will pass the locale to cart to get the name
@@ -78,7 +80,7 @@ export function getHostedCheckoutPayload(
       productPrice: lineItem.price.value.centAmount,
       productType: lineItem.productType.obj?.name,
       quantity: lineItem.quantity,
-      taxAmount: lineItem.taxRate?.amount,
+      // taxAmount: lineItem.taxRate?.amount,
     },
   }));
 
@@ -241,7 +243,7 @@ export function getHostedCheckoutPayload(
           countryCode: `${countryCode}`,
         },
         contactDetails: {
-          emailAddress: cart.customerEmail,
+          emailAddress: cart.customerEmail || '',
         },
       },
       shoppingCart: {

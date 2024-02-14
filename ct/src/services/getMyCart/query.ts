@@ -13,6 +13,7 @@ query {
       id
       version
       customerId
+      customerEmail
       customer {
         id
         version
@@ -67,6 +68,10 @@ query {
       lineItems {
         id
         productId
+        totalPrice {
+          currencyCode
+          centAmount
+        }
         taxedPrice {
           totalTax {
             currencyCode
@@ -78,6 +83,7 @@ query {
           }
         }
         taxRate {
+          amount
           includedInPrice
         }
         supplyChannel {
@@ -107,6 +113,7 @@ query {
         }
         productType {
           name
+          description
         }
         variant {
           id

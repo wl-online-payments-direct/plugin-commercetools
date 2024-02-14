@@ -4,6 +4,7 @@ const query = `
         id
         version
         customerId
+        customerEmail
         customer {
           id
           version
@@ -58,6 +59,10 @@ const query = `
         lineItems {
           id
           productId
+          totalPrice {
+            currencyCode
+            centAmount
+          }
           taxedPrice {
             totalTax {
               currencyCode
@@ -69,6 +74,7 @@ const query = `
             }
           }
           taxRate {
+            amount
             includedInPrice
           }
           supplyChannel {
@@ -98,6 +104,7 @@ const query = `
           }
           productType {
             name
+            description
           }
           variant {
             id
