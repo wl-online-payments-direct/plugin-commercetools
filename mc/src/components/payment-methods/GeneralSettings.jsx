@@ -13,20 +13,20 @@ import Alert from '@mui/material/Alert';
 
 const GeneralSettings = ({ state, handleCommonSettings }) => {
   const [merchREfError, setmerchRefError] = useState(
-    state.merchantReferenceID.value?.trim().length > 12 ? true : false
+    state.merchantReference.value?.trim().length > 12 ? true : false
   );
   useEffect(() => {
     setmerchRefError(
-      state.merchantReferenceID.value?.trim().length > 12 ? true : false
+      state.merchantReference.value?.trim().length > 12 ? true : false
     );
-  }, [state.merchantReferenceID.value]);
+  }, [state.merchantReference.value]);
 
   return (
     <>
       <div className="section-wrapper">
         <h5 className="section-header">
-          {state.merchantReferenceID.label}
-          <Tooltip placement="top" title={state.merchantReferenceID.tooltip}>
+          {state.merchantReference.label}
+          <Tooltip placement="top" title={state.merchantReference.tooltip}>
             <InfoIcon />
           </Tooltip>
         </h5>
@@ -39,16 +39,16 @@ const GeneralSettings = ({ state, handleCommonSettings }) => {
           <TextInput
             className="section-input"
             value={
-              state.merchantReferenceID.value
-                ? state.merchantReferenceID.value?.trim()
+              state.merchantReference.value
+                ? state.merchantReference.value?.trim()
                 : ''
             }
-            type={state.merchantReferenceID.type}
-            placeholder={state.merchantReferenceID.placeholder}
+            type={state.merchantReference.type}
+            placeholder={state.merchantReference.placeholder}
             hasError={merchREfError}
             onChange={(e) =>
               handleCommonSettings(
-                'merchantReferenceID',
+                'merchantReference',
                 e.target.value?.trim()
               )
             }
