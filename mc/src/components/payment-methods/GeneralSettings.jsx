@@ -38,7 +38,11 @@ const GeneralSettings = ({ state, handleCommonSettings }) => {
           )}
           <TextInput
             className="section-input"
-            value={state.merchantReferenceID.value?.trim()}
+            value={
+              state.merchantReferenceID.value
+                ? state.merchantReferenceID.value?.trim()
+                : ''
+            }
             type={state.merchantReferenceID.type}
             placeholder={state.merchantReferenceID.placeholder}
             hasError={merchREfError}
