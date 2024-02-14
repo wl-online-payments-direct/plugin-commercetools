@@ -189,7 +189,7 @@
       "value": false
     }
   },
-  "merchantReferenceID": {
+  "merchantReference": {
     "label": " Merchant Reference ID",
     "type": "text",
     "value": "SampleReferenceId",

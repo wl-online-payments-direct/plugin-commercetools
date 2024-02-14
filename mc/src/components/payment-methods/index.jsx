@@ -200,7 +200,7 @@ const PaymentMethods = () => {
 
   const saveFormData = async () => {
     setLoader(true);
-    if (state?.merchantReferenceID?.value?.trim().length > 12) {
+    if (state?.merchantReference?.value?.trim().length > 12) {
       showToaster({
         severity: 'error',
         open: true,
@@ -245,6 +245,7 @@ const PaymentMethods = () => {
     const final_payload = {
       value: {
         ...customObject?.value,
+        merchantReference: saveData.merchantReference,
         live: {
           ...customObject?.value?.live,
           ...saveData,
@@ -303,13 +304,20 @@ const PaymentMethods = () => {
                 break;
               }
             case 'general':
-              console.log('payload', customValue);
-              if (customValue?.[field] !== undefined)
+              if (customValue?.[field] !== undefined) {
                 if (field === 'placeOrder') {
                   payload[field].values[customValue['placeOrderLanguage']] =
                     customValue?.[field];
                 }
-              payload[field].value = customValue?.[field];
+                payload[field].value = customValue?.[field];
+              }
+              if (
+                customObject?.value &&
+                customObject?.value?.merchantReference
+              ) {
+                payload['merchantReference'].value =
+                  customObject?.value?.merchantReference;
+              }
               break;
           }
         }
