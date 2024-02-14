@@ -5,16 +5,9 @@ export function getPaymentProductsMappedResponse(
 ) {
   const { paymentProducts = [] } = serviceResponse || {};
   return paymentProducts.map((product) => {
-    const {
-      id: paymentProductId,
-      paymentMethod,
-      paymentProductGroup = null,
-      displayHints,
-    } = product;
+    const { id: paymentProductId, displayHints } = product;
     return {
       paymentProductId,
-      paymentMethod,
-      paymentProductGroup,
       ...displayHints,
     };
   });
