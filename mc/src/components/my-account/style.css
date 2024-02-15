@@ -124,3 +124,7 @@ p.info {
 .contact-wrapper{
     margin-bottom: 10px;
 }
+
+.error-msg{
+    color: red;
+}
