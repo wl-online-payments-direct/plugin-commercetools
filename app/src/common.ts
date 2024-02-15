@@ -26,12 +26,13 @@ import {
   getMappedStatus,
   hasEqualAmounts,
   hasValidAmount,
-  hasEqualAmountOrder,
   isPaymentProcessing,
   shouldSaveToken,
   getCustomerTokenPayload,
+  calculateRemainingOrderAmount,
 } from './mappers';
 import Constants from './constants';
+import { calculateTotalCaptureAmount } from './capturePayment';
 
 const createOrderWithPayment = async (payload: PaymentPayload, cart: Cart) => {
   // Create order and payment
@@ -238,13 +239,17 @@ export async function orderPaymentCaptureHandler(payload: PaymentPayload) {
       statusCode: 500,
     };
   }
+  const captureAmount = payload.payment.paymentOutput.amountOfMoney.amount;
   // Validate capture amount
-  if (!hasEqualAmountOrder(payload, order)) {
+
+  const hasValidCapture = hasValidAmount(order, captureAmount);
+
+  if (hasValidCapture.isGreater) {
     logger().error(
-      "[orderPaymentCaptureHandler] Order amount doesn't match with the paid amount",
+      '[orderPaymentCaptureHandler] Capture amount cannot be greater than the order amount!',
     );
     throw {
-      message: "Order amount doesn't match with the paid amount",
+      message: 'Refund amount cannot be greater than the order amount!',
       statusCode: 500,
     };
   }
@@ -261,19 +266,30 @@ export async function orderPaymentCaptureHandler(payload: PaymentPayload) {
       statusCode: 500,
     };
   }
-  let result;
+  // Calculating all capture amount in order
+  const totalCaptureAmount = await calculateTotalCaptureAmount(order);
+  // Check if the capture amount is valid
+  const diffAmount = calculateRemainingOrderAmount(order, totalCaptureAmount);
+  if (order.paymentInfo?.payments[0]?.id) {
+    await createTransactionInPayment(
+      order.paymentInfo.payments[0].id,
+      payload,
+      'Charge',
+    );
+  }
+  const result = {
+    status: 'Partial capture requested',
+  };
   // if order id exists
-  if (payment.orderId) {
-    result = await updateOrderStatus(payment.orderId, 'Confirmed', 'Paid');
-    if (order.paymentInfo?.payments[0]?.id) {
-      await createTransactionInPayment(
-        order.paymentInfo.payments[0].id,
-        payload,
-        'Charge',
-      );
-    }
+  if (diffAmount === 0 || hasValidCapture.isEqual) {
+    const response = await updateOrderStatus(
+      payment.orderId,
+      'Confirmed',
+      'Paid',
+    );
     // Update payment table
     await setPayment({ id: payment.id }, { status: mappedStatus });
+    return response;
   }
   return result;
 }
