@@ -4,6 +4,7 @@ export interface RedirectModeAPaymentOptions {
   enabled: boolean;
   merchantReferenceID: string;
   paymentOptions: {
+    paymentProductId: number;
     displayOrder: number;
     label: string;
     enabled: boolean;
