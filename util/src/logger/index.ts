@@ -66,7 +66,10 @@ class Logger {
       winston.format.timestamp({ format: timestampFormat }),
 
       winston.format.printf(
-        (info) => `${info.timestamp} ${info.level}: ${info.message}`,
+        (info) =>
+          `${info.timestamp} ${info.level}: ${info.message} ${
+            info.stack ? `\n Error Stack:${info.stack}` : ''
+          }`,
       ),
     );
     return format;

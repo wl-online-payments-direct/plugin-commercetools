@@ -56,7 +56,7 @@ const OnSiteMode = ({ onSiteMode, handleOnsiteMode }) => {
               >
                 {onSiteMode.payButtonLanguage.values &&
                   onSiteMode.payButtonLanguage.values.map((lang, index) => (
-                    <MenuItem key={`lang${index}`} value={lang}>
+                    <MenuItem key={`payButtonlang${index}`} value={lang}>
                       {lang}
                     </MenuItem>
                   ))}

@@ -67,8 +67,12 @@ const config = {
     
   ],
   additionalEnv: {
-    apiHost: '${env:CTP_MC_APPLICATION_API_HOST}'
-  }
+    apiHost: '${env:CTP_MC_APPLICATION_API_HOST}',
+    signUpLink: '${env:CTP_MC_APPLICATION_SIGN_UP}',
+    documentationLink: '${env:CTP_MC_APPLICATION_DOCUMENTATION}',
+    contactSalesLink: '${env:CTP_MC_APPLICATION_CONTACT_SALES}',
+    contactSupportLink: '${env:CTP_MC_APPLICATION_CONTACT_SUPPORT}',
+  },
 };
 
 export default config;

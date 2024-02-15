@@ -13,20 +13,20 @@ import Alert from '@mui/material/Alert';
 
 const GeneralSettings = ({ state, handleCommonSettings }) => {
   const [merchREfError, setmerchRefError] = useState(
-    state.merchantReferenceID.value.trim().length > 12 ? true : false
+    state.merchantReference.value?.trim().length > 12 ? true : false
   );
   useEffect(() => {
     setmerchRefError(
-      state.merchantReferenceID.value.trim().length > 12 ? true : false
+      state.merchantReference.value?.trim().length > 12 ? true : false
     );
-  }, [state.merchantReferenceID.value]);
+  }, [state.merchantReference.value]);
 
   return (
     <>
       <div className="section-wrapper">
         <h5 className="section-header">
-          {state.merchantReferenceID.label}
-          <Tooltip placement="top" title={state.merchantReferenceID.tooltip}>
+          {state.merchantReference.label}
+          <Tooltip placement="top" title={state.merchantReference.tooltip}>
             <InfoIcon />
           </Tooltip>
         </h5>
@@ -38,12 +38,16 @@ const GeneralSettings = ({ state, handleCommonSettings }) => {
           )}
           <TextInput
             className="section-input"
-            value={state.merchantReferenceID.value.trim()}
-            type={state.merchantReferenceID.type}
-            placeholder={state.merchantReferenceID.placeholder}
+            value={
+              state.merchantReference.value
+                ? state.merchantReference.value?.trim()
+                : ''
+            }
+            type={state.merchantReference.type}
+            placeholder={state.merchantReference.placeholder}
             hasError={merchREfError}
             onChange={(e) =>
-              handleCommonSettings('merchantReferenceID', e.target.value.trim())
+              handleCommonSettings('merchantReference', e.target.value?.trim())
             }
           />
         </div>
@@ -58,7 +62,6 @@ const GeneralSettings = ({ state, handleCommonSettings }) => {
         <div className="options-section">
           <RadioField
             name="payment-option"
-            title="payment-option"
             value={state.paymentOption.value}
             onChange={(e) =>
               handleCommonSettings('paymentOption', e.target.value)
@@ -75,13 +78,11 @@ const GeneralSettings = ({ state, handleCommonSettings }) => {
         </div>
       </div>
       {state.paymentOption.value === 'AUTH' && (
-        <div className="section-wrapper flex">
-          <div className="section-wrapper">
-            <h5 className="section-header">{state.authorizationMode.label}</h5>
+        <>
+          <div className="section-wrapper payments-section-wrapper">
             <div className="options-section">
               <RadioField
                 name="authorization-payment-option"
-                title="authorization-payment-option"
                 value={state.authorizationMode.value}
                 onChange={(e) =>
                   handleCommonSettings('authorizationMode', e.target.value)
@@ -118,7 +119,7 @@ const GeneralSettings = ({ state, handleCommonSettings }) => {
                 {state.captureAuthorizationMode.values &&
                   Object.keys(state.captureAuthorizationMode.values).map(
                     (lang, index) => (
-                      <MenuItem key={`lang${index}`} value={lang}>
+                      <MenuItem key={`capture-${index}`} value={lang}>
                         {state.captureAuthorizationMode.values[lang]}
                       </MenuItem>
                     )
@@ -126,7 +127,7 @@ const GeneralSettings = ({ state, handleCommonSettings }) => {
               </Select>
             </div>
           </div>
-        </div>
+        </>
       )}
       <div className="section-wrapper">
         <h5 className="section-header">{state.placeOrder.label}</h5>
@@ -150,7 +151,7 @@ const GeneralSettings = ({ state, handleCommonSettings }) => {
             >
               {state.placeOrderLanguage.values &&
                 state.placeOrderLanguage.values.map((lang, index) => (
-                  <MenuItem key={`lang${index}`} value={lang}>
+                  <MenuItem key={`placeOrderlang${index}`} value={lang}>
                     {lang}
                   </MenuItem>
                 ))}

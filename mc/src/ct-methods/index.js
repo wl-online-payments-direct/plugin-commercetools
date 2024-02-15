@@ -127,3 +127,21 @@ export const getOrderDetails = async (apiHost, projectKey, paymentId) => {
     console.error('Error custom object:', error.message);
   }
 };
+
+export const testConnection = async (projectKey, apiHost, payload) => {
+  try {
+    const response = await fetcher(`/proxy/forward-to`, {
+      method: 'POST',
+      body: JSON.stringify(payload),
+      headers: {
+        'Accept-version': 'v2',
+        'X-Forward-To': `${apiHost}/testconnection`,
+        'X-Forward-To-Audience-Policy': 'forward-url-full-path', // default config policy
+        'X-Project-Key': projectKey,
+      },
+    });
+    return response;
+  } catch (error) {
+    console.error('Error in establishing connection', error.message);
+  }
+};

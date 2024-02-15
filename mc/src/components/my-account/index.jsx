@@ -1,9 +1,11 @@
 import React, { useState, useEffect, useContext } from 'react';
 import Link from '@commercetools-uikit/link';
 import { PageContentWide } from '@commercetools-frontend/application-components';
+import { useApplicationContext } from '@commercetools-frontend/application-shell-connectors';
 import SelectInput from '@commercetools-uikit/select-input';
 import Label from '@commercetools-uikit/label';
 import TextInput from '@commercetools-uikit/text-input';
+import NumberInput from '@commercetools-uikit/number-input';
 import PrimaryButton from '@commercetools-uikit/primary-button';
 import './style.css';
 import PageWrapper from '../page-wrapper';
@@ -12,48 +14,88 @@ import worldlineLogo from '../../assets/worldline-logo-main.png';
 import worldlineLogoBottom from '../../assets/worldline-logo-bottom.png';
 import { ClipboardIcon } from '@commercetools-uikit/icons';
 import { PaymentContext } from '../../context/payment';
+import dataFields from './dataFields.json';
+import Typography from '@mui/material/Typography';
 
 const MyAccount = (props) => {
-  const { setLoader, saveCustomObject, customObject } =
+  const { setLoader, saveCustomObject, customObject, checkConnection } =
     useContext(PaymentContext);
 
   const [selectedOption, setSelectedOption] = useState('test');
   const [copied, setCopied] = useState(false);
-  const [formData, setFormData] = useState({
-    live: {
-      merchantId: '',
-      apiKey: '',
-      apiSecret: '',
-      webhookKey: '',
-      webhookSecret: '',
-    },
-    test: {
-      merchantId: '',
-      apiKey: '',
-      apiSecret: '',
-      webhookKey: '',
-      webhookSecret: '',
-    },
-    webhookUrl: '',
-    redirectUrl: '',
-  });
+  const [formData, setFormData] = useState(dataFields[selectedOption]);
+  const {
+    signUpLink,
+    documentationLink,
+    contactSalesLink,
+    contactSupportLink,
+  } = useApplicationContext((context) => context.environment);
+  useEffect(() => {
+    if (customObject?.value) {
+      const custValue = customObject?.value[selectedOption];
+      setFormData((prevData) => {
+        const payload = {};
+        for (let pData of Object.keys(prevData)) {
+          if (
+            ['webhookUrl', 'redirectSuccessUrl', 'redirectFailureUrl'].includes(
+              pData
+            )
+          ) {
+            payload[pData] = {
+              ...prevData[pData],
+              value:
+                customObject?.value[pData] !== undefined
+                  ? customObject?.value[pData]
+                  : prevData[pData].value,
+            };
+          } else {
+            payload[pData] = {
+              ...prevData[pData],
+              value:
+                custValue[pData] !== undefined
+                  ? custValue[pData]
+                  : prevData[pData].value,
+            };
+          }
+        }
+        return payload;
+      });
+    } else {
+      setFormData(dataFields[selectedOption]);
+    }
+    setCopied(false);
+  }, [selectedOption]);
 
   useEffect(() => {
     if (customObject?.value) {
-      for (const option of ['live', 'test']) {
-        const optionData = customObject?.value[option];
-        const updatedFormData = { ...formData };
-        for (const key in optionData) {
-          updatedFormData[option][key] = optionData[key];
+      const custValue = customObject?.value[selectedOption];
+      setFormData((prevData) => {
+        const payload = {};
+        for (let pData of Object.keys(prevData)) {
+          if (
+            ['webhookUrl', 'redirectSuccessUrl', 'redirectFailureUrl'].includes(
+              pData
+            )
+          ) {
+            payload[pData] = {
+              ...prevData[pData],
+              value:
+                customObject?.value[pData] !== undefined
+                  ? customObject?.value[pData]
+                  : prevData[pData].value,
+            };
+          } else {
+            payload[pData] = {
+              ...prevData[pData],
+              value:
+                custValue[pData] !== undefined
+                  ? custValue[pData]
+                  : dataFields[selectedOption][pData].value,
+            };
+          }
         }
-        if (customObject?.value?.webhookUrl) {
-          updatedFormData.webhookUrl = customObject?.value?.webhookUrl;
-        }
-        if (customObject?.value?.redirectUrl) {
-          updatedFormData.redirectUrl = customObject?.value?.redirectUrl;
-        }
-        setFormData(updatedFormData);
-      }
+        return payload;
+      });
     }
   }, [customObject]);
 
@@ -65,76 +107,100 @@ const MyAccount = (props) => {
   const handleInputChange = (event) => {
     const { name, value } = event.target;
     setFormData((prevData) => {
-      if (name === 'webhookUrl' || name === 'redirectUrl') {
-        return {
-          ...prevData,
-          [name]: value,
-        };
-      } else {
-        return {
-          ...prevData,
-          [selectedOption]: {
-            ...prevData[selectedOption],
-            [name]: value,
-          },
-        };
-      }
+      return {
+        ...prevData,
+        [name]: {
+          ...prevData[name],
+          value: name === 'timeOut' ? parseInt(value) : value,
+          hasError: false,
+        },
+      };
     });
   };
 
   const handleSubmit = async () => {
-    setLoader(true);
-    const draft = {
-      ...customObject,
-      value: {
-        ...customObject.value,
-        webhookUrl: formData.webhookUrl,
-        redirectUrl: formData.redirectUrl,
-        ...(selectedOption === 'live'
-          ? {
-              live: {
-                ...customObject?.value?.live,
-                merchantId: formData[selectedOption].merchantId,
-                apiKey: formData[selectedOption].apiKey,
-                apiSecret: formData[selectedOption].apiSecret,
-                webhookKey: formData[selectedOption].webhookKey,
-                webhookSecret: formData[selectedOption].webhookSecret,
-              },
-            }
-          : {
-              live: {
-                ...customObject?.value?.live,
-                merchantId: formData['live'].merchantId,
-                apiKey: formData['live'].apiKey,
-                apiSecret: formData['live'].apiSecret,
-                webhookKey: formData['live'].webhookKey,
-                webhookSecret: formData['live'].webhookSecret,
-              },
-            }),
-        ...(selectedOption === 'test'
-          ? {
-              test: {
-                ...customObject?.value?.test,
-                merchantId: formData[selectedOption].merchantId,
-                apiKey: formData[selectedOption].apiKey,
-                apiSecret: formData[selectedOption].apiSecret,
-                webhookKey: formData[selectedOption].webhookKey,
-                webhookSecret: formData[selectedOption].webhookSecret,
-              },
-            }
-          : {
-              test: {
-                ...customObject?.value?.test,
-                merchantId: formData['test'].merchantId,
-                apiKey: formData['test'].apiKey,
-                apiSecret: formData['test'].apiSecret,
-                webhookKey: formData['test'].webhookKey,
-                webhookSecret: formData['test'].webhookSecret,
-              },
-            }),
-      },
-    };
-    await saveCustomObject(draft);
+    const payload = { ...customObject };
+    const formPayload = {};
+    for (let pData of Object.keys(formData)) {
+      if (pData === 'merchantId') {
+        formPayload[pData] = {
+          ...formData[pData],
+          hasError:
+            !formData[pData].disabled &&
+            (formData[pData].value.length === 0 ||
+              formData[pData].value.length > 256),
+          errMsg:
+            formData[pData].value.length === 0
+              ? 'Please fill out this field'
+              : formData[pData].value.length > 256
+              ? 'Maximum character limit is 256'
+              : '',
+        };
+      } else if (pData === 'timeOut') {
+        formPayload[pData] = {
+          ...formData[pData],
+          hasError:
+            !formData[pData].disabled &&
+            (formData[pData].value < 1 || formData[pData].value > 1440),
+          errMsg:
+            formData[pData].value < 1
+              ? 'Minimum timeout is 1'
+              : formData[pData].value > 256
+              ? 'Maximum timeout is 1440'
+              : '',
+        };
+      } else {
+        formPayload[pData] = {
+          ...formData[pData],
+          hasError:
+            !formData[pData].disabled && formData[pData].value.length === 0,
+          errMsg:
+            formData[pData].value.length === 0
+              ? 'Please fill out this field'
+              : '',
+        };
+      }
+    }
+    setFormData(formPayload);
+
+    if (Object.keys(formPayload).some((data) => formPayload[data].hasError)) {
+      return;
+    } else {
+      setLoader(true);
+      const conPayload = {
+        merchantId: formData['merchantId'].value,
+        integrator: formData['integrator'].value,
+        apiKey: formData['apiKey'].value,
+        apiSecret: formData['apiSecret'].value,
+        host: formData['host'].value,
+      };
+      const result = await checkConnection(conPayload);
+      if (result?.connection) {
+        for (let fData of Object.keys(formData)) {
+          if (
+            ['webhookUrl', 'redirectSuccessUrl', 'redirectFailureUrl'].includes(
+              fData
+            )
+          ) {
+            payload.value = {
+              ...payload.value,
+              [fData]: formData[fData].value?.trim(),
+            };
+          } else {
+            payload.value[selectedOption] = {
+              ...payload.value[selectedOption],
+              [fData]:
+                fData === 'timeOut'
+                  ? formData[fData].value
+                  : formData[fData].value?.trim(),
+            };
+          }
+        }
+        await saveCustomObject(payload);
+      } else {
+        setLoader(false);
+      }
+    }
   };
 
   return (
@@ -157,27 +223,65 @@ const MyAccount = (props) => {
                   matter of minutes.
                 </p>
               </div>
-              <div className="logo-bottom-container">
-                <p>Also available for</p>
-                <img src={worldlineLogoBottom} />
+              <div className="bottom-section">
+                <div className="contact-section">
+                  <div className="contact-wrapper">
+                    <Label>Test account creation : </Label>
+                    <Link
+                      className="external-link"
+                      isExternal={true}
+                      to={signUpLink}
+                    >
+                      {signUpLink}
+                    </Link>
+                  </div>
+                  <div className="contact-wrapper">
+                    <Label>Documentation : </Label>
+                    <Link
+                      className="external-link"
+                      isExternal={true}
+                      to={documentationLink}
+                    >
+                      {documentationLink}
+                    </Link>
+                  </div>
+                  <div className="contact-wrapper">
+                    <Label>Contact sales team : </Label>
+                    <Link
+                      className="external-link"
+                      isExternal={true}
+                      to={contactSalesLink}
+                    >
+                      {contactSalesLink}
+                    </Link>
+                  </div>
+                  <div className="contact-wrapper">
+                    <Label>Contact support teams : </Label>
+                    <Link
+                      className="external-link"
+                      isExternal={true}
+                      to={contactSupportLink}
+                    >
+                      {contactSupportLink}
+                    </Link>
+                  </div>
+                </div>
+                <div className="logo-bottom-container">
+                  <p>Also available for</p>
+                  <img src={worldlineLogoBottom} />
+                </div>
               </div>
             </div>
           </div>
           <div id="right-div">
             <div className="link-wrapper">
-              <Link
-                className="external-link"
-                isExternal={true}
-                to={'https://signup.direct.preprod.worldline-solutions.com/'}
-              >
+              <Link className="external-link" isExternal={true} to={signUpLink}>
                 Sign Up
               </Link>
               <Link
                 className="external-link"
                 isExternal={true}
-                to={
-                  'https://docs.direct.worldline-solutions.com/en/about/contact/index'
-                }
+                to={contactSupportLink}
               >
                 Contact Us
               </Link>
@@ -198,83 +302,80 @@ const MyAccount = (props) => {
                       { value: 'live', label: 'Live Mode' },
                     ]}
                   />
-                  <Label isBold={true}>
-                    <p className="form-label">Test PSPID</p>
-                  </Label>
-                  <TextInput
-                    name="merchantId"
-                    value={formData[selectedOption].merchantId}
-                    onChange={handleInputChange}
-                  />
-                  <Label isBold={true}>
-                    <p className="form-label">Test API Key</p>
-                  </Label>
-                  <TextInput
-                    name="apiKey"
-                    value={formData[selectedOption].apiKey}
-                    onChange={handleInputChange}
-                  />
-                  <Label isBold={true}>
-                    <p className="form-label">Test API Secret</p>
-                  </Label>
-                  <TextInput
-                    name="apiSecret"
-                    value={formData[selectedOption].apiSecret}
-                    onChange={handleInputChange}
-                  />
-                  <Label isBold={true}>
-                    <p className="form-label">Test Webhook Key</p>
-                  </Label>
-                  <TextInput
-                    name="webhookKey"
-                    value={formData[selectedOption].webhookKey}
-                    onChange={handleInputChange}
-                  />
-                  <Label isBold={true}>
-                    <p className="form-label">Test Webhook Secret</p>
-                  </Label>
-                  <TextInput
-                    name="webhookSecret"
-                    value={formData[selectedOption].webhookSecret}
-                    onChange={handleInputChange}
-                  />
-                  <Label isBold={true}>
-                    <p className="form-label hook-url">Webhook URL</p>
-                  </Label>
-                  <div className="flex">
-                    <TextInput
-                      name="webhookUrl"
-                      value={formData.webhookUrl}
-                      onChange={handleInputChange}
-                    />
-                    <ClipboardIcon
-                      style={{ margin: 'auto' }}
-                      onClick={() => {
-                        setCopied(true);
-                        navigator.clipboard.writeText(formData.webhookUrl);
-                      }}
-                    />
-                  </div>
-                  <div
-                    className="flex"
-                    style={{ justifyContent: 'space-between' }}
-                  >
-                    <p className="info">
-                      To avoid copy/paste issues, use the `copy` icon to copy
-                      the URL
-                    </p>
-                    {copied && <p>Copied!</p>}
-                  </div>
-                  <Label isBold={true}>
-                    <p className="form-label hook-url">
-                      Redirection Payment Page URL - Test
-                    </p>
-                  </Label>
-                  <TextInput
-                    name="redirectUrl"
-                    value={formData.redirectUrl}
-                    onChange={handleInputChange}
-                  />
+                  {Object.keys(formData).map((key, i) => {
+                    const formField = formData[key];
+                    return (
+                      <div key={`Data-field-${i}`}>
+                        <Label isBold={true}>
+                          <p className="form-label">{formField.label}</p>
+                          {formField.required && !formField.disabled ? (
+                            <p className="required">*</p>
+                          ) : null}
+                        </Label>
+                        <div>
+                          {formField.hasError ? (
+                            <div className="error-msg">
+                              <Typography>{formField.errMsg}</Typography>
+                            </div>
+                          ) : null}
+                        </div>
+                        {formField.type === 'text' ? (
+                          key === 'webhookUrl' ? (
+                            <>
+                              <div className="flex">
+                                <TextInput
+                                  name={key}
+                                  placeholder={formField.placeholder}
+                                  value={formField.value}
+                                  isReadOnly={formField.disabled}
+                                  onChange={handleInputChange}
+                                  hasError={formField.hasError}
+                                />
+                                {formField.value && formField.value.length && (
+                                  <ClipboardIcon
+                                    style={{ margin: 'auto' }}
+                                    onClick={() => {
+                                      setCopied(true);
+                                      navigator.clipboard.writeText(
+                                        formField.value
+                                      );
+                                    }}
+                                  />
+                                )}
+                              </div>
+                              <div
+                                className="flex"
+                                style={{ justifyContent: 'space-between' }}
+                              >
+                                <p className="info">
+                                  To avoid copy/paste issues, use the `copy`
+                                  icon to copy the URL
+                                </p>
+                                {copied && <p>Copied!</p>}
+                              </div>
+                            </>
+                          ) : (
+                            <TextInput
+                              name={key}
+                              placeholder={formField.placeholder}
+                              value={formField.value}
+                              isReadOnly={formField.disabled}
+                              onChange={handleInputChange}
+                              hasError={formField.hasError}
+                            />
+                          )
+                        ) : (
+                          <NumberInput
+                            name={key}
+                            placeholder={formField.placeholder}
+                            value={formField.value}
+                            onChange={handleInputChange}
+                            hasError={formField.hasError}
+                          />
+                        )}
+                      </div>
+                    );
+                  })}
                   <PrimaryButton
                     label="Save/Update"
                     onClick={handleSubmit}

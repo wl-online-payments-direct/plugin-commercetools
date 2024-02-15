@@ -17,6 +17,10 @@
     padding: 2rem;   
 }
 
+.payments-section-wrapper {
+    margin-top: 1rem;
+}
+
 .MuiAccordion-root {
     border-bottom: 3px solid #45BEAA;
     padding: 0px;
