@@ -47,10 +47,7 @@ const GeneralSettings = ({ state, handleCommonSettings }) => {
             placeholder={state.merchantReference.placeholder}
             hasError={merchREfError}
             onChange={(e) =>
-              handleCommonSettings(
-                'merchantReference',
-                e.target.value?.trim()
-              )
+              handleCommonSettings('merchantReference', e.target.value?.trim())
             }
           />
         </div>
@@ -65,7 +62,6 @@ const GeneralSettings = ({ state, handleCommonSettings }) => {
         <div className="options-section">
           <RadioField
             name="payment-option"
-            title="payment-option"
             value={state.paymentOption.value}
             onChange={(e) =>
               handleCommonSettings('paymentOption', e.target.value)
@@ -82,13 +78,11 @@ const GeneralSettings = ({ state, handleCommonSettings }) => {
         </div>
       </div>
       {state.paymentOption.value === 'AUTH' && (
-        <div className="section-wrapper flex">
-          <div className="section-wrapper">
-            <h5 className="section-header">{state.authorizationMode.label}</h5>
+        <>
+          <div className="section-wrapper payments-section-wrapper">
             <div className="options-section">
               <RadioField
                 name="authorization-payment-option"
-                title="authorization-payment-option"
                 value={state.authorizationMode.value}
                 onChange={(e) =>
                   handleCommonSettings('authorizationMode', e.target.value)
@@ -133,7 +127,7 @@ const GeneralSettings = ({ state, handleCommonSettings }) => {
               </Select>
             </div>
           </div>
-        </div>
+        </>
       )}
       <div className="section-wrapper">
         <h5 className="section-header">{state.placeOrder.label}</h5>

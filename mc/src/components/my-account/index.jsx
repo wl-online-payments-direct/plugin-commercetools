@@ -15,6 +15,7 @@ import worldlineLogoBottom from '../../assets/worldline-logo-bottom.png';
 import { ClipboardIcon } from '@commercetools-uikit/icons';
 import { PaymentContext } from '../../context/payment';
 import dataFields from './dataFields.json';
+import Typography from '@mui/material/Typography';
 
 const MyAccount = (props) => {
   const { setLoader, saveCustomObject, customObject, checkConnection } =
@@ -128,6 +129,12 @@ const MyAccount = (props) => {
             !formData[pData].disabled &&
             (formData[pData].value.length === 0 ||
               formData[pData].value.length > 256),
+          errMsg:
+            formData[pData].value.length === 0
+              ? 'Please fill out this field'
+              : formData[pData].value.length > 256
+              ? 'Maximum character limit is 256'
+              : '',
         };
       } else if (pData === 'timeOut') {
         formPayload[pData] = {
@@ -135,12 +142,22 @@ const MyAccount = (props) => {
           hasError:
             !formData[pData].disabled &&
             (formData[pData].value < 1 || formData[pData].value > 1440),
+          errMsg:
+            formData[pData].value < 1
+              ? 'Minimum timeout is 1'
+              : formData[pData].value > 256
+              ? 'Maximum timeout is 1440'
+              : '',
         };
       } else {
         formPayload[pData] = {
           ...formData[pData],
           hasError:
             !formData[pData].disabled && formData[pData].value.length === 0,
+          errMsg:
+            formData[pData].value.length === 0
+              ? 'Please fill out this field'
+              : '',
         };
       }
     }
@@ -295,6 +312,13 @@ const MyAccount = (props) => {
                             <p className="required">*</p>
                           ) : null}
                         </Label>
+                        <div>
+                          {formField.hasError ? (
+                            <div className="error-msg">
+                              <Typography>{formField.errMsg}</Typography>
+                            </div>
+                          ) : null}
+                        </div>
                         {formField.type === 'text' ? (
                           key === 'webhookUrl' ? (
                             <>

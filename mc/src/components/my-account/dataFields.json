@@ -2,6 +2,7 @@
   "live": {
     "integrator": {
       "hasError": false,
+      "errMsg": "Please fill out this field.",
       "label": "Integrator",
       "placeholder": "Enter your Integrator",
       "value": "Worldline",
@@ -10,6 +11,7 @@
     },
     "merchantId": {
       "hasError": false,
+      "errMsg": "Please fill out this field.",
       "label": "PSPID",
       "placeholder": "Enter your PSPID",
       "value": "",
@@ -18,6 +20,7 @@
     },
     "apiKey": {
       "hasError": false,
+      "errMsg": "Please fill out this field.",
       "label": "API Key",
       "placeholder": "Enter your API Key",
       "value": "",
@@ -26,6 +29,7 @@
     },
     "apiSecret": {
       "hasError": false,
+      "errMsg": "Please fill out this field.",
       "label": "API Secret",
       "placeholder": "Enter your API Secret",
       "value": "",
@@ -34,6 +38,7 @@
     },
     "host": {
       "hasError": false,
+      "errMsg": "Please fill out this field.",
       "label": "API End Point",
       "placeholder": "Enter your API End Point",
       "value": "",
@@ -42,6 +47,7 @@
     },
     "webhookKey": {
       "hasError": false,
+      "errMsg": "Please fill out this field.",
       "label": "Webhook Key",
       "placeholder": "Enter your Webhook Key",
       "value": "",
@@ -50,6 +56,7 @@
     },
     "webhookSecret": {
       "hasError": false,
+      "errMsg": "Please fill out this field.",
       "label": "Webhook Secret",
       "placeholder": "Enter your Webhook Secret",
       "value": "",
@@ -58,6 +65,7 @@
     },
     "timeOut": {
       "hasError": false,
+      "errMsg": "Please fill out this field.",
       "label": "Time Out in Minutes",
       "placeholder": "Enter your Time Out in Minutes",
       "value": 180,
@@ -66,6 +74,7 @@
     },
     "webhookUrl": {
       "hasError": false,
+      "errMsg": "Please fill out this field.",
       "label": "Webhook URL",
       "placeholder": "Enter your Webhook URL",
       "value": "",
@@ -75,6 +84,7 @@
     },
     "redirectSuccessUrl": {
       "hasError": false,
+      "errMsg": "Please fill out this field.",
       "label": "Redirection Payment Page Success URL",
       "placeholder": "Enter your Redirect Success URL",
       "value": "",
@@ -84,6 +94,7 @@
     },
     "redirectFailureUrl": {
       "hasError": false,
+      "errMsg": "Please fill out this field.",
       "label": "Redirection Payment Page Failure URL",
       "placeholder": "Enter your Redirect Failure URL",
       "value": "",
@@ -95,6 +106,7 @@
   "test": {
     "integrator": {
       "hasError": false,
+      "errMsg": "Please fill out this field.",
       "label": "Integrator",
       "placeholder": "Enter your Integrator",
       "value": "Worldline",
@@ -103,6 +115,7 @@
     },
     "merchantId": {
       "hasError": false,
+      "errMsg": "Please fill out this field.",
       "label": "PSPID",
       "placeholder": "Enter your PSPID",
       "value": "",
@@ -111,6 +124,7 @@
     },
     "apiKey": {
       "hasError": false,
+      "errMsg": "Please fill out this field.",
       "label": "API Key",
       "placeholder": "Enter your API Key",
       "value": "",
@@ -119,6 +133,7 @@
     },
     "apiSecret": {
       "hasError": false,
+      "errMsg": "Please fill out this field.",
       "label": "API Secret",
       "placeholder": "Enter your API Secret",
       "value": "",
@@ -127,6 +142,7 @@
     },
     "host": {
       "hasError": false,
+      "errMsg": "Please fill out this field.",
       "label": "API End Point",
       "placeholder": "Enter your API End Point",
       "value": "",
@@ -135,6 +151,7 @@
     },
     "webhookKey": {
       "hasError": false,
+      "errMsg": "Please fill out this field.",
       "label": "Webhook Key",
       "placeholder": "Enter your Webhook Key",
       "value": "",
@@ -143,6 +160,7 @@
     },
     "webhookSecret": {
       "hasError": false,
+      "errMsg": "Please fill out this field.",
       "label": "Webhook Secret",
       "placeholder": "Enter your Webhook Secret",
       "value": "",
@@ -151,6 +169,7 @@
     },
     "timeOut": {
       "hasError": false,
+      "errMsg": "Please fill out this field.",
       "label": "Time Out in Minutes",
       "placeholder": "Enter your Time Out in Minutes",
       "value": 180,
@@ -159,6 +178,7 @@
     },
     "webhookUrl": {
       "hasError": false,
+      "errMsg": "Please fill out this field.",
       "label": "Webhook URL",
       "placeholder": "Enter your Webhook URL",
       "value": "",
@@ -168,6 +188,7 @@
     },
     "redirectSuccessUrl": {
       "hasError": false,
+      "errMsg": "Please fill out this field.",
       "label": "Redirection Payment Page Success URL",
       "placeholder": "Enter your Redirect Success URL",
       "value": "",
@@ -177,6 +198,7 @@
     },
     "redirectFailureUrl": {
       "hasError": false,
+      "errMsg": "Please fill out this field.",
       "label": "Redirection Payment Page Failure URL",
       "placeholder": "Enter your Redirect Failure URL",
       "value": "",
