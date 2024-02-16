@@ -1,4 +1,4 @@
-import { getCustomObjects } from '@worldline/ctintegration-ct';
+import { getCustomObjects, getOrderById } from '@worldline/ctintegration-ct';
 import { getPaymentService } from '@worldline/ctintegration-psp';
 import { getPayment } from '@worldline/ctintegration-db';
 import { GetOrderPayload } from './types';
@@ -22,11 +22,19 @@ export async function getOrder(payload: GetOrderPayload) {
       statusCode: 500,
     };
   }
+  if (!payment.orderId) {
+    throw {
+      message: `Failed to fetch the service information for paymentId: '${payload.paymentId}'`,
+      statusCode: 500,
+    };
+  }
+
   // Prepare service payload for get payment
   const serviceResponse = await getPaymentService(
     getConnectionServiceProps(await getCustomObjects(payment.storeId)),
     payment.worldlineId,
   );
+  const { customerEmail = ' ' } = await getOrderById(payment.orderId);
 
-  return getOrderResponseMapper(serviceResponse);
+  return getOrderResponseMapper(serviceResponse, customerEmail);
 }
