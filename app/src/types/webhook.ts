@@ -33,6 +33,7 @@ export interface PaymentPayload {
     };
     status: string;
     statusOutput: {
+      errors?: [];
       isCancellable: boolean;
       statusCategory: string;
       statusCode: number;
