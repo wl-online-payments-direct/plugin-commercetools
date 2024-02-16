@@ -34,7 +34,7 @@ export async function getOrder(payload: GetOrderPayload) {
     getConnectionServiceProps(await getCustomObjects(payment.storeId)),
     payment.worldlineId,
   );
-  const { customerEmail = ' ' } = await getOrderById(payment.orderId);
+  const ctOrder = await getOrderById(payment.orderId);
 
-  return getOrderResponseMapper(serviceResponse, customerEmail);
+  return getOrderResponseMapper(serviceResponse, ctOrder);
 }
