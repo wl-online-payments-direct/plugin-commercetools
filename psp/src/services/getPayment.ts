@@ -7,7 +7,11 @@ export async function getPaymentService(
 ) {
   const { merchantId } = connectOpts;
   const client = await connectService(connectOpts);
-  const result = await client.payments.getPayment(merchantId, paymentId, {});
+  const result = await client.payments.getPaymentDetails(
+    merchantId,
+    paymentId,
+    {},
+  );
   if (result?.body?.errors) {
     throw {
       message: 'Failed to process the get payment service',
