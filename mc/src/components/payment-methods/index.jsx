@@ -177,12 +177,14 @@ const PaymentMethods = () => {
     handleRedirectModeA(
       'paymentOptions',
       methods.map((method, index) => {
-        return { ...method, displayOrder: index };
+        return {
+          ...method,
+          enabled: method.enabled ? method.enabled : false,
+          displayOrder: index,
+        };
       })
     );
   };
-
-  const handleLogoUpload = (e) => {};
 
   const fetchPaymentMethods = async () => {
     setLoader(true);
@@ -271,21 +273,14 @@ const PaymentMethods = () => {
             case 'redirectModeB':
               if (field === 'paymentOptions') {
                 if (customValue?.[ds]?.[field] !== undefined) {
-                  payload[ds][field] = payload[ds][field].map((opt) => {
-                    return {
-                      ...opt,
-                      ...customValue?.[ds]?.[field].find(
-                        (custVal) => custVal.label === opt.label
-                      ),
-                    };
-                  });
+                  payload[ds][field] = customValue[ds][field];
                 } else {
                   const response = await fetchWorldlinePaymentOptions(
                     activeStore
                   );
                   if (response && response.length) {
-                    payload[ds][field] = payload[ds][field].map((opt) => {
-                      return { ...opt, ...response[opt.label] };
+                    payload[ds][field] = response.map((res) => {
+                      return { ...res, enabled: false };
                     });
                   }
                 }
@@ -360,7 +355,6 @@ const PaymentMethods = () => {
         <OnSiteMode
           onSiteMode={state.onSiteMode}
           handleOnsiteMode={handleOnsiteMode}
-          handleLogoUpload={handleLogoUpload}
         />
         <RedirectModeA
           redirectModeA={state.redirectModeA}
@@ -371,7 +365,6 @@ const PaymentMethods = () => {
         <RedirectModeB
           redirectModeB={state.redirectModeB}
           handleRedirectModeB={handleRedirectModeB}
-          handleLogoUpload={handleLogoUpload}
         />
         <GeneralSettings
           state={state}

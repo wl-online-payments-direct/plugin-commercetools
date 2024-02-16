@@ -62,6 +62,7 @@ const GeneralSettings = ({ state, handleCommonSettings }) => {
         <div className="options-section">
           <RadioField
             name="payment-option"
+            title=""
             value={state.paymentOption.value}
             onChange={(e) =>
               handleCommonSettings('paymentOption', e.target.value)
