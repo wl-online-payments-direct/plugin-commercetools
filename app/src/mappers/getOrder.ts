@@ -45,6 +45,7 @@ export function getOrderResponseMapper(
   return {
     worldlineId,
     paymentId,
+    orderId: order.id,
     customerEmail: order.customerEmail,
     paymentMethod,
     status,
