@@ -6,25 +6,14 @@ import { useEffect, useState } from 'react';
 import { useApplicationContext } from '@commercetools-frontend/application-shell-connectors';
 import { BackIcon } from '@commercetools-uikit/icons';
 import LoadingSpinner from '@commercetools-uikit/loading-spinner';
+import { FormattedMessage, useIntl } from 'react-intl';
 import { getOrderDetails } from '../../ct-methods';
 import { Link } from 'react-router-dom';
 import { flattenObject } from '../../helpers';
-import { MERCHANT_URL } from '../../constants';
-
-const columns = [
-    { key: 'paymentMethod', label: 'Payment Method' },
-    { key: 'paymentId', label: 'Transaction Id' },
-    { key: 'amount', label: 'Amount Paid' },
-    { key: 'worldlineId', label: 'Worldline ID' },
-    { key: 'status', label: 'Payment Status' },
-    { key: 'cardNumber', label: 'Card Number' },
-    { key: 'bin', label: 'Bin' },
-    { key: 'fraudServiceResult', label: 'Fraud result' },
-    { key: 'authenticationStatus', label: 'Authentication status' },
-    { key: 'liability', label: 'Liability for 3DS' },
-];
+import messages from './messages';
 
 const OrderDetails = () => {
+    const {formatMessage} = useIntl()
     const [orderDetails, setOrderDetails] = useState(null)
     const [failedOrderDetails, setFailedOrderDetails] = useState(false)
     const match = useRouteMatch()
@@ -32,14 +21,25 @@ const OrderDetails = () => {
     const orderId = basePathArray.pop()
     const backToOrderPath = basePathArray.join('/')
     const projectKey = useApplicationContext((context) => context.project.key);
-    const apiHost = useApplicationContext(
-        (context) => context.environment.apiHost
-    );   
+    const {apiHost, merchantUrl} = useApplicationContext((context) => context.environment);
+    
+    const columns = [
+        { key: 'paymentMethod', label: formatMessage(messages.paymentMethod) },
+        { key: 'paymentId', label: formatMessage(messages.transactionId) },
+        { key: 'amount', label: formatMessage(messages.amount) },
+        { key: 'worldlineId', label: formatMessage(messages.worldlineId) },
+        { key: 'status', label: formatMessage(messages.status) },
+        { key: 'cardNumber', label: formatMessage(messages.cardNumber) },
+        { key: 'bin', label: formatMessage(messages.bin) },
+        { key: 'fraudServiceResult', label: formatMessage(messages.fraudServiceResult) },
+        { key: 'authenticationStatus', label: formatMessage(messages.authenticationStatus) },
+        { key: 'liability', label: formatMessage(messages.liability) },
+    ];
     
     const itemRenderer = (item, column) => {
         const itemValue = item[column.key]
         if (column.key === "worldlineId") {
-            const link = <a href={`${MERCHANT_URL}/${projectKey}/orders`} target="_blank" rel="noopener noreferrer">{itemValue}</a>
+            const link = <a href={`${merchantUrl}/${projectKey}/orders`} target="_blank" rel="noopener noreferrer">{itemValue}</a>
           return link
         }
         return itemValue;
@@ -70,10 +70,13 @@ const OrderDetails = () => {
                 <div className='failed-order'>
                     <div className='back-to-orders'>
                         <Link to={`${backToOrderPath}`} className='back-link'>
-                            <BackIcon /> Back to order list
+                            <BackIcon /> <FormattedMessage id="backToOrder" defaultMessage="Back to order list" />
                         </Link>
                     </div>
-                    <div>There are no orders for the Payment Id: {orderId}</div>
+                    <div>
+                        <FormattedMessage id="noOrders" defaultMessage="There are no orders for the Payment Id:" />
+                        {orderId}
+                    </div>
                 </div>
             </PageWrapper>
         )
@@ -84,7 +87,7 @@ const OrderDetails = () => {
             <div className='order-details-wrapper'>
                 <div className='back-to-orders'>
                     <Link to={`${backToOrderPath}`} className='back-link'>
-                        <BackIcon /> Back to order list
+                        <BackIcon /> <FormattedMessage id="backToOrder" defaultMessage="Back to order list" />
                     </Link>
                 </div>
                 {orderDetails ? (

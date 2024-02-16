@@ -1,4 +1,5 @@
 import { useContext, useEffect, useState } from 'react'
+import { FormattedMessage, useIntl } from 'react-intl';
 import { useApplicationContext } from '@commercetools-frontend/application-shell-connectors';
 import DataTable from '@commercetools-uikit/data-table';
 import { Pagination } from '@commercetools-uikit/pagination';
@@ -9,36 +10,26 @@ import LoadingSpinner from '@commercetools-uikit/loading-spinner';
 import PageWrapper from '../page-wrapper'
 import { getOrderList } from '../../ct-methods';
 import { Link, useRouteMatch } from 'react-router-dom';
-import { MERCHANT_URL } from '../../constants';
 import { areObjectsSame } from '../../helpers';
 import './style.css';
 import { PaymentContext } from '../../context/payment';
-
-const columns = [
-  { key: 'createdAt', label: 'Created Date' },
-  { key: 'paymentId', label: 'Payment Id' },
-  { key: 'orderId', label: 'Order ID' },
-  { key: 'paymentOption', label: 'Payment Option' },
-  { key: 'worldlinePaymentResponse', label: 'Worldline Payment Response' },
-  { key: 'status', label: 'Payment Status' },
-  { key: 'currency', label: 'Currency' },
-  { key: 'total', label: 'Total' },
-  { key: 'action', label: 'Actions' },
-];
-
-const filterOptions = [
-  { value: 'ALL', label: 'Filters Orders' },
-  { value: 'WORLDLINE_CREDITCARD', label: 'Worldline Credit Card' },
-  { value: 'HOSTED_AND_APMS', label: 'Hosted And APMs' },
-  { value: 'REDIRECT_WORLDLINE', label: 'Redirect WorldLine' }
-]
-
-const initialSearchState = {
-  filterOption: filterOptions[0].value,
-  orderId: ''
-}
+import messages from './messages';
 
 const OrderList = () => {
+  const {formatMessage} = useIntl()
+
+  const filterOptions = [
+    { value: 'ALL', label: formatMessage(messages.filterOrders) },
+    { value: 'WORLDLINE_CREDITCARD', label: formatMessage(messages.worldlineCreditCard) },
+    { value: 'HOSTED_AND_APMS', label: formatMessage(messages.hostedApm) },
+    { value: 'REDIRECT_WORLDLINE', label: formatMessage(messages.redirectWorldline) }
+  ]
+
+  const initialSearchState = {
+    filterOption: filterOptions[0].value,
+    orderId: ''
+  }
+
   const [orderList, setOrderList] = useState([])
   const [totalOrders, setTotalOrders] = useState()
   const [loading, setLoading] = useState(false)
@@ -46,14 +37,24 @@ const OrderList = () => {
   const [currentPage, setCurrentPage] = useState(1)
   const [currentPerPage, setCurrentPerPage] = useState(20)
 
+  const columns = [
+    { key: 'createdAt', label: formatMessage(messages.createdDate) },
+    { key: 'paymentId', label: formatMessage(messages.paymentId) },
+    { key: 'orderId', label: formatMessage(messages.orderId) },
+    { key: 'paymentOption', label: formatMessage(messages.paymentOption) },
+    { key: 'worldlinePaymentResponse', label: formatMessage(messages.worldlinePaymentResponse) },
+    { key: 'status', label: formatMessage(messages.status) },
+    { key: 'currency', label: formatMessage(messages.currency) },
+    { key: 'total', label: formatMessage(messages.total) },
+    { key: 'action', label: formatMessage(messages.action) },
+  ];
+  
   const {activeStore} = useContext(PaymentContext);
   
   const match = useRouteMatch()
 
   const projectKey = useApplicationContext((context) => context.project.key);
-  const apiHost = useApplicationContext(
-    (context) => context.environment.apiHost
-  );
+  const {apiHost, merchantUrl} = useApplicationContext((context) => context.environment);
   const getOrders = async (options = {}) => {
     const {key: storeId} = activeStore
     const {page = '', orderId = '', limit = null, filterOption = 'ALL'} = options
@@ -93,7 +94,7 @@ const OrderList = () => {
       return link
     }
     if (column.key === "orderId") {
-      const link = <a href={`${MERCHANT_URL}/${projectKey}/orders`} target="_blank" rel="noopener noreferrer">{itemValue}</a>
+      const link = <a href={`${merchantUrl}/${projectKey}/orders`} target="_blank" rel="noopener noreferrer">{itemValue}</a>
       return link
     }
     if (column.key === "status") {
@@ -158,7 +159,7 @@ const OrderList = () => {
           </div>
         </form>
         <div className='clear-filter'>
-          <button onClick={clearFilter}>Clear Filter</button>
+          <button onClick={clearFilter}><FormattedMessage id="clearFilter" defaultMessage="Clear Filter" /></button>
         </div>
         {totalOrders > 20 && (
           <Pagination
@@ -186,11 +187,11 @@ const OrderList = () => {
         </div>
         ) : (
           <div className='no-results'>
-            <h4>There are no orders that match your search query.</h4>
-            <p>Suggestions:</p>
+            <h4><FormattedMessage id="noResultsTitle" defaultMessage="There are no orders that match your search query." /></h4>
+            <p><FormattedMessage id="noResultsSubtitle" defaultMessage="Suggestions:" /></p>
             <ul>
-              <li>Check the spelling.</li>
-              <li>Make sure that the values are correct.</li>
+              <li><FormattedMessage id="noResultsList1" defaultMessage="Check the spelling." /></li>
+              <li><FormattedMessage id="noResultsList2" defaultMessage="Make sure that the values are correct." /></li>
             </ul>
           </div>
         )}
