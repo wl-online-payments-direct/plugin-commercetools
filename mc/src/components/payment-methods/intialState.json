@@ -155,15 +155,15 @@
     "payButtonTitle": {
       "label": "Pay Button Title",
       "type": "text",
-      "value": "Pay with credit cards",
+      "value": "Pay By worldline",
       "criteria": ["alpha"],
       "values": {
-        "EN": "Pay with credit cards",
-        "ES": "Pagar con tarjetas de crédito",
-        "FR": "Payer par carte de crédit",
-        "NL": "Betaal met creditcards",
-        "DE": "Bezahlen Sie mit Kreditkarten",
-        "IT": "Paga con carte di credito"
+        "EN": "Pay By worldline",
+        "ES": "Paga con Worldline",
+        "FR": "Payer avec Worldline",
+        "NL": "Betaal met Worldline",
+        "DE": "Bezahlen Sie mit Worldline",
+        "IT": "Paga con Worldline"
       }
     },
     "payButtonLanguage": {
