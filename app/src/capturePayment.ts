@@ -11,6 +11,7 @@ import {
   getConnectionServiceProps,
   getCaptureServicePayload,
   calculateRemainingOrderAmount,
+  hasValidAmount,
 } from './mappers';
 
 export async function calculateTotalCaptureAmount(
@@ -60,8 +61,19 @@ export async function capturePayment(payload: ICapturePaymentPayload) {
   // Calculating all capture amount in order
   const totalCaptureAmount = await calculateTotalCaptureAmount(ctOrder);
   let payment;
-  // Check if the capture amount is valid
   const diffAmount = calculateRemainingOrderAmount(ctOrder, totalCaptureAmount);
+  // Check if the capture amount is valid
+  const hasValidCapture = hasValidAmount(ctOrder, totalCaptureAmount);
+  if (
+    hasValidCapture.isEqual ||
+    (payload.amount > diffAmount && diffAmount !== 0)
+  ) {
+    logger().error('Capture amount cannot be greater than the order amount!');
+    throw {
+      message: 'Capture amount is not valid!',
+      statusCode: 500,
+    };
+  }
   if (diffAmount > 0) {
     let isFinal = false;
     if (diffAmount === payload.amount) {
@@ -74,12 +86,6 @@ export async function capturePayment(payload: ICapturePaymentPayload) {
     );
     return payment;
   }
-  if (payload.amount > diffAmount) {
-    logger().error('Capture amount cannot be greater than the order amount!');
-    throw {
-      message: 'Capture amount is not valid!',
-      statusCode: 500,
-    };
-  }
+
   return {};
 }
