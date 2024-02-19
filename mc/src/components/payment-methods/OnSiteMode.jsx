@@ -88,7 +88,7 @@ const OnSiteMode = ({ onSiteMode, handleOnsiteMode }) => {
         </div>
         <div className="section-wrapper">
           <h5 className="section-header">
-            {onSiteMode.logo.label}
+            <span>{onSiteMode.logo.label}</span>
             <Tooltip placement="top" title={onSiteMode.logo.tooltip}>
               <InfoIcon />
             </Tooltip>

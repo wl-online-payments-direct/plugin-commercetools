@@ -38,8 +38,8 @@ const RedirectModeB = ({ redirectModeB, handleRedirectModeB }) => {
         </p>
         <div className="relative">
           <span className="float-right">
-            <div>
-              Send Order Data
+            <div className="flex">
+              <span className="header-section-title">Send Order Data</span>
               <Tooltip
                 placement="top"
                 title={redirectModeB.sendOrderData.tooltip}
@@ -57,7 +57,9 @@ const RedirectModeB = ({ redirectModeB, handleRedirectModeB }) => {
         </div>
         <div className="section-wrapper">
           <h5 className="section-header">
-            {redirectModeB.logo.label}
+            <span className="header-section-title">
+              {redirectModeB.logo.label}
+            </span>
             <Tooltip placement="top" title={redirectModeB.logo.tooltip}>
               <InfoIcon />
             </Tooltip>
@@ -134,11 +136,15 @@ const RedirectModeB = ({ redirectModeB, handleRedirectModeB }) => {
             }
             isChecked={redirectModeB.groupCards.value}
           />
-          <div>
-            {redirectModeB.groupCards.label}
-            <Tooltip placement="top" title={redirectModeB.groupCards.tooltip}>
-              <InfoIcon />
-            </Tooltip>
+          <div className="group-cards-title">
+            <div className="flex">
+              <span className="header-section-title">
+                {redirectModeB.groupCards.label}
+              </span>
+              <Tooltip placement="top" title={redirectModeB.groupCards.tooltip}>
+                <InfoIcon />
+              </Tooltip>
+            </div>
           </div>
         </div>
       </AccordionDetails>

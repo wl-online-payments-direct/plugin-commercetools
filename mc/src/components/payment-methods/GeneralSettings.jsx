@@ -25,7 +25,9 @@ const GeneralSettings = ({ state, handleCommonSettings }) => {
     <>
       <div className="section-wrapper">
         <h5 className="section-header">
-          {state.merchantReference.label}
+          <span className="header-section-title">
+            {state.merchantReference.label}
+          </span>
           <Tooltip placement="top" title={state.merchantReference.tooltip}>
             <InfoIcon />
           </Tooltip>
@@ -54,7 +56,9 @@ const GeneralSettings = ({ state, handleCommonSettings }) => {
       </div>
       <div className="section-wrapper">
         <h5 className="section-header">
-          {state.paymentOption.label}
+          <span className="header-section-title">
+            {state.paymentOption.label}
+          </span>
           <Tooltip placement="top" title={state.paymentOption.tooltip}>
             <InfoIcon />
           </Tooltip>
