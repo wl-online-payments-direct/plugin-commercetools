@@ -10,20 +10,23 @@ const authenticateSession = async (
   request: IncomingMessage,
   response: ServerResponse,
 ) => {
-  const { EXTERNAL_API_URL } = env;
+  const { APP_DOMAIN } = env;
   try {
-    if (!EXTERNAL_API_URL) {
-      logger().error('Environment variable EXTERNAL_API_URL is not defined');
-      return;
+    if (!APP_DOMAIN) {
+      logger().error('Environment variable APP_DOMAIN is not defined');
+      throw {
+        statusCode: 500,
+        message: 'Failed to fetch the configuration for request to the API',
+      };
     }
     const sessionAuthVerifier = createSessionAuthVerifier({
-      audience: EXTERNAL_API_URL,
+      audience: APP_DOMAIN,
       issuer: CLOUD_IDENTIFIERS.GCP_EU,
     });
     await sessionAuthVerifier(request, response);
   } catch (error) {
     logger().error(
-      `Unauthorized request to the external API ${EXTERNAL_API_URL}. Error: ${JSON.stringify(
+      `Unauthorized request to the API ${APP_DOMAIN}. Error: ${JSON.stringify(
         error,
       )}`,
     );
