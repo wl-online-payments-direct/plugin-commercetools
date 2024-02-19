@@ -203,11 +203,14 @@ const PaymentProvider = ({ children }) => {
         showToaster({
           severity: 'error',
           open: true,
-          message: 'Test connection failed',
+          message: 'Warning: Please enter correct PSPID, API Key & API Secret.',
         });
       }
     } catch (err) {
-      console.error('Test connection failed', err.message);
+      console.error(
+        'Warning: Please enter correct PSPID, API Key & API Secret.',
+        err.message
+      );
       setLoader(false);
     }
   };

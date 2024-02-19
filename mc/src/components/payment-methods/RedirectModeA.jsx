@@ -40,8 +40,8 @@ const RedirectModeA = ({
         <p className="sub-title">Single payment buttons selected on site</p>
         <div className="relative">
           <span className="float-right">
-            <div>
-              Send Order Data
+            <div className="flex">
+              <span className="header-section-title"> Send Order Data</span>
               <Tooltip
                 placement="top"
                 title={redirectModeA.sendOrderData.tooltip}
@@ -62,9 +62,13 @@ const RedirectModeA = ({
             label={redirectModeA.refresh.label}
             onClick={() => fetchPaymentMethods()}
           ></SecondaryButton>
-          <Tooltip placement="top" title={redirectModeA.refresh.tooltip}>
-            <InfoIcon />
-          </Tooltip>
+          <span className="refresh-btn">
+            <span>
+              <Tooltip placement="top" title={redirectModeA.refresh.tooltip}>
+                <InfoIcon />
+              </Tooltip>
+            </span>
+          </span>
         </div>
 
         <PaymentOptions
