@@ -12,6 +12,8 @@ ${DOCKER_COMPOSE} build
 
 ${DOCKER_COMPOSE} up -d --remove-orphans
 
+echo "waiting for containers to start"
+sleep 20
 
 ${DOCKER_COMPOSE} exec web npm run prisma:generate
 ${DOCKER_COMPOSE} exec web npm run prisma:push

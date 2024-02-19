@@ -15,6 +15,7 @@ COPY psp/package*.json ./psp
 COPY util/package*.json ./util
 COPY web/package*.json ./web
 COPY package*.json .
+COPY ./dev-start.sh ./dev-start.sh
 
 RUN npm ci
 
@@ -28,4 +29,4 @@ COPY ./web ./web
 RUN npm run prisma:generate
 
 EXPOSE 3000
-CMD ["npm", "run", "dev"]
+CMD ["./dev-start.sh"]

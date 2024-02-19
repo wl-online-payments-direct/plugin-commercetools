@@ -1,4 +1,4 @@
-import React, { useState, useContext, useEffect } from 'react';
+import React, { useState, useContext, useEffect, useRef } from 'react';
 import './style.css';
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 import Button from '@mui/material/Button';
@@ -12,6 +12,7 @@ import Alert from '@mui/material/Alert';
 import { useApplicationContext } from '@commercetools-frontend/application-shell-connectors';
 
 const ImageUpload = ({ images = [], source, saveImage, handleClose }) => {
+  const inputRef = useRef(null);
   const [imagesData, setImagesData] = useState([...new Set(images)]);
   const [openModal, setOpenmodal] = useState(false);
   const [dimError, setDimError] = useState(false);
@@ -25,6 +26,12 @@ const ImageUpload = ({ images = [], source, saveImage, handleClose }) => {
   const apiHost = useApplicationContext(
     (context) => context.environment.apiHost
   );
+
+  const resetInputElement = () => {
+    if (inputRef && inputRef?.current) {
+      inputRef.current.value = null;
+    }
+  };
 
   const handleImageUpload = async (files) => {
     if (!files) {
@@ -40,6 +47,7 @@ const ImageUpload = ({ images = [], source, saveImage, handleClose }) => {
       } else {
         setImagesData([`${apiHost}/${res[0]}`]);
       }
+      resetInputElement();
     }
     setDimError(false);
   };
@@ -104,8 +112,9 @@ const ImageUpload = ({ images = [], source, saveImage, handleClose }) => {
   };
 
   const handleImageDelete = () => {
+    resetInputElement();
     const deleteIndex = imagesData.indexOf(deleteUrl);
-    const newDataSet = [...imagesData.splice(deleteIndex, 1)];
+    imagesData.splice(deleteIndex, 1);
     handleCloseModal();
   };
 
@@ -134,6 +143,7 @@ const ImageUpload = ({ images = [], source, saveImage, handleClose }) => {
         >
           Upload a file
           <input
+            ref={inputRef}
             type="file"
             id="upload-file"
             className="hidden-input"
@@ -184,7 +194,7 @@ const ImageUpload = ({ images = [], source, saveImage, handleClose }) => {
             <CloseIcon />
           </span>
           <Typography id="modal-modal-title" variant="h6" component="h2">
-            {'Do you want to delete the image?'}
+            {'Do you want to delete the image ?'}
           </Typography>
           <div className="image-upload">
             <Button
@@ -200,7 +210,7 @@ const ImageUpload = ({ images = [], source, saveImage, handleClose }) => {
               className="cancel-btn"
               variant="soft"
               onClick={() => {
-                handleCloseModal;
+                handleCloseModal();
               }}
             >
               Cancel

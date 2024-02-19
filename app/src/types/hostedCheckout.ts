@@ -1,4 +1,5 @@
 export interface HostedMyCheckoutPayload {
+  paymentProductId?: number;
   authToken: string;
   userAgent: string;
   acceptHeader: string;
@@ -7,6 +8,7 @@ export interface HostedMyCheckoutPayload {
   returnUrl: string;
 }
 export interface HostedCheckoutPayload {
+  paymentProductId?: number;
   authToken: string;
   userAgent: string;
   acceptHeader: string;
@@ -14,24 +16,4 @@ export interface HostedCheckoutPayload {
   storeId: string;
   tokens: string;
   returnUrl: string;
-}
-
-export interface HostedCheckoutServicePayload {
-  order: {
-    amountOfMoney: {
-      currencyCode: string;
-      amount: number;
-    };
-    customer: {
-      merchantCustomerId: string;
-      billingAddress: {
-        countryCode: string;
-      };
-    };
-  };
-  hostedCheckoutSpecificInput: {
-    variant: string;
-    locale?: string;
-    tokens: string;
-  };
 }
