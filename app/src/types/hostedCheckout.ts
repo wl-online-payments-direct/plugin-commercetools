@@ -3,6 +3,7 @@ export interface HostedMyCheckoutPayload {
   authToken: string;
   userAgent: string;
   acceptHeader: string;
+  hostedTokenizationId: string;
   storeId: string;
   tokens: string;
   returnUrl: string;
@@ -14,6 +15,7 @@ export interface HostedCheckoutPayload {
   acceptHeader: string;
   cartId: string;
   storeId: string;
+  hostedTokenizationId: string;
   tokens: string;
   returnUrl: string;
 }

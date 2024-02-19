@@ -79,18 +79,20 @@ export function getDatabasePayload({
   payment,
   isHostedCheckout,
   isHostedTokenization,
+  storePermanently,
 }: {
   customConfig: CustomObjects;
   reference: { referenceId: number };
   cart: Cart;
-  payload: { storeId: string };
+  payload: { storeId: string; hostedTokenizationId: string };
   payment?: { id: string };
   isHostedCheckout?: boolean;
   isHostedTokenization?: boolean;
+  storePermanently?: boolean;
 }) {
   const { merchantReference, authorizationMode } = customConfig;
   const cartId = cart.id;
-  const { storeId } = payload;
+  const { storeId, hostedTokenizationId } = payload;
 
   let paymentOption = null;
 
@@ -115,7 +117,8 @@ export function getDatabasePayload({
     storeId,
     cartId,
     orderId: '',
-    storePermanently: false, // TODO: will confirm
+    hostedTokenizationId,
+    storePermanently,
   };
 }
 
