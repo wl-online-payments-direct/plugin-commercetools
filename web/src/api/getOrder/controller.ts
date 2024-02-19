@@ -1,5 +1,6 @@
 import { ServerResponse } from 'http';
 import {
+  authenticateSession,
   isGetRequestOrThrowError,
   logger,
   ResponseClient,
@@ -14,7 +15,8 @@ const processRequest = async (request: Request, response: ServerResponse) => {
     // Only allow GET request; else throw error
     await isGetRequestOrThrowError(method);
 
-    // TODO: will add the authentication
+    // Authenticate the session
+    await authenticateSession(request, response);
 
     const data = await getOrderRequest(request);
 
