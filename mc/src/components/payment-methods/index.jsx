@@ -200,7 +200,7 @@ const PaymentMethods = () => {
 
   const saveFormData = async () => {
     setLoader(true);
-    if (state?.merchantReference?.value?.trim().length > 12) {
+    if (state?.merchantReference?.value?.replaceAll(' ', '').length > 12) {
       showToaster({
         severity: 'error',
         open: true,
@@ -245,7 +245,7 @@ const PaymentMethods = () => {
     const final_payload = {
       value: {
         ...customObject?.value,
-        merchantReference: saveData.merchantReference,
+        merchantReference: saveData.merchantReference.replaceAll(' ', ''),
         live: {
           ...customObject?.value?.live,
           ...saveData,
@@ -316,7 +316,7 @@ const PaymentMethods = () => {
                 customObject?.value?.merchantReference
               ) {
                 payload['merchantReference'].value =
-                  customObject?.value?.merchantReference;
+                  customObject?.value?.merchantReference.replaceAll(' ', '');
               }
               break;
           }

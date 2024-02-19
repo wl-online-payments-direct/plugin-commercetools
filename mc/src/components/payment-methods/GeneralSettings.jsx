@@ -13,11 +13,15 @@ import Alert from '@mui/material/Alert';
 
 const GeneralSettings = ({ state, handleCommonSettings }) => {
   const [merchREfError, setmerchRefError] = useState(
-    state.merchantReference.value?.trim().length > 12 ? true : false
+    state.merchantReference.value?.replaceAll(' ', '').length > 12
+      ? true
+      : false
   );
   useEffect(() => {
     setmerchRefError(
-      state.merchantReference.value?.trim().length > 12 ? true : false
+      state.merchantReference.value?.replaceAll(' ', '').length > 12
+        ? true
+        : false
     );
   }, [state.merchantReference.value]);
 
@@ -41,15 +45,13 @@ const GeneralSettings = ({ state, handleCommonSettings }) => {
           <TextInput
             className="section-input"
             value={
-              state.merchantReference.value
-                ? state.merchantReference.value?.trim()
-                : ''
+              state.merchantReference.value ? state.merchantReference.value : ''
             }
             type={state.merchantReference.type}
             placeholder={state.merchantReference.placeholder}
             hasError={merchREfError}
             onChange={(e) =>
-              handleCommonSettings('merchantReference', e.target.value?.trim())
+              handleCommonSettings('merchantReference', e.target.value)
             }
           />
         </div>
