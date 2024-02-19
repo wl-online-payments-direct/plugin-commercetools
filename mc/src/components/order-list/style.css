@@ -49,3 +49,15 @@
     text-decoration: underline;
     cursor: pointer;
 }
+.action-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+.action-wrapper button {
+    background: none;
+    border: 1px solid;
+    border-radius: 4px;
+    padding: 4px 8px;
+    cursor: pointer;
+}

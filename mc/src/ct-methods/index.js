@@ -145,3 +145,41 @@ export const testConnection = async (projectKey, apiHost, payload) => {
     console.error('Error in establishing connection', error.message);
   }
 };
+
+export const postCapturePayment = async (apiHost, projectKey, payload) => {
+  try {
+    const response = await fetcher(`/proxy/forward-to`, {
+      method: 'POST',
+      body: JSON.stringify(payload),
+      headers: {
+        'Accept-version': 'v2',
+        'X-Forward-To': `${apiHost}/payment/capture`,
+        'X-Forward-To-Audience-Policy': 'forward-url-full-path',
+        'X-Project-Key': projectKey,
+      },
+    });
+
+    return response;
+  } catch (error) {
+    console.error('Error uploading image:', error.message);
+  }
+};
+
+export const postRefundPayment = async (apiHost, projectKey, payload) => {
+  try {
+    const response = await fetcher(`/proxy/forward-to`, {
+      method: 'POST',
+      body: JSON.stringify(payload),
+      headers: {
+        'Accept-version': 'v2',
+        'X-Forward-To': `${apiHost}/payment/refund`,
+        'X-Forward-To-Audience-Policy': 'forward-url-full-path',
+        'X-Project-Key': projectKey,
+      },
+    });
+
+    return response;
+  } catch (error) {
+    console.error('Error uploading image:', error.message);
+  }
+};
