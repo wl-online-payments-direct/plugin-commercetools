@@ -1,18 +1,20 @@
 import cron from 'node-cron';
 import { CustomObject } from '@commercetools/platform-sdk';
-import {
-  getAllCustomObjects,
-  getClientCredentialsToken,
-  getOrderById,
-} from '@worldline/ctintegration-ct';
+import { getAllCustomObjects, getOrderById } from '@worldline/ctintegration-ct';
 import { getPaymentsByStatus } from '@worldline/ctintegration-db';
-import { capturePayment } from '@worldline/ctintegration-app';
+import {
+  capturePayment,
+  calculateTotalCaptureAmount,
+} from '@worldline/ctintegration-app';
 import { logger } from '@worldline/ctintegration-util';
 import dotenv from 'dotenv';
-import { Status } from './types/initiateCapturePayment';
+import {
+  Status,
+  Payment,
+  CaptureResponse,
+} from './types/initiateCapturePayment';
 import {
   getInitiateCaptureServicePayload,
-  calculateTotalCaptureAmount,
   calculateRemainingOrderAmount,
 } from './mappers/initiateCapturePayment';
 
@@ -33,7 +35,10 @@ export default async function initiateCapturePayment() {
       await Promise.all(
         results.map(async (customObject: CustomObject) => {
           // Check if captureAuthorizationMode is other than default
-          if (customObject.value.captureAuthorizationMode !== 'DEFAULT') {
+          if (
+            customObject.value.captureAuthorizationMode !==
+            process.env.CAPTURE_AUTH_MODE
+          ) {
             // Get key of custom object
             const { key } = customObject;
 
@@ -45,30 +50,25 @@ export default async function initiateCapturePayment() {
 
             // Process payments in parallel using Promise.all
             await Promise.all(
-              payments.map(async (payment) => {
+              payments.map(async (payment: Payment) => {
                 const order = await getOrderById(payment.orderId);
                 const captureAmount = await calculateTotalCaptureAmount(order);
                 const remainingAmount = calculateRemainingOrderAmount(
                   order,
                   captureAmount,
                 );
-                const token = await getClientCredentialsToken();
                 // Initiate capture for payment
-                const res = await capturePayment(
-                  getInitiateCaptureServicePayload(
-                    payment,
-                    remainingAmount,
-                    token,
-                  ),
+                const captureResponse: CaptureResponse = await capturePayment(
+                  getInitiateCaptureServicePayload(payment, remainingAmount),
                 );
                 logger().debug(
                   'Capture payment response : ',
                   JSON.stringify(capturePayment),
                 );
-                if (res.status === 'CAPTURE_REQUESTED') {
+                if (captureResponse.status === 'CAPTURE_REQUESTED') {
                   logger().info(
                     'Initiated capture payment request!',
-                    JSON.stringify(res),
+                    JSON.stringify(captureResponse),
                   );
                 }
               }),

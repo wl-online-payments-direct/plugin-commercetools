@@ -19,6 +19,11 @@ export enum Status {
   AUTHORIZED = 'AUTHORIZED',
 }
 
+export interface CaptureResponse {
+  id?: number;
+  status?: string;
+}
+
 export interface Payment {
   id: string;
   paymentId: string;
