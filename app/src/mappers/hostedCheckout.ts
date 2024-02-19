@@ -91,7 +91,11 @@ export function getHostedCheckoutPayload(
     orderPaymentId: paymentId,
   });
 
-  // Advanced Admin Settings: option to group all hosted checkout cards
+  // Advanced Admin Settings:
+  /* option to sent the shoppingCart.items array as part of payload */
+  const sendOrderData = !!redirectModeA.sendOrderData;
+
+  /* option to group all hosted checkout cards */
   const groupCards = !!redirectModeB?.groupCards;
 
   let cardPaymentMethodSpecificInput = {};
@@ -246,9 +250,13 @@ export function getHostedCheckoutPayload(
           emailAddress: cart.customerEmail || '',
         },
       },
-      shoppingCart: {
-        items,
-      },
+      ...(sendOrderData
+        ? {
+            shoppingCart: {
+              items,
+            },
+          }
+        : {}),
       references: {
         // this key is used to identify the merchant from webhook
         merchantReference: paymentId,
