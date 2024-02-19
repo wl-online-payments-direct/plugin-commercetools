@@ -1,4 +1,7 @@
 export interface ListOrdersPayload {
-  orderId: string;
-  page: number;
+  storeId: string;
+  orderId?: string;
+  page?: number;
+  limit?: number;
+  filterOption?: string;
 }

@@ -15,8 +15,11 @@ export interface Payment {
   updatedAt: Date;
 }
 export interface PaymentQueryParams {
-  orderId: string;
-  page: number;
+  page?: number;
+  limit?: number;
+  filterOption?: string;
+  orderId?: string;
+  storeId?: string;
 }
 
 export interface PaymentReference {
@@ -30,6 +33,7 @@ export interface PaymentReference {
 
 export interface CreatePaymentRequest {
   authMode: $Enums.Modes;
+  paymentOption: $Enums.PaymentOptions;
   paymentId: string;
   worldlineId: string;
   storeId: string;
@@ -50,8 +54,8 @@ export interface CreatePaymentResponse {
 
 export interface GetOrders {
   meta: {
-    orderId: string;
-    page: number;
+    orderId?: string;
+    page?: number;
     totalCount: number;
   };
   data: Payment[];

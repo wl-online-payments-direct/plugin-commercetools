@@ -1,7 +1,7 @@
 import { connectService } from '../client';
 import { ConnectOpts } from '../types';
 
-export async function getPaymentStatusService(
+export async function getPaymentService(
   connectOpts: ConnectOpts,
   paymentId: string,
 ) {
@@ -10,7 +10,7 @@ export async function getPaymentStatusService(
   const result = await client.payments.getPayment(merchantId, paymentId, {});
   if (result?.body?.errors) {
     throw {
-      message: 'Failed to process the get payment status service',
+      message: 'Failed to process the get payment service',
       statusCode: result.body.errors[0]?.httpStatusCode || 500,
       details: result.body.errors,
     };

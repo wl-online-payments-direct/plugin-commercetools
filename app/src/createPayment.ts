@@ -43,7 +43,14 @@ export async function createMyPayment(
 
   // save payment information in the database
   const dbPayment = await createPaymentInDB(
-    getDatabasePayload(customConfig, reference, cart, payload, payment),
+    getDatabasePayload({
+      customConfig,
+      reference,
+      cart,
+      payload,
+      payment,
+      isHostedTokenization: true,
+    }),
   );
 
   return getCreatedPaymentMappedResponse(
@@ -77,7 +84,14 @@ export async function createPayment(
 
   // save payment information in the database
   const dbPayment = await createPaymentInDB(
-    getDatabasePayload(customConfig, reference, cart, payload, payment),
+    getDatabasePayload({
+      customConfig,
+      reference,
+      cart,
+      payload,
+      payment,
+      isHostedTokenization: true,
+    }),
   );
 
   return getCreatedPaymentMappedResponse(

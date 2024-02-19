@@ -13,4 +13,8 @@ export * from './deleteToken';
 export * from './loadMyPaymentMethods';
 export * from './loadPaymentMethods';
 export * from './getWebhookStatus';
+export * from './cancelPayment';
+export * from './refundPayment';
+export * from './capturePayment';
 export * from './getPaymentProducts';
+export * from './getOrder';

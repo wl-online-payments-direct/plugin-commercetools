@@ -4,6 +4,7 @@ export interface RedirectModeAPaymentOptions {
   enabled: boolean;
   merchantReferenceID: string;
   paymentOptions: {
+    paymentProductId: number;
     displayOrder: number;
     label: string;
     enabled: boolean;
@@ -17,6 +18,7 @@ export interface RedirectModeBPaymentOptions {
   payButtonTitle: string;
   merchantReferenceID: string;
   templateFileName: string;
+  groupCards?: boolean;
 }
 
 export interface OnSiteModePaymentOptions {
@@ -38,6 +40,7 @@ interface ConnectionProps {
   webhookSecret: string;
   webhookUrl: string;
   redirectUrl: string;
+  enableWorldlineCheckout: boolean;
   redirectModeA: RedirectModeAPaymentOptions;
   redirectModeB: RedirectModeBPaymentOptions;
   onSiteMode: OnSiteModePaymentOptions;

@@ -1,4 +1,5 @@
 import { Prisma } from '@prisma/client';
+import { logger } from '@worldline/ctintegration-util';
 import prisma from './connection';
 import {
   createPaymentResponseMapper,
@@ -17,29 +18,40 @@ export async function getDBOrders(
   query: PaymentQueryParams,
 ): Promise<GetOrders> {
   try {
-    const take = 10;
-    const skip = (query.page - 1) * take;
+    // Prepare
+    const page = query.page || 1;
+    const limit = query.limit || 20;
+
+    const skip = (page - 1) * limit;
     const params = {
       where: {
         ...(query.orderId ? { orderId: query.orderId } : {}),
+        ...(query.storeId ? { storeId: query.storeId } : {}),
+        ...((query.filterOption
+          ? { paymentOption: query.filterOption }
+          : {}) as Prisma.paymentsWhereUniqueInput),
       },
     };
     const [totalCount, data] = await Promise.all([
       prisma.payments.count(params),
       prisma.payments.findMany({
         skip,
-        take,
+        take: limit,
         ...params,
       }),
     ]);
     return {
       meta: {
         ...query,
+        ...{ page },
+        ...{ limit },
         totalCount,
       },
       data,
     };
   } catch (error) {
+    logger().error(`Failed to fetch orders list: ${JSON.stringify(error)}`);
+
     throw {
       message: 'Failed to fetch orders list',
       statusCode: 500,

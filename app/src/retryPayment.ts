@@ -1,5 +1,5 @@
 import { getMyCustomObjects } from '@worldline/ctintegration-ct';
-import { getPaymentStatusService } from '@worldline/ctintegration-psp';
+import { getPaymentService } from '@worldline/ctintegration-psp';
 import { getPayment } from '@worldline/ctintegration-db';
 import { logger } from '@worldline/ctintegration-util';
 import { RetryPaymentStatusPayload } from './types';
@@ -37,7 +37,7 @@ export async function retryPaymentAppHandler(
   logger().debug('[RetryPayment] Received payment from database');
 
   // Get psp details
-  const payment = await getPaymentStatusService(
+  const payment = await getPaymentService(
     getConnectionServiceProps(customConfig),
     dbPayment.worldlineId,
   );

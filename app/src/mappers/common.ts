@@ -1,3 +1,6 @@
+import { Cart } from '@worldline/ctintegration-ct';
+import Constants from '../constants';
+
 export const appendAdditionalParamsToUrl = (
   url: string,
   additionalParams: { [key: string]: string },
@@ -18,3 +21,7 @@ export const camelCase = (str: string) =>
       /[^a-zA-Z0-9]+(.)/g,
       (_m: string, chr: string) => chr?.toUpperCase(),
     );
+
+export function isCartActive(cart: Cart) {
+  return cart.cartState === Constants.CART.ACTIVE;
+}
