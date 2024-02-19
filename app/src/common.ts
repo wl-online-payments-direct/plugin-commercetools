@@ -244,15 +244,20 @@ export async function orderPaymentCaptureHandler(payload: PaymentPayload) {
   }
   const captureAmount = payload.payment.paymentOutput.amountOfMoney.amount;
   // Validate capture amount
+  const totalCaptureAmount = await calculateTotalCaptureAmount(order);
 
-  const hasValidCapture = hasValidAmount(order, captureAmount);
+  const diffAmount = calculateRemainingOrderAmount(order, totalCaptureAmount);
 
-  if (hasValidCapture.isGreater) {
-    logger().error(
-      '[orderPaymentCaptureHandler] Capture amount cannot be greater than the order amount!',
-    );
+  const hasValidCapture = hasValidAmount(order, totalCaptureAmount);
+
+  // Check if the capture amount exceeds the remaining order amount or equals the total capture amount
+  if (
+    hasValidCapture.isEqual ||
+    (captureAmount > diffAmount && diffAmount !== 0)
+  ) {
+    logger().error('[orderPaymentCaptureHandler] Capture amount is invalid!');
     throw {
-      message: 'Refund amount cannot be greater than the order amount!',
+      message: 'Capture amount is invalid!',
       statusCode: 500,
     };
   }
@@ -269,10 +274,7 @@ export async function orderPaymentCaptureHandler(payload: PaymentPayload) {
       statusCode: 500,
     };
   }
-  // Calculating all capture amount in order
-  const totalCaptureAmount = await calculateTotalCaptureAmount(order);
-  // Check if the capture amount is valid
-  const diffAmount = calculateRemainingOrderAmount(order, totalCaptureAmount);
+  // if payment exist in order
   if (order.paymentInfo?.payments[0]?.id) {
     await createTransactionInPayment(
       order.paymentInfo.payments[0].id,
@@ -283,8 +285,8 @@ export async function orderPaymentCaptureHandler(payload: PaymentPayload) {
   const result = {
     status: 'Partial capture requested',
   };
-  // if order id exists
-  if (diffAmount === 0 || hasValidCapture.isEqual) {
+
+  if (diffAmount === 0 || diffAmount === captureAmount) {
     const response = await updateOrderStatus(
       payment.orderId,
       'Confirmed',
