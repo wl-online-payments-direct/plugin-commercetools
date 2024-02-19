@@ -124,7 +124,7 @@ const PaymentProvider = ({ children }) => {
           activeStore?.key,
           apiHost
         );
-        if (response) {
+        if (response.statusCode === 200) {
           const { result } = response;
           setLoader(false);
           showToaster({
@@ -133,6 +133,14 @@ const PaymentProvider = ({ children }) => {
             message: 'Refresh Payment Methods: Success',
           });
           return result;
+        } else {
+          setLoader(false);
+          showToaster({
+            severity: 'error',
+            open: true,
+            message: 'Failed to refresh payment methods',
+          });
+          return null;
         }
       } catch (err) {
         setLoader(false);
