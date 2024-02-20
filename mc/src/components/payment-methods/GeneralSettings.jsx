@@ -13,11 +13,15 @@ import Alert from '@mui/material/Alert';
 
 const GeneralSettings = ({ state, handleCommonSettings }) => {
   const [merchREfError, setmerchRefError] = useState(
-    state.merchantReference.value?.trim().length > 12 ? true : false
+    state.merchantReference.value?.replaceAll(' ', '').length > 12
+      ? true
+      : false
   );
   useEffect(() => {
     setmerchRefError(
-      state.merchantReference.value?.trim().length > 12 ? true : false
+      state.merchantReference.value?.replaceAll(' ', '').length > 12
+        ? true
+        : false
     );
   }, [state.merchantReference.value]);
 
@@ -25,7 +29,9 @@ const GeneralSettings = ({ state, handleCommonSettings }) => {
     <>
       <div className="section-wrapper">
         <h5 className="section-header">
-          {state.merchantReference.label}
+          <span className="header-section-title">
+            {state.merchantReference.label}
+          </span>
           <Tooltip placement="top" title={state.merchantReference.tooltip}>
             <InfoIcon />
           </Tooltip>
@@ -39,22 +45,22 @@ const GeneralSettings = ({ state, handleCommonSettings }) => {
           <TextInput
             className="section-input"
             value={
-              state.merchantReference.value
-                ? state.merchantReference.value?.trim()
-                : ''
+              state.merchantReference.value ? state.merchantReference.value : ''
             }
             type={state.merchantReference.type}
             placeholder={state.merchantReference.placeholder}
             hasError={merchREfError}
             onChange={(e) =>
-              handleCommonSettings('merchantReference', e.target.value?.trim())
+              handleCommonSettings('merchantReference', e.target.value)
             }
           />
         </div>
       </div>
       <div className="section-wrapper">
         <h5 className="section-header">
-          {state.paymentOption.label}
+          <span className="header-section-title">
+            {state.paymentOption.label}
+          </span>
           <Tooltip placement="top" title={state.paymentOption.tooltip}>
             <InfoIcon />
           </Tooltip>
@@ -62,6 +68,7 @@ const GeneralSettings = ({ state, handleCommonSettings }) => {
         <div className="options-section">
           <RadioField
             name="payment-option"
+            title=""
             value={state.paymentOption.value}
             onChange={(e) =>
               handleCommonSettings('paymentOption', e.target.value)

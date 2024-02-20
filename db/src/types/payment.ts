@@ -37,9 +37,13 @@ export interface CreatePaymentRequest {
   hostedTokenizationId: string;
   paymentId: string;
   worldlineId: string;
+  worldlineStatus: string;
+  worldlineStatusCode: number;
   storeId: string;
   cartId: string;
   orderId: string;
+  currency: string;
+  total: number;
   status?: $Enums.Status;
   state?: $Enums.States;
 }

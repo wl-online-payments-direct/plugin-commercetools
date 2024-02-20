@@ -44,11 +44,15 @@ model payments {
   authMode             Modes
   paymentOption        PaymentOptions
   paymentId            String
-  worldlineId          String
   hostedTokenizationId String
+  worldlineId          String
+  worldlineStatus      String         @db.VarChar(255)
+  worldlineStatusCode  Int
   storeId              String         @db.VarChar(255)
   cartId               String         @db.VarChar(255)
   orderId              String         @db.VarChar(255)
+  currency             String         @db.VarChar(255)
+  total                Int
   status               Status         @default(INITIAL)
   state                States         @default(DEFAULT)
   storePermanently     Boolean        @default(false)

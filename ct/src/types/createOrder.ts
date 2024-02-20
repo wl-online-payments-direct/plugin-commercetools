@@ -4,6 +4,7 @@ export interface CreateOrderPayload {
   id: string;
   version: number;
   accessToken: string;
+  authorizationMode: string;
 }
 
 export interface CreateOrderResponse {

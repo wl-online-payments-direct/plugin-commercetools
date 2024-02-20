@@ -72,7 +72,6 @@ const config = {
     documentationLink: '${env:CTP_MC_APPLICATION_DOCUMENTATION}',
     contactSalesLink: '${env:CTP_MC_APPLICATION_CONTACT_SALES}',
     contactSupportLink: '${env:CTP_MC_APPLICATION_CONTACT_SUPPORT}',
-    merchantUrl: '${env:MERCHANT_URL}',
   },
 };
 

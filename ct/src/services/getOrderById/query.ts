@@ -6,6 +6,7 @@ query ($orderId: String!) {
     orderNumber
     orderState
     paymentState
+    customerEmail
     taxedPrice {
       totalGross {
         centAmount
