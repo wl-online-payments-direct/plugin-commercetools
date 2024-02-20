@@ -18,6 +18,7 @@ import {
   getConnectionServiceProps,
   getServicePayload,
   getCreatedPaymentMappedResponse,
+  getHostedTokenizationPayload,
 } from './mappers';
 import { getHostedTokenization } from './getHostedTokenization';
 
@@ -37,12 +38,9 @@ export async function createMyPayment(
   // Fetch incremented payment id
   const reference = await getIncrementedReference(payload.storeId);
 
-  const hostedTokenizationResponse = await getHostedTokenization({
-    storeId: payload.storeId,
-    hostedTokenizationId: payload.hostedTokenizationId,
-  });
-
-  const storePermanently = !hostedTokenizationResponse?.isTemporary;
+  const hostedTokenizationResponse = await getHostedTokenization(
+    getHostedTokenizationPayload(payload),
+  );
 
   const payment = await createPaymentService(
     getConnectionServiceProps(customConfig),
@@ -58,7 +56,7 @@ export async function createMyPayment(
       payload,
       payment,
       isHostedTokenization: true,
-      storePermanently,
+      hostedTokenizationResponse,
     }),
   );
 
@@ -86,12 +84,9 @@ export async function createPayment(
   // Fetch incremented payment id
   const reference = await getIncrementedReference(payload.storeId);
 
-  const hostedTokenizationResponse = await getHostedTokenization({
-    storeId: payload.storeId,
-    hostedTokenizationId: payload.hostedTokenizationId,
-  });
-
-  const storePermanently = !hostedTokenizationResponse?.isTemporary;
+  const hostedTokenizationResponse = await getHostedTokenization(
+    getHostedTokenizationPayload(payload),
+  );
 
   const payment = await createPaymentService(
     getConnectionServiceProps(customConfig),
@@ -107,7 +102,7 @@ export async function createPayment(
       payload,
       payment,
       isHostedTokenization: true,
-      storePermanently,
+      hostedTokenizationResponse,
     }),
   );
 

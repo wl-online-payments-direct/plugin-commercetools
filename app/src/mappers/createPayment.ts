@@ -2,6 +2,7 @@ import { Cart } from '@worldline/ctintegration-ct';
 import { $Enums } from '@worldline/ctintegration-db';
 import {
   CustomObjects,
+  GetHostedTokenizationResponse,
   ICreateMyPaymentPayload,
   ICreatePaymentResponse,
 } from '../types';
@@ -79,7 +80,7 @@ export function getDatabasePayload({
   payment,
   isHostedCheckout,
   isHostedTokenization,
-  storePermanently,
+  hostedTokenizationResponse,
 }: {
   customConfig: CustomObjects;
   reference: { referenceId: number };
@@ -88,7 +89,7 @@ export function getDatabasePayload({
   payment?: { id: string };
   isHostedCheckout?: boolean;
   isHostedTokenization?: boolean;
-  storePermanently?: boolean;
+  hostedTokenizationResponse?: GetHostedTokenizationResponse;
 }) {
   const { merchantReference, authorizationMode } = customConfig;
   const cartId = cart.id;
@@ -108,6 +109,8 @@ export function getDatabasePayload({
     merchantReference,
     reference.referenceId,
   );
+
+  const storePermanently = !hostedTokenizationResponse?.token?.isTemporary;
 
   return {
     authMode: authorizationMode as $Enums.Modes,
@@ -149,5 +152,13 @@ export async function getCreatedPaymentMappedResponse(
     orderPaymentId,
     actionType,
     redirectURL,
+  };
+}
+
+export function getHostedTokenizationPayload(payload: ICreateMyPaymentPayload) {
+  const { storeId, hostedTokenizationId } = payload;
+  return {
+    storeId,
+    hostedTokenizationId,
   };
 }

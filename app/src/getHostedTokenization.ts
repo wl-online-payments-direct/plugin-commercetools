@@ -1,10 +1,10 @@
 import { getCustomObjects } from '@worldline/ctintegration-ct';
 import { getHostedTokenizationService } from '@worldline/ctintegration-psp';
-import { GetHostedTokenizationPayload } from './types';
 import {
-  getConnectionServiceProps,
-  getHostedTokenizationResponseMapper,
-} from './mappers';
+  GetHostedTokenizationPayload,
+  GetHostedTokenizationResponse,
+} from './types';
+import { getConnectionServiceProps } from './mappers';
 
 export async function getHostedTokenization(
   payload: GetHostedTokenizationPayload,
@@ -18,10 +18,10 @@ export async function getHostedTokenization(
     };
   }
   // Prepare service payload for get payment status
-  const serviceResponse = await getHostedTokenizationService(
+  const serviceResponse = (await getHostedTokenizationService(
     getConnectionServiceProps(customConfig),
     payload.hostedTokenizationId,
-  );
+  )) as GetHostedTokenizationResponse;
 
-  return getHostedTokenizationResponseMapper(serviceResponse);
+  return serviceResponse;
 }
