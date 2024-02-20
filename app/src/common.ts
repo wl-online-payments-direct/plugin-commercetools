@@ -10,6 +10,7 @@ import {
   updateOrder,
   getPaymentById,
   createTransaction,
+  getCustomObjects,
 } from '@worldline/ctintegration-ct';
 import {
   getPayment,
@@ -17,7 +18,7 @@ import {
   setPayment,
 } from '@worldline/ctintegration-db';
 import { logger, retry } from '@worldline/ctintegration-util';
-import { PaymentPayload, RefundPayload } from './types';
+import { CustomObjects, PaymentPayload, RefundPayload } from './types';
 import {
   getPaymentDBPayload,
   getPaymentFilterQuery,
@@ -34,7 +35,11 @@ import {
 import Constants from './constants';
 import { calculateTotalCaptureAmount } from './capturePayment';
 
-const createOrderWithPayment = async (payload: PaymentPayload, cart: Cart) => {
+const createOrderWithPayment = async (
+  payload: PaymentPayload,
+  cart: Cart,
+  customObjects: CustomObjects,
+) => {
   // Create order and payment
   const ctPayment = await createPayment(payload);
 
@@ -47,7 +52,7 @@ const createOrderWithPayment = async (payload: PaymentPayload, cart: Cart) => {
   const token = await getClientCredentialsToken();
 
   const ctOrder = await createOrder(
-    getCreateOrderCTPayload(updatedCart, token),
+    getCreateOrderCTPayload(updatedCart, token, customObjects),
   );
 
   return { order: ctOrder };
@@ -122,12 +127,14 @@ export async function orderPaymentHandler(payload: PaymentPayload) {
         { state: PAYMENT.DATABASE.STATE.PROCESSING },
       );
 
+      const customObjects = await getCustomObjects(dbPayment.storeId);
+
       // TODO: What happens when one of the webhook arrive out of sync?
       // E.g. a payment got authorized and then captured, but the webhooks reached in reverse order
       let result;
       if (payload.type === STATUS.PENDING_CAPTURE) {
         result = !dbPayment?.orderId
-          ? await createOrderWithPayment(payload, cart)
+          ? await createOrderWithPayment(payload, cart, customObjects)
           : await updateOrderWithPayment(payload, dbPayment);
       }
 
