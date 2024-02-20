@@ -56,7 +56,7 @@ const OrderList = () => {
   const match = useRouteMatch()
 
   const projectKey = useApplicationContext((context) => context.project.key);
-  const {apiHost, merchantUrl} = useApplicationContext((context) => context.environment);
+  const {apiHost} = useApplicationContext((context) => context.environment);
   const {activeStore} = useContext(PaymentContext);
   const {setOpenCapture, setOpenRefund} = useContext(OrderContext)
   const getOrders = async (options = {}) => {
@@ -98,7 +98,7 @@ const OrderList = () => {
       return link
     }
     if (column.key === "orderId") {
-      const link = <a href={`${merchantUrl}/${projectKey}/orders`} target="_blank" rel="noopener noreferrer">{itemValue}</a>
+      const link = <a href={`${projectKey}/orders`} target="_blank" rel="noopener noreferrer">{itemValue}</a>
       return link
     }
     if (column.key === "status") {

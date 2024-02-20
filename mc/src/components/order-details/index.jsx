@@ -25,7 +25,7 @@ const OrderDetails = () => {
     const orderId = basePathArray.pop()
     const backToOrderPath = basePathArray.join('/')
     const projectKey = useApplicationContext((context) => context.project.key);
-    const {apiHost, merchantUrl} = useApplicationContext((context) => context.environment);
+    const {apiHost} = useApplicationContext((context) => context.environment);
 
     const {activeStore} = useContext(PaymentContext)
     const {openCapture, openRefund, transactionRequested} = useContext(OrderContext)
@@ -46,7 +46,7 @@ const OrderDetails = () => {
     const itemRenderer = (item, column) => {
         const itemValue = item[column.key]
         if (column.key === "worldlineId") {
-            const link = <a href={`${merchantUrl}/${projectKey}/orders`} target="_blank" rel="noopener noreferrer">{itemValue}</a>
+            const link = <a href={`${projectKey}/orders`} target="_blank" rel="noopener noreferrer">{itemValue}</a>
           return link
         }
         return itemValue;
