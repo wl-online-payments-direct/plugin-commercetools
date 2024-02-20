@@ -107,6 +107,7 @@ export const getOrderList = async (apiHost, projectKey, storeId, page, orderId, 
     return response;
   } catch (error) {
     console.error('Error custom object:', error.message);
+    throw new Error(error.message)
   }
 };
 
@@ -125,6 +126,7 @@ export const getOrderDetails = async (apiHost, projectKey, paymentId) => {
     return response;
   } catch (error) {
     console.error('Error custom object:', error.message);
+    throw new Error(error.message)
   }
 };
 
