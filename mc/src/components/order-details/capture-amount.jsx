@@ -74,6 +74,8 @@ const CaptureAmount = ({
             setLoading(false)
         } catch (error) {
             setLoading(false)
+            setOpenSnackbar(true)
+            setSnackbarMessage(formatMessage(messages.captureFailed))
             console.log(error)
         }        
     }

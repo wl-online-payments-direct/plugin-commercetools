@@ -161,7 +161,8 @@ export const postCapturePayment = async (apiHost, projectKey, payload) => {
 
     return response;
   } catch (error) {
-    console.error('Error uploading image:', error.message);
+    console.error('Capture error:', error.message);
+    throw new Error(error.message)
   }
 };
 
@@ -180,6 +181,7 @@ export const postRefundPayment = async (apiHost, projectKey, payload) => {
 
     return response;
   } catch (error) {
-    console.error('Error uploading image:', error.message);
+    console.error('Refund error:', error.message);
+    throw new Error(error.message)
   }
 };

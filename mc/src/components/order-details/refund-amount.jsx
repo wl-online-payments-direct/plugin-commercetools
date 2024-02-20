@@ -73,6 +73,7 @@ const RefundAmount = ({
             }
             setLoading(false)
         } catch (error) {
+            setOpenSnackbar(true)
             setSnackbarMessage(formatMessage(messages.refundFailed))
             setLoading(false)
             console.log(error)
