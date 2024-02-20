@@ -3,6 +3,7 @@ query ($orderId: String!) {
   order(id: $orderId) {
     id
     version
+    createdAt
     orderNumber
     orderState
     paymentState

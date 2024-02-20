@@ -16,6 +16,8 @@ import {
 import {
   getInitiateCaptureServicePayload,
   calculateRemainingOrderAmount,
+  calculateTimeDifferenceInHours,
+  mapCaptureAuthorizationModeToHours,
 } from './mappers/initiateCapturePayment';
 
 // Load environment variables from .env file
@@ -52,24 +54,30 @@ export default async function initiateCapturePayment() {
             await Promise.all(
               payments.map(async (payment: Payment) => {
                 const order = await getOrderById(payment.orderId);
-                const captureAmount = await calculateTotalCaptureAmount(order);
-                const remainingAmount = calculateRemainingOrderAmount(
-                  order,
-                  captureAmount,
-                );
-                // Initiate capture for payment
-                const captureResponse: CaptureResponse = await capturePayment(
-                  getInitiateCaptureServicePayload(payment, remainingAmount),
-                );
-                logger().debug(
-                  'Capture payment response : ',
-                  JSON.stringify(capturePayment),
-                );
-                if (captureResponse.status === 'CAPTURE_REQUESTED') {
-                  logger().info(
-                    'Initiated capture payment request!',
-                    JSON.stringify(captureResponse),
+                const timeDiff = calculateTimeDifferenceInHours(order);
+                if (
+                  timeDiff > mapCaptureAuthorizationModeToHours(customObject)
+                ) {
+                  const captureAmount =
+                    await calculateTotalCaptureAmount(order);
+                  const remainingAmount = calculateRemainingOrderAmount(
+                    order,
+                    captureAmount,
                   );
+                  // Initiate capture for payment
+                  const captureResponse: CaptureResponse = await capturePayment(
+                    getInitiateCaptureServicePayload(payment, remainingAmount),
+                  );
+                  logger().debug(
+                    'Capture payment response : ',
+                    JSON.stringify(capturePayment),
+                  );
+                  if (captureResponse.status === 'CAPTURE_REQUESTED') {
+                    logger().info(
+                      'Initiated capture payment request!',
+                      JSON.stringify(captureResponse),
+                    );
+                  }
                 }
               }),
             );
