@@ -9,6 +9,7 @@ export interface RedirectModeAPaymentOptions {
     logo: string;
     recurrenceType?: string;
     signatureType?: string;
+    paymentOption?: string;
   }[];
 }
 

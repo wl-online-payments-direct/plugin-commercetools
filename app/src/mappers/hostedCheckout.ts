@@ -15,13 +15,8 @@ export function getHostedCheckoutPayload(
   const merchantCustomerId = cart?.customerId || cart?.anonymousId || '';
   const locale = cart?.locale ? { locale: cart.locale } : {};
 
-  const {
-    variant,
-    merchantReference,
-    redirectModeA,
-    redirectModeB,
-    authorizationMode,
-  } = customConfig;
+  const { merchantReference, redirectModeA, redirectModeB, authorizationMode } =
+    customConfig;
   const { tokens, acceptHeader, userAgent, paymentProductId } = payload;
 
   // Personal information
@@ -98,22 +93,29 @@ export function getHostedCheckoutPayload(
   /* option to group all hosted checkout cards */
   const groupCards = !!redirectModeB?.groupCards;
 
+  /* option to template for Hosted Checkout and Hosted Tokenization */
+  const variant = redirectModeB?.templateFileName || '';
+
   let cardPaymentMethodSpecificInput = {};
   let hostedCheckoutSpecificInput = {};
   let redirectPaymentMethodSpecificInput = {};
   let sepaDirectDebitPaymentMethodSpecificInput = {};
   let mobilePaymentMethodSpecificInput = {};
 
-  const sepaDirectDebitSettings = redirectModeA.paymentOptions.find(
+  const paymentSettings = redirectModeA.paymentOptions.find(
     (paymentOption) => paymentOption.paymentProductId === paymentProductId,
   );
-  const { recurrenceType = 'UNIQUE', signatureType = 'SMS' } =
-    sepaDirectDebitSettings || {};
+  const {
+    recurrenceType = 'UNIQUE',
+    signatureType = 'SMS',
+    paymentOption = '',
+  } = paymentSettings || {};
 
   switch (paymentProductId) {
     // Klarna
     case 3306:
       hostedCheckoutSpecificInput = {
+        variant,
         returnUrl,
       };
       redirectPaymentMethodSpecificInput = {
@@ -123,17 +125,19 @@ export function getHostedCheckoutPayload(
     // Oney
     case 5110:
       hostedCheckoutSpecificInput = {
+        variant,
         ...locale,
       };
       redirectPaymentMethodSpecificInput = {
         requiresApproval: false, // must be set as false, As oney only allow direct sale
         paymentProductId,
-        paymentOption: '',
+        paymentOption,
       };
       break;
     // Sepa Direct Debit
     case 771:
       hostedCheckoutSpecificInput = {
+        variant,
         returnUrl,
         ...locale,
         paymentProductFilters: {
@@ -156,6 +160,7 @@ export function getHostedCheckoutPayload(
     // Multibanco
     case 5500:
       hostedCheckoutSpecificInput = {
+        variant,
         ...locale,
       };
       redirectPaymentMethodSpecificInput = {
@@ -165,6 +170,7 @@ export function getHostedCheckoutPayload(
     // Applepay
     case 302:
       hostedCheckoutSpecificInput = {
+        variant,
         returnUrl,
         ...locale,
       };
@@ -176,11 +182,11 @@ export function getHostedCheckoutPayload(
     // P24
     case 3124:
       hostedCheckoutSpecificInput = {
+        variant,
         ...locale,
       };
       redirectPaymentMethodSpecificInput = {
         paymentProductId,
-        returnUrl,
       };
       break;
     // EPS
@@ -206,6 +212,7 @@ export function getHostedCheckoutPayload(
         paymentProductId,
       };
       hostedCheckoutSpecificInput = {
+        variant,
         returnUrl,
       };
       break;
