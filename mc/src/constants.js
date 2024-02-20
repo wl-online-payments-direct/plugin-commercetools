@@ -11,4 +11,6 @@ export const myAccountUri = 'myaccount';
 
 export const paymentMethodsUri = '';
 
+export const orderUri = 'orders';
+
 export const PERMISSIONS = entryPointUriPathToPermissionKeys(entryPointUriPath);
