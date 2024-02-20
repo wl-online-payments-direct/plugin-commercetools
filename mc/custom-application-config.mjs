@@ -1,4 +1,9 @@
-import { PERMISSIONS, myAccountUri, orderUri, paymentMethodsUri } from './src/constants';
+import {
+  PERMISSIONS,
+  myAccountUri,
+  orderUri,
+  paymentMethodsUri,
+} from './src/constants';
 
 /**
  * @type {import('@commercetools-frontend/application-config').ConfigOptionsForCustomApplication}
@@ -64,7 +69,6 @@ const config = {
       labelAllLocales: [],
       permissions: [PERMISSIONS.View, PERMISSIONS.Manage],
     },
-    
   ],
   additionalEnv: {
     apiHost: '${env:CTP_MC_APPLICATION_API_HOST}',
@@ -73,6 +77,7 @@ const config = {
     contactSalesLink: '${env:CTP_MC_APPLICATION_CONTACT_SALES}',
     contactSupportLink: '${env:CTP_MC_APPLICATION_CONTACT_SUPPORT}',
     merchantUrl: '${env:MERCHANT_URL}',
+    pluginVersion: '${env:PLUGIN_VERSION}',
   },
 };
 

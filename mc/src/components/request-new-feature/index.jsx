@@ -17,23 +17,24 @@ const RequestNewFeature = () => {
   const [openModal, setOpenmodal] = useState(false);
   const handleOpenModal = () => setOpenmodal(true);
   const handleCloseModal = () => setOpenmodal(false);
-  const version = useApplicationContext((context) => context.project.version);
+  const { pluginVersion } = useApplicationContext(
+    (context) => context.environment
+  );
   const [webForm, setWebform] = useState({
     pspid: '',
     companyName: '',
     message: '',
-    platformVersion: `${version}`,
-    pluginVersion: '',
+    platformVersion: '',
+    pluginVersion: `${pluginVersion}`,
   });
   const { sendRequest } = useContext(PaymentContext);
-
   const clearForm = () => {
     setWebform({
       pspid: '',
       companyName: '',
       message: '',
-      platformVersion: `${version}`,
-      pluginVersion: '',
+      platformVersion: '',
+      pluginVersion: `${pluginVersion}`,
     });
   };
 
@@ -56,7 +57,7 @@ const RequestNewFeature = () => {
   };
 
   return (
-    <div>
+    <div style={{ zIndex: 1 }}>
       <div className="request-feature-wrapper">
         <SecondaryButton
           label={'Request New Feature'}
@@ -149,8 +150,8 @@ const RequestNewFeature = () => {
                 <TextInput
                   name="PlatformVersion"
                   value={webForm.platformVersion}
+                  onChange={(e) => updateWebform(e, 'platformVersion')}
                   className="webform-input"
-                  isDisabled={true}
                 />
               </Grid.Item>
               <Grid.Item>
@@ -162,8 +163,8 @@ const RequestNewFeature = () => {
                 <TextInput
                   name="PluginVersion"
                   value={webForm.pluginVersion}
-                  isDisabled={true}
                   className="webform-input"
+                  isDisabled={true}
                 />
               </Grid.Item>
               <Grid.Item>
