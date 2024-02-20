@@ -2,12 +2,17 @@ import crypto from 'crypto';
 import { logger } from '@worldline/ctintegration-util';
 import { getCustomObjects } from '@worldline/ctintegration-ct';
 import { getPayment } from '@worldline/ctintegration-db';
-import { PaymentPayload } from './types';
-import { orderPaymentHandler } from './common';
+import { PaymentPayload, RefundPayload } from './types';
+import {
+  orderPaymentHandler,
+  orderPaymentCaptureHandler,
+  refundPaymentHandler,
+  orderPaymentCancelHandler,
+} from './common';
 import { getPaymentDBPayload } from './mappers';
 
 const authenticateWebhook = (
-  payload: PaymentPayload,
+  payload: PaymentPayload | RefundPayload,
   signature: string,
   webhookSecret: string,
 ) => {
@@ -21,7 +26,6 @@ const authenticateWebhook = (
       .createHmac('sha256', webhookSecret)
       .update(stringifyPayload)
       .digest('base64');
-
     // Compare our hash to Worldline hash
     return hash === signature;
   } catch (e) {
@@ -33,7 +37,7 @@ export async function webhookAppHandler({
   payload,
   signature,
 }: {
-  payload: PaymentPayload;
+  payload: PaymentPayload | RefundPayload;
   signature: string;
 }) {
   logger().debug(`[Webhook][${payload.type}] Request received`);
@@ -60,22 +64,19 @@ export async function webhookAppHandler({
       statusCode: 403,
     };
   }
-
   logger().debug(`[Webhook][${payload.type}] Successfully authenticated`);
 
   switch (payload.type) {
     case 'payment.created':
-    case 'payment.pending_capture':
+      return orderPaymentHandler(payload as PaymentPayload);
     case 'payment.captured':
-    case 'payment.capture_requested':
+      return orderPaymentCaptureHandler(payload as PaymentPayload);
     case 'payment.cancelled':
-    case 'payment.rejected':
-    case 'payment.rejected_capture':
-      return orderPaymentHandler(payload);
-
+      return orderPaymentCancelHandler(payload as PaymentPayload);
+    case 'payment.refunded':
+      return refundPaymentHandler(payload as RefundPayload);
     default:
       logger().warn(`[Webhook] Received payload type: ${payload.type}`);
+      return {};
   }
-
-  return {};
 }

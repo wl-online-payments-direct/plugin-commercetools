@@ -4,6 +4,7 @@ import { HostedTokenizationPayload } from './types';
 import {
   getTokenizationServicePayload,
   getConnectionServiceProps,
+  isCartActive,
 } from './mappers';
 
 export async function hostedTokenizationSession(
@@ -11,12 +12,13 @@ export async function hostedTokenizationSession(
 ) {
   // Fetch customer cart from Commercetools
   const { cart } = await getCart(payload.cartId, payload.authToken);
-  if (!cart) {
+  if (!cart || !isCartActive(cart)) {
     throw {
-      message: 'Failed to fetch the cart of cart is missing',
+      message: 'Failed to fetch the cart or cart is not active',
       statusCode: 500,
     };
   }
+
   const customConfig = await getCustomObjects(payload.storeId);
 
   const result = await hostedTokenizationService(

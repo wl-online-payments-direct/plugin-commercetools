@@ -22,6 +22,7 @@ const PaymentMethods = () => {
     fetchWorldlinePaymentOptions,
     activeStore,
     hideToaster,
+    showToaster,
   } = useContext(PaymentContext);
 
   const [state, dispatch] = useReducer(reducer, initialState);
@@ -40,14 +41,21 @@ const PaymentMethods = () => {
         ...payload['payButtonTitle'],
         value: state.onSiteMode['payButtonTitle'].values[value],
       };
+      payload['payButtonLanguage'] = {
+        ...payload['payButtonLanguage'],
+        value: value,
+      };
     } else if (field === 'payButtonTitle') {
       payload['payButtonTitle'] = {
         ...payload['payButtonTitle'],
         values: {
           ...state.onSiteMode['payButtonTitle'].values,
-          [state.onSiteMode['payButtonLanguage'].value]: value,
         },
+        value: value,
       };
+      payload['payButtonTitle'].values[
+        state.onSiteMode['payButtonLanguage'].value
+      ] = value;
     } else if (field === '3dsEnablement') {
       payload['3dsEnablement'] = {
         ...payload['3dsEnablement'],
@@ -124,14 +132,21 @@ const PaymentMethods = () => {
         ...payload['payButtonTitle'],
         value: state.redirectModeB['payButtonTitle'].values[value],
       };
+      payload['payButtonLanguage'] = {
+        ...payload['payButtonLanguage'],
+        value: value,
+      };
     } else if (field === 'payButtonTitle') {
       payload['payButtonTitle'] = {
         ...payload['payButtonTitle'],
         values: {
           ...state.redirectModeB['payButtonTitle'].values,
-          [state.redirectModeB['payButtonLanguage'].value]: value,
         },
+        value: value,
       };
+      payload['payButtonTitle'].values[
+        state.redirectModeB['payButtonLanguage'].value
+      ] = value;
     } else if (field === '3dsEnablement') {
       payload['3dsEnablement'] = {
         ...payload['3dsEnablement'],
@@ -170,15 +185,12 @@ const PaymentMethods = () => {
       ...payload[field],
       value: value,
     };
-
     if (field === 'placeOrderLanguage') {
       payload['placeOrder'] = {
         ...payload['placeOrder'],
         value: state['placeOrder'].values[value],
       };
-    }
-
-    if (field === 'placeOrder') {
+    } else if (field === 'placeOrder') {
       payload['placeOrder'] = {
         ...payload['placeOrder'],
         values: {
@@ -186,6 +198,18 @@ const PaymentMethods = () => {
           [state['placeOrderLanguage'].value]: value,
         },
       };
+    } else if (field === 'paymentOption') {
+      if (value === 'AUTH') {
+        payload['authorizationMode'] = {
+          ...payload[field],
+          value: 'FINAL_AUTHORIZATION',
+        };
+      } else {
+        payload['authorizationMode'] = {
+          ...payload[field],
+          value: value,
+        };
+      }
     }
 
     dispatch({
@@ -221,6 +245,15 @@ const PaymentMethods = () => {
 
   const saveFormData = async () => {
     setLoader(true);
+    if (state?.merchantReference?.value?.trim().length > 12) {
+      showToaster({
+        severity: 'error',
+        open: true,
+        message: 'Merchant Reference ID should be maximum 12 characters.',
+      });
+      setLoader(false);
+      return;
+    }
     const payload = Object.keys(state).map((key) => {
       let data;
       const sendLoad = {};
@@ -234,6 +267,7 @@ const PaymentMethods = () => {
             if (dSet === 'paymentOptions') {
               sendLoad[dSet] = data[dSet].map((pDat) => {
                 if (!data.enabled.value) return { ...pDat, enabled: false };
+                else return { ...pDat };
               });
             } else sendLoad[dSet] = data[dSet]?.value;
           }
@@ -256,6 +290,7 @@ const PaymentMethods = () => {
     const final_payload = {
       value: {
         ...customObject?.value,
+        merchantReference: saveData.merchantReference,
         live: {
           ...customObject?.value?.live,
           ...saveData,
@@ -280,27 +315,54 @@ const PaymentMethods = () => {
             case 'redirectModeA':
             case 'redirectModeB':
               if (field === 'paymentOptions') {
-                const response = await fetchWorldlinePaymentOptions(
-                  activeStore
-                );
+                if (customValue?.[ds]?.[field] !== undefined) {
+                  payload[ds][field] = payload[ds][field].map((opt) => {
+                    return {
+                      ...opt,
+                      ...customValue?.[ds]?.[field].find(
+                        (custVal) => custVal.label === opt.label
+                      ),
+                    };
+                  });
+                } else {
+                  const response = await fetchWorldlinePaymentOptions(
+                    activeStore
+                  );
+                  if (response && response.length) {
+                    payload[ds][field] = payload[ds][field].map((opt) => {
+                      return { ...opt, ...response[opt.label] };
+                    });
+                  }
+                }
+                break;
+              } else if (field === 'payButtonTitle') {
                 if (customValue?.[ds]?.[field]) {
-                  payload[ds][field] = payload[ds][field].map((opt) => {
-                    return { ...opt, ...customValue?.[ds]?.[field][opt.label] };
-                  });
-                } else if (response && response.length) {
-                  payload[ds][field] = payload[ds][field].map((opt) => {
-                    return { ...opt, ...response[opt.label] };
-                  });
+                  payload[ds][field].value = customValue?.[ds]?.[field];
+                  payload[ds][field].values[
+                    customValue[ds]['payButtonLanguage']
+                  ] = customValue?.[ds]?.[field];
                 }
                 break;
               } else {
-                if (customValue?.[ds]?.[field])
+                if (customValue?.[ds]?.[field] !== undefined)
                   payload[ds][field].value = customValue?.[ds]?.[field];
                 break;
               }
             case 'general':
-              if (customValue?.[field])
+              if (customValue?.[field] !== undefined) {
+                if (field === 'placeOrder') {
+                  payload[field].values[customValue['placeOrderLanguage']] =
+                    customValue?.[field];
+                }
                 payload[field].value = customValue?.[field];
+              }
+              if (
+                customObject?.value &&
+                customObject?.value?.merchantReference
+              ) {
+                payload['merchantReference'].value =
+                  customObject?.value?.merchantReference;
+              }
               break;
           }
         }

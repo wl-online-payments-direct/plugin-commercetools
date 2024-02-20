@@ -20,19 +20,11 @@
       "value": "EN",
       "values": ["EN", "ES", "FR", "NL", "DE", "IT"]
     },
-    "merchantReferenceID": {
-      "label": " Merchant Reference ID",
-      "type": "text",
-      "value": "SampleReferenceId",
-      "placeholder": "Enter Merchant Reference",
-      "criteria": [],
-      "tooltip": "If you want to show the Merchant ID in Bank statement on their Customer bank account., then you should limit the Merchant ID length to 12 characters"
-    },
     "templateFileName": {
       "label": " Template File Name",
       "type": "text",
       "value": "SimplifiedCustomPaymentPage",
-      "placeholder": "Enter templated file name",
+      "placeholder": "Enter Template file name",
       "criteria": []
     },
     "logo": {
@@ -72,19 +64,11 @@
       "value": true,
       "tooltip": "Show Basket Data on Worldline Payment Page"
     },
-    "merchantReferenceID": {
-      "label": " Merchant Reference ID",
-      "type": "text",
-      "value": "SampleReferenceId",
-      "placeholder": "Enter Merchant Reference",
-      "criteria": [],
-      "tooltip": "If you want to show the Merchant ID in Bank statement on their Customer bank account., then you should limit the Merchant ID length to 12 characters"
-    },
     "templateFileName": {
       "label": "Template File Name",
       "type": "text",
       "value": "SimplifiedCustomPaymentPage",
-      "placeholder": "Enter templated file name",
+      "placeholder": "Enter Template file name",
       "criteria": []
     },
     "refresh": {
@@ -199,6 +183,7 @@
     "logo": {
       "label": "Generic Logo Displayed on Your Payment Page",
       "type": "file",
+      "tooltip": "Max size 5MB, max dimensions 200x80px,supported jpg,svg,png",
       "criteria": [],
       "value": [],
       "alt": "Display logo for redirect payment method"
@@ -223,19 +208,11 @@
       "value": "EN",
       "values": ["EN", "ES", "FR", "NL", "DE", "IT"]
     },
-    "merchantReferenceID": {
-      "label": " Merchant Reference ID",
-      "type": "text",
-      "value": "SampleReferenceId",
-      "placeholder": "Enter Merchant Reference",
-      "criteria": [],
-      "tooltip": "If you want to show the Merchant ID in Bank statement on their Customer bank account., then you should limit the Merchant ID length to 12 characters"
-    },
     "templateFileName": {
       "label": " Template File Name",
       "type": "text",
       "value": "SimplifiedCustomPaymentPage",
-      "placeholder": "Enter templated file name",
+      "placeholder": "Enter Template file name",
       "criteria": []
     },
     "groupCards": {
@@ -266,20 +243,29 @@
       "criteria": []
     }
   },
+  "merchantReference": {
+    "label": " Merchant Reference ID",
+    "type": "text",
+    "value": "SampleReferenceId",
+    "placeholder": "Enter Merchant Reference",
+    "criteria": [],
+    "maxLength": 12,
+    "tooltip": "If you want to show the Merchant ID in Bank statement on their Customer bank account., then you should limit the Merchant ID length to 12 characters"
+  },
   "paymentOption": {
     "label": "Payment Option",
     "type": "boolean",
-    "value": "1",
+    "value": "SALE",
     "criteria": [],
     "tooltip": "Final execution of the payment"
   },
-  "authorizationPaymentOption": {
+  "authorizationMode": {
     "label": "Authorization Payment Option",
     "type": "boolean",
-    "value": "1",
+    "value": "FINAL_AUTHORIZATION",
     "criteria": []
   },
-  "captureConfiguration": {
+  "captureAuthorizationMode": {
     "label": "Capture Configuration",
     "type": "text",
     "value": "-1",
@@ -315,13 +301,13 @@
     "value": "EN",
     "values": ["EN", "ES", "FR", "NL", "DE", "IT"]
   },
-  "debugLogging": {
+  "enableLogs": {
     "label": "Enable Debug Logging",
     "type": "boolean",
     "value": false,
     "criteria": []
   },
-  "force3DSv2": {
+  "skip3dsAuthentication": {
     "label": "Force 3DSv2",
     "type": "boolean",
     "value": false,

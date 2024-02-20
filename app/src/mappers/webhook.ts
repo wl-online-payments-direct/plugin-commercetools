@@ -1,8 +1,21 @@
-import { Cart, Payment } from '@worldline/ctintegration-ct';
-import { PaymentPayload } from '../types';
+import { Cart, Payment, Order } from '@worldline/ctintegration-ct';
+import { PaymentPayload, RefundPayload, RefundResult } from '../types';
 
-export function getPaymentDBPayload(payload: PaymentPayload) {
-  const { merchantReference } = payload.payment.paymentOutput.references;
+export function getPaymentDBPayload(payload: PaymentPayload | RefundPayload) {
+  let merchantReference: string;
+  if ('payment' in payload) {
+    merchantReference =
+      payload.payment.paymentOutput.references.merchantReference;
+  } else if ('refund' in payload) {
+    merchantReference =
+      payload.refund.refundOutput.references.merchantReference;
+  } else {
+    throw {
+      message: '[getPaymentDBPayload] Invalid payload type',
+      statusCode: 500,
+    };
+  }
+
   return {
     paymentId: merchantReference,
   };
@@ -41,12 +54,29 @@ export function hasEqualAmounts(payload: PaymentPayload, cart: Cart): boolean {
     cart.taxedPrice?.totalGross?.centAmount
   );
 }
+export function hasEqualAmountOrder(
+  payload: PaymentPayload,
+  order: Order,
+): boolean {
+  return (
+    payload.payment.paymentOutput.amountOfMoney.amount ===
+    order.taxedPrice?.totalGross?.centAmount
+  );
+}
+
+export function hasValidAmount(order: Order, amount: number): RefundResult {
+  const totalAmountPlanned = order.taxedPrice?.totalGross?.centAmount ?? 0;
+  return {
+    isEqual: totalAmountPlanned === amount,
+    isGreater: totalAmountPlanned < amount,
+  };
+}
 
 export function isPaymentProcessing(state: string): boolean {
   return state === 'PROCESSING';
 }
 
-export function getMappedStatus(payload: PaymentPayload) {
+export function getMappedStatus(payload: PaymentPayload | RefundPayload) {
   const statusMapper: { [key: string]: string } = {
     CREATED: 'INITIAL',
     REDIRECTED: 'REDIRECTED',
@@ -56,11 +86,19 @@ export function getMappedStatus(payload: PaymentPayload) {
     PENDING_CAPTURE: 'AUTHORIZED',
     CAPTURE_REQUESTED: 'CAPTURE_REQUESTED',
     REFUND_REQUESTED: 'REFUND_REQUESTED',
-    CANCELLED: 'FAILED',
+    CANCELLED: 'CANCELLED',
     REJECTED: 'FAILED',
     REJECTED_CAPTURE: 'FAILED',
   };
-  return statusMapper[payload.payment.status] || '';
+
+  if ('payment' in payload) {
+    return statusMapper[payload.payment.status];
+  }
+  if ('refund' in payload) {
+    return statusMapper[payload.refund.status];
+  }
+
+  return '';
 }
 
 export function shouldSaveToken(

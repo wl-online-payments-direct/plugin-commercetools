@@ -4,5 +4,11 @@ export function getPaymentProductsMappedResponse(
   serviceResponse: GetPaymentProductsResponse,
 ) {
   const { paymentProducts = [] } = serviceResponse || {};
-  return paymentProducts.map((product) => product?.displayHints);
+  return paymentProducts.map((product) => {
+    const { id: paymentProductId, displayHints } = product;
+    return {
+      paymentProductId,
+      ...displayHints,
+    };
+  });
 }

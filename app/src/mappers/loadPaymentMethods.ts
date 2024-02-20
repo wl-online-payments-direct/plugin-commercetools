@@ -1,3 +1,4 @@
+import Constants from '../constants';
 import { CustomObjects, CustomerPaymentToken, PaymentMethod } from '../types';
 import { camelCase } from './common';
 
@@ -26,13 +27,17 @@ export function loadPaymentMethodsMappedResponse(
   }
 
   const paymentMethods: PaymentMethod[] = [];
+  const {
+    PAYMENT: { REDIRECTMODE_A, REDIRECTMODE_B, ONSITEMODE },
+  } = Constants;
 
   Object.values(redirectModeA.paymentOptions).forEach((value) => {
     if (value && value?.enabled) {
       paymentMethods.push({
         name: value.label,
+        paymentProductId: value.paymentProductId,
         displayOrder: value.displayOrder,
-        type: 'offsite',
+        type: REDIRECTMODE_A.TYPE,
         image: {
           src: value.logo,
         },
@@ -45,24 +50,24 @@ export function loadPaymentMethodsMappedResponse(
   if (redirectModeB?.enabled) {
     paymentMethods.push({
       name: redirectModeB?.payButtonTitle || '',
-      type: 'offsite',
+      type: REDIRECTMODE_B.TYPE,
       image: {
         src: redirectModeB?.logo || '',
       },
       enabled: redirectModeB?.enabled,
-      paymentMethod: 'worldlineOffsite',
+      paymentMethod: REDIRECTMODE_B.PAYMENT_METHOD,
     });
   }
 
   if (onSiteMode?.enabled) {
     paymentMethods.push({
       name: onSiteMode?.payButtonTitle || '',
-      type: 'onsite',
+      type: ONSITEMODE.TYPE,
       image: {
         src: onSiteMode?.logo || '',
       },
       enabled: onSiteMode?.enabled,
-      paymentMethod: 'worldlineOnsite',
+      paymentMethod: ONSITEMODE.PAYMENT_METHOD,
     });
   }
 

@@ -56,7 +56,12 @@ const RedirectModeB = ({ redirectModeB, handleRedirectModeB }) => {
           </span>
         </div>
         <div className="section-wrapper">
-          <h5 className="section-header">{redirectModeB.logo.label}</h5>
+          <h5 className="section-header">
+            {redirectModeB.logo.label}
+            <Tooltip placement="top" title={redirectModeB.logo.tooltip}>
+              <InfoIcon />
+            </Tooltip>
+          </h5>
           <div className="template-section flex">
             <ImageUpload
               images={redirectModeB.logo.value}
@@ -97,28 +102,6 @@ const RedirectModeB = ({ redirectModeB, handleRedirectModeB }) => {
                   ))}
               </Select>
             </div>
-          </div>
-        </div>
-        <div className="section-wrapper">
-          <h5 className="section-header">
-            {redirectModeB.merchantReferenceID.label}
-            <Tooltip
-              placement="top"
-              title={redirectModeB.merchantReferenceID.tooltip}
-            >
-              <InfoIcon />
-            </Tooltip>
-          </h5>
-          <div className="template-section">
-            <TextInput
-              className="section-input"
-              value={redirectModeB.merchantReferenceID.value}
-              type={redirectModeB.merchantReferenceID.type}
-              placeholder={redirectModeB.merchantReferenceID.placeholder}
-              onChange={(e) =>
-                handleRedirectModeB('merchantReferenceID', e.target.value)
-              }
-            />
           </div>
         </div>
         <div className="section-wrapper">
