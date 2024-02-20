@@ -1,9 +1,8 @@
-.image-upload {
+.payment-modal-wrapper {
     display: flex;
     flex-direction: row;
     justify-content: space-around;
     margin: 1rem 0px;
-    width: 100%;
     flex-wrap: wrap;
 }
 
@@ -20,7 +19,6 @@
 }
 
 .upload-btn {
-    max-height: 40px;
     background-color: #45BEAA;
     margin: auto;
 }
@@ -47,10 +45,20 @@
     display: flex;
 }
 
-.logo-actions{
+.logo-upload{
     display: flex;
     justify-content: space-between;
 }
-.image-wrapper{
-    margin: 5px;
+
+.image-actions {
+    justify-content: space-around;
+    display: flex;
+}
+
+.payment-option-fields {
+    width: 50%;
+}
+
+#delete-modal-title {
+    margin-bottom: 2rem;
 }

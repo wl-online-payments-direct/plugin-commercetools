@@ -9,11 +9,12 @@ import PrimaryButton from '@commercetools-uikit/primary-button';
 import LoadingSpinner from '@commercetools-uikit/loading-spinner';
 import PageWrapper from '../page-wrapper'
 import { getOrderList } from '../../ct-methods';
-import { Link, useRouteMatch } from 'react-router-dom';
+import { Link, useHistory, useRouteMatch } from 'react-router-dom';
 import { areObjectsSame } from '../../helpers';
 import './style.css';
 import { PaymentContext } from '../../context/payment';
 import messages from './messages';
+import { OrderContext } from '../../context/order';
 
 const OrderList = () => {
   const {formatMessage} = useIntl()
@@ -36,6 +37,7 @@ const OrderList = () => {
   const [searchData, setSearchData] = useState(initialSearchState)
   const [currentPage, setCurrentPage] = useState(1)
   const [currentPerPage, setCurrentPerPage] = useState(20)
+  const history = useHistory()
 
   const columns = [
     { key: 'createdAt', label: formatMessage(messages.createdDate) },
@@ -46,15 +48,17 @@ const OrderList = () => {
     { key: 'status', label: formatMessage(messages.status) },
     { key: 'currency', label: formatMessage(messages.currency) },
     { key: 'total', label: formatMessage(messages.total) },
-    { key: 'action', label: formatMessage(messages.action) },
+    { key: 'actions', label: formatMessage(messages.action) },
   ];
-  
-  const {activeStore} = useContext(PaymentContext);
+    
+
   
   const match = useRouteMatch()
 
   const projectKey = useApplicationContext((context) => context.project.key);
-  const {apiHost, merchantUrl} = useApplicationContext((context) => context.environment);
+  const {apiHost} = useApplicationContext((context) => context.environment);
+  const {activeStore} = useContext(PaymentContext);
+  const {setOpenCapture, setOpenRefund} = useContext(OrderContext)
   const getOrders = async (options = {}) => {
     const {key: storeId} = activeStore
     const {page = '', orderId = '', limit = null, filterOption = 'ALL'} = options
@@ -94,12 +98,38 @@ const OrderList = () => {
       return link
     }
     if (column.key === "orderId") {
-      const link = <a href={`${merchantUrl}/${projectKey}/orders`} target="_blank" rel="noopener noreferrer">{itemValue}</a>
+      const link = <a href={`${projectKey}/orders`} target="_blank" rel="noopener noreferrer">{itemValue}</a>
       return link
     }
     if (column.key === "status") {
       const paymentBox = <div className="alert alert-yellow"> {itemValue} </div>
       return paymentBox
+    }
+    if (column.key === "actions") {
+      if (item['status'] === 'INITIAL' || item['status'] === 'AUTHORIZED' || item['status'] === 'PENDING_CAPTURE') {
+        return (
+          <div className='action-wrapper'>
+              <button>Cancel</button>
+              <button onClick={() => {
+                setOpenCapture(true)
+                setOpenRefund(false)
+                history.push(`${match.url}/${item['paymentId']}`)
+              }}>Capture</button>
+          </div>
+        )
+      } else if (item['status'] === 'CAPTURED') {
+        return (
+          <div className='action-wrapper'>
+              <button onClick={() => {
+                setOpenRefund(true)
+                setOpenCapture(false)
+                history.push(`${match.url}/${item['paymentId']}`)
+              }}>Refund</button>
+          </div>
+        )
+      } else {
+        return <></>
+      }      
     }
     return itemValue;
   };

@@ -63,74 +63,122 @@
       {
         "displayOrder": 0,
         "label": "American Express",
-        "enabled": true,
-        "logo": "https://assets.test.cdn.v-psp.com/s2s/6befa5cada1d3ab38899/images/pm/American Express.gif"
+        "enabled": false,
+        "logo": "https://assets.test.cdn.v-psp.com/s2s/98943e6487e1a7316495/images/pm/American Express.gif"
       },
       {
         "displayOrder": 1,
-        "label": "BCMC",
-        "enabled": true,
-        "logo": "https://assets.test.cdn.v-psp.com/s2s/6befa5cada1d3ab38899/images/pm/BCMC.gif"
+        "label": "APPLEPAY",
+        "enabled": false,
+        "logo": "https://assets.test.cdn.v-psp.com/s2s/98943e6487e1a7316495/images/pm/APPLEPAY.gif"
       },
       {
         "displayOrder": 2,
-        "label": "CB",
-        "enabled": true,
-        "logo": "https://assets.test.cdn.v-psp.com/s2s/6befa5cada1d3ab38899/images/pm/CB.gif"
+        "label": "BCMC",
+        "enabled": false,
+        "logo": "https://assets.test.cdn.v-psp.com/s2s/98943e6487e1a7316495/images/pm/BCMC.gif"
       },
       {
         "displayOrder": 3,
-        "label": "Diners Club",
-        "enabled": true,
-        "logo": "https://assets.test.cdn.v-psp.com/s2s/6befa5cada1d3ab38899/images/pm/Diners Club.gif"
+        "label": "CB",
+        "enabled": false,
+        "logo": "https://assets.test.cdn.v-psp.com/s2s/98943e6487e1a7316495/images/pm/CB.gif"
       },
       {
         "displayOrder": 4,
-        "label": "MasterCard",
-        "enabled": true,
-        "logo": "https://assets.test.cdn.v-psp.com/s2s/6befa5cada1d3ab38899/images/pm/Eurocard.gif"
+        "label": "Diners Club",
+        "enabled": false,
+        "logo": "https://assets.test.cdn.v-psp.com/s2s/98943e6487e1a7316495/images/pm/Diners Club.gif"
       },
       {
         "displayOrder": 5,
-        "label": "GOOGLEPAY",
-        "enabled": true,
-        "logo": "https://assets.test.cdn.v-psp.com/s2s/6befa5cada1d3ab38899/images/pm/GOOGLEPAY.gif"
+        "label": "MasterCard",
+        "enabled": false,
+        "logo": "https://assets.test.cdn.v-psp.com/s2s/98943e6487e1a7316495/images/pm/Eurocard.gif"
       },
       {
         "displayOrder": 6,
-        "label": "iDeal",
-        "enabled": true,
-        "logo": "https://assets.test.cdn.v-psp.com/s2s/6befa5cada1d3ab38899/images/pm/iDeal.gif"
+        "label": "GOOGLEPAY",
+        "enabled": false,
+        "logo": "https://assets.test.cdn.v-psp.com/s2s/98943e6487e1a7316495/images/pm/GOOGLEPAY.gif"
       },
       {
         "displayOrder": 7,
-        "label": "JCB",
-        "enabled": true,
-        "logo": "https://assets.test.cdn.v-psp.com/s2s/6befa5cada1d3ab38899/images/pm/JCB.gif"
+        "label": "iDeal",
+        "enabled": false,
+        "logo": "https://assets.test.cdn.v-psp.com/s2s/98943e6487e1a7316495/images/pm/iDeal.gif"
       },
       {
         "displayOrder": 8,
-        "label": "Maestro",
-        "enabled": true,
-        "logo": "https://assets.test.cdn.v-psp.com/s2s/6befa5cada1d3ab38899/images/pm/Maestro.gif"
+        "label": "Intersolve",
+        "enabled": false,
+        "logo": "https://assets.test.cdn.v-psp.com/s2s/98943e6487e1a7316495/images/pm/Intersolve.gif"
       },
       {
         "displayOrder": 9,
-        "label": "PAYPAL",
-        "enabled": true,
-        "logo": "https://assets.test.cdn.v-psp.com/s2s/6befa5cada1d3ab38899/images/pm/PAYPAL.gif"
+        "label": "JCB",
+        "enabled": false,
+        "logo": "https://assets.test.cdn.v-psp.com/s2s/98943e6487e1a7316495/images/pm/JCB.gif"
       },
       {
         "displayOrder": 10,
-        "label": "VISA",
-        "enabled": true,
-        "logo": "https://assets.test.cdn.v-psp.com/s2s/6befa5cada1d3ab38899/images/pm/VISA.gif"
+        "label": "KLARNA_PAYLATER",
+        "enabled": false,
+        "logo": "https://assets.test.cdn.v-psp.com/s2s/98943e6487e1a7316495/images/pm/KLARNA_PAYLATER.gif"
       },
       {
         "displayOrder": 11,
+        "label": "KLARNA_PAYNOW",
+        "enabled": false,
+        "logo": "https://assets.test.cdn.v-psp.com/s2s/98943e6487e1a7316495/images/pm/KLARNA_PAYNOW.gif"
+      },
+      {
+        "displayOrder": 12,
+        "label": "Maestro",
+        "enabled": false,
+        "logo": "https://assets.test.cdn.v-psp.com/s2s/98943e6487e1a7316495/images/pm/Maestro.gif"
+      },
+      {
+        "displayOrder": 13,
+        "label": "Multibanco",
+        "enabled": false,
+        "logo": "https://assets.test.cdn.v-psp.com/s2s/98943e6487e1a7316495/images/pm/Multibanco.gif"
+      },
+      {
+        "displayOrder": 14,
+        "label": "Oney3x4x",
+        "enabled": false,
+        "logo": "https://assets.test.cdn.v-psp.com/s2s/98943e6487e1a7316495/images/pm/Oney3x4x.gif"
+      },
+      {
+        "displayOrder": 15,
+        "label": "PAYPAL",
+        "enabled": false,
+        "logo": "https://assets.test.cdn.v-psp.com/s2s/98943e6487e1a7316495/images/pm/PAYPAL.gif"
+      },
+      {
+        "displayOrder": 16,
+        "label": "Przelewy24",
+        "enabled": false,
+        "logo": "https://assets.test.cdn.v-psp.com/s2s/98943e6487e1a7316495/images/pm/Przelewy24.gif"
+      },
+      {
+        "displayOrder": 17,
+        "label": "TWINTWL",
+        "enabled": false,
+        "logo": "https://assets.test.cdn.v-psp.com/s2s/98943e6487e1a7316495/images/pm/TWINTWL.gif"
+      },
+      {
+        "displayOrder": 18,
+        "label": "VISA",
+        "enabled": false,
+        "logo": "https://assets.test.cdn.v-psp.com/s2s/98943e6487e1a7316495/images/pm/VISA.gif"
+      },
+      {
+        "displayOrder": 19,
         "label": "WeChatPay",
-        "enabled": true,
-        "logo": "https://assets.test.cdn.v-psp.com/s2s/6befa5cada1d3ab38899/images/pm/WeChatPay.gif"
+        "enabled": false,
+        "logo": "https://assets.test.cdn.v-psp.com/s2s/98943e6487e1a7316495/images/pm/WeChatPay.gif"
       }
     ],
     "enabled": {
@@ -155,15 +203,15 @@
     "payButtonTitle": {
       "label": "Pay Button Title",
       "type": "text",
-      "value": "Pay with credit cards",
+      "value": "Pay By worldline",
       "criteria": ["alpha"],
       "values": {
-        "EN": "Pay with credit cards",
-        "ES": "Pagar con tarjetas de crédito",
-        "FR": "Payer par carte de crédit",
-        "NL": "Betaal met creditcards",
-        "DE": "Bezahlen Sie mit Kreditkarten",
-        "IT": "Paga con carte di credito"
+        "EN": "Pay By worldline",
+        "ES": "Paga con Worldline",
+        "FR": "Payer avec Worldline",
+        "NL": "Betaal met Worldline",
+        "DE": "Bezahlen Sie mit Worldline",
+        "IT": "Paga con Worldline"
       }
     },
     "payButtonLanguage": {

@@ -124,7 +124,7 @@ const PaymentProvider = ({ children }) => {
           activeStore?.key,
           apiHost
         );
-        if (response) {
+        if (response.statusCode === 200) {
           const { result } = response;
           setLoader(false);
           showToaster({
@@ -133,6 +133,14 @@ const PaymentProvider = ({ children }) => {
             message: 'Refresh Payment Methods: Success',
           });
           return result;
+        } else {
+          setLoader(false);
+          showToaster({
+            severity: 'error',
+            open: true,
+            message: 'Failed to refresh payment methods',
+          });
+          return null;
         }
       } catch (err) {
         setLoader(false);
@@ -211,11 +219,14 @@ const PaymentProvider = ({ children }) => {
         showToaster({
           severity: 'error',
           open: true,
-          message: 'Test connection failed',
+          message: 'Warning: Please enter correct PSPID, API Key & API Secret.',
         });
       }
     } catch (err) {
-      console.error('Test connection failed', err.message);
+      console.error(
+        'Warning: Please enter correct PSPID, API Key & API Secret.',
+        err.message
+      );
       setLoader(false);
     }
   };
