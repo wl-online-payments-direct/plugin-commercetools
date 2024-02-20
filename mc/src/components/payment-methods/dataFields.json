@@ -29,7 +29,7 @@
     "captureAuthorizationMode",
     "enableWorldlineCheckout",
     "skip3dsAuthentication",
-    "merchantReferenceID",
+    "merchantReference",
     "outlineColor",
     "paymentOption",
     "placeOrder",

@@ -19,6 +19,7 @@ enum Status {
   REFUNDED
   FAILED
   IN_REVIEW
+  CANCELLED
 }
 
 enum States {

@@ -27,6 +27,10 @@ export async function cancelPayment(payload: ICancelPaymentPayload) {
       statusCode: 500,
     };
   }
+  let isFinal = false;
+  if (amount.isEqual) {
+    isFinal = true;
+  }
   // Fetch custom objects from admin config
   const customConfig = await getCustomObjects(payload.storeId);
 
@@ -40,7 +44,7 @@ export async function cancelPayment(payload: ICancelPaymentPayload) {
 
   const payment = await cancelPaymentService(
     getConnectionServiceProps(customConfig),
-    getPaymentCancelServicePayload(payload),
+    getPaymentCancelServicePayload(payload, isFinal),
     payload.paymentId,
   );
 

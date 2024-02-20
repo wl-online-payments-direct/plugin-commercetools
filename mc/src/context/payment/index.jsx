@@ -5,6 +5,7 @@ import {
   createCustomObject,
   getPaymentMethods,
   uploadImages,
+  testConnection,
 } from '../../ct-methods';
 import { useApplicationContext } from '@commercetools-frontend/application-shell-connectors';
 import Snackbar from '@mui/material/Snackbar';
@@ -199,6 +200,26 @@ const PaymentProvider = ({ children }) => {
     setLoader(false);
   };
 
+  const checkConnection = async (payload) => {
+    setLoader(true);
+    try {
+      const response = await testConnection(projectKey, apiHost, payload);
+      if (response.statusCode === 200) {
+        setLoader(false);
+        return response.result;
+      } else {
+        showToaster({
+          severity: 'error',
+          open: true,
+          message: 'Test connection failed',
+        });
+      }
+    } catch (err) {
+      console.error('Test connection failed', err.message);
+      setLoader(false);
+    }
+  };
+
   useEffect(async () => {
     const response = await fetchCustomObjects(activeStore);
     setCustomObject(response);
@@ -236,6 +257,7 @@ const PaymentProvider = ({ children }) => {
         fetchWorldlinePaymentOptions,
         imageUploader,
         sendRequest,
+        checkConnection,
         customObject,
         activeStore,
         stores,

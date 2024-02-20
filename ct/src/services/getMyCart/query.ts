@@ -13,6 +13,17 @@ query {
       id
       version
       customerId
+      customerEmail
+      customer {
+        id
+        version
+        salutation
+        firstName
+        middleName
+        lastName
+        dateOfBirth
+        email
+      }
       anonymousId
       taxCalculationMode
       totalPrice {
@@ -40,9 +51,27 @@ query {
         country
         additionalAddressInfo
       }
+      shippingAddress{
+        title
+        firstName
+        lastName
+        apartment
+        building
+        streetName
+        streetNumber
+        additionalStreetInfo
+        country
+        city
+        state
+        postalCode
+      }
       lineItems {
         id
         productId
+        totalPrice {
+          currencyCode
+          centAmount
+        }
         taxedPrice {
           totalTax {
             currencyCode
@@ -54,6 +83,7 @@ query {
           }
         }
         taxRate {
+          amount
           includedInPrice
         }
         supplyChannel {
@@ -83,6 +113,7 @@ query {
         }
         productType {
           name
+          description
         }
         variant {
           id
