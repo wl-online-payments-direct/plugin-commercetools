@@ -1,5 +1,10 @@
 import { Cart, Payment, Order } from '@worldline/ctintegration-ct';
-import { PaymentPayload, RefundPayload, RefundResult } from '../types';
+import {
+  CustomObjects,
+  PaymentPayload,
+  RefundPayload,
+  RefundResult,
+} from '../types';
 
 export function getPaymentDBPayload(payload: PaymentPayload | RefundPayload) {
   let merchantReference: string;
@@ -28,13 +33,17 @@ export function getPaymentFilterQuery(payment: { id: string }) {
 export function getCreateOrderCTPayload(
   cart: Cart,
   token: { access_token: string },
+  customObjects: CustomObjects,
 ) {
   const { id, version } = cart;
   const { access_token: accessToken } = token;
+  const { authorizationMode } = customObjects;
+
   return {
     id,
     version,
     accessToken,
+    authorizationMode,
   };
 }
 
