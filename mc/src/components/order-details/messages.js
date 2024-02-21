@@ -53,6 +53,10 @@ export default defineMessages({
     id: 'Order.refund',
     defaultMessage: 'Refund'
   },
+  cancel: {
+    id: 'Order.cancel',
+    defaultMessage: 'Cancel'
+  },
   captureTitle: {
     id: 'Order.captureTitle',
     defaultMessage: 'Capture Client Transaction'
@@ -61,6 +65,10 @@ export default defineMessages({
     id: 'Order.refundTitle',
     defaultMessage: 'Refund Client Transaction'
   },
+  cancelTitle: {
+    id: 'Order.cancelTitle',
+    defaultMessage: 'Cancel Client Transaction'
+  },
   amountToCapture: {
     id: 'Order.amountToCapture',
     defaultMessage: 'Enter amount to be captured'
@@ -68,6 +76,10 @@ export default defineMessages({
   amountToRefund: {
     id: 'Order.amountToRefund',
     defaultMessage: 'Enter amount to be refunded'
+  },
+  amountToCancel: {
+    id: 'Order.amountToCancel',
+    defaultMessage: 'Enter amount to be cancelled'
   },
   seeTransactions: {
     id: 'Order.seeTransactions',
@@ -80,6 +92,10 @@ export default defineMessages({
   amountRefundedAlready: {
     id: 'Order.amountRefundedAlready',
     defaultMessage: 'Amount Refunded Already'
+  },
+  amountCancelledAlready: {
+    id: 'Order.amountCancelledAlready',
+    defaultMessage: 'Amount Cancelled Already'
   },
   captureAmount: {
     id: 'Order.captureAmount',
@@ -96,6 +112,14 @@ export default defineMessages({
   refundStatus: {
     id: 'Order.refundStatus',
     defaultMessage: 'Refund Status'
+  },
+  cancelAmount: {
+    id: 'Order.cancelAmount',
+    defaultMessage: 'Cancel Amount'
+  },
+  cancelStatus: {
+    id: 'Order.cancelStatus',
+    defaultMessage: 'Cancel Status'
   },
   createdDate: {
     id: 'Order.createdDate',
@@ -124,5 +148,13 @@ export default defineMessages({
   refundFailed: {
     id: 'Order.refundFailed',
     defaultMessage: 'Failure: Refund failed'
+  },
+  cancelInProgress: {
+    id: 'Order.cancelInProgress',
+    defaultMessage: 'Success: Cancel is in Progress'
+  },
+  cancelFailed: {
+    id: 'Order.cancelFailed',
+    defaultMessage: 'Failure: Cancel failed'
   }
 });

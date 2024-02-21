@@ -15,6 +15,7 @@ import './style.css';
 import { PaymentContext } from '../../context/payment';
 import messages from './messages';
 import { OrderContext } from '../../context/order';
+import CancelAlert from './cancel-alert';
 
 const OrderList = () => {
   const {formatMessage} = useIntl()
@@ -37,6 +38,8 @@ const OrderList = () => {
   const [searchData, setSearchData] = useState(initialSearchState)
   const [currentPage, setCurrentPage] = useState(1)
   const [currentPerPage, setCurrentPerPage] = useState(20)
+  const [openCancelModal, setOpenCancelModal] = useState(false)
+  const [paymentId, setPaymentId] = useState('')
   const history = useHistory()
 
   const columns = [
@@ -58,7 +61,7 @@ const OrderList = () => {
   const projectKey = useApplicationContext((context) => context.project.key);
   const {apiHost, merchantUrl} = useApplicationContext((context) => context.environment);
   const {activeStore} = useContext(PaymentContext);
-  const {setOpenCapture, setOpenRefund} = useContext(OrderContext)
+  const {setOpenCapture, setOpenRefund, setOpenCancel} = useContext(OrderContext)
   const getOrders = async (options = {}) => {
     const {key: storeId} = activeStore
     const {page = '', orderId = '', limit = null, filterOption = 'ALL'} = options
@@ -87,6 +90,17 @@ const OrderList = () => {
     getOrders({limit: perPage})
   }
 
+  const handleClose = () => {
+    setOpenCancelModal(false)
+  }
+
+  const handleCancelAgree = () => {
+    setOpenCancel(true)
+    setOpenCapture(false)
+    setOpenRefund(false)
+    history.push(`${match.url}/${paymentId}`)
+  }
+
   const itemRenderer = (item, column) => {
     const itemValue = item[column.key]
     if (column.key === 'createdAt') {
@@ -98,7 +112,7 @@ const OrderList = () => {
       return link
     }
     if (column.key === "orderId") {
-      const link = <a href={`${merchantUrl}/${projectKey}/orders`} target="_blank" rel="noopener noreferrer">{itemValue}</a>
+      const link = <a href={`${window.location.origin}/${projectKey}/orders`} target="_blank" rel="noopener noreferrer">{itemValue}</a>
       return link
     }
     if (column.key === "status") {
@@ -106,15 +120,19 @@ const OrderList = () => {
       return paymentBox
     }
     if (column.key === "actions") {
-      if (item['status'] === 'INITIAL' || item['status'] === 'AUTHORIZED' || item['status'] === 'PENDING_CAPTURE') {
+      if (item['status'] === 'AUTHORIZED' || item['status'] === 'PENDING_CAPTURE') {
         return (
           <div className='action-wrapper'>
-              <button>Cancel</button>
+              <button onClick={() => {
+                setPaymentId(item['paymentId'])
+                setOpenCancelModal(true)
+              }}>{formatMessage(messages.cancel)}</button>
               <button onClick={() => {
                 setOpenCapture(true)
                 setOpenRefund(false)
+                setOpenCancel(false)
                 history.push(`${match.url}/${item['paymentId']}`)
-              }}>Capture</button>
+              }}>{formatMessage(messages.capture)}</button>
           </div>
         )
       } else if (item['status'] === 'CAPTURED') {
@@ -123,8 +141,9 @@ const OrderList = () => {
               <button onClick={() => {
                 setOpenRefund(true)
                 setOpenCapture(false)
+                setOpenCancel(false)
                 history.push(`${match.url}/${item['paymentId']}`)
-              }}>Refund</button>
+              }}>{formatMessage(messages.refund)}</button>
           </div>
         )
       } else {
@@ -158,10 +177,16 @@ const OrderList = () => {
     if (areObjectsSame(initialSearchState, searchData)) return
     getOrders(initialSearchState)
     setSearchData(initialSearchState)
-  }
+  }  
 
   return (
     <PageWrapper title={'Order list'}>
+      <CancelAlert
+        isOpen={openCancelModal}
+        handleClose={handleClose}
+        handleCancelAgree={handleCancelAgree}
+        merchantUrl={merchantUrl}
+      />
       <div className='order-wrapper'>
         <form className='order-filters' onSubmit={handleSearch}>
           <div className='filter-order'>
