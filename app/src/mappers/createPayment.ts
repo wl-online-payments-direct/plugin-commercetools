@@ -85,7 +85,7 @@ export function getDatabasePayload({
   customConfig: CustomObjects;
   reference: { referenceId: number };
   cart: Cart;
-  payload: { storeId: string; hostedTokenizationId: string };
+  payload: { storeId: string; hostedTokenizationId?: string };
   payment?: {
     id: string;
     status?: string;

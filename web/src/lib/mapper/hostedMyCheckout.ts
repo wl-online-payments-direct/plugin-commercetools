@@ -1,15 +1,11 @@
 import { HostedMyCheckoutPayload, Request } from '../types';
 
 export function getHostedMyCheckoutRequiredProps(request: Request) {
-  const {
-    storeId = '',
-    returnUrl = '',
-    hostedTokenizationId = '',
-  } = (request?.body || {}) as HostedMyCheckoutPayload;
+  const { storeId = '', returnUrl = '' } = (request?.body ||
+    {}) as HostedMyCheckoutPayload;
   return {
     storeId,
     returnUrl,
-    hostedTokenizationId,
   };
 }
 
@@ -21,7 +17,6 @@ export function getHostedMyCheckoutAppPayload(request: Request) {
     storeId = '',
     tokens = '',
     returnUrl = '',
-    hostedTokenizationId = '',
   } = (request?.body || {}) as HostedMyCheckoutPayload;
 
   return {
@@ -29,7 +24,6 @@ export function getHostedMyCheckoutAppPayload(request: Request) {
     userAgent,
     acceptHeader,
     storeId,
-    hostedTokenizationId,
     returnUrl,
     tokens,
   };
