@@ -44,7 +44,7 @@ model payments {
   authMode             Modes
   paymentOption        PaymentOptions
   paymentId            String
-  hostedTokenizationId String
+  hostedTokenizationId String?
   worldlineId          String
   worldlineStatus      String         @db.VarChar(255)
   worldlineStatusCode  Int
