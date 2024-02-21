@@ -8,6 +8,7 @@ export function getHostedCheckoutRequiredProps(request: Request) {
     returnUrl = '',
     paymentMethod = '',
     paymentProductId,
+    hostedTokenizationId = '',
   } = (request?.body || {}) as HostedCheckoutPayload;
 
   const paymentMethods = [
@@ -21,6 +22,7 @@ export function getHostedCheckoutRequiredProps(request: Request) {
     paymentMethod,
     storeId,
     cartId,
+    hostedTokenizationId,
     returnUrl,
   };
 }
@@ -36,6 +38,7 @@ export function getHostedCheckoutAppPayload(request: Request) {
     cartId = '',
     tokens = '',
     returnUrl = '',
+    hostedTokenizationId = '',
   } = (request?.body || {}) as HostedCheckoutPayload;
 
   return {
@@ -44,6 +47,7 @@ export function getHostedCheckoutAppPayload(request: Request) {
     acceptHeader,
     paymentProductId,
     paymentMethod,
+    hostedTokenizationId,
     storeId,
     cartId,
     returnUrl,

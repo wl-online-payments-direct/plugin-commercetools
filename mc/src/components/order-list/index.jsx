@@ -98,7 +98,7 @@ const OrderList = () => {
       return link
     }
     if (column.key === "orderId") {
-      const link = <a href={`${projectKey}/orders`} target="_blank" rel="noopener noreferrer">{itemValue}</a>
+      const link = <a href={`/${projectKey}/orders/${itemValue}`} target="_blank" rel="noopener noreferrer">{itemValue}</a>
       return link
     }
     if (column.key === "status") {
