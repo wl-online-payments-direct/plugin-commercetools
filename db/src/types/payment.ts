@@ -34,7 +34,7 @@ export interface PaymentReference {
 export interface CreatePaymentRequest {
   authMode: $Enums.Modes;
   paymentOption: $Enums.PaymentOptions;
-  hostedTokenizationId: string;
+  hostedTokenizationId?: string;
   paymentId: string;
   worldlineId: string;
   worldlineStatus: string;
