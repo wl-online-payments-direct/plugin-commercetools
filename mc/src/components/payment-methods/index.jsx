@@ -177,12 +177,14 @@ const PaymentMethods = () => {
     handleRedirectModeA(
       'paymentOptions',
       methods.map((method, index) => {
-        return { ...method, displayOrder: index };
+        return {
+          ...method,
+          enabled: method.enabled ? method.enabled : false,
+          displayOrder: index,
+        };
       })
     );
   };
-
-  const handleLogoUpload = (e) => {};
 
   const fetchPaymentMethods = async () => {
     setLoader(true);
@@ -200,7 +202,7 @@ const PaymentMethods = () => {
 
   const saveFormData = async () => {
     setLoader(true);
-    if (state?.merchantReference?.value?.trim().length > 12) {
+    if (state?.merchantReference?.value?.replaceAll(' ', '').length > 12) {
       showToaster({
         severity: 'error',
         open: true,
@@ -245,7 +247,7 @@ const PaymentMethods = () => {
     const final_payload = {
       value: {
         ...customObject?.value,
-        merchantReference: saveData.merchantReference,
+        merchantReference: saveData.merchantReference.replaceAll(' ', ''),
         live: {
           ...customObject?.value?.live,
           ...saveData,
@@ -271,21 +273,14 @@ const PaymentMethods = () => {
             case 'redirectModeB':
               if (field === 'paymentOptions') {
                 if (customValue?.[ds]?.[field] !== undefined) {
-                  payload[ds][field] = payload[ds][field].map((opt) => {
-                    return {
-                      ...opt,
-                      ...customValue?.[ds]?.[field].find(
-                        (custVal) => custVal.label === opt.label
-                      ),
-                    };
-                  });
+                  payload[ds][field] = customValue[ds][field];
                 } else {
                   const response = await fetchWorldlinePaymentOptions(
                     activeStore
                   );
                   if (response && response.length) {
-                    payload[ds][field] = payload[ds][field].map((opt) => {
-                      return { ...opt, ...response[opt.label] };
+                    payload[ds][field] = response.map((res) => {
+                      return { ...res, enabled: false };
                     });
                   }
                 }
@@ -316,7 +311,7 @@ const PaymentMethods = () => {
                 customObject?.value?.merchantReference
               ) {
                 payload['merchantReference'].value =
-                  customObject?.value?.merchantReference;
+                  customObject?.value?.merchantReference.replaceAll(' ', '');
               }
               break;
           }
@@ -360,7 +355,6 @@ const PaymentMethods = () => {
         <OnSiteMode
           onSiteMode={state.onSiteMode}
           handleOnsiteMode={handleOnsiteMode}
-          handleLogoUpload={handleLogoUpload}
         />
         <RedirectModeA
           redirectModeA={state.redirectModeA}
@@ -371,7 +365,6 @@ const PaymentMethods = () => {
         <RedirectModeB
           redirectModeB={state.redirectModeB}
           handleRedirectModeB={handleRedirectModeB}
-          handleLogoUpload={handleLogoUpload}
         />
         <GeneralSettings
           state={state}

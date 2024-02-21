@@ -8,3 +8,4 @@ export * from './capturePayment';
 export * from './getPayment';
 export * from './deleteToken';
 export * from './getPaymentProducts';
+export * from './getHostedTokenization';

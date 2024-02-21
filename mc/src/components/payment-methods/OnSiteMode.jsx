@@ -11,7 +11,7 @@ import InfoIcon from '@mui/icons-material/Info';
 import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 import Select from '@mui/material/Select';
-import ImageUpload from '../image-upload';
+import PaymentModalComponent from '../payment-modal';
 
 const OnSiteMode = ({ onSiteMode, handleOnsiteMode }) => {
   return (
@@ -88,13 +88,13 @@ const OnSiteMode = ({ onSiteMode, handleOnsiteMode }) => {
         </div>
         <div className="section-wrapper">
           <h5 className="section-header">
-            {onSiteMode.logo.label}
+            <span>{onSiteMode.logo.label}</span>
             <Tooltip placement="top" title={onSiteMode.logo.tooltip}>
               <InfoIcon />
             </Tooltip>
           </h5>
           <div className="template-section flex">
-            <ImageUpload
+            <PaymentModalComponent
               images={onSiteMode.logo.value}
               source="onsite"
               saveImage={(urls) => handleOnsiteMode('logo', urls)}

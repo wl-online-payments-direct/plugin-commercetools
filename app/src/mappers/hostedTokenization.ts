@@ -6,9 +6,10 @@ export function getTokenizationServicePayload(
   cart: Cart,
   payload: HostedTokenizationPayload,
 ) {
-  const { variant } = customConfig;
+  const { templateFileName: variant = '' } = customConfig?.onSiteMode || {};
   const { tokens, askConsumerConsent } = payload;
   const locale = cart?.locale ? { locale: cart.locale } : {};
+
   return {
     ...locale,
     variant,

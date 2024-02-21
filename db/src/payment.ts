@@ -165,8 +165,8 @@ export async function getPayment(where: {
 }
 
 export async function setPayment(
-  where: { [key: string]: string },
-  data: { [key: string]: string },
+  where: { [key: string]: string | number },
+  data: { [key: string]: string | number },
 ): Promise<Payment> {
   try {
     const result = await prisma.payments.update({

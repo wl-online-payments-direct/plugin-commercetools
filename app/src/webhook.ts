@@ -67,7 +67,8 @@ export async function webhookAppHandler({
   logger().debug(`[Webhook][${payload.type}] Successfully authenticated`);
 
   switch (payload.type) {
-    case 'payment.created':
+    case 'payment.pending_capture':
+    case 'payment.rejected':
       return orderPaymentHandler(payload as PaymentPayload);
     case 'payment.captured':
       return orderPaymentCaptureHandler(payload as PaymentPayload);

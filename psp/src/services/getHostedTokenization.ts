@@ -1,20 +1,20 @@
 import { connectService } from '../client';
 import { ConnectOpts } from '../types';
 
-export async function getPaymentService(
+export async function getHostedTokenizationService(
   connectOpts: ConnectOpts,
-  paymentId: string,
+  hostedTokenizationId: string,
 ) {
   const { merchantId } = connectOpts;
   const client = await connectService(connectOpts);
-  const result = await client.payments.getPaymentDetails(
+  const result = await client.hostedTokenization.getHostedTokenization(
     merchantId,
-    paymentId,
+    hostedTokenizationId,
     {},
   );
   if (result?.body?.errors) {
     throw {
-      message: 'Failed to process the get payment service',
+      message: 'Failed to process the get hosted tokenization service',
       statusCode: result.body.errors[0]?.httpStatusCode || 500,
       details: result.body.errors,
     };

@@ -18,7 +18,9 @@ import {
   getConnectionServiceProps,
   getServicePayload,
   getCreatedPaymentMappedResponse,
+  getHostedTokenizationPayload,
 } from './mappers';
+import { getHostedTokenization } from './getHostedTokenization';
 
 export async function createMyPayment(
   payload: ICreateMyPaymentPayload,
@@ -36,6 +38,10 @@ export async function createMyPayment(
   // Fetch incremented payment id
   const reference = await getIncrementedReference(payload.storeId);
 
+  const hostedTokenizationResponse = await getHostedTokenization(
+    getHostedTokenizationPayload(payload),
+  );
+
   const payment = await createPaymentService(
     getConnectionServiceProps(customConfig),
     getServicePayload(customConfig, reference, cart, payload),
@@ -50,6 +56,7 @@ export async function createMyPayment(
       payload,
       payment,
       isHostedTokenization: true,
+      hostedTokenizationResponse,
     }),
   );
 
@@ -77,6 +84,10 @@ export async function createPayment(
   // Fetch incremented payment id
   const reference = await getIncrementedReference(payload.storeId);
 
+  const hostedTokenizationResponse = await getHostedTokenization(
+    getHostedTokenizationPayload(payload),
+  );
+
   const payment = await createPaymentService(
     getConnectionServiceProps(customConfig),
     getServicePayload(customConfig, reference, cart, payload),
@@ -91,6 +102,7 @@ export async function createPayment(
       payload,
       payment,
       isHostedTokenization: true,
+      hostedTokenizationResponse,
     }),
   );
 

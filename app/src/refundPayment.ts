@@ -23,7 +23,7 @@ export async function refundPayment(
   //  Check refund amount is vaild or not
   const hasValidRefund = hasValidAmount(order, payload.amount);
   if (hasValidRefund.isGreater) {
-    logger().error('Failed to fetch the order or order is missing!');
+    logger().error('Refund amount cannot be greater than the order amount!');
     throw {
       message: 'Refund amount cannot be greater than the order amount!',
       statusCode: 500,
