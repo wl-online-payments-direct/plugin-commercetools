@@ -37,6 +37,24 @@
     },
     "enabled": {
       "value": false
+    },
+    "3dsEnablement": {
+      "label": "3DS Enablement",
+      "type": "boolean",
+      "value": true,
+      "criteria": []
+    },
+    "3dsChallenge": {
+      "label": "3DS Challenge",
+      "type": "boolean",
+      "value": false,
+      "criteria": []
+    },
+    "3dsExemption": {
+      "label": "3DS Exemption",
+      "type": "boolean",
+      "value": false,
+      "criteria": []
     }
   },
   "redirectModeA": {
@@ -183,6 +201,24 @@
     ],
     "enabled": {
       "value": false
+    },
+    "3dsEnablement": {
+      "label": "3DS Enablement",
+      "type": "boolean",
+      "value": true,
+      "criteria": []
+    },
+    "3dsChallenge": {
+      "label": "3DS Challenge",
+      "type": "boolean",
+      "value": false,
+      "criteria": []
+    },
+    "3dsExemption": {
+      "label": "3DS Exemption",
+      "type": "boolean",
+      "value": false,
+      "criteria": []
     }
   },
   "redirectModeB": {
@@ -235,6 +271,24 @@
     },
     "enabled": {
       "value": false
+    },
+    "3dsEnablement": {
+      "label": "3DS Enablement",
+      "type": "boolean",
+      "value": true,
+      "criteria": []
+    },
+    "3dsChallenge": {
+      "label": "3DS Challenge",
+      "type": "boolean",
+      "value": false,
+      "criteria": []
+    },
+    "3dsExemption": {
+      "label": "3DS Exemption",
+      "type": "boolean",
+      "value": false,
+      "criteria": []
     }
   },
   "merchantReference": {

@@ -56,6 +56,21 @@ const PaymentMethods = () => {
       payload['payButtonTitle'].values[
         state.onSiteMode['payButtonLanguage'].value
       ] = value;
+    } else if (field === '3dsEnablement') {
+      payload['3dsEnablement'] = {
+        ...payload['3dsEnablement'],
+        value: value,
+      };
+      if (!value) {
+        payload['3dsChallenge'] = {
+          ...payload['3dsChallenge'],
+          value: false,
+        };
+        payload['3dsExemption'] = {
+          ...payload['3dsExemption'],
+          value: false,
+        };
+      }
     } else {
       payload[field] = {
         ...payload[field],
@@ -76,7 +91,22 @@ const PaymentMethods = () => {
   const handleRedirectModeA = (field, value) => {
     const payload = { ...state.redirectModeA };
     if (field === 'paymentOptions') payload['paymentOptions'] = value;
-    else
+    else if (field === '3dsEnablement') {
+      payload['3dsEnablement'] = {
+        ...payload['3dsEnablement'],
+        value: value,
+      };
+      if (!value) {
+        payload['3dsChallenge'] = {
+          ...payload['3dsChallenge'],
+          value: false,
+        };
+        payload['3dsExemption'] = {
+          ...payload['3dsExemption'],
+          value: false,
+        };
+      }
+    } else
       payload[field] = {
         ...payload[field],
         value: value,
@@ -117,6 +147,21 @@ const PaymentMethods = () => {
       payload['payButtonTitle'].values[
         state.redirectModeB['payButtonLanguage'].value
       ] = value;
+    } else if (field === '3dsEnablement') {
+      payload['3dsEnablement'] = {
+        ...payload['3dsEnablement'],
+        value: value,
+      };
+      if (!value) {
+        payload['3dsChallenge'] = {
+          ...payload['3dsChallenge'],
+          value: false,
+        };
+        payload['3dsExemption'] = {
+          ...payload['3dsExemption'],
+          value: false,
+        };
+      }
     } else {
       payload[field] = {
         ...payload[field],
