@@ -65,6 +65,16 @@ query {
         state
         postalCode
       }
+      taxedShippingPrice{
+        totalNet{
+          currencyCode
+          centAmount
+        }
+        totalTax {
+          currencyCode
+          centAmount
+        }
+      }
       lineItems {
         id
         productId
