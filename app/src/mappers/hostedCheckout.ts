@@ -10,8 +10,8 @@ export function getHostedCheckoutPayload(
   cart: Cart,
   payload: HostedMyCheckoutPayload,
 ) {
-  const amount = cart?.taxedPrice?.totalGross.centAmount || 0;
-  const currencyCode = cart?.taxedPrice?.totalGross.currencyCode || '';
+  const amount = cart?.totalPrice?.centAmount || 0;
+  const currencyCode = cart?.totalPrice?.currencyCode || '';
   const merchantCustomerId = cart?.customerId || cart?.anonymousId || '';
   const locale = cart?.locale ? { locale: cart.locale } : {};
 
@@ -43,8 +43,8 @@ export function getHostedCheckoutPayload(
     postalCode: zip = '',
   } = cart?.billingAddress || {};
 
-  // Shipping address
-  const { shippingAddress } = cart;
+  // Shipping
+  const { shippingAddress, taxedShippingPrice } = cart;
   const shipping = {
     address: {
       name: {
@@ -56,6 +56,8 @@ export function getHostedCheckoutPayload(
       city: shippingAddress?.city || '',
       countryCode: shippingAddress?.country || '',
     },
+    shippingCost: taxedShippingPrice?.totalNet.centAmount,
+    shippingCostTax: taxedShippingPrice?.totalTax?.centAmount,
   };
 
   // Line items
