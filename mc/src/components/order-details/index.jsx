@@ -47,7 +47,7 @@ const OrderDetails = () => {
     const itemRenderer = (item, column) => {
         const itemValue = item[column.key]
         if (column.key === "worldlineId") {
-            const link = <a href={`${window.location.origin}/${projectKey}/orders`} target="_blank" rel="noopener noreferrer">{itemValue}</a>
+            const link = <a href={`/${projectKey}/orders/${item['orderId']}`} target="_blank" rel="noopener noreferrer">{itemValue}</a>
           return link
         }
         return itemValue;
