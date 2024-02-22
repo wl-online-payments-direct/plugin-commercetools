@@ -1,5 +1,6 @@
 import { env } from 'process';
 import SdkAuth from '@commercetools/sdk-auth';
+import fetch from 'cross-fetch';
 import { ClientCredentialsToken } from '../../types';
 
 export class AuthClient {
