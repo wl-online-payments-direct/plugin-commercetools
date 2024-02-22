@@ -1,4 +1,5 @@
 import { Cart, Customer } from '@worldline/ctintegration-ct';
+import { logger } from '@worldline/ctintegration-util';
 import { CustomObjects, HostedMyCheckoutPayload } from '../types';
 import { appendAdditionalParamsToUrl } from './common';
 
@@ -99,7 +100,6 @@ export function getHostedCheckoutPayload(
   const variant = redirectModeB?.templateFileName || '';
 
   let cardPaymentMethodSpecificInput = {};
-  let hostedCheckoutSpecificInput = {};
   let redirectPaymentMethodSpecificInput = {};
   let sepaDirectDebitPaymentMethodSpecificInput = {};
   let mobilePaymentMethodSpecificInput = {};
@@ -113,23 +113,26 @@ export function getHostedCheckoutPayload(
     paymentOption = '',
   } = paymentSettings || {};
 
+  const hostedCheckoutSpecificInput = {
+    variant,
+    ...locale,
+    tokens,
+    returnUrl,
+    cardPaymentMethodSpecificInput: {
+      groupCards,
+    },
+    paymentProductFilters: {},
+  };
+
   switch (paymentProductId) {
     // Klarna
     case 3306:
-      hostedCheckoutSpecificInput = {
-        variant,
-        returnUrl,
-      };
       redirectPaymentMethodSpecificInput = {
         paymentProductId,
       };
       break;
     // Oney
     case 5110:
-      hostedCheckoutSpecificInput = {
-        variant,
-        ...locale,
-      };
       redirectPaymentMethodSpecificInput = {
         requiresApproval: false, // must be set as false, As oney only allow direct sale
         paymentProductId,
@@ -138,14 +141,9 @@ export function getHostedCheckoutPayload(
       break;
     // Sepa Direct Debit
     case 771:
-      hostedCheckoutSpecificInput = {
-        variant,
-        returnUrl,
-        ...locale,
-        paymentProductFilters: {
-          restrictTo: {
-            products: [paymentProductId],
-          },
+      hostedCheckoutSpecificInput.paymentProductFilters = {
+        restrictTo: {
+          products: [paymentProductId],
         },
       };
       sepaDirectDebitPaymentMethodSpecificInput = {
@@ -161,21 +159,12 @@ export function getHostedCheckoutPayload(
       break;
     // Multibanco
     case 5500:
-      hostedCheckoutSpecificInput = {
-        variant,
-        ...locale,
-      };
       redirectPaymentMethodSpecificInput = {
         paymentProductId,
       };
       break;
     // Applepay
     case 302:
-      hostedCheckoutSpecificInput = {
-        variant,
-        returnUrl,
-        ...locale,
-      };
       mobilePaymentMethodSpecificInput = {
         authorizationMode,
         paymentProductId,
@@ -183,10 +172,6 @@ export function getHostedCheckoutPayload(
       break;
     // P24
     case 3124:
-      hostedCheckoutSpecificInput = {
-        variant,
-        ...locale,
-      };
       redirectPaymentMethodSpecificInput = {
         paymentProductId,
       };
@@ -213,21 +198,10 @@ export function getHostedCheckoutPayload(
         authorizationMode,
         paymentProductId,
       };
-      hostedCheckoutSpecificInput = {
-        variant,
-        returnUrl,
-      };
       break;
     default:
-      hostedCheckoutSpecificInput = {
-        variant,
-        ...locale,
-        tokens,
-        returnUrl,
-        cardPaymentMethodSpecificInput: {
-          groupCards,
-        },
-      };
+      logger().error(`Received invalid payment product Id ${paymentProductId}`);
+      break;
   }
 
   return {
