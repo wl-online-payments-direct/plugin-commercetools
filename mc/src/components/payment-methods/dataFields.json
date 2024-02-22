@@ -34,14 +34,11 @@
   "general": [
     "enableLogs",
     "authorizationMode",
-    "bgColor",
     "captureAuthorizationMode",
     "enableWorldlineCheckout",
     "merchantReference",
-    "outlineColor",
     "paymentOption",
     "placeOrder",
-    "placeOrderLanguage",
-    "textColor"
+    "placeOrderLanguage"
   ]
 }
