@@ -35,6 +35,7 @@ export default {
   },
   STATUS: {
     PENDING_CAPTURE: 'payment.pending_capture',
+    CAPTURED: 'payment.captured',
   },
   getWordlineCreditCardOption() {
     return WORLDLINE_CREDITCARD;

@@ -4,6 +4,7 @@ const query = `
       id
       version
       paymentState
+      createdAt
     }
   }
 `;

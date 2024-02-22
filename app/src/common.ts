@@ -74,7 +74,7 @@ const updateOrderWithPayment = async (
   const { updatedPayment } = await updatePayment(payload, order);
 
   return {
-    order: { id: order.id, version: order.version },
+    order: { id: order.id, version: order.version, createdAt: order.createdAt },
     payment: updatedPayment,
   };
 };
@@ -132,7 +132,10 @@ export async function orderPaymentHandler(payload: PaymentPayload) {
       // TODO: What happens when one of the webhook arrive out of sync?
       // E.g. a payment got authorized and then captured, but the webhooks reached in reverse order
       let result;
-      if (payload.type === STATUS.PENDING_CAPTURE) {
+      if (
+        payload.type === STATUS.PENDING_CAPTURE ||
+        payload.type === STATUS.CAPTURED
+      ) {
         result = !dbPayment?.orderId
           ? await createOrderWithPayment(payload, cart, customObjects)
           : await updateOrderWithPayment(payload, dbPayment);
@@ -141,7 +144,7 @@ export async function orderPaymentHandler(payload: PaymentPayload) {
       // update order id and reset the state as DEFAULT
       const updateQuery = {
         ...(!dbPayment.orderId && result?.order?.id
-          ? { orderId: result.order.id }
+          ? { orderId: result.order.id, orderCreatedAt: result.order.createdAt }
           : {}),
         worldlineId: payload?.payment?.id,
         worldlineStatus: payload?.payment?.status || '',
@@ -229,7 +232,11 @@ export async function orderPaymentCaptureHandler(payload: PaymentPayload) {
     `[orderPaymentCaptureHandler]: payload: ${JSON.stringify(payload)}`,
   );
   // Fetch DB payment
-  const payment = await getPayment(getPaymentDBPayload(payload));
+  let payment = await getPayment(getPaymentDBPayload(payload));
+  if (payment && !payment.orderId) {
+    await orderPaymentHandler(payload);
+    payment = await getPayment(getPaymentDBPayload(payload));
+  }
   if (!payment) {
     logger().error('[orderPaymentCaptureHandler] Failed to fetch the payment');
     throw {
