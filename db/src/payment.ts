@@ -38,6 +38,7 @@ export async function getDBOrders(
         skip,
         take: limit,
         ...params,
+        orderBy: { orderCreatedAt: 'desc' },
       }),
     ]);
     return {
