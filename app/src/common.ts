@@ -31,6 +31,8 @@ import {
   shouldSaveToken,
   getCustomerTokenPayload,
   calculateRemainingOrderAmount,
+  getupdateOrderWithPaymentMapper,
+  getOrderResultMapper,
 } from './mappers';
 import Constants from './constants';
 import { calculateTotalCaptureAmount } from './capturePayment';
@@ -73,10 +75,7 @@ const updateOrderWithPayment = async (
   // Mutate cart for update payment
   const { updatedPayment } = await updatePayment(payload, order);
 
-  return {
-    order: { id: order.id, version: order.version, createdAt: order.createdAt },
-    payment: updatedPayment,
-  };
+  return getupdateOrderWithPaymentMapper(updatedPayment, order);
 };
 
 export async function orderPaymentHandler(payload: PaymentPayload) {
@@ -144,7 +143,7 @@ export async function orderPaymentHandler(payload: PaymentPayload) {
       // update order id and reset the state as DEFAULT
       const updateQuery = {
         ...(!dbPayment.orderId && result?.order?.id
-          ? { orderId: result.order.id, orderCreatedAt: result.order.createdAt }
+          ? getOrderResultMapper(result.order)
           : {}),
         worldlineId: payload?.payment?.id,
         worldlineStatus: payload?.payment?.status || '',
