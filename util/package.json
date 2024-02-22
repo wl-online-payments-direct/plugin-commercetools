@@ -17,7 +17,6 @@
   "keywords": [],
   "license": "ISC",
   "dependencies": {
-    "@commercetools-backend/express": "^22.17.0",
     "winston": "^3.11.0"
   },
   "devDependencies": {
@@ -36,7 +35,7 @@
     "node": ">=18.0.0"
   },
   "lint-staged": {
-    "src/**/*.ts": [
+    "src/**/*.ts":[
       "npm run lint-fix",
       "npm run pretty",
       "npm run typecheck"

@@ -3,7 +3,6 @@ import {
   isPostRequestOrThrowError,
   logger,
   ResponseClient,
-  authenticateSession,
 } from '@worldline/ctintegration-util';
 import { testConnectionRequest } from '../../lib';
 import { Request, ErrorProps } from '../../lib/types';
@@ -15,9 +14,6 @@ const processRequest = async (request: Request, response: ServerResponse) => {
 
     // Only allow POST request; else throw error
     await isPostRequestOrThrowError(method);
-
-    // Authenticate the session
-    await authenticateSession(request, response);
 
     logger().debug('[TestConnection] Process started');
 
