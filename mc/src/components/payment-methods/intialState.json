@@ -355,12 +355,6 @@
     "value": false,
     "criteria": []
   },
-  "skip3dsAuthentication": {
-    "label": "Force 3DSv2",
-    "type": "boolean",
-    "value": false,
-    "criteria": []
-  },
   "bgColor": {
     "label": "Background Color",
     "type": "color",

@@ -183,21 +183,6 @@ const GeneralSettings = ({ state, handleCommonSettings }) => {
         </div>
       </div>
       <div className="section-wrapper">
-        <div className="force-s3sv2 flex mb-2">
-          <h5 className="section-header">
-            {state.skip3dsAuthentication.label}
-          </h5>
-          <ToggleInput
-            size={'small'}
-            isDisabled={false}
-            isChecked={state.skip3dsAuthentication.value}
-            onChange={(e) =>
-              handleCommonSettings('skip3dsAuthentication', e.target.checked)
-            }
-          />
-        </div>
-      </div>
-      <div className="section-wrapper">
         <div className="colorpicker-section">
           <div className="colorpicker-container flex mb-2">
             <input

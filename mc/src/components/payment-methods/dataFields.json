@@ -37,7 +37,6 @@
     "bgColor",
     "captureAuthorizationMode",
     "enableWorldlineCheckout",
-    "skip3dsAuthentication",
     "merchantReference",
     "outlineColor",
     "paymentOption",
