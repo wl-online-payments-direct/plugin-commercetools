@@ -182,59 +182,6 @@ const GeneralSettings = ({ state, handleCommonSettings }) => {
           )}
         </div>
       </div>
-      <div className="section-wrapper">
-        <div className="force-s3sv2 flex mb-2">
-          <h5 className="section-header">
-            {state.skip3dsAuthentication.label}
-          </h5>
-          <ToggleInput
-            size={'small'}
-            isDisabled={false}
-            isChecked={state.skip3dsAuthentication.value}
-            onChange={(e) =>
-              handleCommonSettings('skip3dsAuthentication', e.target.checked)
-            }
-          />
-        </div>
-      </div>
-      <div className="section-wrapper">
-        <div className="colorpicker-section">
-          <div className="colorpicker-container flex mb-2">
-            <input
-              type={state.bgColor.type}
-              name="bg_color"
-              value={state.bgColor.value}
-              title={state.bgColor.label}
-              onChange={(e) => handleCommonSettings('bgColor', e.target.value)}
-            />
-            <h5 className="colorpicker-title">{state.bgColor.label}</h5>
-          </div>
-          <div className="colorpicker-container flex mb-2">
-            <input
-              type={state.textColor.type}
-              name="text_color"
-              value={state.textColor.value}
-              title={state.textColor.label}
-              onChange={(e) =>
-                handleCommonSettings('textColor', e.target.value)
-              }
-            />
-            <h5 className="colorpicker-title">{state.textColor.label}</h5>
-          </div>
-          <div className="colorpicker-container flex mb-2">
-            <input
-              type={state.outlineColor.type}
-              name="bg_color"
-              value={state.outlineColor.value}
-              title={state.outlineColor.label}
-              onChange={(e) =>
-                handleCommonSettings('outlineColor', e.target.value)
-              }
-            />
-            <h5 className="colorpicker-title">{state.outlineColor.label}</h5>
-          </div>
-        </div>
-      </div>
     </>
   );
 };
