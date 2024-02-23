@@ -293,6 +293,7 @@ const PaymentMethods = () => {
       value: {
         ...customObject?.value,
         merchantReference: saveData.merchantReference.replaceAll(' ', ''),
+        authorizationMode: saveData.authorizationMode,
         live: {
           ...customObject?.value?.live,
           ...saveData,
