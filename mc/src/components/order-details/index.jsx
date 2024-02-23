@@ -110,7 +110,7 @@ const OrderDetails = () => {
                 worldlineId={orderDetails.worldlineId} 
                 storeId={activeStore.key}
                 currencyCode={orderDetails.currencyCode}
-                alreadyCapturedAmount={orderDetails.alreadyCapturedAmount}
+                alreadyRefundedAmount={orderDetails.alreadyRefundedAmount}
                 transactionList={orderDetails.Operations?.filter((operation) => operation.status === 'REFUNDED')}
             />
         )
