@@ -271,13 +271,19 @@ const PaymentMethods = () => {
                 if (!data.enabled.value) return { ...pDat, enabled: false };
                 else return { ...pDat };
               });
+            } else if (dSet === 'payButtonTitle') {
+              sendLoad[dSet] = data[dSet]?.values;
             } else sendLoad[dSet] = data[dSet]?.value;
           }
           return {
             [key]: sendLoad,
           };
         default:
-          return { [key]: state[key].value };
+          if (key === 'placeOrder') {
+            return { [key]: state[key].values };
+          } else {
+            return { [key]: state[key].value };
+          }
       }
     });
 
@@ -304,7 +310,7 @@ const PaymentMethods = () => {
         },
       },
     };
-    await saveCustomObject(final_payload);
+    // await saveCustomObject(final_payload);
   };
 
   useEffect(async () => {
