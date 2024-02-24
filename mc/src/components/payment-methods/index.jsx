@@ -310,7 +310,7 @@ const PaymentMethods = () => {
         },
       },
     };
-    // await saveCustomObject(final_payload);
+    await saveCustomObject(final_payload);
   };
 
   useEffect(async () => {
@@ -339,10 +339,11 @@ const PaymentMethods = () => {
                 break;
               } else if (field === 'payButtonTitle') {
                 if (customValue?.[ds]?.[field]) {
-                  payload[ds][field].value = customValue?.[ds]?.[field];
-                  payload[ds][field].values[
-                    customValue[ds]['payButtonLanguage']
-                  ] = customValue?.[ds]?.[field];
+                  payload[ds][field].value =
+                    customValue?.[ds]?.[field][
+                      customValue[ds]['payButtonLanguage']
+                    ];
+                  payload[ds][field].values = customValue?.[ds]?.[field];
                 }
                 break;
               } else {
@@ -353,10 +354,12 @@ const PaymentMethods = () => {
             case 'general':
               if (customValue?.[field] !== undefined) {
                 if (field === 'placeOrder') {
-                  payload[field].values[customValue['placeOrderLanguage']] =
-                    customValue?.[field];
+                  payload[field].value =
+                    customValue?.[field][customValue['placeOrderLanguage']];
+                  payload[field].values = customValue?.[field];
+                } else {
+                  payload[field].value = customValue?.[field];
                 }
-                payload[field].value = customValue?.[field];
               }
               if (
                 customObject?.value &&

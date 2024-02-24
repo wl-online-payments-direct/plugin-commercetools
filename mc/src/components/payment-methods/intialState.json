@@ -355,30 +355,6 @@
     "value": false,
     "criteria": []
   },
-  "skip3dsAuthentication": {
-    "label": "Force 3DSv2",
-    "type": "boolean",
-    "value": false,
-    "criteria": []
-  },
-  "bgColor": {
-    "label": "Background Color",
-    "type": "color",
-    "value": "#fff",
-    "criteria": []
-  },
-  "textColor": {
-    "label": "Text Color",
-    "type": "color",
-    "value": "#fff",
-    "criteria": []
-  },
-  "outlineColor": {
-    "label": "Outline Color",
-    "type": "color",
-    "value": "#fff",
-    "criteria": []
-  },
   "enableWorldlineCheckout": {
     "value": false
   }

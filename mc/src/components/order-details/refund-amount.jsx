@@ -23,7 +23,7 @@ const RefundAmount = ({
     worldlineId, 
     storeId, 
     currencyCode, 
-    alreadyCapturedAmount,
+    alreadyRefundedAmount,
     transactionList
 }) => {
     const {formatMessage} = useIntl()
@@ -127,7 +127,7 @@ const RefundAmount = ({
                             </div>
                         </div>
                         <div className="transacation-details">
-                            {formatMessage(messages.amountRefundedAlready)} <b>{currencyCode} {alreadyCapturedAmount}</b>
+                            {formatMessage(messages.amountRefundedAlready)} <b>{currencyCode} {alreadyRefundedAmount}</b>
                             <p className="see-transaction-link" onClick={() => setSeeTransactions(true)}>
                                 {formatMessage(messages.seeTransactions)}
                             </p>
@@ -161,6 +161,6 @@ RefundAmount.propTypes = {
     worldlineId: PropTypes.string,
     storeId: PropTypes.string,
     currencyCode: PropTypes.string,
-    alreadyCapturedAmount: PropTypes.string,
+    alreadyRefundedAmount: PropTypes.string,
     transactionList: PropTypes.array
 };

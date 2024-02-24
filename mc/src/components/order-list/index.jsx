@@ -79,6 +79,12 @@ const OrderList = () => {
     getOrders()
   }, [apiHost, projectKey, activeStore])
 
+  useEffect(() => {
+    setOpenCancel(false)
+    setOpenCapture(false)
+    setOpenRefund(false)
+  }, [])
+
   const onPagination = async (page) => {
     setCurrentPage(page)
     getOrders({page})
@@ -96,8 +102,6 @@ const OrderList = () => {
 
   const handleCancelAgree = () => {
     setOpenCancel(true)
-    setOpenCapture(false)
-    setOpenRefund(false)
     history.push(`${match.url}/${paymentId}`)
   }
 
@@ -129,8 +133,6 @@ const OrderList = () => {
               }}>{formatMessage(messages.cancel)}</button>
               <button onClick={() => {
                 setOpenCapture(true)
-                setOpenRefund(false)
-                setOpenCancel(false)
                 history.push(`${match.url}/${item['paymentId']}`)
               }}>{formatMessage(messages.capture)}</button>
           </div>
@@ -140,8 +142,6 @@ const OrderList = () => {
           <div className='action-wrapper'>
               <button onClick={() => {
                 setOpenRefund(true)
-                setOpenCapture(false)
-                setOpenCancel(false)
                 history.push(`${match.url}/${item['paymentId']}`)
               }}>{formatMessage(messages.refund)}</button>
           </div>
