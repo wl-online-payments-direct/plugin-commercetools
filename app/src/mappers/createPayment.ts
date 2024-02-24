@@ -2,6 +2,7 @@ import { Cart } from '@worldline/ctintegration-ct';
 import { $Enums } from '@worldline/ctintegration-db';
 import {
   CustomObjects,
+  GetHostedTokenizationResponse,
   ICreateMyPaymentPayload,
   ICreatePaymentResponse,
 } from '../types';
@@ -79,20 +80,36 @@ export function getDatabasePayload({
   payment,
   isHostedCheckout,
   isHostedTokenization,
+  hostedTokenizationResponse,
 }: {
   customConfig: CustomObjects;
   reference: { referenceId: number };
   cart: Cart;
-  payload: { storeId: string };
-  payment?: { id: string };
+  payload: { storeId: string; hostedTokenizationId?: string };
+  payment?: {
+    id: string;
+    status?: string;
+    statusCode?: number;
+    amount?: number;
+    currencyCode?: string;
+  };
   isHostedCheckout?: boolean;
   isHostedTokenization?: boolean;
+  hostedTokenizationResponse?: GetHostedTokenizationResponse;
 }) {
   const { merchantReference, authorizationMode } = customConfig;
   const cartId = cart.id;
-  const { storeId } = payload;
+  const { storeId, hostedTokenizationId } = payload;
 
-  let paymentOption = null;
+  const {
+    id: worldlineId = '',
+    status: worldlineStatus = '',
+    statusCode: worldlineStatusCode = 0,
+    amount: total = 0,
+    currencyCode: currency = '',
+  } = payment || {};
+
+  let paymentOption;
 
   if (isHostedCheckout) {
     paymentOption = Constants.getRedirectWorldlineOption();
@@ -107,15 +124,22 @@ export function getDatabasePayload({
     reference.referenceId,
   );
 
+  const storePermanently = !hostedTokenizationResponse?.token?.isTemporary;
+
   return {
     authMode: authorizationMode as $Enums.Modes,
     paymentOption: paymentOption as $Enums.PaymentOptions,
     paymentId,
-    worldlineId: payment?.id?.toString() || '',
     storeId,
     cartId,
     orderId: '',
-    storePermanently: false, // TODO: will confirm
+    hostedTokenizationId,
+    storePermanently,
+    worldlineId,
+    worldlineStatus,
+    worldlineStatusCode,
+    currency,
+    total,
   };
 }
 
@@ -146,5 +170,13 @@ export async function getCreatedPaymentMappedResponse(
     orderPaymentId,
     actionType,
     redirectURL,
+  };
+}
+
+export function getHostedTokenizationPayload(payload: ICreateMyPaymentPayload) {
+  const { storeId, hostedTokenizationId } = payload;
+  return {
+    storeId,
+    hostedTokenizationId,
   };
 }

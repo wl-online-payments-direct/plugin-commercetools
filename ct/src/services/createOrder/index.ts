@@ -1,27 +1,17 @@
 import { ApiClient } from '../../clients';
 import query from './query';
-import { createOrderResponseMapper } from '../../mappers';
+import { createOrderResponseMapper, getVariables } from '../../mappers';
 import { CreateOrderPayload, CreateOrderResponse } from '../../types';
 
-export async function createOrder({
-  id,
-  version,
-  accessToken,
-}: CreateOrderPayload) {
+export async function createOrder(payload: CreateOrderPayload) {
   // Initialize api client
   const apiClient = new ApiClient();
-
-  const variables = {
-    id, // cart id
-    version,
-  };
-
   apiClient.setBody({
     query,
-    variables,
+    variables: getVariables(payload),
   });
 
-  apiClient.setAuthHeader(accessToken);
+  apiClient.setAuthHeader(payload.accessToken);
 
   const response = (await apiClient.execute()) as CreateOrderResponse;
 

@@ -1,9 +1,10 @@
 import { ErrorObject } from '@commercetools/platform-sdk';
 
 export interface RedirectModeAPaymentOptions {
+  sendOrderData: boolean;
   enabled: boolean;
-  merchantReferenceID: string;
   paymentOptions: {
+    paymentProductId: number;
     displayOrder: number;
     label: string;
     enabled: boolean;
@@ -15,7 +16,6 @@ export interface RedirectModeBPaymentOptions {
   enabled: boolean;
   logo: string;
   payButtonTitle: string;
-  merchantReferenceID: string;
   templateFileName: string;
   groupCards?: boolean;
 }
@@ -25,7 +25,6 @@ export interface OnSiteModePaymentOptions {
   logo: string;
   payButtonTitle: string;
   payButtonLanguage: string;
-  merchantReferenceID: string;
   templateFileName: string;
 }
 

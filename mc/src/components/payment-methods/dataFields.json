@@ -4,14 +4,20 @@
     "logo",
     "payButtonLanguage",
     "payButtonTitle",
-    "templateFileName"
+    "templateFileName",
+    "3dsEnablement",
+    "3dsChallenge",
+    "3dsExemption"
   ],
   "redirectModeA": [
     "enabled",
     "paymentOptions",
     "refresh",
     "sendOrderData",
-    "templateFileName"
+    "templateFileName",
+    "3dsEnablement",
+    "3dsChallenge",
+    "3dsExemption"
   ],
   "redirectModeB": [
     "enabled",
@@ -20,7 +26,10 @@
     "payButtonTitle",
     "payButtonLanguage",
     "sendOrderData",
-    "templateFileName"
+    "templateFileName",
+    "3dsEnablement",
+    "3dsChallenge",
+    "3dsExemption"
   ],
   "general": [
     "enableLogs",
@@ -29,7 +38,7 @@
     "captureAuthorizationMode",
     "enableWorldlineCheckout",
     "skip3dsAuthentication",
-    "merchantReferenceID",
+    "merchantReference",
     "outlineColor",
     "paymentOption",
     "placeOrder",

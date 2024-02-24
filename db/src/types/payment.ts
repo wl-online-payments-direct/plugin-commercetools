@@ -34,11 +34,16 @@ export interface PaymentReference {
 export interface CreatePaymentRequest {
   authMode: $Enums.Modes;
   paymentOption: $Enums.PaymentOptions;
+  hostedTokenizationId?: string;
   paymentId: string;
   worldlineId: string;
+  worldlineStatus: string;
+  worldlineStatusCode: number;
   storeId: string;
   cartId: string;
   orderId: string;
+  currency: string;
+  total: number;
   status?: $Enums.Status;
   state?: $Enums.States;
 }

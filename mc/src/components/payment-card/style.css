@@ -14,19 +14,35 @@
     cursor: pointer;
 }
 
-.payment-logo-modal {
+.popup-modal {
     border-radius: 15px;
     position: absolute;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    width: 600px;
     border: 2px solid #000;
     background-color: #fff;
     padding: 40px;
 }
 
+.payment-logo-modal {
+    width:60%;
+}
+
+.delete-modal {
+    width:40%;
+}
+
 .close-button {
     float: right;
     cursor: pointer;
+}
+
+.logo-section-wrapper {
+    margin-bottom: 2rem;
+}
+
+.field-wrapper{
+    justify-content: space-around;
+    margin-bottom: 2rem;
 }

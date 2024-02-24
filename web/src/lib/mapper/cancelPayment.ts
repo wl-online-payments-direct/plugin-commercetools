@@ -5,7 +5,6 @@ export function getCancelPaymentRequiredProps(request: Request) {
     orderId = '',
     storeId = '',
     amount = 0,
-    isFinal = false,
     currencyCode = '',
     paymentId = '',
   } = (request?.body || {}) as CancelPaymentPayload;
@@ -14,7 +13,6 @@ export function getCancelPaymentRequiredProps(request: Request) {
     orderId,
     storeId,
     amount,
-    isFinal,
     currencyCode,
     paymentId,
   };
@@ -27,7 +25,6 @@ export function getCancelPaymentAppPayload(request: Request) {
     orderId = '',
     storeId = '',
     amount = 0,
-    isFinal = false,
     currencyCode = '',
     paymentId = '',
   } = (request?.body || {}) as CancelPaymentPayload;
@@ -37,7 +34,6 @@ export function getCancelPaymentAppPayload(request: Request) {
     orderId,
     storeId,
     amount,
-    isFinal,
     currencyCode,
     paymentId,
   };

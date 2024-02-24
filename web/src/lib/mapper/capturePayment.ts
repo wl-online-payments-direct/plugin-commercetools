@@ -4,15 +4,15 @@ export function getCapturePaymentRequiredProps(request: Request) {
   const {
     storeId = '',
     amount = 0,
-    isFinal = false,
     paymentId = '',
+    orderId = '',
   } = (request?.body || {}) as CapturePaymentPayload;
 
   return {
     storeId,
     amount,
-    isFinal,
     paymentId,
+    orderId,
   };
 }
 
@@ -22,15 +22,15 @@ export function getCapturePaymentAppPayload(request: Request) {
   const {
     storeId = '',
     amount = 0,
-    isFinal = false,
     paymentId = '',
+    orderId = '',
   } = (request?.body || {}) as CapturePaymentPayload;
 
   return {
     authToken,
     storeId,
     amount,
-    isFinal,
     paymentId,
+    orderId,
   };
 }

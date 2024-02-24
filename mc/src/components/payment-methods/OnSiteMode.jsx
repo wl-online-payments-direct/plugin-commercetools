@@ -11,7 +11,7 @@ import InfoIcon from '@mui/icons-material/Info';
 import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 import Select from '@mui/material/Select';
-import ImageUpload from '../image-upload';
+import PaymentModalComponent from '../payment-modal';
 
 const OnSiteMode = ({ onSiteMode, handleOnsiteMode }) => {
   return (
@@ -56,7 +56,7 @@ const OnSiteMode = ({ onSiteMode, handleOnsiteMode }) => {
               >
                 {onSiteMode.payButtonLanguage.values &&
                   onSiteMode.payButtonLanguage.values.map((lang, index) => (
-                    <MenuItem key={`lang${index}`} value={lang}>
+                    <MenuItem key={`payButtonlang${index}`} value={lang}>
                       {lang}
                     </MenuItem>
                   ))}
@@ -88,16 +88,62 @@ const OnSiteMode = ({ onSiteMode, handleOnsiteMode }) => {
         </div>
         <div className="section-wrapper">
           <h5 className="section-header">
-            {onSiteMode.logo.label}
+            <span>{onSiteMode.logo.label}</span>
             <Tooltip placement="top" title={onSiteMode.logo.tooltip}>
               <InfoIcon />
             </Tooltip>
           </h5>
           <div className="template-section flex">
-            <ImageUpload
+            <PaymentModalComponent
               images={onSiteMode.logo.value}
               source="onsite"
               saveImage={(urls) => handleOnsiteMode('logo', urls)}
+            />
+          </div>
+        </div>
+        <div className="section-wrapper">
+          <h5 className="section-header">
+            {onSiteMode['3dsEnablement'].label}
+          </h5>
+          <div className="3ds-enablement flex">
+            <h5 className="section-title">
+              {onSiteMode['3dsEnablement'].label}
+            </h5>
+            <ToggleInput
+              size={'small'}
+              isDisabled={false}
+              isChecked={onSiteMode['3dsEnablement'].value}
+              onChange={(e) =>
+                handleOnsiteMode('3dsEnablement', e.target.checked)
+              }
+            />
+          </div>
+        </div>
+        <div className="section-wrapper flex">
+          <div className="3ds-challenge flex">
+            <h5 className="section-title">
+              {onSiteMode['3dsChallenge'].label}
+            </h5>
+            <ToggleInput
+              size={'small'}
+              isDisabled={onSiteMode['3dsEnablement'].value ? false : true}
+              isChecked={onSiteMode['3dsChallenge'].value}
+              onChange={(e) =>
+                handleOnsiteMode('3dsChallenge', e.target.checked)
+              }
+            />
+          </div>
+          <div className="3ds-excemption flex">
+            <h5 className="section-title">
+              {onSiteMode['3dsExemption'].label}
+            </h5>
+            <ToggleInput
+              size={'small'}
+              isDisabled={onSiteMode['3dsEnablement'].value ? false : true}
+              isChecked={onSiteMode['3dsExemption'].value}
+              onChange={(e) =>
+                handleOnsiteMode('3dsExemption', e.target.checked)
+              }
             />
           </div>
         </div>

@@ -1,7 +1,10 @@
 import { ICancelPaymentPayload } from '../types';
 
-export function getPaymentCancelServicePayload(payload: ICancelPaymentPayload) {
-  const { amount, isFinal, currencyCode } = payload;
+export function getPaymentCancelServicePayload(
+  payload: ICancelPaymentPayload,
+  isFinal: boolean,
+) {
+  const { amount, currencyCode } = payload;
 
   return {
     amountOfMoney: {

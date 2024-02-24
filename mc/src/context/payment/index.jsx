@@ -5,6 +5,7 @@ import {
   createCustomObject,
   getPaymentMethods,
   uploadImages,
+  testConnection,
 } from '../../ct-methods';
 import { useApplicationContext } from '@commercetools-frontend/application-shell-connectors';
 import Snackbar from '@mui/material/Snackbar';
@@ -123,7 +124,7 @@ const PaymentProvider = ({ children }) => {
           activeStore?.key,
           apiHost
         );
-        if (response) {
+        if (response.statusCode === 200) {
           const { result } = response;
           setLoader(false);
           showToaster({
@@ -132,6 +133,14 @@ const PaymentProvider = ({ children }) => {
             message: 'Refresh Payment Methods: Success',
           });
           return result;
+        } else {
+          setLoader(false);
+          showToaster({
+            severity: 'error',
+            open: true,
+            message: 'Failed to refresh payment methods',
+          });
+          return null;
         }
       } catch (err) {
         setLoader(false);
@@ -183,6 +192,29 @@ const PaymentProvider = ({ children }) => {
     }
   };
 
+  const checkConnection = async (payload) => {
+    setLoader(true);
+    try {
+      const response = await testConnection(projectKey, apiHost, payload);
+      if (response.statusCode === 200) {
+        setLoader(false);
+        return response.result;
+      } else {
+        showToaster({
+          severity: 'error',
+          open: true,
+          message: 'Warning: Please enter correct PSPID, API Key & API Secret.',
+        });
+      }
+    } catch (err) {
+      console.error(
+        'Warning: Please enter correct PSPID, API Key & API Secret.',
+        err.message
+      );
+      setLoader(false);
+    }
+  };
+
   useEffect(async () => {
     const response = await fetchCustomObjects(activeStore);
     setCustomObject(response);
@@ -219,6 +251,7 @@ const PaymentProvider = ({ children }) => {
         saveCustomObject,
         fetchWorldlinePaymentOptions,
         imageUploader,
+        checkConnection,
         customObject,
         activeStore,
         stores,

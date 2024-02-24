@@ -10,6 +10,7 @@ import {
   updateOrder,
   getPaymentById,
   createTransaction,
+  getCustomObjects,
 } from '@worldline/ctintegration-ct';
 import {
   getPayment,
@@ -17,7 +18,7 @@ import {
   setPayment,
 } from '@worldline/ctintegration-db';
 import { logger, retry } from '@worldline/ctintegration-util';
-import { PaymentPayload, RefundPayload } from './types';
+import { CustomObjects, PaymentPayload, RefundPayload } from './types';
 import {
   getPaymentDBPayload,
   getPaymentFilterQuery,
@@ -26,14 +27,19 @@ import {
   getMappedStatus,
   hasEqualAmounts,
   hasValidAmount,
-  hasEqualAmountOrder,
   isPaymentProcessing,
   shouldSaveToken,
   getCustomerTokenPayload,
+  calculateRemainingOrderAmount,
 } from './mappers';
 import Constants from './constants';
+import { calculateTotalCaptureAmount } from './capturePayment';
 
-const createOrderWithPayment = async (payload: PaymentPayload, cart: Cart) => {
+const createOrderWithPayment = async (
+  payload: PaymentPayload,
+  cart: Cart,
+  customObjects: CustomObjects,
+) => {
   // Create order and payment
   const ctPayment = await createPayment(payload);
 
@@ -46,7 +52,7 @@ const createOrderWithPayment = async (payload: PaymentPayload, cart: Cart) => {
   const token = await getClientCredentialsToken();
 
   const ctOrder = await createOrder(
-    getCreateOrderCTPayload(updatedCart, token),
+    getCreateOrderCTPayload(updatedCart, token, customObjects),
   );
 
   return { order: ctOrder };
@@ -77,7 +83,7 @@ export async function orderPaymentHandler(payload: PaymentPayload) {
   // log the payload
   logger().debug(`[orderPaymentHandler] payload: ${JSON.stringify(payload)}`);
 
-  const { PAYMENT } = Constants;
+  const { PAYMENT, STATUS } = Constants;
 
   return retry(async () => {
     // Fetch DB payment
@@ -116,35 +122,40 @@ export async function orderPaymentHandler(payload: PaymentPayload) {
 
       const mappedStatus = getMappedStatus(payload);
 
-      if (mappedStatus === PAYMENT.DATABASE.STATUS.FAILED) {
-        await setPayment({ id: dbPayment.id }, { status: mappedStatus });
-        return {
-          isRetry: false,
-          data: {
-            message: `Updated payment status as ${mappedStatus} as we received status as ${payload.payment.status}`,
-          },
-        };
-      }
-
       await setPayment(
         { id: dbPayment.id },
         { state: PAYMENT.DATABASE.STATE.PROCESSING },
       );
 
+      const customObjects = await getCustomObjects(dbPayment.storeId);
+
       // TODO: What happens when one of the webhook arrive out of sync?
       // E.g. a payment got authorized and then captured, but the webhooks reached in reverse order
-      const result = !dbPayment?.orderId
-        ? await createOrderWithPayment(payload, cart)
-        : await updateOrderWithPayment(payload, dbPayment);
+      let result;
+      if (payload.type === STATUS.PENDING_CAPTURE) {
+        result = !dbPayment?.orderId
+          ? await createOrderWithPayment(payload, cart, customObjects)
+          : await updateOrderWithPayment(payload, dbPayment);
+      }
 
       // update order id and reset the state as DEFAULT
-      await setPayment(getPaymentFilterQuery(dbPayment), {
+      const updateQuery = {
         ...(!dbPayment.orderId && result?.order?.id
-          ? { orderId: result.order.id, worldlineId: payload?.payment?.id }
-          : { worldlineId: payload?.payment?.id }),
+          ? { orderId: result.order.id }
+          : {}),
+        worldlineId: payload?.payment?.id,
+        worldlineStatus: payload?.payment?.status || '',
+        worldlineStatusCode: payload?.payment?.statusOutput?.statusCode || 0,
+        currency: payload?.payment?.paymentOutput.amountOfMoney.currencyCode,
+        total: payload?.payment?.paymentOutput.amountOfMoney.amount,
         state: PAYMENT.DATABASE.STATE.DEFAULT,
         status: mappedStatus,
-      });
+        errors: payload?.payment?.statusOutput?.errors
+          ? JSON.stringify(payload?.payment?.statusOutput?.errors)
+          : '',
+      };
+
+      await setPayment(getPaymentFilterQuery(dbPayment), updateQuery);
 
       //  Should save the token only:
       //  if "storePermanently" field is received as true
@@ -238,13 +249,22 @@ export async function orderPaymentCaptureHandler(payload: PaymentPayload) {
       statusCode: 500,
     };
   }
+  const captureAmount = payload.payment.paymentOutput.amountOfMoney.amount;
   // Validate capture amount
-  if (!hasEqualAmountOrder(payload, order)) {
-    logger().error(
-      "[orderPaymentCaptureHandler] Order amount doesn't match with the paid amount",
-    );
+  const totalCaptureAmount = await calculateTotalCaptureAmount(order);
+
+  const diffAmount = calculateRemainingOrderAmount(order, totalCaptureAmount);
+
+  const hasValidCapture = hasValidAmount(order, totalCaptureAmount);
+
+  // Check if the capture amount exceeds the remaining order amount or equals the total capture amount
+  if (
+    hasValidCapture.isEqual ||
+    (captureAmount > diffAmount && diffAmount !== 0)
+  ) {
+    logger().error('[orderPaymentCaptureHandler] Capture amount is invalid!');
     throw {
-      message: "Order amount doesn't match with the paid amount",
+      message: 'Capture amount is invalid!',
       statusCode: 500,
     };
   }
@@ -261,19 +281,27 @@ export async function orderPaymentCaptureHandler(payload: PaymentPayload) {
       statusCode: 500,
     };
   }
-  let result;
-  // if order id exists
-  if (payment.orderId) {
-    result = await updateOrderStatus(payment.orderId, 'Confirmed', 'Paid');
-    if (order.paymentInfo?.payments[0]?.id) {
-      await createTransactionInPayment(
-        order.paymentInfo.payments[0].id,
-        payload,
-        'Charge',
-      );
-    }
+  // if payment exist in order
+  if (order.paymentInfo?.payments[0]?.id) {
+    await createTransactionInPayment(
+      order.paymentInfo.payments[0].id,
+      payload,
+      'Charge',
+    );
+  }
+  const result = {
+    status: 'Partial capture requested',
+  };
+
+  if (diffAmount === 0 || diffAmount === captureAmount) {
+    const response = await updateOrderStatus(
+      payment.orderId,
+      'Confirmed',
+      'Paid',
+    );
     // Update payment table
     await setPayment({ id: payment.id }, { status: mappedStatus });
+    return response;
   }
   return result;
 }

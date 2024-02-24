@@ -18,3 +18,4 @@ export * from './refundPayment';
 export * from './capturePayment';
 export * from './getPaymentProducts';
 export * from './getOrder';
+export * from './getHostedTokenization';

@@ -40,8 +40,8 @@ const RedirectModeA = ({
         <p className="sub-title">Single payment buttons selected on site</p>
         <div className="relative">
           <span className="float-right">
-            <div>
-              Send Order Data
+            <div className="flex">
+              <span className="header-section-title"> Send Order Data</span>
               <Tooltip
                 placement="top"
                 title={redirectModeA.sendOrderData.tooltip}
@@ -62,9 +62,13 @@ const RedirectModeA = ({
             label={redirectModeA.refresh.label}
             onClick={() => fetchPaymentMethods()}
           ></SecondaryButton>
-          <Tooltip placement="top" title={redirectModeA.refresh.tooltip}>
-            <InfoIcon />
-          </Tooltip>
+          <span className="refresh-btn">
+            <span>
+              <Tooltip placement="top" title={redirectModeA.refresh.tooltip}>
+                <InfoIcon />
+              </Tooltip>
+            </span>
+          </span>
         </div>
 
         <PaymentOptions
@@ -91,6 +95,52 @@ const RedirectModeA = ({
               Payment page look and feel can be customized on Worldline Back
               Office.
             </p>
+          </div>
+        </div>
+        <div className="section-wrapper">
+          <h5 className="section-header">
+            {redirectModeA['3dsEnablement'].label}
+          </h5>
+          <div className="3ds-enablement flex">
+            <h5 className="section-title">
+              {redirectModeA['3dsEnablement'].label}
+            </h5>
+            <ToggleInput
+              size={'small'}
+              isDisabled={false}
+              isChecked={redirectModeA['3dsEnablement'].value}
+              onChange={(e) =>
+                handleRedirectModeA('3dsEnablement', e.target.checked)
+              }
+            />
+          </div>
+        </div>
+        <div className="section-wrapper flex">
+          <div className="3ds-challenge flex">
+            <h5 className="section-title">
+              {redirectModeA['3dsChallenge'].label}
+            </h5>
+            <ToggleInput
+              size={'small'}
+              isDisabled={redirectModeA['3dsEnablement'].value ? false : true}
+              isChecked={redirectModeA['3dsChallenge'].value}
+              onChange={(e) =>
+                handleRedirectModeA('3dsChallenge', e.target.checked)
+              }
+            />
+          </div>
+          <div className="3ds-excemption flex">
+            <h5 className="section-title">
+              {redirectModeA['3dsExemption'].label}
+            </h5>
+            <ToggleInput
+              size={'small'}
+              isDisabled={redirectModeA['3dsEnablement'].value ? false : true}
+              isChecked={redirectModeA['3dsExemption'].value}
+              onChange={(e) =>
+                handleRedirectModeA('3dsExemption', e.target.checked)
+              }
+            />
           </div>
         </div>
       </AccordionDetails>

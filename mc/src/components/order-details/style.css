@@ -1,0 +1,135 @@
+.order-details-wrapper {
+    display: flex;
+    flex-direction: column;
+    padding: 20px 0;
+    gap: 20px;
+}
+.loading-spinner {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 80px 0;
+}
+.back-to-orders {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 10px;
+}
+.back-link {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+.order-details {
+    display: flex;
+    overflow: auto;
+    flex: 1;
+}
+.failed-order {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    padding: 20px 0;
+}
+.transaction-wrapper {
+    display: flex;
+    gap: 20px;
+    flex-direction: column;
+    max-width: 1200px;
+    margin: 40px 0 0 0;
+}
+.transaction-details-wrapper {
+    border: 1px solid #eee;
+    padding: 40px 20px;
+    border-radius: 4px;
+}
+.transaction-order-details {
+    display: flex;
+    gap: 80px;
+    justify-content: space-between;
+}
+.details-col {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+.status-field {
+    background: #EDFCF7;
+    color: #056A4B;
+    padding: 10px 20px;
+}
+.transaction-form-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 40px;
+    margin-top: 40px;
+    border-top: 1px solid #EEE;
+    padding-top: 40px;
+}
+.transaction-form {
+    display: flex;
+    gap: 20px;
+    align-items: flex-end;
+}
+.input-label {
+    padding-bottom: 10px;
+}
+.transaction-input {
+    height: 40px;
+    line-height: 40px;
+    padding: 0 10px;
+    border-radius: 2px;
+    background: #EEE;
+    border: none;
+    width: 100%;
+}
+.transaction-button {
+    background: #17AB97;
+    height: 40px;
+    line-height: 40px;
+    padding: 0 10px;
+    border-radius: 4px;
+    color: #FFF;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-width: 200px;
+    cursor: pointer;
+}
+.transaction-form button[disabled] {
+    background: #CCC;
+}
+.transacation-details {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+.see-transaction-link {
+    color: #17AB97;
+    text-decoration: underline;
+    cursor: pointer;
+}
+.transaction-list-wrapper {
+    background-color: #eee;
+    padding: 40px;
+    max-width: 1200px;
+}
+.transaction-list-title {
+    display: flex;
+    gap: 40px;
+    margin-bottom: 20px;
+}
+.transaction-list {
+    display: flex;
+    margin-bottom: 20px;
+}
+.transaction-list-title h4, .transaction-list p {
+    flex: 1;
+    margin: 10px 0;
+}
+.error-message {
+    color: red;
+    padding-top: 10px;
+}

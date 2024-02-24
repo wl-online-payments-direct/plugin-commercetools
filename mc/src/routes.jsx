@@ -3,7 +3,10 @@ import Spacings from '@commercetools-uikit/spacings';
 import Welcome from './components/welcome';
 import MyAccount from './components/my-account';
 import PaymentMethods from './components/payment-methods';
-import { myAccountUri, paymentMethodsUri } from './constants';
+import { myAccountUri, orderUri, paymentMethodsUri } from './constants';
+import OrderList from './components/order-list';
+import OrderDetails from './components/order-details';
+import OrderProvider from './context/order';
 
 const ApplicationRoutes = () => {
   const match = useRouteMatch();
@@ -22,12 +25,20 @@ const ApplicationRoutes = () => {
   return (
     <Spacings.Inset scale="l">
       <Switch>
-        <Route path={`${match.path}/${myAccountUri}`}>
+        <Route path={`${match.path}/${myAccountUri}`} exact>
           <MyAccount />
         </Route>
-        <Route path={`${match.path}/${paymentMethodsUri}`}>
+        <Route path={`${match.path}/${paymentMethodsUri}`} exact>
           <PaymentMethods />
         </Route>
+        <OrderProvider>
+          <Route path={`${match.path}/${orderUri}`} exact>
+            <OrderList />
+          </Route>
+          <Route path={`${match.path}/${orderUri}/:orderId`} exact>
+            <OrderDetails />
+          </Route>
+        </OrderProvider>
         <Route>
           <Welcome />
         </Route>

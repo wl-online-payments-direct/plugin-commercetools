@@ -1,11 +1,15 @@
 export interface RedirectModeAPaymentOptions {
+  sendOrderData: boolean;
   enabled: boolean;
-  merchantReferenceID: string;
   paymentOptions: {
+    paymentProductId: number;
     displayOrder: number;
     label: string;
     enabled: boolean;
     logo: string;
+    recurrenceType?: string;
+    signatureType?: string;
+    paymentOption?: string;
   }[];
 }
 
@@ -13,7 +17,6 @@ export interface RedirectModeBPaymentOptions {
   enabled: boolean;
   logo: string;
   payButtonTitle: string;
-  merchantReferenceID: string;
   templateFileName: string;
   groupCards?: boolean;
 }
@@ -23,7 +26,6 @@ export interface OnSiteModePaymentOptions {
   logo: string;
   payButtonTitle: string;
   payButtonLanguage: string;
-  merchantReferenceID: string;
   templateFileName: string;
 }
 
@@ -49,6 +51,7 @@ export interface CustomObjects {
 }
 
 export interface PaymentMethod {
+  paymentProductId?: number;
   name: string;
   type: string;
   displayOrder?: number;

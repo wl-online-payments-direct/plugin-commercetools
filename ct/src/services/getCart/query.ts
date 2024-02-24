@@ -4,6 +4,17 @@ const query = `
         id
         version
         customerId
+        customerEmail
+        customer {
+          id
+          version
+          salutation
+          firstName
+          middleName
+          lastName
+          dateOfBirth
+          email
+        }
         anonymousId
         taxCalculationMode
         totalPrice {
@@ -31,9 +42,37 @@ const query = `
           country
           additionalAddressInfo
         }
+        shippingAddress{
+          title
+          firstName
+          lastName
+          apartment
+          building
+          streetName
+          streetNumber
+          additionalStreetInfo
+          country
+          city
+          state
+          postalCode
+        }
+        taxedShippingPrice{
+          totalNet{
+            currencyCode
+            centAmount
+          }
+          totalTax {
+            currencyCode
+            centAmount
+          }
+        }
         lineItems {
           id
           productId
+          totalPrice {
+            currencyCode
+            centAmount
+          }
           taxedPrice {
             totalTax {
               currencyCode
@@ -45,6 +84,7 @@ const query = `
             }
           }
           taxRate {
+            amount
             includedInPrice
           }
           supplyChannel {
@@ -74,6 +114,7 @@ const query = `
           }
           productType {
             name
+            description
           }
           variant {
             id

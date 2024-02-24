@@ -56,7 +56,6 @@
 .logo-wrapper {
     display: flex;
     margin-bottom: 12px;
-    margin-top: 40%;
     justify-content: space-between;
 }
 
@@ -65,12 +64,6 @@
     font-size: 18px;
     line-height: 22px;
     letter-spacing: -0.26px;
-}
-
-.logo-bottom-container {
-    position: absolute;
-    bottom: 0px;
-    margin-bottom: 3rem;
 }
 
 .logo-bottom-container p {
@@ -115,4 +108,22 @@ p.info {
 
 .myaccount-form button {
     background-color: #45BEAA;
+}
+
+.required {
+    color: red;
+}
+
+.bottom-section {
+    position: absolute;
+    bottom: 0px;
+    margin-bottom: 3rem;
+}
+
+.contact-wrapper{
+    margin-bottom: 10px;
+}
+
+.error-msg{
+    color: red;
 }

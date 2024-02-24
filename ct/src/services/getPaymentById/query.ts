@@ -7,6 +7,16 @@ query ($paymentId:String!) {
         centAmount
         currencyCode
       }
+    transactions {
+      id
+      type
+      amount {
+        type
+        currencyCode
+        centAmount
+        fractionDigits
+      }
+    }
   }
 }
 `;

@@ -56,6 +56,21 @@ const PaymentMethods = () => {
       payload['payButtonTitle'].values[
         state.onSiteMode['payButtonLanguage'].value
       ] = value;
+    } else if (field === '3dsEnablement') {
+      payload['3dsEnablement'] = {
+        ...payload['3dsEnablement'],
+        value: value,
+      };
+      if (!value) {
+        payload['3dsChallenge'] = {
+          ...payload['3dsChallenge'],
+          value: false,
+        };
+        payload['3dsExemption'] = {
+          ...payload['3dsExemption'],
+          value: false,
+        };
+      }
     } else {
       payload[field] = {
         ...payload[field],
@@ -76,7 +91,22 @@ const PaymentMethods = () => {
   const handleRedirectModeA = (field, value) => {
     const payload = { ...state.redirectModeA };
     if (field === 'paymentOptions') payload['paymentOptions'] = value;
-    else
+    else if (field === '3dsEnablement') {
+      payload['3dsEnablement'] = {
+        ...payload['3dsEnablement'],
+        value: value,
+      };
+      if (!value) {
+        payload['3dsChallenge'] = {
+          ...payload['3dsChallenge'],
+          value: false,
+        };
+        payload['3dsExemption'] = {
+          ...payload['3dsExemption'],
+          value: false,
+        };
+      }
+    } else
       payload[field] = {
         ...payload[field],
         value: value,
@@ -117,6 +147,21 @@ const PaymentMethods = () => {
       payload['payButtonTitle'].values[
         state.redirectModeB['payButtonLanguage'].value
       ] = value;
+    } else if (field === '3dsEnablement') {
+      payload['3dsEnablement'] = {
+        ...payload['3dsEnablement'],
+        value: value,
+      };
+      if (!value) {
+        payload['3dsChallenge'] = {
+          ...payload['3dsChallenge'],
+          value: false,
+        };
+        payload['3dsExemption'] = {
+          ...payload['3dsExemption'],
+          value: false,
+        };
+      }
     } else {
       payload[field] = {
         ...payload[field],
@@ -177,12 +222,14 @@ const PaymentMethods = () => {
     handleRedirectModeA(
       'paymentOptions',
       methods.map((method, index) => {
-        return { ...method, displayOrder: index };
+        return {
+          ...method,
+          enabled: method.enabled ? method.enabled : false,
+          displayOrder: index,
+        };
       })
     );
   };
-
-  const handleLogoUpload = (e) => {};
 
   const fetchPaymentMethods = async () => {
     setLoader(true);
@@ -200,7 +247,7 @@ const PaymentMethods = () => {
 
   const saveFormData = async () => {
     setLoader(true);
-    if (state?.merchantReferenceID?.value.trim().length > 12) {
+    if (state?.merchantReference?.value?.replaceAll(' ', '').length > 12) {
       showToaster({
         severity: 'error',
         open: true,
@@ -245,6 +292,7 @@ const PaymentMethods = () => {
     const final_payload = {
       value: {
         ...customObject?.value,
+        merchantReference: saveData.merchantReference.replaceAll(' ', ''),
         live: {
           ...customObject?.value?.live,
           ...saveData,
@@ -270,21 +318,14 @@ const PaymentMethods = () => {
             case 'redirectModeB':
               if (field === 'paymentOptions') {
                 if (customValue?.[ds]?.[field] !== undefined) {
-                  payload[ds][field] = payload[ds][field].map((opt) => {
-                    return {
-                      ...opt,
-                      ...customValue?.[ds]?.[field].find(
-                        (custVal) => custVal.label === opt.label
-                      ),
-                    };
-                  });
+                  payload[ds][field] = customValue[ds][field];
                 } else {
                   const response = await fetchWorldlinePaymentOptions(
                     activeStore
                   );
                   if (response && response.length) {
-                    payload[ds][field] = payload[ds][field].map((opt) => {
-                      return { ...opt, ...response[opt.label] };
+                    payload[ds][field] = response.map((res) => {
+                      return { ...res, enabled: false };
                     });
                   }
                 }
@@ -293,7 +334,7 @@ const PaymentMethods = () => {
                 if (customValue?.[ds]?.[field]) {
                   payload[ds][field].value = customValue?.[ds]?.[field];
                   payload[ds][field].values[
-                    payload[ds]['payButtonLanguage'].value
+                    customValue[ds]['payButtonLanguage']
                   ] = customValue?.[ds]?.[field];
                 }
                 break;
@@ -303,12 +344,20 @@ const PaymentMethods = () => {
                 break;
               }
             case 'general':
-              if (customValue?.[field] !== undefined)
+              if (customValue?.[field] !== undefined) {
                 if (field === 'placeOrder') {
-                  payload[field].values[payload['placeOrderLanguage'].value] =
+                  payload[field].values[customValue['placeOrderLanguage']] =
                     customValue?.[field];
                 }
-              payload[field].value = customValue?.[field];
+                payload[field].value = customValue?.[field];
+              }
+              if (
+                customObject?.value &&
+                customObject?.value?.merchantReference
+              ) {
+                payload['merchantReference'].value =
+                  customObject?.value?.merchantReference.replaceAll(' ', '');
+              }
               break;
           }
         }
@@ -351,7 +400,6 @@ const PaymentMethods = () => {
         <OnSiteMode
           onSiteMode={state.onSiteMode}
           handleOnsiteMode={handleOnsiteMode}
-          handleLogoUpload={handleLogoUpload}
         />
         <RedirectModeA
           redirectModeA={state.redirectModeA}
@@ -362,7 +410,6 @@ const PaymentMethods = () => {
         <RedirectModeB
           redirectModeB={state.redirectModeB}
           handleRedirectModeB={handleRedirectModeB}
-          handleLogoUpload={handleLogoUpload}
         />
         <GeneralSettings
           state={state}

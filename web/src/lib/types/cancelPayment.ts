@@ -4,5 +4,4 @@ export interface CancelPaymentPayload {
   amount: number;
   currencyCode: string;
   paymentId: string;
-  isFinal: boolean;
 }

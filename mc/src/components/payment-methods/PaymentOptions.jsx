@@ -26,7 +26,13 @@ const PaymentOptions = ({ methods, handleOptionUpdate }) => {
 
   const handlePaymentOptionUpdate = (label, key, value) => {
     const activeItem = methods.find((method) => method.label === label);
-    methods[activeItem.displayOrder][key] = value;
+    if (key === 'fields') {
+      for (let val of value) {
+        methods[activeItem.displayOrder][val.key] = val.value;
+      }
+    } else {
+      methods[activeItem.displayOrder][key] = value;
+    }
     handleOptionUpdate(methods);
   };
 
@@ -41,7 +47,7 @@ const PaymentOptions = ({ methods, handleOptionUpdate }) => {
           >
             {methods.map((item, index) => (
               <Draggable
-                key={item.displayOrder}
+                key={`draggable${index}`}
                 draggableId={`draggeble-${item.displayOrder}`}
                 index={index}
               >

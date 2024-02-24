@@ -7,6 +7,17 @@ export default {
     ACTIVE: 'Active',
   },
   PAYMENT: {
+    REDIRECTMODE_A: {
+      TYPE: 'offsite',
+    },
+    REDIRECTMODE_B: {
+      TYPE: 'offsite',
+      PAYMENT_METHOD: 'worldlineOffsite',
+    },
+    ONSITEMODE: {
+      TYPE: 'onsite',
+      PAYMENT_METHOD: 'worldlineOnsite',
+    },
     DATABASE: {
       STATUS: {
         FAILED: 'FAILED',
@@ -21,6 +32,9 @@ export default {
         REDIRECT_WORLDLINE,
       },
     },
+  },
+  STATUS: {
+    PENDING_CAPTURE: 'payment.pending_capture',
   },
   getWordlineCreditCardOption() {
     return WORLDLINE_CREDITCARD;

@@ -12,7 +12,7 @@ import InfoIcon from '@mui/icons-material/Info';
 import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 import Select from '@mui/material/Select';
-import ImageUpload from '../image-upload';
+import PaymentModalComponent from '../payment-modal';
 
 const RedirectModeB = ({ redirectModeB, handleRedirectModeB }) => {
   return (
@@ -38,8 +38,8 @@ const RedirectModeB = ({ redirectModeB, handleRedirectModeB }) => {
         </p>
         <div className="relative">
           <span className="float-right">
-            <div>
-              Send Order Data
+            <div className="flex">
+              <span className="header-section-title">Send Order Data</span>
               <Tooltip
                 placement="top"
                 title={redirectModeB.sendOrderData.tooltip}
@@ -57,13 +57,15 @@ const RedirectModeB = ({ redirectModeB, handleRedirectModeB }) => {
         </div>
         <div className="section-wrapper">
           <h5 className="section-header">
-            {redirectModeB.logo.label}
+            <span className="header-section-title">
+              {redirectModeB.logo.label}
+            </span>
             <Tooltip placement="top" title={redirectModeB.logo.tooltip}>
               <InfoIcon />
             </Tooltip>
           </h5>
           <div className="template-section flex">
-            <ImageUpload
+            <PaymentModalComponent
               images={redirectModeB.logo.value}
               source="redirectModeB"
               saveImage={(url) => handleRedirectModeB('logo', url)}
@@ -126,7 +128,6 @@ const RedirectModeB = ({ redirectModeB, handleRedirectModeB }) => {
             </p>
           </div>
         </div>
-
         <div className="section-wrapper flex">
           <CheckboxInput
             onChange={(e) =>
@@ -134,11 +135,61 @@ const RedirectModeB = ({ redirectModeB, handleRedirectModeB }) => {
             }
             isChecked={redirectModeB.groupCards.value}
           />
-          <div>
-            {redirectModeB.groupCards.label}
-            <Tooltip placement="top" title={redirectModeB.groupCards.tooltip}>
-              <InfoIcon />
-            </Tooltip>
+          <div className="group-cards-title">
+            <div className="flex">
+              <span className="header-section-title">
+                {redirectModeB.groupCards.label}
+              </span>
+              <Tooltip placement="top" title={redirectModeB.groupCards.tooltip}>
+                <InfoIcon />
+              </Tooltip>
+            </div>
+          </div>
+        </div>
+        <div className="section-wrapper">
+          <h5 className="section-header">
+            {redirectModeB['3dsEnablement'].label}
+          </h5>
+          <div className="3ds-enablement flex">
+            <h5 className="section-title">
+              {redirectModeB['3dsEnablement'].label}
+            </h5>
+            <ToggleInput
+              size={'small'}
+              isDisabled={false}
+              isChecked={redirectModeB['3dsEnablement'].value}
+              onChange={(e) =>
+                handleRedirectModeB('3dsEnablement', e.target.checked)
+              }
+            />
+          </div>
+        </div>
+        <div className="section-wrapper flex">
+          <div className="3ds-challenge flex">
+            <h5 className="section-title">
+              {redirectModeB['3dsChallenge'].label}
+            </h5>
+            <ToggleInput
+              size={'small'}
+              isDisabled={redirectModeB['3dsEnablement'].value ? false : true}
+              isChecked={redirectModeB['3dsChallenge'].value}
+              onChange={(e) =>
+                handleRedirectModeB('3dsChallenge', e.target.checked)
+              }
+            />
+          </div>
+          <div className="3ds-excemption flex">
+            <h5 className="section-title">
+              {redirectModeB['3dsExemption'].label}
+            </h5>
+            <ToggleInput
+              size={'small'}
+              isDisabled={redirectModeB['3dsEnablement'].value ? false : true}
+              isChecked={redirectModeB['3dsExemption'].value}
+              onChange={(e) =>
+                handleRedirectModeB('3dsExemption', e.target.checked)
+              }
+            />
           </div>
         </div>
       </AccordionDetails>
