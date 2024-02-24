@@ -314,6 +314,7 @@ const PaymentMethods = () => {
   };
 
   useEffect(async () => {
+    setLoader(true);
     const payload = JSON.parse(JSON.stringify(initialState));
     if (customObject?.value) {
       const customValue = customObject?.value?.test;
@@ -324,15 +325,22 @@ const PaymentMethods = () => {
             case 'redirectModeA':
             case 'redirectModeB':
               if (field === 'paymentOptions') {
+                const response = await fetchWorldlinePaymentOptions(
+                  activeStore
+                );
                 if (customValue?.[ds]?.[field] !== undefined) {
-                  payload[ds][field] = customValue[ds][field];
+                  payload[ds][field] = customValue[ds][field].map((payOpt) => {
+                    return {
+                      ...payOpt,
+                      defaultLogo: response?.find(
+                        (res) => res.label === payOpt.label
+                      )['logo'],
+                    };
+                  });
                 } else {
-                  const response = await fetchWorldlinePaymentOptions(
-                    activeStore
-                  );
                   if (response && response.length) {
                     payload[ds][field] = response.map((res) => {
-                      return { ...res, enabled: false };
+                      return { ...res, enabled: false, defaultLogo: res.logo };
                     });
                   }
                 }
@@ -373,6 +381,7 @@ const PaymentMethods = () => {
         }
       }
     }
+    setLoader(false);
     dispatch({
       type: 'UPDATE-STATE',
       value: payload,
