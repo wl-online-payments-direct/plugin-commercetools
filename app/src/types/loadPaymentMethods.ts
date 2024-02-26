@@ -8,6 +8,7 @@ export interface LoadPaymentMethodsCustomerPaymentToken {
   id: string;
   customerId: string;
   paymentId: string;
+  paymentProductId: number;
   title?: string;
   token: string;
   createdAt: Date;
