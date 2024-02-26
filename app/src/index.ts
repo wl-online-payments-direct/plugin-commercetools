@@ -19,3 +19,4 @@ export * from './getMyWebhookStatus';
 export * from './getPaymentProducts';
 export * from './getOrder';
 export * from './getHostedTokenization';
+export * from './getMyCards';

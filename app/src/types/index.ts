@@ -19,3 +19,4 @@ export * from './capturePayment';
 export * from './getPaymentProducts';
 export * from './getOrder';
 export * from './getHostedTokenization';
+export * from './getMyCards';
