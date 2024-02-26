@@ -15,3 +15,4 @@ export * from './capturePayment';
 export * from './common';
 export * from './getPaymentProducts';
 export * from './getOrder';
+export * from './getMyCards';
