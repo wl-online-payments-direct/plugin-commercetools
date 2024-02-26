@@ -11,19 +11,29 @@ export function getMyCardsResponseMapper(
   const mappedPaymentMethods = Object.fromEntries(
     redirectModeA.paymentOptions.map((pOption) => [
       pOption?.paymentProductId,
-      pOption?.paymentMethod,
+      pOption,
     ]),
   );
 
   return cards.map((card) => {
-    const { id, paymentProductId, title, token, createdAt } = card;
+    const { id, paymentProductId, title, token, createdAt: savedAt } = card;
+    const {
+      paymentMethod = '',
+      label = '',
+      logo = '',
+      defaultLogo = '',
+    } = mappedPaymentMethods[paymentProductId] || {};
+
     return {
       id,
       title,
       token,
       paymentProductId,
-      paymentMethod: mappedPaymentMethods[card?.paymentProductId] || '',
-      createdAt,
+      paymentMethod,
+      label,
+      logo,
+      defaultLogo,
+      savedAt,
     };
   });
 }
