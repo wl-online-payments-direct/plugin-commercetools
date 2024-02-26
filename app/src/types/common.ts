@@ -8,6 +8,7 @@ export interface RedirectModeAPaymentOptions {
     label: string;
     enabled: boolean;
     logo: string;
+    defaultLogo: string;
     recurrenceType?: string;
     signatureType?: string;
     paymentOption?: string;
