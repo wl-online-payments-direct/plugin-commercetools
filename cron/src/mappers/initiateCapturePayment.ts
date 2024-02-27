@@ -56,6 +56,6 @@ export function mapCaptureAuthorizationModeToHours(
     case 'after seven days':
       return 168;
     default:
-      return 24;
+      return 1;
   }
 }
