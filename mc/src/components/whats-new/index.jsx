@@ -4,11 +4,13 @@ import { useApplicationContext } from '@commercetools-frontend/application-shell
 import './style.css';
 
 const WhatsNew = () => {
-  const { readMe } = useApplicationContext((context) => context.environment);
+  const { readMeLink } = useApplicationContext(
+    (context) => context.environment
+  );
   return (
     <div>
       <div className="relese-notes-wrapper">
-        <Link className="external-link" isExternal={true} to={readMe}>
+        <Link className="external-link" isExternal={true} to={readMeLink}>
           What's New
         </Link>
       </div>
