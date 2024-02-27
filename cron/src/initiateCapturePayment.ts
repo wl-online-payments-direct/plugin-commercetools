@@ -19,9 +19,10 @@ import {
 // Load environment variables from .env file
 dotenv.config();
 
-// Define your cron schedule (runs every minute in this example)
+const cronScheduleTimer = process.env.CRON_SCHEDULE || '* * * * *'; // Default to running every minute if not specified
+
 export default async function initiateCapturePayment() {
-  cron.schedule('* * * * *', async () => {
+  cron.schedule(cronScheduleTimer, async () => {
     try {
       // Fetch custom objects from admin config
       const response = await getAllCustomObjects();
