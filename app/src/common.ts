@@ -138,18 +138,6 @@ export async function orderPaymentHandler(payload: PaymentPayload) {
         result = !dbPayment?.orderId
           ? await createOrderWithPayment(payload, cart, customObjects)
           : await updateOrderWithPayment(payload, dbPayment);
-
-        /**
-         * save token if;
-         * - `storePermanently` field is received as true
-         * - cart has a logged in customer
-         * - payment is used by card
-         */
-        if (shouldSaveToken(cart, dbPayment, payload)) {
-          await saveCustomerPaymentToken(
-            getCustomerTokenPayload(cart, dbPayment, payload),
-          );
-        }
       }
 
       // update order id and reset the state as DEFAULT
@@ -170,6 +158,15 @@ export async function orderPaymentHandler(payload: PaymentPayload) {
       };
 
       await setPayment(getPaymentFilterQuery(dbPayment), updateQuery);
+
+      //  Should save the token only:
+      //  if "storePermanently" field is received as true
+      //  and cart has a logged in customer
+      if (shouldSaveToken(cart, dbPayment)) {
+        await saveCustomerPaymentToken(
+          getCustomerTokenPayload(cart, dbPayment, payload),
+        );
+      }
 
       return { isRetry: false, data: result };
     } catch (error) {
