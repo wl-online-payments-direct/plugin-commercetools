@@ -1,18 +1,14 @@
 import React from 'react';
 import Link from '@commercetools-uikit/link';
+import { useApplicationContext } from '@commercetools-frontend/application-shell-connectors';
 import './style.css';
 
 const WhatsNew = () => {
+  const { readMe } = useApplicationContext((context) => context.environment);
   return (
     <div>
       <div className="relese-notes-wrapper">
-        <Link
-          className="external-link"
-          isExternal={true}
-          to={
-            'https://bitbucket.org/tryzens-commercetool/worldline/src/main/README.md'
-          }
-        >
+        <Link className="external-link" isExternal={true} to={readMe}>
           What's New
         </Link>
       </div>

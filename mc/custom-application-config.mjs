@@ -76,6 +76,7 @@ const config = {
     documentationLink: '${env:CTP_MC_APPLICATION_DOCUMENTATION}',
     contactSalesLink: '${env:CTP_MC_APPLICATION_CONTACT_SALES}',
     contactSupportLink: '${env:CTP_MC_APPLICATION_CONTACT_SUPPORT}',
+    readMe: '${env:CTP_MC_APPLICATION_README}',
   },
 };
 
