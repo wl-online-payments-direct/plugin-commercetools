@@ -2,13 +2,11 @@ export interface RedirectModeAPaymentOptions {
   sendOrderData: boolean;
   enabled: boolean;
   paymentOptions: {
-    paymentMethod: string;
     paymentProductId: number;
     displayOrder: number;
     label: string;
     enabled: boolean;
     logo: string;
-    defaultLogo: string;
     recurrenceType?: string;
     signatureType?: string;
     paymentOption?: string;

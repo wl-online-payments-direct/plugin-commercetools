@@ -1,5 +1,5 @@
 export function getDeletedTokenMappedResponse(
-  hasDBTokenDeleted: { [key: string]: string | Date | number },
+  hasDBTokenDeleted: { [key: string]: string | Date },
   hasPspTokenDeleted: boolean,
 ) {
   const hasDeleted = !!hasDBTokenDeleted && hasPspTokenDeleted;
