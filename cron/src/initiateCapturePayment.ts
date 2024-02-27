@@ -1,6 +1,9 @@
 import cron from 'node-cron';
-import { CustomObject } from '@commercetools/platform-sdk';
-import { getAllCustomObjects, getOrderById } from '@worldline/ctintegration-ct';
+import {
+  getAllCustomObjects,
+  getOrderById,
+  CustomObject,
+} from '@worldline/ctintegration-ct';
 import { getPaymentsByStatus } from '@worldline/ctintegration-db';
 import {
   capturePayment,

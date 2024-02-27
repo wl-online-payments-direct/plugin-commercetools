@@ -1,4 +1,4 @@
-import { CustomObject, Order } from '@commercetools/platform-sdk';
+import { CustomObject, Order } from '@worldline/ctintegration-ct';
 import { Payment } from '../types/initiateCapturePayment';
 
 export function getInitiateCaptureServicePayload(

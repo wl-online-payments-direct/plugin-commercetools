@@ -1,19 +1,3 @@
-import { CustomObject, ErrorObject } from '@commercetools/platform-sdk';
-
-export interface GetAllCustomObjectResponse {
-  body: {
-    data: {
-      CustomObjectEntries: {
-        total: number;
-        count: number;
-        exists: boolean;
-        results: CustomObject[];
-      };
-    };
-    errors: ErrorObject[];
-  };
-}
-
 export enum Status {
   INITIAL = 'INITIAL',
   AUTHORIZED = 'AUTHORIZED',
