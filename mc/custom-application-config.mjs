@@ -76,6 +76,10 @@ const config = {
     documentationLink: '${env:CTP_MC_APPLICATION_DOCUMENTATION}',
     contactSalesLink: '${env:CTP_MC_APPLICATION_CONTACT_SALES}',
     contactSupportLink: '${env:CTP_MC_APPLICATION_CONTACT_SUPPORT}',
+    pluginVersionLink: '${env:CTP_MC_APPLICATION_PLUGIN_VERSION}',
+    sourcePackageLink: '${env:CTP_MC_APPLICATION_SOURCE_PACKAGE}',
+    currentVersion: '${env:CTP_MC_APPLICATION_CURRENT_VERSION}',
+    pluginDownloadLink: '${env:CTP_MC_APPLICATION_PLUGIN_DOWNLOAD}',
   },
 };
 
