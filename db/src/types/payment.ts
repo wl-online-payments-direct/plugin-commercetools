@@ -69,4 +69,5 @@ export interface GetOrders {
 export enum Status {
   INITIAL = 'INITIAL',
   AUTHORIZED = 'AUTHORIZED',
+  IN_REVIEW = 'IN_REVIEW',
 }

@@ -20,3 +20,6 @@ export * from './getPaymentProducts';
 export * from './getOrder';
 export * from './getHostedTokenization';
 export * from './getMyCards';
+export * from './initiateCapturePayment';
+export * from './sendPaymentNotification';
+export * from './sendEmail';

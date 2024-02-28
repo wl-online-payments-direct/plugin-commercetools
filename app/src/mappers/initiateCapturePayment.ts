@@ -1,5 +1,5 @@
 import { CustomObject, Order } from '@worldline/ctintegration-ct';
-import { Payment } from '../types/initiateCapturePayment';
+import { Payment } from '../types';
 
 export function getInitiateCaptureServicePayload(
   payload: Payment,
@@ -12,16 +12,6 @@ export function getInitiateCaptureServicePayload(
     paymentId: worldlineId,
     amount,
   };
-}
-
-export function calculateRemainingOrderAmount(
-  order: Order,
-  totalCaptureAmount: number,
-) {
-  const totalAmountPlanned = order.taxedPrice?.totalGross?.centAmount ?? 0;
-  const remainingAmount = Math.max(0, totalAmountPlanned - totalCaptureAmount);
-
-  return remainingAmount;
 }
 
 export function calculateTimeDifferenceInHours(order: Order): number {

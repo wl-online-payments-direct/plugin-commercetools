@@ -167,7 +167,7 @@ export async function getPayment(where: {
 
 export async function setPayment(
   where: { [key: string]: string | number },
-  data: { [key: string]: string | number },
+  data: { [key: string]: string | number | boolean },
 ): Promise<Payment> {
   try {
     const result = await prisma.payments.update({
@@ -187,22 +187,36 @@ export async function setPayment(
 export async function getPaymentsByStatus(
   storeId: string,
   statuses: Status[],
+  isSendNotification: boolean = false,
 ): Promise<Payment[]> {
   try {
-    const payments = await prisma.payments.findMany({
-      where: {
-        storeId,
-        status: {
-          in: statuses,
-        },
+    const whereClause: {
+      storeId: string;
+      status: {
+        in: Status[];
+      };
+      isSendNotification?: boolean;
+    } = {
+      storeId,
+      status: {
+        in: statuses,
       },
+    };
+
+    if (isSendNotification !== undefined) {
+      whereClause.isSendNotification = isSendNotification;
+    }
+
+    const payments = await prisma.payments.findMany({
+      where: whereClause,
     });
+
     return payments;
   } catch (error) {
     throw {
       message: 'Exception occurred while fetching the payments',
       statusCode: 500,
-      details: (error as { message: string }).message,
+      details: (error as Error).message,
     };
   }
 }

@@ -3,11 +3,12 @@
   "version": "1.0.0",
   "description": "Cron job for the PSP Integration",
   "main": "dist/index.js",
+  "types": "dist/types/index.d.ts",
   "scripts": {
     "build": "tsc",
     "typecheck": "tsc --noEmit",
-    "dev": "nodemon src/initiateCapturePayment.ts",
-    "start": "node ./dist/initiateCapturePayment.js",
+    "dev": "nodemon src/index.ts",
+    "start": "node ./dist/index.js",
     "lint": "eslint src/**/*.ts",
     "lint-fix": "eslint --fix src/**/*.ts",
     "pretty": "prettier --write 'src/**/*.ts'",
@@ -34,8 +35,6 @@
   },
   "dependencies": {
     "@worldline/ctintegration-app": "^1.0.0",
-    "@worldline/ctintegration-ct": "^1.0.0",
-    "@worldline/ctintegration-db": "^1.0.0",
     "@worldline/ctintegration-util": "^1.0.0",
     "dotenv": "^16.3.1",
     "node-cron": "^3.0.3",

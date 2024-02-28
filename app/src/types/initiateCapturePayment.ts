@@ -1,6 +1,9 @@
+import { $Enums } from '@prisma/client';
+
 export enum Status {
   INITIAL = 'INITIAL',
   AUTHORIZED = 'AUTHORIZED',
+  IN_REVIEW = 'IN_REVIEW',
 }
 
 export interface CaptureResponse {
@@ -15,8 +18,10 @@ export interface Payment {
   storeId: string;
   cartId: string;
   orderId: string;
+  status: $Enums.Status;
   storePermanently: boolean;
   errors: string | null;
   createdAt: Date;
   updatedAt: Date;
+  isSendNotification?: boolean;
 }
