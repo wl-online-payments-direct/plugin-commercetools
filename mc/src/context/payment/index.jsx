@@ -6,6 +6,7 @@ import {
   getPaymentMethods,
   uploadImages,
   testConnection,
+  getProject,
 } from '../../ct-methods';
 import { useApplicationContext } from '@commercetools-frontend/application-shell-connectors';
 import Snackbar from '@mui/material/Snackbar';
@@ -24,7 +25,11 @@ const PaymentProvider = ({ children }) => {
     (context) => context.environment.apiHost
   );
   const [activeStore, setActiveStore] = useState(null);
+  const [activeCurrency, setActiveCurrency] = useState(null);
+  const [activeCountry, setActiveCountry] = useState(null);
   const [stores, setStores] = useState([]);
+  const [countries, setCountries] = useState([]);
+  const [currencies, setCurrencies] = useState([]);
   const [loading, setLoading] = useState(false);
   const [customObject, setCustomObject] = useState({});
   const [toaster, setToaster] = useState({
@@ -37,6 +42,23 @@ const PaymentProvider = ({ children }) => {
     autoHideDuration: 3000,
   });
   const { vertical, horizontal, open, transition } = toaster;
+
+  const fetchProject = async () => {
+    setLoader(true);
+    try {
+      const response = await getProject(projectKey);
+      setLoader(false);
+      return response;
+    } catch (err) {
+      console.error('Failed to fetch project details');
+      showToaster({
+        severity: 'error',
+        open: true,
+        message: 'Failed to fetch project details',
+      });
+      setLoader(false);
+    }
+  };
 
   const fetchStores = async () => {
     setLoader(true);
@@ -85,6 +107,8 @@ const PaymentProvider = ({ children }) => {
       try {
         payload.key = activeStore.key;
         payload.container = CONTAINER_NAME;
+        payload.value.country = activeCountry;
+        payload.value.currency = activeCurrency;
         const response = await createCustomObject(payload, projectKey);
         if (response.id) {
           showToaster({
@@ -255,6 +279,15 @@ const PaymentProvider = ({ children }) => {
         customObject,
         activeStore,
         stores,
+        fetchProject,
+        setCountries,
+        setCurrencies,
+        countries,
+        currencies,
+        setActiveCurrency,
+        setActiveCountry,
+        activeCurrency,
+        activeCountry,
       }}
     >
       <Backdrop
