@@ -87,12 +87,21 @@ export const uploadImages = async (projectKey, formdata, apiHost) => {
   }
 };
 
-export const getOrderList = async (apiHost, projectKey, storeId, page, orderId, limit, filterOption) => {
-  const storeQuery = `storeId=${storeId}`
-  const pageQuery = page ? `&page=${page}` : ''
-  const orderQuery = orderId ? `&orderId=${orderId}` : ''
-  const filterQuery = filterOption !== 'ALL' ? `&filterOption=${filterOption}` : ''
-  const limitQuery = limit ? `&limit=${limit}` : ''
+export const getOrderList = async (
+  apiHost,
+  projectKey,
+  storeId,
+  page,
+  orderId,
+  limit,
+  filterOption
+) => {
+  const storeQuery = `storeId=${storeId}`;
+  const pageQuery = page ? `&page=${page}` : '';
+  const orderQuery = orderId ? `&orderId=${orderId}` : '';
+  const filterQuery =
+    filterOption !== 'ALL' ? `&filterOption=${filterOption}` : '';
+  const limitQuery = limit ? `&limit=${limit}` : '';
 
   try {
     const response = await fetcher(`/proxy/forward-to`, {
@@ -107,12 +116,11 @@ export const getOrderList = async (apiHost, projectKey, storeId, page, orderId, 
     return response;
   } catch (error) {
     console.error('Error custom object:', error.message);
-    throw new Error(error.message)
+    throw new Error(error.message);
   }
 };
 
 export const getOrderDetails = async (apiHost, projectKey, paymentId) => {
-
   try {
     const response = await fetcher(`/proxy/forward-to`, {
       method: 'GET',
@@ -126,7 +134,7 @@ export const getOrderDetails = async (apiHost, projectKey, paymentId) => {
     return response;
   } catch (error) {
     console.error('Error custom object:', error.message);
-    throw new Error(error.message)
+    throw new Error(error.message);
   }
 };
 
@@ -164,7 +172,7 @@ export const postCapturePayment = async (apiHost, projectKey, payload) => {
     return response;
   } catch (error) {
     console.error('Capture error:', error.message);
-    throw new Error(error.message)
+    throw new Error(error.message);
   }
 };
 
@@ -184,7 +192,7 @@ export const postRefundPayment = async (apiHost, projectKey, payload) => {
     return response;
   } catch (error) {
     console.error('Refund error:', error.message);
-    throw new Error(error.message)
+    throw new Error(error.message);
   }
 };
 
@@ -204,6 +212,26 @@ export const postCancelPayment = async (apiHost, projectKey, payload) => {
     return response;
   } catch (error) {
     console.error('Refund error:', error.message);
-    throw new Error(error.message)
+    throw new Error(error.message);
+  }
+};
+
+export const requestNewFeature = async (payload, apiHost, projectKey) => {
+  try {
+    const response = await fetcher(`/proxy/forward-to`, {
+      method: 'POST',
+      body: JSON.stringify(payload),
+      headers: {
+        'Accept-version': 'v2',
+        'X-Forward-To': `${apiHost}/request-feature`,
+        'X-Forward-To-Audience-Policy': 'forward-url-full-path',
+        'X-Project-Key': projectKey,
+      },
+    });
+
+    return response;
+  } catch (error) {
+    console.error('Refund error:', error.message);
+    throw new Error(error.message);
   }
 };

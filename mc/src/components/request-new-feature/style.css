@@ -27,3 +27,25 @@
 .field-wrapper{
     display: flex;
 }
+
+.server-request-wrapper { 
+    padding: 5px;
+}
+
+.modal-form--wrapper {
+    display: flex;
+    justify-content: space-between;
+}
+
+.form-title {
+    width: 30%;
+}
+
+.form-entry {
+    width: 60%;
+    padding-bottom: 10px;
+}
+
+.stepper-wrapper {
+    margin: 2rem 2rem 0 0;
+}

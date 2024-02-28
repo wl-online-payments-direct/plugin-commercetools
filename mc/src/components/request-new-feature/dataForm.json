@@ -1,0 +1,92 @@
+{
+  "serverForm": [
+    {
+      "name": "host",
+      "label": "Host",
+      "placeholder": "Enter the server url",
+      "type": "url",
+      "value": null
+    },
+    {
+      "name": "port",
+      "label": "Port",
+      "placeholder": "Enter the server port",
+      "type": "number",
+      "value": null
+    },
+    {
+      "name": "username",
+      "label": "Username",
+      "placeholder": "Enter the username",
+      "type": "text",
+      "value": null
+    },
+    {
+      "name": "password",
+      "label": "Password",
+      "placeholder": "Enter the password",
+      "type": "text",
+      "value": null
+    },
+    {
+      "name": "timeout",
+      "label": "Timeout",
+      "placeholder": "Enter the timeout",
+      "type": "number",
+      "value": null
+    },
+    {
+      "name": "to",
+      "label": "To",
+      "placeholder": "Enter the to address",
+      "type": "email",
+      "value": null
+    },
+    {
+      "name": "from",
+      "label": "From",
+      "placeholder": "Enter the from address",
+      "type": "email",
+      "value": null
+    }
+  ],
+  "requestForm": [
+    {
+      "name": "pspid",
+      "label": "PSPID",
+      "placeholder": "Enter the PSPID",
+      "type": "text",
+      "tooltip": "The identifier of your Worldline account",
+      "value": null
+    },
+    {
+      "name": "companyName",
+      "label": "Company Name",
+      "placeholder": "Enter the company name",
+      "type": "text",
+      "tooltip": "Your company name",
+      "value": null
+    },
+    {
+      "name": "message",
+      "label": "Message",
+      "placeholder": "Enter the message",
+      "type": "multiline",
+      "tooltip": "Please explain how our payment plugin can be further improved",
+      "value": ""
+    },
+    {
+      "name": "platformVersion",
+      "label": "Platform Version",
+      "placeholder": "Enter the platform version",
+      "type": "number",
+      "value": null
+    },
+    {
+      "name": "pluginVersion",
+      "label": "Plugin Version",
+      "value": null,
+      "type": "preset"
+    }
+  ]
+}
