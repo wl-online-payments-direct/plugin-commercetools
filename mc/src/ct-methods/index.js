@@ -216,22 +216,10 @@ export const postCancelPayment = async (apiHost, projectKey, payload) => {
   }
 };
 
-export const getPluginVersion = async (projectKey) => {
+export const getPluginVersion = async (url) => {
   try {
-    const {
-      payload: {
-        blob: { rawLines },
-      },
-    } = await fetcher(`/proxy/forward-to`, {
-      method: 'GET',
-      headers: {
-        'Accept-version': 'v2',
-        'X-Forward-To': `https://github.com/commercetools/merchant-center-application-kit/blob/main/package.json`,
-        'X-Forward-To-Audience-Policy': 'forward-url-full-path', // default config policy
-        'X-Project-Key': projectKey,
-      },
-    });
-    return JSON.parse(rawLines.join(' '));
+    const response = await fetch(url);
+    return response;
   } catch (error) {
     console.error('Error plugin version:', error.message);
   }

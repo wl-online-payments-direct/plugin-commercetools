@@ -24,6 +24,10 @@ const PaymentProvider = ({ children }) => {
   const apiHost = useApplicationContext(
     (context) => context.environment.apiHost
   );
+  const sourcePackageLink = useApplicationContext(
+    (context) => context.environment.sourcePackageLink
+  );
+
   const [activeStore, setActiveStore] = useState(null);
   const [stores, setStores] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -158,9 +162,13 @@ const PaymentProvider = ({ children }) => {
   const fetchPluginVersion = async () => {
     setLoader(true);
     try {
-      const response = await getPluginVersion(projectKey);
+      const {
+        payload: {
+          blob: { rawLines },
+        },
+      } = await getPluginVersion(sourcePackageLink);
       if (response) {
-        const { version } = response;
+        const { version } = JSON.parse(rawLines.join(' '));
         setLoader(false);
         return version;
       } else {
