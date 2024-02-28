@@ -52,5 +52,33 @@ export default defineMessages({
   redirectWorldline: {
     id: 'Order.redirectWorldline',
     defaultMessage: 'Redirect WorldLine',
-  }
+  },
+  capture: {
+    id: 'Order.capture',
+    defaultMessage: 'Capture'
+  },
+  refund: {
+    id: 'Order.refund',
+    defaultMessage: 'Refund'
+  },
+  cancel: {
+    id: 'Order.cancel',
+    defaultMessage: 'Cancel'
+  },
+  cancelModalTitle: {
+    id: 'Order.cancelModalTitle',
+    defaultMessage: 'says'
+  },
+  cancelModalMessage: {
+    id: 'Order.cancelModalMessage',
+    defaultMessage: 'Are you sure want to cancel this payment?'
+  },
+  cancelModalOk: {
+    id: 'Order.cancelModalOk',
+    defaultMessage: 'Ok'
+  },
+  cancelModalCancel: {
+    id: 'Order.cancelModalCancel',
+    defaultMessage: 'Cancel'
+  },
 });

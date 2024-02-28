@@ -7,14 +7,17 @@ export const OrderContext = createContext();
 const OrderProvider = ({children}) => {
     const [openCapture, setOpenCapture] = useState(false);
     const [openRefund, setOpenRefund] = useState(false);
+    const [openCancel, setOpenCancel] = useState(false);
     const [transactionRequested, setTransactionRequested] = useState(false);
     return (
         <OrderContext.Provider 
             value={{
                 openCapture,
                 openRefund,
+                openCancel,
                 setOpenCapture,
                 setOpenRefund,
+                setOpenCancel,
                 transactionRequested,
                 setTransactionRequested
             }}>

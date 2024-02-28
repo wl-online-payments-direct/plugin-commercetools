@@ -15,6 +15,7 @@ import { PaymentContext } from '../../context/payment';
 import { OrderContext } from '../../context/order';
 import CaptureAmount from './capture-amount';
 import RefundAmount from './refund-amount';
+import CancelAmount from './cancel-amount';
 
 const OrderDetails = () => {
     const {formatMessage} = useIntl()
@@ -28,7 +29,7 @@ const OrderDetails = () => {
     const {apiHost} = useApplicationContext((context) => context.environment);
 
     const {activeStore} = useContext(PaymentContext)
-    const {openCapture, openRefund, transactionRequested} = useContext(OrderContext)
+    const {openCapture, openRefund, openCancel, transactionRequested} = useContext(OrderContext)
     
     const columns = [
         { key: 'paymentMethod', label: formatMessage(messages.paymentMethod) },
@@ -46,7 +47,7 @@ const OrderDetails = () => {
     const itemRenderer = (item, column) => {
         const itemValue = item[column.key]
         if (column.key === "worldlineId") {
-            const link = <a href={`${projectKey}/orders`} target="_blank" rel="noopener noreferrer">{itemValue}</a>
+            const link = <a href={`/${projectKey}/orders/${item['orderId']}`} target="_blank" rel="noopener noreferrer">{itemValue}</a>
           return link
         }
         return itemValue;
@@ -88,7 +89,7 @@ const OrderDetails = () => {
                 storeId={activeStore.key}
                 currencyCode={orderDetails.currencyCode}
                 alreadyCapturedAmount={orderDetails.alreadyCapturedAmount}
-                transactionList={orderDetails.Operations}
+                transactionList={orderDetails.Operations?.filter((operation) => operation.status === 'CAPTURED')}
             />
         )
     }
@@ -110,7 +111,29 @@ const OrderDetails = () => {
                 storeId={activeStore.key}
                 currencyCode={orderDetails.currencyCode}
                 alreadyCapturedAmount={orderDetails.alreadyCapturedAmount}
-                transactionList={orderDetails.Operations}
+                transactionList={orderDetails.Operations?.filter((operation) => operation.status === 'REFUNDED')}
+            />
+        )
+    }
+
+    if (openCancel) {
+        if (!orderDetails) return (
+            <div className='loading-spinner'>
+                <LoadingSpinner />
+            </div>
+        )
+        return (
+            <CancelAmount
+                emailId={orderDetails.customerEmail}
+                orderId={orderDetails.orderId}
+                paymentId={orderDetails.paymentId}
+                amount={orderDetails.amount}
+                status={orderDetails.status}  
+                worldlineId={orderDetails.worldlineId} 
+                storeId={activeStore.key}
+                currencyCode={orderDetails.currencyCode}
+                alreadyCancelledAmount={orderDetails.alreadyCancelledAmount}
+                transactionList={orderDetails.Operations?.filter((operation) => operation.status === 'CANCELLED')}
             />
         )
     }

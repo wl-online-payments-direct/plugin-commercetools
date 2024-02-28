@@ -25,20 +25,20 @@ const ApplicationRoutes = () => {
   return (
     <Spacings.Inset scale="l">
       <Switch>
-        <Route path={`${match.path}/${myAccountUri}`}>
+        <Route path={`${match.path}/${myAccountUri}`} exact>
           <MyAccount />
         </Route>
+        <Route path={`${match.path}/${paymentMethodsUri}`} exact>
+          <PaymentMethods />
+        </Route>
         <OrderProvider>
-          <Route path={`${match.path}/${orderUri}`} exact="true">
+          <Route path={`${match.path}/${orderUri}`} exact>
             <OrderList />
           </Route>
-          <Route path={`${match.path}/${orderUri}/:orderId`}>
+          <Route path={`${match.path}/${orderUri}/:orderId`} exact>
             <OrderDetails />
           </Route>
         </OrderProvider>
-        <Route path={`${match.path}/${paymentMethodsUri}`}>
-          <PaymentMethods />
-        </Route>
         <Route>
           <Welcome />
         </Route>

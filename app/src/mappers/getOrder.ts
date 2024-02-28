@@ -42,6 +42,11 @@ export function getOrderResponseMapper(
   const alreadyCapturedAmount = mappedOperations
     .filter((operation) => operation.status === 'CAPTURED')
     .reduce((total, operation) => total + operation.amountOfMoney.amount, 0);
+
+  const alreadyCancelledAmount = mappedOperations
+    .filter((operation) => operation.status === 'CANCELLED')
+    .reduce((total, operation) => total + operation.amountOfMoney.amount, 0);
+
   return {
     worldlineId,
     paymentId,
@@ -54,6 +59,7 @@ export function getOrderResponseMapper(
     currencyCode,
     alreadyRefundedAmount,
     alreadyCapturedAmount,
+    alreadyCancelledAmount,
     card: {
       cardNumber,
       bin,

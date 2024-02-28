@@ -39,7 +39,7 @@
 }
 .clear-filter {
     display: flex;
-    justify-content: end;
+    justify-content: flex-end;
     background-color: none;
 }
 .clear-filter button {
@@ -60,4 +60,21 @@
     border-radius: 4px;
     padding: 4px 8px;
     cursor: pointer;
+}
+.cancel-button {
+    background: #CCC;
+    border: none;
+    padding: 10px;
+    cursor: pointer;
+    border-radius: 2px;
+    min-width: 100px;
+}
+.cancel-agree-button {
+    background: #056A4B;
+    color: #FFF;
+    border: none;
+    padding: 10px;
+    cursor: pointer;
+    border-radius: 2px;
+    min-width: 100px;
 }

@@ -101,6 +101,52 @@ const OnSiteMode = ({ onSiteMode, handleOnsiteMode }) => {
             />
           </div>
         </div>
+        <div className="section-wrapper">
+          <h5 className="section-header">
+            {onSiteMode['3dsEnablement'].label}
+          </h5>
+          <div className="3ds-enablement flex">
+            <h5 className="section-title">
+              {onSiteMode['3dsEnablement'].label}
+            </h5>
+            <ToggleInput
+              size={'small'}
+              isDisabled={false}
+              isChecked={onSiteMode['3dsEnablement'].value}
+              onChange={(e) =>
+                handleOnsiteMode('3dsEnablement', e.target.checked)
+              }
+            />
+          </div>
+        </div>
+        <div className="section-wrapper flex">
+          <div className="3ds-challenge flex">
+            <h5 className="section-title">
+              {onSiteMode['3dsChallenge'].label}
+            </h5>
+            <ToggleInput
+              size={'small'}
+              isDisabled={onSiteMode['3dsEnablement'].value ? false : true}
+              isChecked={onSiteMode['3dsChallenge'].value}
+              onChange={(e) =>
+                handleOnsiteMode('3dsChallenge', e.target.checked)
+              }
+            />
+          </div>
+          <div className="3ds-excemption flex">
+            <h5 className="section-title">
+              {onSiteMode['3dsExemption'].label}
+            </h5>
+            <ToggleInput
+              size={'small'}
+              isDisabled={onSiteMode['3dsEnablement'].value ? false : true}
+              isChecked={onSiteMode['3dsExemption'].value}
+              onChange={(e) =>
+                handleOnsiteMode('3dsExemption', e.target.checked)
+              }
+            />
+          </div>
+        </div>
       </AccordionDetails>
     </Accordion>
   );

@@ -58,14 +58,14 @@ const config = {
       permissions: [PERMISSIONS.View, PERMISSIONS.Manage],
     },
     {
-      uriPath: orderUri,
-      defaultLabel: 'Orders',
+      uriPath: paymentMethodsUri,
+      defaultLabel: 'Payment Methods',
       labelAllLocales: [],
       permissions: [PERMISSIONS.View, PERMISSIONS.Manage],
     },
     {
-      uriPath: paymentMethodsUri,
-      defaultLabel: 'Payment Methods',
+      uriPath: orderUri,
+      defaultLabel: 'Orders',
       labelAllLocales: [],
       permissions: [PERMISSIONS.View, PERMISSIONS.Manage],
     },
