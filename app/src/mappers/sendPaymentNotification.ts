@@ -28,7 +28,7 @@ export function createMailOptionsPayment(
       ${tableBody}
     </tbody>
   </table>`;
-  const { to, from } = customObject.value;
+  const { to, from } = customObject.value.serverConfig;
   return {
     from,
     to,
@@ -39,14 +39,14 @@ export function createMailOptionsPayment(
 }
 
 export function createEmailConfig(customObject: CustomObject) {
-  const { host, port, secure, user, pass } = customObject.value;
+  const { url, port, username, password } = customObject.value.serverConfig;
   return {
-    host,
+    host: url,
     port,
-    secure,
+    secure: false,
     auth: {
-      user,
-      pass,
+      user: username,
+      pass: password,
     },
   };
 }

@@ -27,7 +27,7 @@ export function sendMailOptionsPayment(
       </tr>
     </tbody>
   </table>`;
-  const { to, from } = customObject.value;
+  const { to, from } = customObject.value.serverConfig;
   return {
     from,
     to,
