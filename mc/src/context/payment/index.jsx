@@ -6,6 +6,7 @@ import {
   getPaymentMethods,
   uploadImages,
   testConnection,
+  getPluginVersion,
 } from '../../ct-methods';
 import { useApplicationContext } from '@commercetools-frontend/application-shell-connectors';
 import Snackbar from '@mui/material/Snackbar';
@@ -23,6 +24,10 @@ const PaymentProvider = ({ children }) => {
   const apiHost = useApplicationContext(
     (context) => context.environment.apiHost
   );
+  const sourcePackageLink = useApplicationContext(
+    (context) => context.environment.sourcePackageLink
+  );
+
   const [activeStore, setActiveStore] = useState(null);
   const [stores, setStores] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -154,6 +159,28 @@ const PaymentProvider = ({ children }) => {
     }
   };
 
+  const fetchPluginVersion = async () => {
+    setLoader(true);
+    try {
+      const {
+        payload: {
+          blob: { rawLines },
+        },
+      } = await getPluginVersion(sourcePackageLink);
+      if (response) {
+        const { version } = JSON.parse(rawLines.join(' '));
+        setLoader(false);
+        return version;
+      } else {
+        setLoader(false);
+        return null;
+      }
+    } catch (err) {
+      setLoader(false);
+      return null;
+    }
+  };
+
   const imageUploader = async (files, toasterFlag) => {
     setLoader(true);
     try {
@@ -255,6 +282,7 @@ const PaymentProvider = ({ children }) => {
         customObject,
         activeStore,
         stores,
+        fetchPluginVersion,
       }}
     >
       <Backdrop
