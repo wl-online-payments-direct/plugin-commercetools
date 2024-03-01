@@ -22,6 +22,7 @@ import RequestNewFeature from '../request-new-feature';
 import dataFields from './dataFields.json';
 import Typography from '@mui/material/Typography';
 import Chip from '@mui/material/Chip';
+import PluginVersion from '../plugin-version';
 
 const MyAccount = (props) => {
   const { setLoader, saveCustomObject, customObject, checkConnection } =
@@ -386,6 +387,7 @@ const MyAccount = (props) => {
                 <div className="logo-bottom-container">
                   <p>Also available for</p>
                   <img src={worldlineLogoBottom} />
+                  <PluginVersion />
                 </div>
               </div>
               <RequestNewFeature />

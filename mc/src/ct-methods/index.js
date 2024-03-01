@@ -235,3 +235,12 @@ export const requestNewFeature = async (payload, apiHost, projectKey) => {
     throw new Error(error.message);
   }
 };
+
+export const getPluginVersion = async (url) => {
+  try {
+    const response = await fetch(url);
+    return response;
+  } catch (error) {
+    console.error('Error plugin version:', error.message);
+  }
+};
