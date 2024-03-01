@@ -40,10 +40,9 @@
     "node": ">=18.0.0"
   },
   "lint-staged": {
-    "src/**/*.ts":[
+    "src/**/*.ts": [
       "npm run lint-fix",
-      "npm run pretty",
-      "npm run typecheck"
+      "npm run pretty"
     ]
   }
 }
