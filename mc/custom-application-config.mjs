@@ -36,6 +36,7 @@ const config = {
       'view_customers',
       'view_key_value_documents',
       'view_stores',
+      'view_project_settings',
     ],
     manage: [
       'manage_products',
