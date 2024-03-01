@@ -12,19 +12,25 @@ import PageWrapper from '../page-wrapper';
 import Spacings from '@commercetools-uikit/spacings';
 import worldlineLogo from '../../assets/worldline-logo-main.png';
 import worldlineLogoBottom from '../../assets/worldline-logo-bottom.png';
-import { ClipboardIcon } from '@commercetools-uikit/icons';
+import {
+  ClipboardIcon,
+  ArrowTriangleDownIcon,
+  ArrowTriangleUpIcon,
+} from '@commercetools-uikit/icons';
 import { PaymentContext } from '../../context/payment';
+import RequestNewFeature from '../request-new-feature';
 import WhatsNew from '../whats-new';
 import dataFields from './dataFields.json';
 import Typography from '@mui/material/Typography';
+import Chip from '@mui/material/Chip';
 import PluginVersion from '../plugin-version';
 
 const MyAccount = (props) => {
   const { setLoader, saveCustomObject, customObject, checkConnection } =
     useContext(PaymentContext);
-
   const [selectedOption, setSelectedOption] = useState('test');
   const [copied, setCopied] = useState(false);
+  const [serverFields, setServerFields] = useState(false);
   const [formData, setFormData] = useState(dataFields[selectedOption]);
   const {
     signUpLink,
@@ -32,6 +38,7 @@ const MyAccount = (props) => {
     contactSalesLink,
     contactSupportLink,
   } = useApplicationContext((context) => context.environment);
+
   useEffect(() => {
     if (customObject?.value) {
       const custValue = customObject?.value[selectedOption];
@@ -75,6 +82,29 @@ const MyAccount = (props) => {
         const payload = {};
         for (let pData of Object.keys(prevData)) {
           if (
+            [
+              'serverurl',
+              'serverport',
+              'serverusername',
+              'serverpassword',
+              'servertimeout',
+              'serverto',
+              'serverfrom',
+            ].includes(pData)
+          ) {
+            payload[pData] = {
+              ...prevData[pData],
+              value:
+                customObject?.value?.serverConfig &&
+                customObject?.value?.serverConfig[
+                  pData.replace('server', '')
+                ] !== undefined
+                  ? customObject?.value?.serverConfig[
+                      pData.replace('server', '')
+                    ]
+                  : prevData[pData].value,
+            };
+          } else if (
             ['webhookUrl', 'redirectSuccessUrl', 'redirectFailureUrl'].includes(
               pData
             )
@@ -151,6 +181,21 @@ const MyAccount = (props) => {
               ? 'Maximum timeout is 1440'
               : '',
         };
+      } else if (
+        [
+          'serverurl',
+          'serverport',
+          'serverusername',
+          'serverpassword',
+          'servertimeout',
+          'serverto',
+          'serverfrom',
+        ].includes(pData)
+      ) {
+        formPayload[pData] = {
+          ...formData[pData],
+          hasError: false,
+        };
       } else {
         formPayload[pData] = {
           ...formData[pData],
@@ -180,6 +225,24 @@ const MyAccount = (props) => {
       if (result?.connection) {
         for (let fData of Object.keys(formData)) {
           if (
+            [
+              'serverurl',
+              'serverport',
+              'serverusername',
+              'serverpassword',
+              'servertimeout',
+              'serverto',
+              'serverfrom',
+            ].includes(fData)
+          ) {
+            payload.value = {
+              ...payload.value,
+              serverConfig: {
+                ...payload.value.serverConfig,
+                [fData.replace('server', '')]: formData[fData].value?.trim(),
+              },
+            };
+          } else if (
             ['webhookUrl', 'redirectSuccessUrl', 'redirectFailureUrl'].includes(
               fData
             )
@@ -199,10 +262,64 @@ const MyAccount = (props) => {
           }
         }
         await saveCustomObject(payload);
+        hideServerFields();
       } else {
         setLoader(false);
+        hideServerFields();
       }
     }
+  };
+
+  const showServerFields = () => {
+    setServerFields(true);
+    setFormData((prevData) => {
+      const payload = { ...prevData };
+      for (let pData of Object.keys(prevData)) {
+        if (
+          [
+            'serverurl',
+            'serverport',
+            'serverusername',
+            'serverpassword',
+            'servertimeout',
+            'serverto',
+            'serverfrom',
+          ].includes(pData)
+        ) {
+          payload[pData] = {
+            ...prevData[pData],
+            hideField: false,
+          };
+        }
+      }
+      return payload;
+    });
+  };
+
+  const hideServerFields = () => {
+    setServerFields(false);
+    setFormData((prevData) => {
+      const payload = { ...prevData };
+      for (let pData of Object.keys(prevData)) {
+        if (
+          [
+            'serverurl',
+            'serverport',
+            'serverusername',
+            'serverpassword',
+            'servertimeout',
+            'serverto',
+            'serverfrom',
+          ].includes(pData)
+        ) {
+          payload[pData] = {
+            ...prevData[pData],
+            hideField: true,
+          };
+        }
+      }
+      return payload;
+    });
   };
 
   return (
@@ -275,6 +392,7 @@ const MyAccount = (props) => {
                   <PluginVersion />
                 </div>
               </div>
+              <RequestNewFeature />
             </div>
           </div>
           <div id="right-div">
@@ -308,7 +426,7 @@ const MyAccount = (props) => {
                   />
                   {Object.keys(formData).map((key, i) => {
                     const formField = formData[key];
-                    return (
+                    return formField.hideField ? null : (
                       <div key={`Data-field-${i}`}>
                         <Label isBold={true}>
                           <p className="form-label">{formField.label}</p>
@@ -380,6 +498,30 @@ const MyAccount = (props) => {
                       </div>
                     );
                   })}
+                  {serverFields ? (
+                    <Chip
+                      className="chip"
+                      icon={
+                        <ArrowTriangleUpIcon size="medium" color="neutral60" />
+                      }
+                      label="Hide Server Credentials"
+                      variant="outlined"
+                      onClick={hideServerFields}
+                    />
+                  ) : (
+                    <Chip
+                      className="chip"
+                      icon={
+                        <ArrowTriangleDownIcon
+                          size="medium"
+                          color="neutral60"
+                        />
+                      }
+                      label="Add/Edit Server Credentials"
+                      variant="outlined"
+                      onClick={showServerFields}
+                    />
+                  )}
                   <PrimaryButton
                     label="Save/Update"
                     onClick={handleSubmit}

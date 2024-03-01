@@ -6,6 +6,7 @@ import {
   getPaymentMethods,
   uploadImages,
   testConnection,
+  requestNewFeature,
   getProject,
   getPluginVersion,
 } from '../../ct-methods';
@@ -243,6 +244,22 @@ const PaymentProvider = ({ children }) => {
     }
   };
 
+  const sendRequest = async (payload) => {
+    setLoader(true);
+    try {
+      const response = await requestNewFeature(payload, apiHost, projectKey);
+      if (response)
+        showToaster({
+          severity: 'success',
+          open: true,
+          message: 'Request send successfully',
+        });
+    } catch (err) {
+      console.error(err);
+    }
+    setLoader(false);
+  };
+
   const checkConnection = async (payload) => {
     setLoader(true);
     try {
@@ -302,6 +319,7 @@ const PaymentProvider = ({ children }) => {
         saveCustomObject,
         fetchWorldlinePaymentOptions,
         imageUploader,
+        sendRequest,
         checkConnection,
         customObject,
         activeStore,
@@ -319,7 +337,7 @@ const PaymentProvider = ({ children }) => {
       }}
     >
       <Backdrop
-        sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
+        sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1500 }}
         open={loading}
       >
         <CircularProgress color="inherit" />
