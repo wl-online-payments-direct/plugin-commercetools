@@ -24,8 +24,8 @@ const config = {
   headers: {
     csp: {
       'connect-src': [
-        'mc-api.europe-west1.gcp.commercetools.com',
-        'dev-worldline-cto.tryzens-ignite.com',
+        '${env.CTP_MC_APPLICATION_API_HOST}',
+        '${env.CTP_MC_APPLICATION_MC_API_HOST}',
       ],
     },
   },
@@ -77,11 +77,11 @@ const config = {
     contactSalesLink: '${env:CTP_MC_APPLICATION_CONTACT_SALES}',
     contactSupportLink: '${env:CTP_MC_APPLICATION_CONTACT_SUPPORT}',
     merchantUrl: '${env:MERCHANT_URL}',
-    pluginVersion: '${env:PLUGIN_VERSION}',
-    pluginVersionLink: '${env:CTP_MC_APPLICATION_PLUGIN_VERSION}',
-    sourcePackageLink: '${env:CTP_MC_APPLICATION_SOURCE_PACKAGE}',
+    pluginVersion: '${env:CTP_MC_APPLICATION_PLUGIN_VERSION}',
+    pluginVersionLink: '${env:CTP_MC_APPLICATION_PLUGIN_VERSION_LINK}',
+    sourcePackageLink: '${env:CTP_MC_APPLICATION_SOURCE_PACKAGE_LINK}',
     currentVersion: '${env:CTP_MC_APPLICATION_CURRENT_VERSION}',
-    pluginDownloadLink: '${env:CTP_MC_APPLICATION_PLUGIN_DOWNLOAD}',
+    pluginDownloadLink: '${env:CTP_MC_APPLICATION_PLUGIN_DOWNLOAD_LINK}',
   },
 };
 
