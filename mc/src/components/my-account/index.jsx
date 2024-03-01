@@ -17,6 +17,7 @@ import { PaymentContext } from '../../context/payment';
 import WhatsNew from '../whats-new';
 import dataFields from './dataFields.json';
 import Typography from '@mui/material/Typography';
+import PluginVersion from '../plugin-version';
 
 const MyAccount = (props) => {
   const { setLoader, saveCustomObject, customObject, checkConnection } =
@@ -271,6 +272,7 @@ const MyAccount = (props) => {
                   <p>Also available for</p>
                   <img src={worldlineLogoBottom} />
                   <WhatsNew />
+                  <PluginVersion />
                 </div>
               </div>
             </div>
