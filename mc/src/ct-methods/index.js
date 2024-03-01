@@ -216,6 +216,15 @@ export const postCancelPayment = async (apiHost, projectKey, payload) => {
   }
 };
 
+export const getPluginVersion = async (url) => {
+  try {
+    const response = await fetch(url);
+    return response;
+  } catch (error) {
+    console.error('Error plugin version:', error.message);
+  }
+};
+
 export const getProject = async (projectKey) => {
   try {
     const project = await fetcher(`/${projectKey}`, {
