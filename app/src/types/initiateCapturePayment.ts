@@ -1,5 +1,3 @@
-import { $Enums } from '@prisma/client';
-
 export enum Status {
   INITIAL = 'INITIAL',
   AUTHORIZED = 'AUTHORIZED',
@@ -18,7 +16,7 @@ export interface Payment {
   storeId: string;
   cartId: string;
   orderId: string;
-  status: $Enums.Status;
+  status: string;
   storePermanently: boolean;
   errors: string | null;
   createdAt: Date;

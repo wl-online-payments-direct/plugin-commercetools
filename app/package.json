@@ -38,8 +38,7 @@
     "@worldline/ctintegration-ct": "^1.0.0",
     "@worldline/ctintegration-db": "^1.0.0",
     "@worldline/ctintegration-psp": "^1.0.0",
-    "@worldline/ctintegration-util": "^1.0.0",
-    "@prisma/client": "^5.5.0"
+    "@worldline/ctintegration-util": "^1.0.0"
   },
   "lint-staged": {
     "src/**/*.ts": [
