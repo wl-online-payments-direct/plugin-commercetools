@@ -244,3 +244,18 @@ export const getPluginVersion = async (url) => {
     console.error('Error plugin version:', error.message);
   }
 };
+
+export const getProject = async (projectKey) => {
+  try {
+    const project = await fetcher(`/proxy/ctp/${projectKey}`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+    return project;
+  } catch (error) {
+    console.error('Error:', error.message);
+    throw new Error(error.message);
+  }
+};

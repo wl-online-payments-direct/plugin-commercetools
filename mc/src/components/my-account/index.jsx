@@ -19,6 +19,7 @@ import {
 } from '@commercetools-uikit/icons';
 import { PaymentContext } from '../../context/payment';
 import RequestNewFeature from '../request-new-feature';
+import WhatsNew from '../whats-new';
 import dataFields from './dataFields.json';
 import Typography from '@mui/material/Typography';
 import Chip from '@mui/material/Chip';
@@ -387,6 +388,7 @@ const MyAccount = (props) => {
                 <div className="logo-bottom-container">
                   <p>Also available for</p>
                   <img src={worldlineLogoBottom} />
+                  <WhatsNew />
                   <PluginVersion />
                 </div>
               </div>

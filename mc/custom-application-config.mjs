@@ -36,6 +36,7 @@ const config = {
       'view_customers',
       'view_key_value_documents',
       'view_stores',
+      'view_project_settings',
     ],
     manage: [
       'manage_products',
@@ -76,6 +77,7 @@ const config = {
     documentationLink: '${env:CTP_MC_APPLICATION_DOCUMENTATION}',
     contactSalesLink: '${env:CTP_MC_APPLICATION_CONTACT_SALES}',
     contactSupportLink: '${env:CTP_MC_APPLICATION_CONTACT_SUPPORT}',
+    readMeLink: '${env:CTP_MC_APPLICATION_README}',
     pluginVersion: '${env:CTP_MC_APPLICATION_PLUGIN_VERSION}',
     pluginVersionLink: '${env:CTP_MC_APPLICATION_PLUGIN_VERSION_LINK}',
     sourcePackageLink: '${env:CTP_MC_APPLICATION_SOURCE_PACKAGE_LINK}',
