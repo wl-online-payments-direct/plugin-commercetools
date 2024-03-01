@@ -227,7 +227,7 @@ export const getPluginVersion = async (url) => {
 
 export const getProject = async (projectKey) => {
   try {
-    const project = await fetcher(`/${projectKey}`, {
+    const project = await fetcher(`/proxy/ctp/${projectKey}`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
