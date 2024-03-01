@@ -37,6 +37,7 @@ import {
 import Constants from './constants';
 import { calculateTotalCaptureAmount } from './capturePayment';
 import { calculateTotalCancelAmount } from './cancelPayment';
+import { calculateTotalRefundAmount } from './refundPayment';
 
 const createOrderWithPayment = async (
   payload: PaymentPayload,
@@ -295,6 +296,7 @@ export async function orderPaymentCaptureHandler(payload: PaymentPayload) {
       payload,
       'Charge',
     );
+    await setPayment({ id: payment.id }, { status: 'PARTIALLY_CAPTURED' });
   }
   const result = {
     status: 'Partial capture requested',
@@ -341,15 +343,19 @@ export async function refundPaymentHandler(payload: RefundPayload) {
     };
   }
 
-  // Validate refund amount
-  const hasValidRefund = hasValidAmount(order, refundAmount);
+  // Calculating all refund amount in order
+  const totalRefundAmount = await calculateTotalRefundAmount(order);
 
-  if (hasValidRefund.isGreater) {
-    logger().error(
-      '[refundPaymentHandler] Refund amount cannot be greater than the order amount!',
-    );
+  const diffAmount = calculateRemainingOrderAmount(order, totalRefundAmount);
+  // Check if the refund amount is valid
+  const hasValidRefund = hasValidAmount(order, totalRefundAmount);
+  if (
+    hasValidRefund.isEqual ||
+    (refundAmount > diffAmount && diffAmount !== 0)
+  ) {
+    logger().error('Refund amount cannot be greater than the order amount!');
     throw {
-      message: 'Refund amount cannot be greater than the order amount!',
+      message: 'Refund amount is not valid!',
       statusCode: 500,
     };
   }
@@ -375,16 +381,17 @@ export async function refundPaymentHandler(payload: RefundPayload) {
       'Refund',
     );
     // Update payment table
-    await setPayment({ id: payment.id }, { status: mappedStatus });
+    await setPayment({ id: payment.id }, { status: 'PARTIALLY_REFUNDED' });
   }
 
   // if refund is equal to order amount
-  if (hasValidRefund.isEqual) {
+  if (diffAmount === 0 || diffAmount === refundAmount) {
     // update order status
     const result = await updateOrderStatus(payment.orderId, 'Complete');
     if (result.order.orderState === 'Complete') {
       logger().info(`Order status update to : ${result.order.orderState}`);
     }
+    await setPayment({ id: payment.id }, { status: mappedStatus });
   }
   return response;
 }
@@ -455,6 +462,7 @@ export async function orderPaymentCancelHandler(payload: PaymentPayload) {
       payload,
       'CancelAuthorization',
     );
+    await setPayment({ id: payment.id }, { status: 'PARTIALLY_CANCELLED' });
   }
   const result = {
     status: 'Partial cancel requested',
