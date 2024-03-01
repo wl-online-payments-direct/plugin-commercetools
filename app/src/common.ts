@@ -283,7 +283,10 @@ export async function orderPaymentCaptureHandler(payload: PaymentPayload) {
       '[orderPaymentCaptureHandler] Received mappedStatus as :',
       JSON.stringify(mappedStatus),
     );
-    await setPayment({ id: payment.id }, { status: mappedStatus });
+    await setPayment(
+      { id: payment.id },
+      { status: mappedStatus, worldlineStatus: mappedStatus },
+    );
     throw {
       message: 'Received mapped status as : FAILED',
       statusCode: 500,
@@ -296,7 +299,10 @@ export async function orderPaymentCaptureHandler(payload: PaymentPayload) {
       payload,
       'Charge',
     );
-    await setPayment({ id: payment.id }, { status: 'PARTIALLY_CAPTURED' });
+    await setPayment(
+      { id: payment.id },
+      { status: 'PARTIALLY_CAPTURED', worldlineStatus: mappedStatus },
+    );
   }
   const result = {
     status: 'Partial capture requested',
@@ -309,7 +315,10 @@ export async function orderPaymentCaptureHandler(payload: PaymentPayload) {
       'Paid',
     );
     // Update payment table
-    await setPayment({ id: payment.id }, { status: mappedStatus });
+    await setPayment(
+      { id: payment.id },
+      { status: mappedStatus, worldlineStatus: mappedStatus },
+    );
     return response;
   }
   return result;
@@ -367,7 +376,10 @@ export async function refundPaymentHandler(payload: RefundPayload) {
       '[refundPaymentHandler] Received mappedStatus as :',
       JSON.stringify(mappedStatus),
     );
-    await setPayment({ id: payment.id }, { status: mappedStatus });
+    await setPayment(
+      { id: payment.id },
+      { status: mappedStatus, worldlineStatus: mappedStatus },
+    );
     throw {
       message: 'Received mapped status as : FAILED',
       statusCode: 500,
@@ -381,7 +393,10 @@ export async function refundPaymentHandler(payload: RefundPayload) {
       'Refund',
     );
     // Update payment table
-    await setPayment({ id: payment.id }, { status: 'PARTIALLY_REFUNDED' });
+    await setPayment(
+      { id: payment.id },
+      { status: 'PARTIALLY_REFUNDED', worldlineStatus: mappedStatus },
+    );
   }
 
   // if refund is equal to order amount
@@ -391,7 +406,10 @@ export async function refundPaymentHandler(payload: RefundPayload) {
     if (result.order.orderState === 'Complete') {
       logger().info(`Order status update to : ${result.order.orderState}`);
     }
-    await setPayment({ id: payment.id }, { status: mappedStatus });
+    await setPayment(
+      { id: payment.id },
+      { status: mappedStatus, worldlineStatus: mappedStatus },
+    );
   }
   return response;
 }
@@ -448,7 +466,10 @@ export async function orderPaymentCancelHandler(payload: PaymentPayload) {
       '[orderPaymentCancelHandler] Received mappedStatus as :',
       JSON.stringify(mappedStatus),
     );
-    await setPayment({ id: payment.id }, { status: mappedStatus });
+    await setPayment(
+      { id: payment.id },
+      { status: mappedStatus, worldlineStatus: mappedStatus },
+    );
     throw {
       message: 'Received mapped status as : FAILED',
       statusCode: 500,
@@ -462,7 +483,10 @@ export async function orderPaymentCancelHandler(payload: PaymentPayload) {
       payload,
       'CancelAuthorization',
     );
-    await setPayment({ id: payment.id }, { status: 'PARTIALLY_CANCELLED' });
+    await setPayment(
+      { id: payment.id },
+      { status: 'PARTIALLY_CANCELLED', worldlineStatus: mappedStatus },
+    );
   }
   const result = {
     status: 'Partial cancel requested',
@@ -477,7 +501,10 @@ export async function orderPaymentCancelHandler(payload: PaymentPayload) {
       );
     }
     // Update payment table
-    await setPayment({ id: payment.id }, { status: mappedStatus });
+    await setPayment(
+      { id: payment.id },
+      { status: mappedStatus, worldlineStatus: mappedStatus },
+    );
     return response;
   }
   return result;
