@@ -74,12 +74,11 @@ model payment_references {
 }
 
 model customer_payment_tokens {
-  id               String   @id @default(uuid())
-  customerId       String
-  paymentId        String
-  paymentProductId Int
-  title            String
-  token            String   @db.VarChar(255)
-  createdAt        DateTime @default(now())
-  updatedAt        DateTime @updatedAt
+  id         String   @id @default(uuid())
+  customerId String
+  paymentId  String
+  title      String
+  token      String   @db.VarChar(255)
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
 }

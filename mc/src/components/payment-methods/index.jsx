@@ -271,13 +271,19 @@ const PaymentMethods = () => {
                 if (!data.enabled.value) return { ...pDat, enabled: false };
                 else return { ...pDat };
               });
+            } else if (dSet === 'payButtonTitle') {
+              sendLoad[dSet] = data[dSet]?.values;
             } else sendLoad[dSet] = data[dSet]?.value;
           }
           return {
             [key]: sendLoad,
           };
         default:
-          return { [key]: state[key].value };
+          if (key === 'placeOrder') {
+            return { [key]: state[key].values };
+          } else {
+            return { [key]: state[key].value };
+          }
       }
     });
 
@@ -308,6 +314,7 @@ const PaymentMethods = () => {
   };
 
   useEffect(async () => {
+    setLoader(true);
     const payload = JSON.parse(JSON.stringify(initialState));
     if (customObject?.value) {
       const customValue = customObject?.value?.test;
@@ -318,25 +325,33 @@ const PaymentMethods = () => {
             case 'redirectModeA':
             case 'redirectModeB':
               if (field === 'paymentOptions') {
+                const response = await fetchWorldlinePaymentOptions(
+                  activeStore
+                );
                 if (customValue?.[ds]?.[field] !== undefined) {
-                  payload[ds][field] = customValue[ds][field];
+                  payload[ds][field] = customValue[ds][field].map((payOpt) => {
+                    return {
+                      ...payOpt,
+                      defaultLogo: response?.find(
+                        (res) => res.label === payOpt.label
+                      )['logo'],
+                    };
+                  });
                 } else {
-                  const response = await fetchWorldlinePaymentOptions(
-                    activeStore
-                  );
                   if (response && response.length) {
                     payload[ds][field] = response.map((res) => {
-                      return { ...res, enabled: false };
+                      return { ...res, enabled: false, defaultLogo: res.logo };
                     });
                   }
                 }
                 break;
               } else if (field === 'payButtonTitle') {
                 if (customValue?.[ds]?.[field]) {
-                  payload[ds][field].value = customValue?.[ds]?.[field];
-                  payload[ds][field].values[
-                    customValue[ds]['payButtonLanguage']
-                  ] = customValue?.[ds]?.[field];
+                  payload[ds][field].value =
+                    customValue?.[ds]?.[field][
+                      customValue[ds]['payButtonLanguage']
+                    ];
+                  payload[ds][field].values = customValue?.[ds]?.[field];
                 }
                 break;
               } else {
@@ -347,10 +362,12 @@ const PaymentMethods = () => {
             case 'general':
               if (customValue?.[field] !== undefined) {
                 if (field === 'placeOrder') {
-                  payload[field].values[customValue['placeOrderLanguage']] =
-                    customValue?.[field];
+                  payload[field].value =
+                    customValue?.[field][customValue['placeOrderLanguage']];
+                  payload[field].values = customValue?.[field];
+                } else {
+                  payload[field].value = customValue?.[field];
                 }
-                payload[field].value = customValue?.[field];
               }
               if (
                 customObject?.value &&
@@ -364,6 +381,7 @@ const PaymentMethods = () => {
         }
       }
     }
+    setLoader(false);
     dispatch({
       type: 'UPDATE-STATE',
       value: payload,
