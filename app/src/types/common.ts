@@ -1,5 +1,6 @@
 export interface RedirectModeAPaymentOptions {
   sendOrderData: boolean;
+  templateFileName: string;
   enabled: boolean;
   paymentOptions: {
     paymentProductId: number;
