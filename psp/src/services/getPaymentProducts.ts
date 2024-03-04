@@ -1,5 +1,5 @@
 import { logger } from '@worldline/ctintegration-util';
-import { connectService } from '../client';
+import { connectService, getExtraHeaders } from '../client';
 import { ConnectOpts } from '../types';
 
 export async function getPaymentProducts(
@@ -14,6 +14,7 @@ export async function getPaymentProducts(
   const result = await client.products.getPaymentProducts(merchantId, {
     countryCode,
     currencyCode,
+    extraHeaders: getExtraHeaders(connectOpts),
   });
 
   if (result?.body?.errors) {
