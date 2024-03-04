@@ -309,7 +309,6 @@ const PaymentMethods = () => {
     Object.keys(saveData).forEach((key) =>
       saveData[key] === undefined ? delete saveData[key] : {}
     );
-
     if (
       saveData.redirectModeA.paymentOptions.filter(
         (pData) => pData.paymentMethod === 'oney3x4x'

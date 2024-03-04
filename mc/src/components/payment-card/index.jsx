@@ -23,7 +23,7 @@ const PaymentCard = ({ handlePaymentOptionUpdate, ...props }) => {
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = (check) => {
-    if (check && label === 'Oney3x4x' && paymentOption === undefined) {
+    if (check && label === 'Oney3x4x' && paymentOption?.length === 0) {
       handlePaymentOptionUpdate(label, 'enabled', false);
     } else if (
       check &&
