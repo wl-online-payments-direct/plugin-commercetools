@@ -2,6 +2,7 @@ import { Cart, Customer } from '@worldline/ctintegration-ct';
 import { logger } from '@worldline/ctintegration-util';
 import { CustomObjects, HostedMyCheckoutPayload } from '../types';
 import { appendAdditionalParamsToUrl } from './common';
+import Constants from '../constants';
 
 type CartWithCustomer = Cart & { customer: Customer };
 
@@ -18,7 +19,8 @@ export function getHostedCheckoutPayload(
 
   const { merchantReference, redirectModeA, redirectModeB, authorizationMode } =
     customConfig;
-  const { tokens, acceptHeader, userAgent, paymentProductId } = payload;
+  const { tokens, acceptHeader, userAgent, paymentProductId, paymentMethod } =
+    payload;
 
   // Personal information
   const { customer } = cart as CartWithCustomer;
@@ -97,13 +99,20 @@ export function getHostedCheckoutPayload(
   const groupCards = !!redirectModeB?.groupCards;
 
   /* option to template for Hosted Checkout and Hosted Tokenization */
-  const variant = redirectModeB?.templateFileName || '';
+  let variant = redirectModeA?.templateFileName || '';
 
   let cardPaymentMethodSpecificInput = {};
   let redirectPaymentMethodSpecificInput = {};
   let sepaDirectDebitPaymentMethodSpecificInput = {};
   let mobilePaymentMethodSpecificInput = {};
-
+  const { PAYMENT } = Constants;
+  // Check if payment method is 'worldlineOffsite'
+  if (paymentMethod === PAYMENT.REDIRECTMODE_B.PAYMENT_METHOD) {
+    cardPaymentMethodSpecificInput = {
+      groupCards,
+    };
+    variant = redirectModeB?.templateFileName;
+  }
   const paymentSettings = redirectModeA.paymentOptions.find(
     (paymentOption) => paymentOption.paymentProductId === paymentProductId,
   );
@@ -118,90 +127,94 @@ export function getHostedCheckoutPayload(
     ...locale,
     tokens,
     returnUrl,
-    cardPaymentMethodSpecificInput: {
-      groupCards,
-    },
+    ...(Object.keys(cardPaymentMethodSpecificInput).length > 0
+      ? { cardPaymentMethodSpecificInput }
+      : {}),
     paymentProductFilters: {},
   };
 
-  switch (paymentProductId) {
-    // Klarna
-    case 3306:
-      redirectPaymentMethodSpecificInput = {
-        paymentProductId,
-      };
-      break;
-    // Oney
-    case 5110:
-      redirectPaymentMethodSpecificInput = {
-        requiresApproval: false, // must be set as false, As oney only allow direct sale
-        paymentProductId,
-        paymentOption,
-      };
-      break;
-    // Sepa Direct Debit
-    case 771:
-      hostedCheckoutSpecificInput.paymentProductFilters = {
-        restrictTo: {
-          products: [paymentProductId],
-        },
-      };
-      sepaDirectDebitPaymentMethodSpecificInput = {
-        paymentProduct771SpecificInput: {
-          mandate: {
-            returnUrl,
-            customerReference: merchantCustomerId,
-            recurrenceType,
-            signatureType,
+  if (paymentProductId) {
+    switch (paymentProductId) {
+      // Klarna
+      case 3306:
+        redirectPaymentMethodSpecificInput = {
+          paymentProductId,
+        };
+        break;
+      // Oney
+      case 5110:
+        redirectPaymentMethodSpecificInput = {
+          requiresApproval: false, // must be set as false, As oney only allow direct sale
+          paymentProductId,
+          paymentOption,
+        };
+        break;
+      // Sepa Direct Debit
+      case 771:
+        hostedCheckoutSpecificInput.paymentProductFilters = {
+          restrictTo: {
+            products: [paymentProductId],
           },
-        },
-      };
-      break;
-    // Multibanco
-    case 5500:
-      redirectPaymentMethodSpecificInput = {
-        paymentProductId,
-      };
-      break;
-    // Applepay
-    case 302:
-      mobilePaymentMethodSpecificInput = {
-        authorizationMode,
-        paymentProductId,
-      };
-      break;
-    // P24
-    case 3124:
-      redirectPaymentMethodSpecificInput = {
-        paymentProductId,
-      };
-      break;
-    // EPS
-    case 5406:
-      redirectPaymentMethodSpecificInput = {
-        paymentProductId,
-        redirectionData: {
-          returnUrl,
-        },
-      };
-      break;
-    // Twint
-    case 5407:
-      redirectPaymentMethodSpecificInput = {
-        paymentProductId,
-        requiresApproval: authorizationMode !== 'SALE',
-      };
-      break;
-    // Intersolve
-    case 5700:
-      cardPaymentMethodSpecificInput = {
-        authorizationMode,
-        paymentProductId,
-      };
-      break;
-    default:
-      logger().error(`Received invalid payment product Id ${paymentProductId}`);
-      break;
+        };
+        sepaDirectDebitPaymentMethodSpecificInput = {
+          paymentProduct771SpecificInput: {
+            mandate: {
+              returnUrl,
+              customerReference: merchantCustomerId,
+              recurrenceType,
+              signatureType,
+            },
+          },
+        };
+        break;
+      // Multibanco
+      case 5500:
+        redirectPaymentMethodSpecificInput = {
+          paymentProductId,
+        };
+        break;
+      // Applepay
+      case 302:
+        mobilePaymentMethodSpecificInput = {
+          authorizationMode,
+          paymentProductId,
+        };
+        break;
+      // P24
+      case 3124:
+        redirectPaymentMethodSpecificInput = {
+          paymentProductId,
+        };
+        break;
+      // EPS
+      case 5406:
+        redirectPaymentMethodSpecificInput = {
+          paymentProductId,
+          redirectionData: {
+            returnUrl,
+          },
+        };
+        break;
+      // Twint
+      case 5407:
+        redirectPaymentMethodSpecificInput = {
+          paymentProductId,
+          requiresApproval: authorizationMode !== 'SALE',
+        };
+        break;
+      // Intersolve
+      case 5700:
+        cardPaymentMethodSpecificInput = {
+          authorizationMode,
+          paymentProductId,
+        };
+        break;
+      default:
+        logger().error(
+          `Received invalid payment product Id ${paymentProductId}`,
+        );
+        break;
+    }
   }
 
   return {
@@ -245,7 +258,10 @@ export function getHostedCheckoutPayload(
         merchantReference: paymentId,
       },
     },
-    cardPaymentMethodSpecificInput,
+    cardPaymentMethodSpecificInput:
+      paymentMethod !== PAYMENT.REDIRECTMODE_B.PAYMENT_METHOD
+        ? cardPaymentMethodSpecificInput
+        : {},
     hostedCheckoutSpecificInput,
     redirectPaymentMethodSpecificInput,
     sepaDirectDebitPaymentMethodSpecificInput,

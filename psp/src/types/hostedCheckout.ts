@@ -32,7 +32,7 @@ export interface HostedCheckoutPayload {
       };
     };
     cardPaymentMethodSpecificInput?: {
-      groupCards: boolean;
+      groupCards?: boolean;
     };
   };
   redirectPaymentMethodSpecificInput?: {
