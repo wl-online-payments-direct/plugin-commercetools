@@ -25,7 +25,7 @@ const getExtraHeaders = (props: ConnectOpts) => {
   const xCustomHeaderValue = {
     sdkCreator: author,
     sdkIdentifier: dependencies['onlinepayments-sdk-nodejs'],
-    platformIdentifier: `${process.platform} Node.js/${process.versions.node}`,
+    platformIdentifier: `${PLUGIN_META_INFO.PLATFORM} Node.js/${process.versions.node}`,
     integrator,
   };
   return [
