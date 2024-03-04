@@ -7,11 +7,6 @@ export interface ICreateRefundPayload {
   currencyCode: string;
 }
 
-export interface ICreateRefundResponse {
-  id: string;
-  status: string;
-}
-
 export interface RefundResult {
   isEqual: boolean;
   isGreater: boolean;
