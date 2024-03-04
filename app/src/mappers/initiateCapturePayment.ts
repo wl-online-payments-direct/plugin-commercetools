@@ -1,5 +1,5 @@
-import { CustomObject, Order } from '@worldline/ctintegration-ct';
-import { Payment } from '../types';
+import { Order } from '@worldline/ctintegration-ct';
+import { Payment, CustomObject } from '../types';
 
 export function getInitiateCaptureServicePayload(
   payload: Payment,

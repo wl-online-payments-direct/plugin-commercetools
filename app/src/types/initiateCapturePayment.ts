@@ -23,3 +23,22 @@ export interface Payment {
   updatedAt: Date;
   isSendNotification?: boolean;
 }
+
+export interface CustomObject {
+  id: string;
+  version: number;
+  createdAt: string;
+  container: string;
+  key: string;
+  value: {
+    captureAuthorizationMode: string;
+    serverConfig: {
+      url: string;
+      port: string;
+      username: string;
+      password: string;
+      to: string;
+      from: string;
+    };
+  };
+}

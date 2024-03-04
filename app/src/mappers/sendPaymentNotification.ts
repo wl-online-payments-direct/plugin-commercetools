@@ -1,5 +1,6 @@
-import { CustomObject } from '@worldline/ctintegration-ct';
-import { Payment } from '../types';
+import fs from 'fs';
+import path from 'path';
+import { Payment, CustomObject } from '../types';
 
 export function createMailOptionsPayment(
   dbPayments: Payment[],
@@ -16,25 +17,26 @@ export function createMailOptionsPayment(
       </tr>
     `;
   });
-  const html = `<table border=1>
-    <thead>
-      <tr>
-        <th>Payment Id</th>
-        <th>WorldLine Id</th>
-        <th>Status</th>
-      </tr>
-    </thead>
-    <tbody>
-      ${tableBody}
-    </tbody>
-  </table>`;
+
+  // Get the absolute path to the HTML file
+  const htmlFilePath = path.join(
+    __dirname,
+    '../../src/constants/paymentTemplate.html',
+  );
+
+  // Read the content of the HTML template file
+  let htmlTemplate = fs.readFileSync(htmlFilePath, 'utf8');
+
+  // Replace the placeholder with the dynamically generated table body
+  htmlTemplate = htmlTemplate.replace('{tableBody}', tableBody);
+
   const { to, from } = customObject.value.serverConfig;
   return {
     from,
     to,
     subject: 'Worldline payments for review!',
-    text: html,
-    html,
+    text: htmlTemplate,
+    html: htmlTemplate,
   };
 }
 
@@ -42,7 +44,7 @@ export function createEmailConfig(customObject: CustomObject) {
   const { url, port, username, password } = customObject.value.serverConfig;
   return {
     host: url,
-    port,
+    port: parseInt(port, 10),
     secure: false,
     auth: {
       user: username,

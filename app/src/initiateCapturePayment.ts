@@ -1,11 +1,7 @@
 import { logger } from '@worldline/ctintegration-util';
-import {
-  getAllCustomObjects,
-  getOrderById,
-  CustomObject,
-} from '@worldline/ctintegration-ct';
+import { getAllCustomObjects, getOrderById } from '@worldline/ctintegration-ct';
 import { getPaymentsByStatus } from '@worldline/ctintegration-db';
-import { Status, Payment, CaptureResponse } from './types';
+import { Status, Payment, CaptureResponse, CustomObject } from './types';
 import {
   calculateTimeDifferenceInHours,
   mapCaptureAuthorizationModeToHours,

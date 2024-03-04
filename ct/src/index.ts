@@ -4,6 +4,5 @@ export type {
   InventoryEntry,
   Order,
   Payment,
-  CustomObject,
 } from '@commercetools/platform-sdk';
 export * from './services';

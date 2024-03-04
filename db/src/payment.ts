@@ -213,6 +213,7 @@ export async function getPaymentsByStatus(
 
     return payments;
   } catch (error) {
+    logger().error(`Failed to fetch payment from DB: ${JSON.stringify(error)}`);
     throw {
       message: 'Exception occurred while fetching the payments',
       statusCode: 500,
