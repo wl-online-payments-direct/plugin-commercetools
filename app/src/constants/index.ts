@@ -3,6 +3,17 @@ const HOSTED_AND_APMS = 'HOSTED_AND_APMS';
 const REDIRECT_WORLDLINE = 'REDIRECT_WORLDLINE';
 
 export default {
+  CRON: {
+    manually: 'Manually',
+    endOfDay: 'At the end of the day',
+    afterOneDay: 'After 1 day',
+    afterTwoDay: 'After 2 days',
+    afterThreeDay: 'After 3 days',
+    afterFourDay: 'After 4 days',
+    afterFiveDay: 'After 5 days',
+    afterSixDay: 'After 6 days',
+    afterSevenDay: 'After 7 days',
+  },
   CART: {
     ACTIVE: 'Active',
   },

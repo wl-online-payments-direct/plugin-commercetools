@@ -1,5 +1,6 @@
 import { Order } from '@worldline/ctintegration-ct';
 import { Payment, CustomObject } from '../types';
+import Constants from '../constants';
 
 export function getInitiateCaptureServicePayload(
   payload: Payment,
@@ -28,22 +29,23 @@ export function mapCaptureAuthorizationModeToHours(
   customObject: CustomObject,
 ): number {
   const mode = customObject.value.captureAuthorizationMode;
+  const { CRON } = Constants;
   switch (mode) {
-    case 'at the end of day':
+    case CRON.endOfDay:
+      return 12;
+    case CRON.afterOneDay:
       return 24;
-    case 'after 1 day':
-      return 24;
-    case 'after two days':
+    case CRON.afterTwoDay:
       return 48;
-    case 'after three days':
+    case CRON.afterThreeDay:
       return 72;
-    case 'after four days':
+    case CRON.afterFourDay:
       return 96;
-    case 'after five days':
+    case CRON.afterFiveDay:
       return 120;
-    case 'after six days':
+    case CRON.afterSixDay:
       return 144;
-    case 'after seven days':
+    case CRON.afterSevenDay:
       return 168;
     default:
       return 1;
