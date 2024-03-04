@@ -6,6 +6,17 @@ export default {
   CART: {
     ACTIVE: 'Active',
   },
+  TRANSACTION: {
+    CHARGE: 'Charge',
+    REFUND: 'Refund',
+    CANCEL_AUTHORIZATION: 'CancelAuthorization',
+    PAID: 'Paid',
+  },
+  ORDER: {
+    CONFIRMED: 'Confirmed',
+    COMPLETE: 'Complete',
+    CANCELLED: 'Cancelled',
+  },
   PAYMENT: {
     REDIRECTMODE_A: {
       TYPE: 'offsite',
@@ -21,6 +32,9 @@ export default {
     DATABASE: {
       STATUS: {
         FAILED: 'FAILED',
+        PARTIALLY_CAPTURED: 'PARTIALLY_CAPTURED',
+        PARTIALLY_REFUNDED: 'PARTIALLY_REFUNDED',
+        PARTIALLY_CANCELLED: 'PARTIALLY_CANCELLED',
       },
       STATE: {
         DEFAULT: 'DEFAULT',

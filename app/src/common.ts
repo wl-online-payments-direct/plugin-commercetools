@@ -232,6 +232,8 @@ export async function orderPaymentCaptureHandler(payload: PaymentPayload) {
   logger().debug(
     `[orderPaymentCaptureHandler]: payload: ${JSON.stringify(payload)}`,
   );
+  const { PAYMENT, TRANSACTION, ORDER } = Constants;
+
   // Fetch DB payment
   let payment = await getPayment(getPaymentDBPayload(payload));
   if (payment && !payment.orderId) {
@@ -297,11 +299,14 @@ export async function orderPaymentCaptureHandler(payload: PaymentPayload) {
     await createTransactionInPayment(
       order.paymentInfo.payments[0].id,
       payload,
-      'Charge',
+      TRANSACTION.CHARGE,
     );
     await setPayment(
       { id: payment.id },
-      { status: 'PARTIALLY_CAPTURED', worldlineStatus: mappedStatus },
+      {
+        status: PAYMENT.DATABASE.STATUS.PARTIALLY_CAPTURED,
+        worldlineStatus: mappedStatus,
+      },
     );
   }
   const result = {
@@ -311,8 +316,8 @@ export async function orderPaymentCaptureHandler(payload: PaymentPayload) {
   if (diffAmount === 0 || diffAmount === captureAmount) {
     const response = await updateOrderStatus(
       payment.orderId,
-      'Confirmed',
-      'Paid',
+      ORDER.CONFIRMED,
+      TRANSACTION.PAID,
     );
     // Update payment table
     await setPayment(
@@ -328,6 +333,7 @@ export async function refundPaymentHandler(payload: RefundPayload) {
   // log the payload
   logger().debug(`[refundPaymentHandler]:payload: ${JSON.stringify(payload)}`);
 
+  const { PAYMENT, TRANSACTION, ORDER } = Constants;
   // Fetch DB payment
   const payment = await getPayment(getPaymentDBPayload(payload));
 
@@ -390,20 +396,23 @@ export async function refundPaymentHandler(payload: RefundPayload) {
     response = createTransactionInPayment(
       order.paymentInfo?.payments[0].id,
       payload,
-      'Refund',
+      TRANSACTION.REFUND,
     );
     // Update payment table
     await setPayment(
       { id: payment.id },
-      { status: 'PARTIALLY_REFUNDED', worldlineStatus: mappedStatus },
+      {
+        status: PAYMENT.DATABASE.STATUS.PARTIALLY_REFUNDED,
+        worldlineStatus: mappedStatus,
+      },
     );
   }
 
   // if refund is equal to order amount
   if (diffAmount === 0 || diffAmount === refundAmount) {
     // update order status
-    const result = await updateOrderStatus(payment.orderId, 'Complete');
-    if (result.order.orderState === 'Complete') {
+    const result = await updateOrderStatus(payment.orderId, ORDER.COMPLETE);
+    if (result.order.orderState === ORDER.COMPLETE) {
       logger().info(`Order status update to : ${result.order.orderState}`);
     }
     await setPayment(
@@ -420,6 +429,7 @@ export async function orderPaymentCancelHandler(payload: PaymentPayload) {
     `[orderPaymentCancelHandler]:payload: ${JSON.stringify(payload)}`,
   );
 
+  const { PAYMENT, TRANSACTION, ORDER } = Constants;
   // Fetch DB payment
   const payment = await getPayment(getPaymentDBPayload(payload));
   if (!payment) {
@@ -481,11 +491,14 @@ export async function orderPaymentCancelHandler(payload: PaymentPayload) {
     await createTransactionInPayment(
       order.paymentInfo?.payments[0].id,
       payload,
-      'CancelAuthorization',
+      TRANSACTION.CANCEL_AUTHORIZATION,
     );
     await setPayment(
       { id: payment.id },
-      { status: 'PARTIALLY_CANCELLED', worldlineStatus: mappedStatus },
+      {
+        status: PAYMENT.DATABASE.STATUS.PARTIALLY_CANCELLED,
+        worldlineStatus: mappedStatus,
+      },
     );
   }
   const result = {
@@ -494,8 +507,8 @@ export async function orderPaymentCancelHandler(payload: PaymentPayload) {
 
   if (diffAmount === 0 || diffAmount === cancelAmount) {
     // update order status
-    const response = await updateOrderStatus(payment.orderId, 'Cancelled');
-    if (response.order.orderState === 'Cancelled') {
+    const response = await updateOrderStatus(payment.orderId, ORDER.CANCELLED);
+    if (response.order.orderState === ORDER.CANCELLED) {
       logger().info(
         `[orderPaymentCancelHandler] Successfully updated order status to : ${response.order.orderState}`,
       );
