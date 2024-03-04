@@ -136,7 +136,8 @@ export function getHostedCheckoutPayload(
   if (paymentProductId) {
     switch (paymentProductId) {
       // Klarna
-      case 3306:
+      case 3301:
+      case 3302:
         redirectPaymentMethodSpecificInput = {
           paymentProductId,
         };
