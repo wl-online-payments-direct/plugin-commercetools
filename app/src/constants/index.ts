@@ -21,6 +21,7 @@ export default {
     DATABASE: {
       STATUS: {
         FAILED: 'FAILED',
+        IN_REVIEW: 'IN_REVIEW',
       },
       STATE: {
         DEFAULT: 'DEFAULT',
