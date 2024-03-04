@@ -1,5 +1,5 @@
 import { logger } from '@worldline/ctintegration-util';
-import { connectService } from '../client';
+import { connectService, getExtraHeaders } from '../client';
 import {
   CancelPaymentRequest,
   CancelPaymentResponse,
@@ -17,7 +17,9 @@ export async function cancelPaymentService(
     merchantId,
     paymentId,
     payload,
-    {},
+    {
+      extraHeaders: getExtraHeaders(connectOpts),
+    },
   );
   if (result.body?.errors) {
     logger().error(
