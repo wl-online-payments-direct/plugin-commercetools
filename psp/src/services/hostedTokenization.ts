@@ -1,5 +1,5 @@
 import { getFormattedHostedTokenizationResult } from '../mappers';
-import { connectService } from '../client';
+import { connectService, getExtraHeaders } from '../client';
 import {
   HostedTokenizationPayload,
   HostedTokenizationResponse,
@@ -15,7 +15,9 @@ export async function hostedTokenizationService(
   const result = await client.hostedTokenization.createHostedTokenization(
     merchantId,
     payload,
-    {},
+    {
+      extraHeaders: getExtraHeaders(connectOpts),
+    },
   );
 
   if (result?.body?.errors) {

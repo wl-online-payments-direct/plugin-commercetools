@@ -1,12 +1,14 @@
-import { connectService } from '../client';
+import { connectService, getExtraHeaders } from '../client';
 import { ConnectOpts } from '../types';
 
 export async function testConnectionService(
-  options: ConnectOpts,
+  connectOpts: ConnectOpts,
 ): Promise<boolean> {
-  const { merchantId } = options;
-  const client = await connectService(options);
-  const result = await client.services.testConnection(merchantId, {});
+  const { merchantId } = connectOpts;
+  const client = await connectService(connectOpts);
+  const result = await client.services.testConnection(merchantId, {
+    extraHeaders: getExtraHeaders(connectOpts),
+  });
 
   if (result?.body?.errors) {
     throw {

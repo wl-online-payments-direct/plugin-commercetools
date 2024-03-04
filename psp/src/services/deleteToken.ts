@@ -1,4 +1,4 @@
-import { connectService } from '../client';
+import { connectService, getExtraHeaders } from '../client';
 import { ConnectOpts } from '../types';
 
 export async function deleteTokenService(
@@ -7,7 +7,10 @@ export async function deleteTokenService(
 ): Promise<boolean> {
   const { merchantId } = connectOpts;
   const client = await connectService(connectOpts);
-  const result = await client.tokens.removeToken(merchantId, token, {});
+  const result = await client.tokens.removeToken(merchantId, token, {
+    extraHeaders: getExtraHeaders(connectOpts),
+  });
+
   if (result?.body?.errors) {
     throw {
       message: 'Failed to process the token deletion',

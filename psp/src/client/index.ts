@@ -1,6 +1,10 @@
 import WorldLineSDK from 'onlinepayments-sdk-nodejs';
 import { logger } from '@worldline/ctintegration-util';
 import { ConnectOpts } from '../types';
+import { author, dependencies } from '../../package.json';
+import Constants from '../constants';
+
+const { PLUGIN_META_INFO } = Constants;
 
 const connectService = async (props: ConnectOpts) => {
   const { integrator, apiKey, apiSecret, host, enableLogs } = props;
@@ -16,4 +20,20 @@ const connectService = async (props: ConnectOpts) => {
   });
 };
 
-export { connectService };
+const getExtraHeaders = (props: ConnectOpts) => {
+  const { integrator } = props;
+  const xCustomHeaderValue = {
+    sdkCreator: author.name,
+    sdkIdentifier: dependencies['onlinepayments-sdk-nodejs'],
+    platformIdentifier: `${PLUGIN_META_INFO.PLATFORM} Node.js/${process.versions.node}`,
+    integrator,
+  };
+  return [
+    {
+      key: PLUGIN_META_INFO.CUSTOM_HEADER_KEY,
+      value: Buffer.from(JSON.stringify(xCustomHeaderValue)).toString('base64'),
+    },
+  ];
+};
+
+export { connectService, getExtraHeaders };
