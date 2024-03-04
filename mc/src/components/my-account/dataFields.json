@@ -101,6 +101,72 @@
       "disabled": true,
       "required": true,
       "type": "text"
+    },
+    "serverurl": {
+      "hasError": false,
+      "required": false,
+      "hideField": true,
+      "label": "Server URL",
+      "placeholder": "Enter the server url",
+      "errMsg": "Please enter valid url.",
+      "type": "text",
+      "value": ""
+    },
+    "serverport": {
+      "hasError": false,
+      "required": false,
+      "hideField": true,
+      "label": "Server Port",
+      "placeholder": "Enter the server port",
+      "type": "number",
+      "value": ""
+    },
+    "serverusername": {
+      "hasError": false,
+      "required": false,
+      "hideField": true,
+      "label": "Username",
+      "placeholder": "Enter the username",
+      "type": "text",
+      "value": ""
+    },
+    "serverpassword": {
+      "hasError": false,
+      "required": false,
+      "hideField": true,
+      "label": "Password",
+      "placeholder": "Enter the password",
+      "type": "text",
+      "value": ""
+    },
+    "servertimeout": {
+      "hasError": false,
+      "required": false,
+      "hideField": true,
+      "label": "Server Timeout",
+      "placeholder": "Enter the timeout",
+      "type": "number",
+      "value": ""
+    },
+    "serverto": {
+      "hasError": false,
+      "required": false,
+      "hideField": true,
+      "label": "Recepient Email",
+      "placeholder": "Enter the recepient email",
+      "errMsg": "Please enter valid email",
+      "type": "text",
+      "value": ""
+    },
+    "serverfrom": {
+      "hasError": false,
+      "required": false,
+      "hideField": true,
+      "label": "Sender Email",
+      "placeholder": "Enter the sender email",
+      "errMsg": "Please enter valid email",
+      "type": "text",
+      "value": ""
     }
   },
   "test": {
@@ -205,6 +271,72 @@
       "disabled": true,
       "required": true,
       "type": "text"
+    },
+    "serverurl": {
+      "hasError": false,
+      "required": false,
+      "hideField": true,
+      "label": "Server URL",
+      "placeholder": "Enter the server url",
+      "errMsg": "Please enter valid url.",
+      "type": "text",
+      "value": ""
+    },
+    "serverport": {
+      "hasError": false,
+      "required": false,
+      "hideField": true,
+      "label": "Server Port",
+      "placeholder": "Enter the server port",
+      "type": "number",
+      "value": ""
+    },
+    "serverusername": {
+      "hasError": false,
+      "required": false,
+      "hideField": true,
+      "label": "Username",
+      "placeholder": "Enter the username",
+      "type": "text",
+      "value": ""
+    },
+    "serverpassword": {
+      "hasError": false,
+      "required": false,
+      "hideField": true,
+      "label": "Password",
+      "placeholder": "Enter the password",
+      "type": "text",
+      "value": ""
+    },
+    "servertimeout": {
+      "hasError": false,
+      "required": false,
+      "hideField": true,
+      "label": "Server Timeout",
+      "placeholder": "Enter the timeout",
+      "type": "number",
+      "value": ""
+    },
+    "serverto": {
+      "hasError": false,
+      "required": false,
+      "hideField": true,
+      "label": "Recepient Email",
+      "placeholder": "Enter the recepient email",
+      "errMsg": "Please enter valid email",
+      "type": "text",
+      "value": ""
+    },
+    "serverfrom": {
+      "hasError": false,
+      "required": false,
+      "hideField": true,
+      "label": "Sender Email",
+      "placeholder": "Enter the sender email",
+      "errMsg": "Please enter valid email",
+      "type": "text",
+      "value": ""
     }
   }
 }
