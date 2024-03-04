@@ -216,11 +216,46 @@ export const postCancelPayment = async (apiHost, projectKey, payload) => {
   }
 };
 
+export const requestNewFeature = async (payload, apiHost, projectKey) => {
+  try {
+    const response = await fetcher(`/proxy/forward-to`, {
+      method: 'POST',
+      body: JSON.stringify(payload),
+      headers: {
+        'Accept-version': 'v2',
+        'X-Forward-To': `${apiHost}/request-feature`,
+        'X-Forward-To-Audience-Policy': 'forward-url-full-path',
+        'X-Project-Key': projectKey,
+      },
+    });
+
+    return response;
+  } catch (error) {
+    console.error('Refund error:', error.message);
+    throw new Error(error.message);
+  }
+};
+
 export const getPluginVersion = async (url) => {
   try {
     const response = await fetch(url);
     return response;
   } catch (error) {
     console.error('Error plugin version:', error.message);
+  }
+};
+
+export const getProject = async (projectKey) => {
+  try {
+    const project = await fetcher(`/proxy/ctp/${projectKey}`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+    return project;
+  } catch (error) {
+    console.error('Error:', error.message);
+    throw new Error(error.message);
   }
 };
