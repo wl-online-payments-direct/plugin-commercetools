@@ -1,11 +1,31 @@
-.store-dropdown-container .select-dropdown{
-    width: 20%;
-}
-
 .MuiTooltip-tooltip {
     background-color: black;
 }
 
 .section-header svg {
     cursor: pointer;
+}
+
+.select-dropdown-wrapper  {
+    width: 10%;
+    margin-left: 5px;
+}
+
+.select-dropdown { 
+    width: 100%;
+}
+
+.payment-wrapper-overlay {
+    position: absolute;
+    width: 98%;
+    height: 98%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 1;
+    margin-top: 10px;
+    border-radius: 10px;
+    cursor: pointer;
+}
+
+.transparent {
+    opacity: 0.20;
 }

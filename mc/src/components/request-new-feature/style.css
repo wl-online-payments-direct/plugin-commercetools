@@ -1,0 +1,51 @@
+.web-form-modal {
+    border-radius: 15px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 50%;
+    border: 2px solid #000;
+    background-color: #fff;
+    padding: 40px;
+}
+
+.web-form {
+    padding-right: 40px;
+}
+
+.webform-action {
+    display: flex;
+    justify-content: space-between;
+}
+
+.request-feature-wrapper{
+    display: flex;
+    justify-content: flex-end;
+}
+
+.field-wrapper{
+    display: flex;
+}
+
+.server-request-wrapper { 
+    padding: 5px;
+}
+
+.modal-form--wrapper {
+    display: flex;
+    justify-content: space-between;
+}
+
+.form-title {
+    width: 30%;
+}
+
+.form-entry {
+    width: 60%;
+    padding-bottom: 10px;
+}
+
+.stepper-wrapper {
+    margin: 2rem 2rem 0 0;
+}

@@ -141,7 +141,7 @@ const GeneralSettings = ({ state, handleCommonSettings }) => {
         <div className="template-section flex">
           <TextInput
             className="section-input"
-            value={state.placeOrder.value}
+            value={state.placeOrder.value ? state.placeOrder.value : ''}
             type={state.placeOrder.type}
             onChange={(e) => handleCommonSettings('placeOrder', e.target.value)}
           />

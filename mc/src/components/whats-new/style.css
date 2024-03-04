@@ -1,0 +1,20 @@
+.whats-new-modal {
+    border-radius: 15px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 50%;
+    border: 2px solid #000;
+    background-color: #fff;
+    padding: 40px;
+}
+
+.whats-new {
+    padding-right: 40px;
+}
+
+.whatsnew-action {
+    display: flex;
+    justify-content: space-between;
+}
