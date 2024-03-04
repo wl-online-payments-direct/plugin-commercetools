@@ -113,6 +113,9 @@ export function getHostedCheckoutPayload(
     paymentOption = '',
   } = paymentSettings || {};
 
+  // Tokenize set as bool(true) only for logged customers
+  const tokenize = !!cart?.customerId;
+
   switch (paymentProductId) {
     // Klarna
     case 3306:
@@ -212,6 +215,7 @@ export function getHostedCheckoutPayload(
       cardPaymentMethodSpecificInput = {
         authorizationMode,
         paymentProductId,
+        tokenize,
       };
       hostedCheckoutSpecificInput = {
         variant,
@@ -219,6 +223,9 @@ export function getHostedCheckoutPayload(
       };
       break;
     default:
+      cardPaymentMethodSpecificInput = {
+        tokenize,
+      };
       hostedCheckoutSpecificInput = {
         variant,
         ...locale,
