@@ -23,7 +23,7 @@ const connectService = async (props: ConnectOpts) => {
 const getExtraHeaders = (props: ConnectOpts) => {
   const { integrator } = props;
   const xCustomHeaderValue = {
-    sdkCreator: author,
+    sdkCreator: author.name,
     sdkIdentifier: dependencies['onlinepayments-sdk-nodejs'],
     platformIdentifier: `${PLUGIN_META_INFO.PLATFORM} Node.js/${process.versions.node}`,
     integrator,
