@@ -245,6 +245,15 @@ const PaymentMethods = () => {
     setLoader(false);
   };
 
+  const camelCase = (str) => {
+    return str
+      .toLowerCase()
+      .replace(/(?:^\w|[A-Z]|\b\w)/g, function (word, index) {
+        return index == 0 ? word.toLowerCase() : word.toUpperCase();
+      })
+      .replace(/\s+/g, '');
+  };
+
   const saveFormData = async () => {
     setLoader(true);
     if (state?.merchantReference?.value?.replaceAll(' ', '').length > 12) {
@@ -268,8 +277,13 @@ const PaymentMethods = () => {
           for (let dSet of dataSet) {
             if (dSet === 'paymentOptions') {
               sendLoad[dSet] = data[dSet].map((pDat) => {
-                if (!data.enabled.value) return { ...pDat, enabled: false };
-                else return { ...pDat };
+                if (!data.enabled.value)
+                  return {
+                    ...pDat,
+                    enabled: false,
+                    paymentMethod: camelCase(pDat.label),
+                  };
+                else return { ...pDat, paymentMethod: camelCase(pDat.label) };
               });
             } else if (dSet === 'payButtonTitle') {
               sendLoad[dSet] = data[dSet]?.values;
@@ -295,6 +309,14 @@ const PaymentMethods = () => {
     Object.keys(saveData).forEach((key) =>
       saveData[key] === undefined ? delete saveData[key] : {}
     );
+
+    if (
+      saveData.redirectModeA.paymentOptions.filter(
+        (pData) => pData.paymentMethod === 'oney3x4x'
+      )[0].enabled
+    )
+      saveData.authorizationMode = 'SALE';
+
     const final_payload = {
       value: {
         ...customObject?.value,
@@ -355,8 +377,9 @@ const PaymentMethods = () => {
                 }
                 break;
               } else {
-                if (customValue?.[ds]?.[field] !== undefined)
+                if (customValue?.[ds]?.[field] !== undefined) {
                   payload[ds][field].value = customValue?.[ds]?.[field];
+                }
                 break;
               }
             case 'general':
@@ -375,6 +398,12 @@ const PaymentMethods = () => {
               ) {
                 payload['merchantReference'].value =
                   customObject?.value?.merchantReference.replaceAll(' ', '');
+              }
+              if (field === 'paymentOption') {
+                payload['paymentOption'].value =
+                  customObject?.value?.authorizationMode === 'SALE'
+                    ? customObject?.value?.authorizationMode
+                    : 'AUTH';
               }
               break;
           }
