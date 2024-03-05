@@ -14,3 +14,5 @@ export * from './updateOrder';
 export * from './createTransaction';
 export * from './getPaymentById';
 export * from './getInventory';
+export * from './getAllCustomObjects';
+export * from './getCustomObject';

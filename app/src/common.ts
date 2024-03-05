@@ -98,7 +98,10 @@ export async function orderPaymentHandler(payload: PaymentPayload) {
       // Fetch CT cart
       const cart = await getCartById(dbPayment.cartId);
       if (!cart) {
-        await setPayment({ id: dbPayment.id }, { status: 'IN_REVIEW' });
+        await setPayment(
+          { id: dbPayment.id },
+          { status: PAYMENT.DATABASE.STATUS.IN_REVIEW },
+        );
         // TODO: store the error message in database.
 
         logger().error(`Cart '${dbPayment.cartId}' is missing!`);
@@ -106,6 +109,10 @@ export async function orderPaymentHandler(payload: PaymentPayload) {
       }
 
       if (hasEqualAmounts(payload, cart)) {
+        await setPayment(
+          { id: dbPayment.id },
+          { status: PAYMENT.DATABASE.STATUS.IN_REVIEW },
+        );
         // TODO: send a notification to admin and add a column to save the reason
         logger().error(
           '[orderPaymentHandler] Cart amount doesnt match with the paid amount',

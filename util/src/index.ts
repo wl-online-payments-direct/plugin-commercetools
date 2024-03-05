@@ -3,3 +3,4 @@ export * from './response';
 export * from './headers';
 export * from './methods';
 export * from './common';
+export * from './mail';
