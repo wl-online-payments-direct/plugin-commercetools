@@ -31,9 +31,13 @@ import {
   shouldSaveToken,
   getCustomerTokenPayload,
   calculateRemainingOrderAmount,
+  getupdateOrderWithPaymentMapper,
+  getOrderResultMapper,
 } from './mappers';
 import Constants from './constants';
 import { calculateTotalCaptureAmount } from './capturePayment';
+import { calculateTotalCancelAmount } from './cancelPayment';
+import { calculateTotalRefundAmount } from './refundPayment';
 
 const createOrderWithPayment = async (
   payload: PaymentPayload,
@@ -73,10 +77,7 @@ const updateOrderWithPayment = async (
   // Mutate cart for update payment
   const { updatedPayment } = await updatePayment(payload, order);
 
-  return {
-    order: { id: order.id, version: order.version },
-    payment: updatedPayment,
-  };
+  return getupdateOrderWithPaymentMapper(updatedPayment, order);
 };
 
 export async function orderPaymentHandler(payload: PaymentPayload) {
@@ -139,7 +140,10 @@ export async function orderPaymentHandler(payload: PaymentPayload) {
       // TODO: What happens when one of the webhook arrive out of sync?
       // E.g. a payment got authorized and then captured, but the webhooks reached in reverse order
       let result;
-      if (payload.type === STATUS.PENDING_CAPTURE) {
+      if (
+        payload.type === STATUS.PENDING_CAPTURE ||
+        payload.type === STATUS.CAPTURED
+      ) {
         result = !dbPayment?.orderId
           ? await createOrderWithPayment(payload, cart, customObjects)
           : await updateOrderWithPayment(payload, dbPayment);
@@ -160,7 +164,7 @@ export async function orderPaymentHandler(payload: PaymentPayload) {
       // update order id and reset the state as DEFAULT
       const updateQuery = {
         ...(!dbPayment.orderId && result?.order?.id
-          ? { orderId: result.order.id }
+          ? getOrderResultMapper(result.order)
           : {}),
         worldlineId: payload?.payment?.id,
         worldlineStatus: payload?.payment?.status || '',
@@ -238,8 +242,14 @@ export async function orderPaymentCaptureHandler(payload: PaymentPayload) {
   logger().debug(
     `[orderPaymentCaptureHandler]: payload: ${JSON.stringify(payload)}`,
   );
+  const { PAYMENT, TRANSACTION, ORDER } = Constants;
+
   // Fetch DB payment
-  const payment = await getPayment(getPaymentDBPayload(payload));
+  let payment = await getPayment(getPaymentDBPayload(payload));
+  if (payment && !payment.orderId) {
+    await orderPaymentHandler(payload);
+    payment = await getPayment(getPaymentDBPayload(payload));
+  }
   if (!payment) {
     logger().error('[orderPaymentCaptureHandler] Failed to fetch the payment');
     throw {
@@ -285,7 +295,10 @@ export async function orderPaymentCaptureHandler(payload: PaymentPayload) {
       '[orderPaymentCaptureHandler] Received mappedStatus as :',
       JSON.stringify(mappedStatus),
     );
-    await setPayment({ id: payment.id }, { status: mappedStatus });
+    await setPayment(
+      { id: payment.id },
+      { status: mappedStatus, worldlineStatus: mappedStatus },
+    );
     throw {
       message: 'Received mapped status as : FAILED',
       statusCode: 500,
@@ -296,7 +309,14 @@ export async function orderPaymentCaptureHandler(payload: PaymentPayload) {
     await createTransactionInPayment(
       order.paymentInfo.payments[0].id,
       payload,
-      'Charge',
+      TRANSACTION.CHARGE,
+    );
+    await setPayment(
+      { id: payment.id },
+      {
+        status: PAYMENT.DATABASE.STATUS.PARTIALLY_CAPTURED,
+        worldlineStatus: mappedStatus,
+      },
     );
   }
   const result = {
@@ -306,11 +326,14 @@ export async function orderPaymentCaptureHandler(payload: PaymentPayload) {
   if (diffAmount === 0 || diffAmount === captureAmount) {
     const response = await updateOrderStatus(
       payment.orderId,
-      'Confirmed',
-      'Paid',
+      ORDER.CONFIRMED,
+      TRANSACTION.PAID,
     );
     // Update payment table
-    await setPayment({ id: payment.id }, { status: mappedStatus });
+    await setPayment(
+      { id: payment.id },
+      { status: mappedStatus, worldlineStatus: mappedStatus },
+    );
     return response;
   }
   return result;
@@ -320,6 +343,7 @@ export async function refundPaymentHandler(payload: RefundPayload) {
   // log the payload
   logger().debug(`[refundPaymentHandler]:payload: ${JSON.stringify(payload)}`);
 
+  const { PAYMENT, TRANSACTION, ORDER } = Constants;
   // Fetch DB payment
   const payment = await getPayment(getPaymentDBPayload(payload));
 
@@ -344,15 +368,19 @@ export async function refundPaymentHandler(payload: RefundPayload) {
     };
   }
 
-  // Validate refund amount
-  const hasValidRefund = hasValidAmount(order, refundAmount);
+  // Calculating all refund amount in order
+  const totalRefundAmount = await calculateTotalRefundAmount(order);
 
-  if (hasValidRefund.isGreater) {
-    logger().error(
-      '[refundPaymentHandler] Refund amount cannot be greater than the order amount!',
-    );
+  const diffAmount = calculateRemainingOrderAmount(order, totalRefundAmount);
+  // Check if the refund amount is valid
+  const hasValidRefund = hasValidAmount(order, totalRefundAmount);
+  if (
+    hasValidRefund.isEqual ||
+    (refundAmount > diffAmount && diffAmount !== 0)
+  ) {
+    logger().error('Refund amount cannot be greater than the order amount!');
     throw {
-      message: 'Refund amount cannot be greater than the order amount!',
+      message: 'Refund amount is not valid!',
       statusCode: 500,
     };
   }
@@ -364,7 +392,10 @@ export async function refundPaymentHandler(payload: RefundPayload) {
       '[refundPaymentHandler] Received mappedStatus as :',
       JSON.stringify(mappedStatus),
     );
-    await setPayment({ id: payment.id }, { status: mappedStatus });
+    await setPayment(
+      { id: payment.id },
+      { status: mappedStatus, worldlineStatus: mappedStatus },
+    );
     throw {
       message: 'Received mapped status as : FAILED',
       statusCode: 500,
@@ -375,19 +406,29 @@ export async function refundPaymentHandler(payload: RefundPayload) {
     response = createTransactionInPayment(
       order.paymentInfo?.payments[0].id,
       payload,
-      'Refund',
+      TRANSACTION.REFUND,
     );
     // Update payment table
-    await setPayment({ id: payment.id }, { status: mappedStatus });
+    await setPayment(
+      { id: payment.id },
+      {
+        status: PAYMENT.DATABASE.STATUS.PARTIALLY_REFUNDED,
+        worldlineStatus: mappedStatus,
+      },
+    );
   }
 
   // if refund is equal to order amount
-  if (hasValidRefund.isEqual) {
+  if (diffAmount === 0 || diffAmount === refundAmount) {
     // update order status
-    const result = await updateOrderStatus(payment.orderId, 'Complete');
-    if (result.order.orderState === 'Complete') {
+    const result = await updateOrderStatus(payment.orderId, ORDER.COMPLETE);
+    if (result.order.orderState === ORDER.COMPLETE) {
       logger().info(`Order status update to : ${result.order.orderState}`);
     }
+    await setPayment(
+      { id: payment.id },
+      { status: mappedStatus, worldlineStatus: mappedStatus },
+    );
   }
   return response;
 }
@@ -398,6 +439,7 @@ export async function orderPaymentCancelHandler(payload: PaymentPayload) {
     `[orderPaymentCancelHandler]:payload: ${JSON.stringify(payload)}`,
   );
 
+  const { PAYMENT, TRANSACTION, ORDER } = Constants;
   // Fetch DB payment
   const payment = await getPayment(getPaymentDBPayload(payload));
   if (!payment) {
@@ -421,10 +463,17 @@ export async function orderPaymentCancelHandler(payload: PaymentPayload) {
     };
   }
 
-  // Validate amount
-  const amount = hasValidAmount(order, cancelAmount);
-  if (amount.isGreater) {
-    logger().error('[orderPaymentCancelHandler] Cancel amount is not valid!');
+  // Calculating all cancel amount in order
+  const totalCancelAmount = await calculateTotalCancelAmount(order);
+
+  const diffAmount = calculateRemainingOrderAmount(order, totalCancelAmount);
+  // Check if the cancel amount is valid
+  const hasValidCancel = hasValidAmount(order, totalCancelAmount);
+  if (
+    hasValidCancel.isEqual ||
+    (cancelAmount > diffAmount && diffAmount !== 0)
+  ) {
+    logger().error('Cancel amount cannot be greater than the order amount!');
     throw {
       message: 'Cancel amount is not valid!',
       statusCode: 500,
@@ -437,36 +486,49 @@ export async function orderPaymentCancelHandler(payload: PaymentPayload) {
       '[orderPaymentCancelHandler] Received mappedStatus as :',
       JSON.stringify(mappedStatus),
     );
-    await setPayment({ id: payment.id }, { status: mappedStatus });
+    await setPayment(
+      { id: payment.id },
+      { status: mappedStatus, worldlineStatus: mappedStatus },
+    );
     throw {
       message: 'Received mapped status as : FAILED',
       statusCode: 500,
     };
   }
+
+  // if payment exist in order
   if (order.paymentInfo?.payments[0].id) {
-    const response = await createTransactionInPayment(
+    await createTransactionInPayment(
       order.paymentInfo?.payments[0].id,
       payload,
-      'CancelAuthorization',
+      TRANSACTION.CANCEL_AUTHORIZATION,
     );
-    if (response.payment.id) {
+    await setPayment(
+      { id: payment.id },
+      {
+        status: PAYMENT.DATABASE.STATUS.PARTIALLY_CANCELLED,
+        worldlineStatus: mappedStatus,
+      },
+    );
+  }
+  const result = {
+    status: 'Partial cancel requested',
+  };
+
+  if (diffAmount === 0 || diffAmount === cancelAmount) {
+    // update order status
+    const response = await updateOrderStatus(payment.orderId, ORDER.CANCELLED);
+    if (response.order.orderState === ORDER.CANCELLED) {
       logger().info(
-        '[orderPaymentCancelHandler] Successfully created cancelled payment transaction in CT!',
+        `[orderPaymentCancelHandler] Successfully updated order status to : ${response.order.orderState}`,
       );
     }
     // Update payment table
-    await setPayment({ id: payment.id }, { status: mappedStatus });
-  }
-  let result;
-  // if cancel amount is equal to order amount
-  if (amount.isEqual) {
-    // update order status
-    result = await updateOrderStatus(payment.orderId, 'Cancelled');
-    if (result.order.orderState === 'Cancelled') {
-      logger().info(
-        `[orderPaymentCancelHandler] Successfully updated order status to : ${result.order.orderState}`,
-      );
-    }
+    await setPayment(
+      { id: payment.id },
+      { status: mappedStatus, worldlineStatus: mappedStatus },
+    );
+    return response;
   }
   return result;
 }

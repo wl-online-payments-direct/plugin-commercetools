@@ -27,12 +27,12 @@ export interface HostedCheckoutPayload {
     tokens?: string;
     returnUrl?: string;
     paymentProductFilters?: {
-      restrictTo: {
-        products: [];
+      restrictTo?: {
+        products?: [];
       };
     };
     cardPaymentMethodSpecificInput?: {
-      groupCards: boolean;
+      groupCards?: boolean;
     };
   };
   redirectPaymentMethodSpecificInput?: {

@@ -18,3 +18,4 @@ compose-dev.yml
 bin
 buildspec_*.yaml
 !mc/.env
+dist

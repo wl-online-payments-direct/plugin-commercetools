@@ -1,5 +1,6 @@
 export interface HostedMyCheckoutPayload {
   paymentProductId?: number;
+  paymentMethod?: string;
   authToken: string;
   userAgent: string;
   acceptHeader: string;
@@ -9,6 +10,7 @@ export interface HostedMyCheckoutPayload {
 }
 export interface HostedCheckoutPayload {
   paymentProductId?: number;
+  paymentMethod?: string;
   authToken: string;
   userAgent: string;
   acceptHeader: string;

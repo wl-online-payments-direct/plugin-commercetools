@@ -42,6 +42,7 @@ export interface CreatePaymentRequest {
   storeId: string;
   cartId: string;
   orderId: string;
+  orderCreatedAt?: Date;
   currency: string;
   total: number;
   status?: $Enums.Status;

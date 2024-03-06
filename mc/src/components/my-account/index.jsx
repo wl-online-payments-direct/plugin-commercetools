@@ -173,7 +173,9 @@ const MyAccount = (props) => {
           ...formData[pData],
           hasError:
             !formData[pData].disabled &&
-            (formData[pData].value < 1 || formData[pData].value > 1440),
+            (isNaN(formData[pData].value) ||
+              formData[pData].value < 1 ||
+              formData[pData].value > 1440),
           errMsg:
             formData[pData].value < 1
               ? 'Minimum timeout is 1'
