@@ -20,6 +20,9 @@ enum Status {
   FAILED
   IN_REVIEW
   CANCELLED
+  PARTIALLY_REFUNDED
+  PARTIALLY_CANCELLED
+  PARTIALLY_CAPTURED
 }
 
 enum States {
@@ -51,6 +54,7 @@ model payments {
   storeId              String         @db.VarChar(255)
   cartId               String         @db.VarChar(255)
   orderId              String         @db.VarChar(255)
+  orderCreatedAt       DateTime?
   currency             String         @db.VarChar(255)
   total                Int
   status               Status         @default(INITIAL)

@@ -74,5 +74,8 @@ COPY ./package*.json ./
 
 RUN npm ci --ignore-scripts
 
+#generate prisma.
+RUN npm run prisma:generate
+
 EXPOSE 3000
 CMD ["./migrate-db-and-start.sh"]

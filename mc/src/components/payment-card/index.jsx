@@ -12,6 +12,7 @@ import { CloseIcon } from '@commercetools-uikit/icons';
 const PaymentCard = ({ handlePaymentOptionUpdate, ...props }) => {
   const {
     logo,
+    defaultLogo,
     label,
     enabled,
     paymentProductId,
@@ -22,7 +23,7 @@ const PaymentCard = ({ handlePaymentOptionUpdate, ...props }) => {
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = (check) => {
-    if (check && label === 'Oney3x4x' && paymentOption === undefined) {
+    if (check && label === 'Oney3x4x' && paymentOption?.length === 0) {
       handlePaymentOptionUpdate(label, 'enabled', false);
     } else if (
       check &&
@@ -36,7 +37,12 @@ const PaymentCard = ({ handlePaymentOptionUpdate, ...props }) => {
   return (
     <>
       <Card theme="light" type="raised" className="payment-options-card">
-        <img className="payment-list-img" src={logo} alt={label} />
+        <img
+          className="payment-list-img"
+          src={logo}
+          alt={label}
+          onError={() => handlePaymentOptionUpdate(label, 'logo', defaultLogo)}
+        />
         <div className="payment-title">{label}</div>
         <div className="payment-options-card-actions flex algin-even">
           <ToggleInput

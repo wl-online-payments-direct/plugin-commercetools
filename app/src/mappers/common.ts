@@ -1,4 +1,4 @@
-import { Cart } from '@worldline/ctintegration-ct';
+import { Cart, Order, Payment } from '@worldline/ctintegration-ct';
 import Constants from '../constants';
 
 export const appendAdditionalParamsToUrl = (
@@ -24,4 +24,26 @@ export const camelCase = (str: string) =>
 
 export function isCartActive(cart: Cart) {
   return cart.cartState === Constants.CART.ACTIVE;
+}
+
+export function getupdateOrderWithPaymentMapper(
+  payment: Payment,
+  order: Order,
+) {
+  const { id, version, createdAt } = order;
+  return {
+    order: {
+      id,
+      version,
+      createdAt,
+    },
+    payment,
+  };
+}
+
+export function getOrderResultMapper(order: { id: string; createdAt: string }) {
+  return {
+    orderId: order.id,
+    orderCreatedAt: order.createdAt,
+  };
 }
