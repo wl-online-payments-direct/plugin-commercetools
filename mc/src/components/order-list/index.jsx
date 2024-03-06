@@ -109,7 +109,6 @@ const OrderList = () => {
   useEffect(() => {
     const keyDownHandler = (event) => {
       if (event.key === 'Enter') {
-        // event.preventDefault();
         handleSearch(searchData);
       }
     };
