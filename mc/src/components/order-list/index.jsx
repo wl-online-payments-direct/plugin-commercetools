@@ -67,9 +67,7 @@ const OrderList = () => {
   const match = useRouteMatch();
 
   const projectKey = useApplicationContext((context) => context.project.key);
-  const { apiHost, merchantUrl } = useApplicationContext(
-    (context) => context.environment
-  );
+  const { apiHost } = useApplicationContext((context) => context.environment);
   const { activeStore } = useContext(PaymentContext);
   const { setOpenCapture, setOpenRefund, setOpenCancel } =
     useContext(OrderContext);
@@ -144,6 +142,8 @@ const OrderList = () => {
 
   const handleCancelAgree = () => {
     setOpenCancel(true);
+    setOpenCapture(false);
+    setOpenRefund(false);
     history.push(`${match.url}/${paymentId}`);
   };
 
@@ -197,6 +197,8 @@ const OrderList = () => {
             <button
               onClick={() => {
                 setOpenCapture(true);
+                setOpenRefund(false);
+                setOpenCancel(false);
                 history.push(`${match.url}/${item['paymentId']}`);
               }}
             >
@@ -213,6 +215,8 @@ const OrderList = () => {
             <button
               onClick={() => {
                 setOpenRefund(true);
+                setOpenCapture(false);
+                setOpenCancel(false);
                 history.push(`${match.url}/${item['paymentId']}`);
               }}
             >
@@ -259,7 +263,6 @@ const OrderList = () => {
         isOpen={openCancelModal}
         handleClose={handleClose}
         handleCancelAgree={handleCancelAgree}
-        merchantUrl={merchantUrl}
       />
       <div className="order-wrapper">
         <form className="order-filters" onSubmit={handleSearch}>
@@ -276,7 +279,7 @@ const OrderList = () => {
               name="orderId"
               placeholder="Order ID"
               value={searchData.orderId}
-              onChange={(e) => handleOrderIdChange(e)}
+              onChange={handleOrderIdChange}
             />
           </div>
           <div>
@@ -311,9 +314,7 @@ const OrderList = () => {
             <DataTable
               columns={columns}
               rows={orderList}
-              itemRenderer={(item, column) => {
-                return itemRenderer(item, column);
-              }}
+              itemRenderer={(item, column) => itemRenderer(item, column)}
             />
           </div>
         ) : (
