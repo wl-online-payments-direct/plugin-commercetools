@@ -21,16 +21,13 @@ export function getServicePayload(
   payload: ICreateMyPaymentPayload,
 ) {
   const { hostedTokenizationId, acceptHeader, userAgent } = payload;
-  const { authorizationMode, merchantReference, skip3dsAuthentication } =
-    customConfig;
-
+  const { authorizationMode, merchantReference, onSiteMode } = customConfig;
   // Concat with the merchant reference
   const paymentId = getFormattedPaymentId(
     merchantReference,
     reference.referenceId,
   );
 
-  const skipAuthentication = skip3dsAuthentication || false;
   const amount = cart?.taxedPrice?.totalGross.centAmount || 0;
   const currencyCode = cart?.taxedPrice?.totalGross.currencyCode || '';
   const merchantCustomerId = cart?.customerId || cart?.anonymousId || '';
@@ -40,12 +37,38 @@ export function getServicePayload(
     orderPaymentId: paymentId,
   });
 
+  let challengeIndicator: string | undefined;
+  let exemptionRequest: string | undefined;
+
+  if (onSiteMode.threeDSChallenge) {
+    if (amount < 30 && onSiteMode.threeDSExemption) {
+      challengeIndicator = undefined;
+      exemptionRequest = 'lowvalue';
+    } else {
+      challengeIndicator = 'challenge-required';
+      exemptionRequest = undefined;
+    }
+  } else if (onSiteMode.threeDSExemption) {
+    if (amount < 30) {
+      challengeIndicator = undefined;
+      exemptionRequest = 'lowvalue';
+    } else {
+      challengeIndicator = undefined;
+      exemptionRequest = undefined;
+    }
+  } else {
+    challengeIndicator = undefined;
+    exemptionRequest = undefined;
+  }
+
   return {
     hostedTokenizationId,
     cardPaymentMethodSpecificInput: {
       authorizationMode,
       threeDSecure: {
-        skipAuthentication,
+        skipAuthentication: !onSiteMode.threeDSEnablement,
+        challengeIndicator,
+        exemptionRequest,
         redirectionData: {
           returnUrl,
         },
@@ -61,7 +84,6 @@ export function getServicePayload(
         },
       },
       references: {
-        // this key is used to identify the merchant from webhook
         merchantReference: paymentId,
       },
       amountOfMoney: {

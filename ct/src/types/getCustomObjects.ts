@@ -4,6 +4,9 @@ export interface RedirectModeAPaymentOptions {
   sendOrderData: boolean;
   enabled: boolean;
   templateFileName: string;
+  threeDSEnablement: boolean;
+  threeDSChallenge: boolean;
+  threeDSExemption: boolean;
   paymentOptions: {
     paymentProductId: number;
     displayOrder: number;
@@ -19,6 +22,9 @@ export interface RedirectModeBPaymentOptions {
   payButtonTitle: string;
   templateFileName: string;
   groupCards?: boolean;
+  threeDSEnablement: boolean;
+  threeDSChallenge: boolean;
+  threeDSExemption: boolean;
 }
 
 export interface OnSiteModePaymentOptions {
@@ -27,6 +33,9 @@ export interface OnSiteModePaymentOptions {
   payButtonTitle: string;
   payButtonLanguage: string;
   templateFileName: string;
+  threeDSEnablement: boolean;
+  threeDSChallenge: boolean;
+  threeDSExemption: boolean;
 }
 
 interface ConnectionProps {
