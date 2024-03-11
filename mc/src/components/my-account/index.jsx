@@ -386,12 +386,12 @@ const MyAccount = (props) => {
                       {contactSupportLink}
                     </Link>
                   </div>
+                  <WhatsNew />
+                  <PluginVersion />
                 </div>
                 <div className="logo-bottom-container">
                   <p>Also available for</p>
                   <img src={worldlineLogoBottom} />
-                  <WhatsNew />
-                  <PluginVersion />
                 </div>
               </div>
               <RequestNewFeature />
