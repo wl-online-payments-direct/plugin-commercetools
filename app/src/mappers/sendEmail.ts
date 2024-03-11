@@ -1,5 +1,6 @@
 import fs from 'fs';
 import path from 'path';
+import { logger } from '@worldline/ctintegration-util';
 import { ISendEmailPayload, CustomObject } from '../types';
 
 export function sendMailOptionsPayment(
@@ -14,7 +15,9 @@ export function sendMailOptionsPayment(
     '..',
     'constants/emailTemplate.html',
   );
-  console.log(htmlFilePath);
+
+  logger().info(`The HTML path of the email template is: ${htmlFilePath}`);
+
   // Read the content of the HTML file
   let html = fs.readFileSync(htmlFilePath, 'utf8');
 
