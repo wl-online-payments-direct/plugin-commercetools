@@ -223,7 +223,7 @@ export const requestNewFeature = async (payload, apiHost, projectKey) => {
       body: JSON.stringify(payload),
       headers: {
         'Accept-version': 'v2',
-        'X-Forward-To': `${apiHost}/request-feature`,
+        'X-Forward-To': `${apiHost}/send/email`,
         'X-Forward-To-Audience-Policy': 'forward-url-full-path',
         'X-Project-Key': projectKey,
       },

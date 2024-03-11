@@ -54,6 +54,11 @@ const PageWrapper = ({ children }) => {
     if (activeCurrency && activeCurrency) setActive(true);
   }, [activeCountry, activeCurrency]);
 
+  useEffect(() => {
+    setActiveCurrency(activeCurrency ? activeCurrency : null);
+    setActiveCountry(activeCountry ? activeCountry : null);
+  }, []);
+
   const getStoreName = (str) => {
     return str.name[locale] ? str.name[locale] : str.name['en'];
   };

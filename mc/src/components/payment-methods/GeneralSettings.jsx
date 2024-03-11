@@ -109,7 +109,7 @@ const GeneralSettings = ({ state, handleCommonSettings }) => {
             <h5 className="section-header">
               {state.captureAuthorizationMode.label}
             </h5>
-            <div className="dropdown-container">
+            <div>
               <Select
                 className="select-dropdown"
                 value={state.captureAuthorizationMode.value}

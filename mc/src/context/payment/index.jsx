@@ -248,7 +248,7 @@ const PaymentProvider = ({ children }) => {
     setLoader(true);
     try {
       const response = await requestNewFeature(payload, apiHost, projectKey);
-      if (response)
+      if (response && response.statusCode === 200)
         showToaster({
           severity: 'success',
           open: true,
@@ -256,6 +256,11 @@ const PaymentProvider = ({ children }) => {
         });
     } catch (err) {
       console.error(err);
+      showToaster({
+        severity: 'error',
+        open: true,
+        message: 'Failed to send request',
+      });
     }
     setLoader(false);
   };
