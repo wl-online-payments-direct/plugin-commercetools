@@ -9,11 +9,12 @@ export function sendMailOptionsPayment(
   const { pspId, companyName, message, platformVersion, pluginVersion } =
     payload;
   // Get the absolute path to the HTML file
-  const htmlFilePath = path.resolve(
+  const htmlFilePath = path.join(
     __dirname,
-    '../../src/constants/emailTemplate.html',
+    '..',
+    'constants/emailTemplate.html',
   );
-
+  console.log(htmlFilePath);
   // Read the content of the HTML file
   let html = fs.readFileSync(htmlFilePath, 'utf8');
 
