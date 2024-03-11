@@ -15,3 +15,4 @@ export * from './getPaymentById';
 export * from './updateOrder';
 export * from './getAllCustomObjects';
 export * from './getCustomObject';
+export * from './getCustomer';
