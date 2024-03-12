@@ -1,8 +1,5 @@
 import { getCustomObjects, getCart } from '@worldline/ctintegration-ct';
-import {
-  getPaymentTokensByCustomerID,
-  getPaymentsByIds,
-} from '@worldline/ctintegration-db';
+import { getPaymentTokensByCustomerID } from '@worldline/ctintegration-db';
 import {
   LoadPaymentMethodsCustomerPaymentToken,
   LoadPaymentMethodsPayload,
@@ -25,16 +22,9 @@ export async function loadPaymentMethodsAppHandler(
   if (cart.customerId) {
     savedTokens = await getPaymentTokensByCustomerID(cart.customerId);
   }
-  const paymentIds: string[] = Array.from(
-    new Set(savedTokens.map((token) => token.paymentId)),
-  );
-  const dbPayments = await getPaymentsByIds(paymentIds);
+
   // Fetch custom objects
   const customConfig = await getCustomObjects(payload.storeId);
 
-  return loadPaymentMethodsMappedResponse(
-    customConfig,
-    savedTokens,
-    dbPayments,
-  );
+  return loadPaymentMethodsMappedResponse(customConfig, savedTokens);
 }

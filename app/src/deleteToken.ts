@@ -13,7 +13,8 @@ import {
 
 export async function deleteTokenAppHandler(payload: DeleteTokenPayload) {
   // Fetch cart from Commercetools to authenticate
-  const customer = await getCustomer(payload.customerEmail, payload.customerId);
+  const customer = await getCustomer(payload.customerId, payload.customerEmail);
+
   const { customerPaymentTokenId } = payload;
   if (!customer) {
     throw {

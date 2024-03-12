@@ -3,7 +3,6 @@ import { $Enums } from '@prisma/client';
 export interface Payment {
   id: string;
   paymentId: string;
-  paymentOption: string;
   worldlineId: string;
   storeId: string;
   cartId: string;
