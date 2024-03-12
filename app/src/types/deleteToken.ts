@@ -1,5 +1,6 @@
 export interface DeleteTokenPayload {
   storeId: string;
   customerPaymentTokenId: string;
-  authToken: string;
+  customerEmail?: string;
+  customerId?: string;
 }
