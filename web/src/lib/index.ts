@@ -24,3 +24,4 @@ export * from './getOrder';
 export * from './getMyCards';
 export * from './sendEmail';
 export * from './getCards';
+export * from './downloadLog';
