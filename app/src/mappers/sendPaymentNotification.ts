@@ -1,6 +1,5 @@
-import fs from 'fs';
-import path from 'path';
 import { Payment, CustomObject } from '../types';
+import Constants from '../constants';
 
 export function createMailOptionsPayment(
   dbPayments: Payment[],
@@ -18,14 +17,7 @@ export function createMailOptionsPayment(
     `;
   });
 
-  // Get the absolute path to the HTML file
-  const htmlFilePath = path.join(
-    __dirname,
-    '../../src/constants/paymentTemplate.html',
-  );
-
-  // Read the content of the HTML template file
-  let htmlTemplate = fs.readFileSync(htmlFilePath, 'utf8');
+  let htmlTemplate = Constants.HTML.PAYMENT_TEMPLATE;
 
   // Replace the placeholder with the dynamically generated table body
   htmlTemplate = htmlTemplate.replace('{tableBody}', tableBody);
