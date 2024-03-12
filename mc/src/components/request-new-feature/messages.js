@@ -5,16 +5,16 @@ export default defineMessages({
     id: 'myAccount.requestNewFeatureTitle',
     defaultMessage: 'Request New Features',
   },
-  pspid: {
-    id: 'myAccount.pspid',
+  pspId: {
+    id: 'myAccount.pspId',
     defaultMessage: 'PSPID',
   },
-  pspidPlaceholder: {
-    id: 'myAccount.pspidPlaceholder',
+  pspIdPlaceholder: {
+    id: 'myAccount.pspIdPlaceholder',
     defaultMessage: 'Enter the PSPID',
   },
-  pspidTooltip: {
-    id: 'myAccount.pspidTooltip',
+  pspIdTooltip: {
+    id: 'myAccount.pspIdTooltip',
     defaultMessage: 'The identifier of your Worldline account',
   },
   companyName: {
