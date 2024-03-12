@@ -1,13 +1,24 @@
 import Constants from '../constants';
-import { CustomObjects, CustomerPaymentToken, PaymentMethod } from '../types';
+import {
+  CustomObjects,
+  CustomerPaymentToken,
+  Payment,
+  PaymentMethod,
+} from '../types';
 import { camelCase } from './common';
 
 export function loadPaymentMethodsMappedResponse(
   customConfig: CustomObjects,
   customerPaymentTokens: CustomerPaymentToken[] | null,
+  dbPayments?: Payment[],
 ) {
   const {
-    PAYMENT: { REDIRECTMODE_A, REDIRECTMODE_B, ONSITEMODE },
+    PAYMENT: {
+      REDIRECTMODE_A,
+      REDIRECTMODE_B,
+      ONSITEMODE,
+      DATABASE: { PAYMENT_OPTIONS },
+    },
   } = Constants;
 
   const {
@@ -26,12 +37,25 @@ export function loadPaymentMethodsMappedResponse(
 
   const tokens =
     customerPaymentTokens && Array.isArray(customerPaymentTokens)
-      ? customerPaymentTokens.map((cpt) => ({
-          name: cpt?.title || '',
-          type: ONSITEMODE.TYPE,
-          token: cpt?.token || '',
-          paymentMethod: mappedPaymentMethods[cpt?.paymentProductId],
-        }))
+      ? customerPaymentTokens.map((cpt) => {
+          const payment = dbPayments?.find(
+            (dbPayment) => dbPayment.paymentId === cpt.paymentId,
+          );
+
+          // Determine the type based on the existence of dbPayment and its paymentOption
+          const type =
+            payment &&
+            payment.paymentOption === PAYMENT_OPTIONS.WORLDLINE_CREDITCARD
+              ? ONSITEMODE.TYPE
+              : REDIRECTMODE_A.TYPE;
+
+          return {
+            name: cpt?.title || '',
+            type,
+            token: cpt?.token || '',
+            paymentMethod: mappedPaymentMethods[cpt?.paymentProductId],
+          };
+        })
       : [];
 
   // Return empty payment methods if checkout is disabled

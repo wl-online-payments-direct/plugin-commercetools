@@ -1,7 +1,5 @@
-import fs from 'fs';
-import path from 'path';
-import { logger } from '@worldline/ctintegration-util';
 import { ISendEmailPayload, CustomObject } from '../types';
+import Constants from '../constants';
 
 export function sendMailOptionsPayment(
   payload: ISendEmailPayload,
@@ -9,17 +7,8 @@ export function sendMailOptionsPayment(
 ) {
   const { pspId, companyName, message, platformVersion, pluginVersion } =
     payload;
-  // Get the absolute path to the HTML file
-  const htmlFilePath = path.join(
-    __dirname,
-    '..',
-    'constants/emailTemplate.html',
-  );
 
-  logger().info(`The HTML path of the email template is: ${htmlFilePath}`);
-
-  // Read the content of the HTML file
-  let html = fs.readFileSync(htmlFilePath, 'utf8');
+  let html = Constants.HTML.EMAIL_TEMPLATE;
 
   // Replace placeholder strings with actual values from the payload
   html = html.replace('{pspId}', pspId);

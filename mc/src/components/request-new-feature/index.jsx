@@ -11,6 +11,8 @@ import { useApplicationContext } from '@commercetools-frontend/application-shell
 import { PaymentContext } from '../../context/payment';
 import { Modal, Box, Button } from '@mui/material';
 import './style.css';
+import { useIntl } from 'react-intl';
+import messages from './messages';
 
 const RequestNewFeature = () => {
   const [disableSendRequest, setDisableSendRequest] = useState(true);
@@ -20,11 +22,12 @@ const RequestNewFeature = () => {
   const { pluginVersion } = useApplicationContext(
     (context) => context.environment
   );
+  const { formatMessage } = useIntl();
 
   const { sendRequest, setLoader, activeStore } = useContext(PaymentContext);
   const dataForm = [
     {
-      name: 'pspid',
+      name: 'pspId',
       label: 'PSPID',
       placeholder: 'Enter the PSPID',
       type: 'text',
@@ -51,7 +54,7 @@ const RequestNewFeature = () => {
       name: 'platformVersion',
       label: 'Platform Version',
       placeholder: 'Enter the platform version',
-      type: 'number',
+      type: 'text',
       value: '',
     },
     {
@@ -126,7 +129,7 @@ const RequestNewFeature = () => {
         return (
           <TextInput
             name={field.name}
-            placeholder={field.placeholder}
+            placeholder={formatMessage(messages[`${field.name}Placeholder`])}
             value={field.value}
             onChange={(e) =>
               flag === 'server' ? updateServerForm(e) : updateRequestForm(e)
@@ -138,7 +141,7 @@ const RequestNewFeature = () => {
         return (
           <NumberInput
             name={field.name}
-            placeholder={field.placeholder}
+            placeholder={formatMessage(messages[`${field.name}Placeholder`])}
             value={field.value}
             onChange={(e) =>
               flag === 'server' ? updateServerForm(e) : updateRequestForm(e)
@@ -150,7 +153,7 @@ const RequestNewFeature = () => {
         return (
           <RichTextInput
             name={field.name}
-            placeholder={field.placeholder}
+            placeholder={formatMessage(messages[`${field.name}Placeholder`])}
             value={field.value}
             onChange={(e) =>
               flag === 'server'
@@ -164,7 +167,6 @@ const RequestNewFeature = () => {
         return (
           <TextInput
             name={field.name}
-            placeholder={field.placeholder}
             value={field.value}
             isReadOnly={true}
             className="webform-input"
@@ -193,7 +195,9 @@ const RequestNewFeature = () => {
             <CloseIcon />
           </span>
           <div className="web-form">
-            <h5 className="section-header">Request New Features</h5>
+            <h5 className="section-header">
+              {formatMessage(messages.requestNewFeatureTitle)}
+            </h5>
             <div className="server-request-wrapper">
               {requestForm.map((field, index) => (
                 <div
@@ -203,10 +207,15 @@ const RequestNewFeature = () => {
                   <span className="form-title">
                     <div className="flex">
                       <Label isRequiredIndicatorVisible={true}>
-                        {field.label}
+                        {formatMessage(messages[field.name])}
                       </Label>
                       {field.tooltip ? (
-                        <Tooltip placement="top" title={field.tooltip}>
+                        <Tooltip
+                          placement="top"
+                          title={formatMessage(
+                            messages[`${field.name}Tooltip`]
+                          )}
+                        >
                           <InfoIcon />
                         </Tooltip>
                       ) : null}
@@ -220,13 +229,13 @@ const RequestNewFeature = () => {
             </div>
             <Box sx={{ display: 'flex', flexDirection: 'row', pt: 2 }}>
               <Button color="inherit" onClick={cancelRequest} sx={{ mr: 1 }}>
-                Cancel
+                {formatMessage(messages.cancelBtn)}
               </Button>
               <Box sx={{ flex: '1 1 auto' }} />
               <PrimaryButton
                 isDisabled={disableSendRequest}
                 iconLeft={<RocketIcon />}
-                label="Send"
+                label={formatMessage(messages.saveBtn)}
                 onClick={sendRequestForm}
               />
             </Box>

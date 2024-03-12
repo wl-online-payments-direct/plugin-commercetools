@@ -1,23 +1,23 @@
-import { getCustomObjects, getCustomer } from '@worldline/ctintegration-ct';
+import { getCustomObjects, getMyCart } from '@worldline/ctintegration-ct';
 import { deleteTokenService } from '@worldline/ctintegration-psp';
 import {
   deleteCustomerPaymentTokens,
   getCustomerPaymentToken,
 } from '@worldline/ctintegration-db';
 import { logger } from '@worldline/ctintegration-util';
-import { DeleteTokenPayload } from './types';
+import { DeleteMyTokenPayload } from './types';
 import {
   getConnectionServiceProps,
   getDeletedTokenMappedResponse,
 } from './mappers';
 
-export async function deleteTokenAppHandler(payload: DeleteTokenPayload) {
+export async function deleteMyTokenAppHandler(payload: DeleteMyTokenPayload) {
   // Fetch cart from Commercetools to authenticate
-  const customer = await getCustomer(payload.customerEmail, payload.customerId);
+  const { cart } = await getMyCart(payload.authToken);
   const { customerPaymentTokenId } = payload;
-  if (!customer) {
+  if (!cart) {
     throw {
-      message: 'Failed to fetch the customer or customer is missing',
+      message: 'Failed to fetch the cart of cart is missing',
       statusCode: 500,
     };
   }
