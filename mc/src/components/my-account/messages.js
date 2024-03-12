@@ -162,4 +162,13 @@ export default defineMessages({
     id: 'myAccount.saveBtn',
     defaultMessage: 'Save/Update',
   },
+  clipboardMsg: {
+    id: 'myAccount.clipboardMsg',
+    defaultMessage:
+      'To avoid copy/paste issues, use the `copy` icon to copy the URL',
+  },
+  copiedMsg: {
+    id: 'myAccount.copiedMsg',
+    defaultMessage: 'Copied!',
+  },
 });

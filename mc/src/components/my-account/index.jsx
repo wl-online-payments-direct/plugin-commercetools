@@ -367,10 +367,11 @@ const MyAccount = (props) => {
                                 style={{ justifyContent: 'space-between' }}
                               >
                                 <p className="info">
-                                  To avoid copy/paste issues, use the `copy`
-                                  icon to copy the URL
+                                  {formatMessage(messages.clipboardMsg)}
                                 </p>
-                                {copied && <p>Copied!</p>}
+                                {copied && (
+                                  <p> {formatMessage(messages.copiedMsg)}</p>
+                                )}
                               </div>
                             </>
                           ) : (

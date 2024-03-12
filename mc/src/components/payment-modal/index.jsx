@@ -15,6 +15,8 @@ import Select from '@mui/material/Select';
 import MenuItem from '@mui/material/MenuItem';
 import TextInput from '@commercetools-uikit/text-input';
 import NumberInput from '@commercetools-uikit/number-input';
+import { useIntl } from 'react-intl';
+import messages from './messages';
 
 const PaymentModalComponent = ({
   images = [],
@@ -29,54 +31,55 @@ const PaymentModalComponent = ({
   signatureType,
 }) => {
   const inputRef = useRef(null);
+  const { formatMessage } = useIntl();
   const [imagesData, setImagesData] = useState([...new Set(images)]);
   const [paymentFields, setPaymentFields] = useState(() => {
     switch (label) {
       case 'Oney3x4x':
         return [
           {
-            label: 'Payment Option',
+            label: formatMessage(messages.oneyPaymentOption),
             type: 'text',
             value: paymentOption ? paymentOption : '',
             key: 'paymentOption',
             required: true,
             hasError: false,
-            errMsg: 'Please enter this field',
+            errMsg: formatMessage(messages.oneyPaymentOptionErrorMsg),
           },
         ];
       case 'Intersolve':
         return [
           {
-            label: 'Payment Product ID',
+            label: formatMessage(messages.intersolvePaymentProductID),
             type: 'number',
             value: paymentProductId ? paymentProductId : 0,
             key: 'paymentProductId',
             required: true,
             hasError: false,
-            errMsg: 'Please enter  a valid Product ID',
+            errMsg: formatMessage(messages.intersolvePaymentProductIDErrorMsg),
           },
         ];
       case 'Sepa':
         return [
           {
-            label: 'Recurrence Type',
+            label: formatMessage(messages.sepaReccurenceType),
             type: 'dropdown',
             value: recurrenceType ? recurrenceType : 'UNIQUE',
             values: ['UNIQUE', 'RECURRING'],
             key: 'recurrenceType',
             required: true,
             hasError: false,
-            errMsg: 'Please enter this field',
+            errMsg: formatMessage(messages.sepaReccurenceTypeErrorMsg),
           },
           {
-            label: 'Signature Type',
+            label: formatMessage(messages.sepaSignatureType),
             type: 'dropdown',
             value: signatureType ? signatureType : 'SMS',
             values: ['SMS', 'UNSIGNED'],
             key: 'signatureType',
             required: true,
             hasError: false,
-            errMsg: 'Please enter this field',
+            errMsg: formatMessage(messages.sepaSignatureTypeErrorMsg),
           },
         ];
       default:
@@ -245,7 +248,7 @@ const PaymentModalComponent = ({
             {dimError && (
               <div style={{ margin: '10px' }}>
                 <Alert severity="error">
-                  {'Upload logo maximum 200x80px.'}
+                  {formatMessage(messages.uploadFileErrorMsg)}
                 </Alert>
               </div>
             )}
@@ -255,7 +258,7 @@ const PaymentModalComponent = ({
               startIcon={<CloudUploadIcon />}
               className="upload-btn"
             >
-              Upload a file
+              {formatMessage(messages.uploadFile)}
               <input
                 ref={inputRef}
                 type="file"
@@ -284,7 +287,7 @@ const PaymentModalComponent = ({
                           style={{ marginTop: '20px' }}
                         >
                           <Label>{pField.label}</Label>
-                          <h6>{'(Mandatory Field)'}</h6>
+                          <h6>{`(${formatMessage(messages.mandatoryMsg)})`}</h6>
                           {pField.hasError ? (
                             <div className="error-msg">
                               <Typography>{pField.errMsg}</Typography>
@@ -383,7 +386,7 @@ const PaymentModalComponent = ({
             variant="solid"
             onClick={() => handleSavePaymentOption()}
           >
-            Save
+            {formatMessage(messages.saveBtn)}
           </Button>
           <Button
             className="cancel-btn"
@@ -393,7 +396,7 @@ const PaymentModalComponent = ({
               handleClose(true);
             }}
           >
-            Cancel
+            {formatMessage(messages.cancelBtn)}
           </Button>
         </div>
       )}
@@ -426,7 +429,7 @@ const PaymentModalComponent = ({
                 handleImageDelete();
               }}
             >
-              Yes
+              {formatMessage(messages.yesBtn)}
             </Button>
             <Button
               className="cancel-btn"
@@ -435,7 +438,7 @@ const PaymentModalComponent = ({
                 handleCloseModal();
               }}
             >
-              Cancel
+              {formatMessage(messages.cancelBtn)}
             </Button>
           </div>
         </Box>

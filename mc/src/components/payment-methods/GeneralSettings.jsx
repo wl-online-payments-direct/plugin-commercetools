@@ -10,6 +10,8 @@ import MenuItem from '@mui/material/MenuItem';
 import Select from '@mui/material/Select';
 import { DownloadIcon } from '@commercetools-uikit/icons';
 import Alert from '@mui/material/Alert';
+import { useIntl } from 'react-intl';
+import messages from './messages';
 
 const GeneralSettings = ({ state, handleCommonSettings }) => {
   const [merchREfError, setmerchRefError] = useState(
@@ -17,6 +19,8 @@ const GeneralSettings = ({ state, handleCommonSettings }) => {
       ? true
       : false
   );
+  const { formatMessage } = useIntl();
+
   useEffect(() => {
     setmerchRefError(
       state.merchantReference.value?.replaceAll(' ', '').length > 12
@@ -30,16 +34,21 @@ const GeneralSettings = ({ state, handleCommonSettings }) => {
       <div className="section-wrapper">
         <h5 className="section-header">
           <span className="header-section-title">
-            {state.merchantReference.label}
+            {formatMessage(messages.generalMerchantReferenceLabel)}
           </span>
-          <Tooltip placement="top" title={state.merchantReference.tooltip}>
+          <Tooltip
+            placement="top"
+            title={formatMessage(messages.generalMerchantReferenceTooltip)}
+          >
             <InfoIcon />
           </Tooltip>
         </h5>
         <div className="template-section">
           {merchREfError && (
             <div style={{ margin: '10px' }}>
-              <Alert severity="error">{'Maximum 12 characters.'}</Alert>
+              <Alert severity="error">
+                {formatMessage(messages.generalMerchantReferenceErrMsg)}
+              </Alert>
             </div>
           )}
           <TextInput
@@ -48,7 +57,9 @@ const GeneralSettings = ({ state, handleCommonSettings }) => {
               state.merchantReference.value ? state.merchantReference.value : ''
             }
             type={state.merchantReference.type}
-            placeholder={state.merchantReference.placeholder}
+            placeholder={formatMessage(
+              messages.generalMerchantReferencePlaceholder
+            )}
             hasError={merchREfError}
             onChange={(e) =>
               handleCommonSettings('merchantReference', e.target.value)
@@ -59,9 +70,12 @@ const GeneralSettings = ({ state, handleCommonSettings }) => {
       <div className="section-wrapper">
         <h5 className="section-header">
           <span className="header-section-title">
-            {state.paymentOption.label}
+            {formatMessage(messages.generalPaymentOptionLabel)}
           </span>
-          <Tooltip placement="top" title={state.paymentOption.tooltip}>
+          <Tooltip
+            placement="top"
+            title={formatMessage(messages.generalPaymentOptionTooltip)}
+          >
             <InfoIcon />
           </Tooltip>
         </h5>
@@ -76,10 +90,10 @@ const GeneralSettings = ({ state, handleCommonSettings }) => {
             direction="inline"
           >
             <RadioInput.Option value={'SALE'}>
-              {'Direct Sale'}
+              {formatMessage(messages.generalPaymentOptionsDirect)}
             </RadioInput.Option>
             <RadioInput.Option value={'AUTH'}>
-              {'Authorization only'}
+              {formatMessage(messages.generalPaymentOptionsAuth)}
             </RadioInput.Option>
           </RadioField>
         </div>
@@ -97,19 +111,19 @@ const GeneralSettings = ({ state, handleCommonSettings }) => {
                 direction="inline"
               >
                 <RadioInput.Option value={'PRE_AUTHORIZATION'}>
-                  {'Pre Authorization'}
+                  {formatMessage(messages.generalPaymentOptionsPre)}
                 </RadioInput.Option>
                 <RadioInput.Option value={'FINAL_AUTHORIZATION'}>
-                  {'Final Authorization'}
+                  {formatMessage(messages.generalPaymentOptionsFinal)}
                 </RadioInput.Option>
               </RadioField>
             </div>
           </div>
           <div className="section-wrapper">
             <h5 className="section-header">
-              {state.captureAuthorizationMode.label}
+              {formatMessage(messages.generalCaptureAuthorizationModeLabel)}
             </h5>
-            <div className="dropdown-container">
+            <div>
               <Select
                 className="select-dropdown"
                 value={state.captureAuthorizationMode.value}
@@ -137,7 +151,9 @@ const GeneralSettings = ({ state, handleCommonSettings }) => {
         </>
       )}
       <div className="section-wrapper">
-        <h5 className="section-header">{state.placeOrder.label}</h5>
+        <h5 className="section-header">
+          {formatMessage(messages.generalPlaceOrderLabel)}
+        </h5>
         <div className="template-section flex">
           <TextInput
             className="section-input"
@@ -168,7 +184,9 @@ const GeneralSettings = ({ state, handleCommonSettings }) => {
       </div>
       <div className="section-wrapper">
         <div className="debug-loging flex">
-          <h5 className="section-header">{state.enableLogs.label}</h5>
+          <h5 className="section-header">
+            {formatMessage(messages.generalenableLogsLabel)}
+          </h5>
           <ToggleInput
             size={'small'}
             isDisabled={false}
@@ -185,7 +203,7 @@ const GeneralSettings = ({ state, handleCommonSettings }) => {
       <div className="section-wrapper">
         <div className="force-s3sv2 flex mb-2">
           <h5 className="section-header">
-            {state.skip3dsAuthentication.label}
+            {formatMessage(messages.generalSkip3dsAuthenticationLabel)}
           </h5>
           <ToggleInput
             size={'small'}
@@ -207,7 +225,9 @@ const GeneralSettings = ({ state, handleCommonSettings }) => {
               title={state.bgColor.label}
               onChange={(e) => handleCommonSettings('bgColor', e.target.value)}
             />
-            <h5 className="colorpicker-title">{state.bgColor.label}</h5>
+            <h5 className="colorpicker-title">
+              {formatMessage(messages.generalBgColorLabel)}
+            </h5>
           </div>
           <div className="colorpicker-container flex mb-2">
             <input
@@ -219,7 +239,9 @@ const GeneralSettings = ({ state, handleCommonSettings }) => {
                 handleCommonSettings('textColor', e.target.value)
               }
             />
-            <h5 className="colorpicker-title">{state.textColor.label}</h5>
+            <h5 className="colorpicker-title">
+              {formatMessage(messages.generalTextColorLabel)}
+            </h5>
           </div>
           <div className="colorpicker-container flex mb-2">
             <input
@@ -231,7 +253,9 @@ const GeneralSettings = ({ state, handleCommonSettings }) => {
                 handleCommonSettings('outlineColor', e.target.value)
               }
             />
-            <h5 className="colorpicker-title">{state.outlineColor.label}</h5>
+            <h5 className="colorpicker-title">
+              {formatMessage(messages.generalOutlineColorLabel)}
+            </h5>
           </div>
         </div>
       </div>

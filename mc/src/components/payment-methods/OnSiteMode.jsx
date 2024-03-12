@@ -12,8 +12,12 @@ import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 import Select from '@mui/material/Select';
 import PaymentModalComponent from '../payment-modal';
+import { useIntl } from 'react-intl';
+import messages from './messages';
 
 const OnSiteMode = ({ onSiteMode, handleOnsiteMode }) => {
+  const { formatMessage } = useIntl();
+
   return (
     <Accordion className="payment-on-site payment-section-wrapper">
       <AccordionSummary
@@ -21,7 +25,7 @@ const OnSiteMode = ({ onSiteMode, handleOnsiteMode }) => {
         expandIcon={<ExpandMoreIcon />}
         aria-controls="panel1a-content"
       >
-        <Typography>On Site Mode: Card Payments Only</Typography>
+        <Typography>{formatMessage(messages.onSiteTitle)}</Typography>
         <ToggleInput
           size={'big'}
           isChecked={onSiteMode.enabled.value}
@@ -29,11 +33,11 @@ const OnSiteMode = ({ onSiteMode, handleOnsiteMode }) => {
         />
       </AccordionSummary>
       <AccordionDetails className="accordion-details">
-        <p className="sub-title">
-          On site card payment without any redirection
-        </p>
+        <p className="sub-title">{formatMessage(messages.onSiteDescription)}</p>
         <div className="section-wrapper">
-          <h5 className="section-header">{onSiteMode.payButtonTitle.label}</h5>
+          <h5 className="section-header">
+            {formatMessage(messages.onSitePayButtonTitleLabel)}
+          </h5>
           <div className="template-section flex">
             <TextInput
               className="section-input"
@@ -66,30 +70,32 @@ const OnSiteMode = ({ onSiteMode, handleOnsiteMode }) => {
         </div>
         <div className="section-wrapper">
           <h5 className="section-header">
-            {onSiteMode.templateFileName.label}
+            {formatMessage(messages.onSiteTemplateFileNameLabel)}
           </h5>
           <div className="template-section">
             <TextInput
               className="section-input"
               value={onSiteMode.templateFileName.value}
               type={onSiteMode.templateFileName.type}
-              placeholder={onSiteMode.templateFileName.placeholder}
+              placeholder={formatMessage(
+                messages.onSiteTemplateFileNamePlaceholder
+              )}
               onChange={(e) =>
                 handleOnsiteMode('templateFileName', e.target.value)
               }
             />
             <p className="sub-title">
-              If you are using a customized template, please enter the name
-              here. If empty, the standard payment page will be displayed.
-              Payment page look and feel can be customized on Worldline Back
-              Office.
+              {formatMessage(messages.onSiteTemplateFileNameDescription)}
             </p>
           </div>
         </div>
         <div className="section-wrapper">
           <h5 className="section-header">
             <span>{onSiteMode.logo.label}</span>
-            <Tooltip placement="top" title={onSiteMode.logo.tooltip}>
+            <Tooltip
+              placement="top"
+              title={formatMessage(messages.onSiteLogoTooltip)}
+            >
               <InfoIcon />
             </Tooltip>
           </h5>
@@ -103,11 +109,11 @@ const OnSiteMode = ({ onSiteMode, handleOnsiteMode }) => {
         </div>
         <div className="section-wrapper">
           <h5 className="section-header">
-            {onSiteMode['3dsEnablement'].label}
+            {formatMessage(messages.onSite3dsEnablementLabel)}
           </h5>
           <div className="3ds-enablement flex">
             <h5 className="section-title">
-              {onSiteMode['3dsEnablement'].label}
+              {formatMessage(messages.onSite3dsEnablementLabel)}
             </h5>
             <ToggleInput
               size={'small'}
@@ -122,7 +128,7 @@ const OnSiteMode = ({ onSiteMode, handleOnsiteMode }) => {
         <div className="section-wrapper flex">
           <div className="3ds-challenge flex">
             <h5 className="section-title">
-              {onSiteMode['3dsChallenge'].label}
+              {formatMessage(messages.onSite3dsChallengeLabel)}
             </h5>
             <ToggleInput
               size={'small'}
@@ -135,7 +141,7 @@ const OnSiteMode = ({ onSiteMode, handleOnsiteMode }) => {
           </div>
           <div className="3ds-excemption flex">
             <h5 className="section-title">
-              {onSiteMode['3dsExemption'].label}
+              {formatMessage(messages.onSite3dsExemptionLabel)}
             </h5>
             <ToggleInput
               size={'small'}
