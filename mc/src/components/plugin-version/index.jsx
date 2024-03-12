@@ -2,6 +2,8 @@ import React, { useEffect, useContext, useState } from 'react';
 import Link from '@commercetools-uikit/link';
 import { useApplicationContext } from '@commercetools-frontend/application-shell-connectors';
 import { PaymentContext } from '../../context/payment';
+import { useIntl } from 'react-intl';
+import messages from './messages';
 
 const PluginVersion = () => {
   const { fetchPluginVersion } = useContext(PaymentContext);
@@ -12,6 +14,7 @@ const PluginVersion = () => {
     sourcePackageLink,
     pluginDownloadLink,
   } = useApplicationContext((context) => context.environment);
+  const { formatMessage } = useIntl();
 
   useEffect(async () => {
     const version = await fetchPluginVersion();
@@ -26,7 +29,7 @@ const PluginVersion = () => {
           isExternal={true}
           to={pluginVersionLink}
         >
-          Plug-in Latest version update
+          {formatMessage(messages.pluginTitle)}
         </Link>
       </div>
       {newVersion && (
@@ -36,7 +39,7 @@ const PluginVersion = () => {
             isExternal={true}
             to={pluginDownloadLink}
           >
-            Latest Platform version is available for update
+            {formatMessage(messages.pluginVersion)}
           </Link>
         </div>
       )}
