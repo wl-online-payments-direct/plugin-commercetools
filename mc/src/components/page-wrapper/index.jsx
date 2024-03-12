@@ -5,11 +5,14 @@ import Select from '@mui/material/Select';
 import { useApplicationContext } from '@commercetools-frontend/application-shell-connectors';
 import { PaymentContext } from '../../context/payment/index';
 import Label from '@commercetools-uikit/label';
+import { useIntl } from 'react-intl';
+import messages from './messages';
 
 const PageWrapper = ({ children }) => {
   const projectKey = useApplicationContext((context) => context.project.key);
   const locale = useApplicationContext((context) => context.dataLocale);
   const [active, setActive] = useState(false);
+  const { formatMessage } = useIntl();
 
   const {
     fetchStores,
@@ -68,7 +71,7 @@ const PageWrapper = ({ children }) => {
       <div className="dropdown-container flex">
         {stores?.length ? (
           <div className="select-dropdown-wrapper">
-            <Label>Stores</Label>
+            <Label>{formatMessage(messages.stores)}</Label>
             <Select
               className="select-dropdown"
               onChange={(e) =>
@@ -90,7 +93,7 @@ const PageWrapper = ({ children }) => {
         ) : null}
         {countries?.length ? (
           <div className="select-dropdown-wrapper">
-            <Label>Countries</Label>
+            <Label>{formatMessage(messages.countries)}</Label>
             <Select
               className="select-dropdown"
               onChange={(e) =>
@@ -112,7 +115,7 @@ const PageWrapper = ({ children }) => {
         ) : null}
         {currencies?.length ? (
           <div className="select-dropdown-wrapper">
-            <Label>Currencies</Label>
+            <Label>{formatMessage(messages.currencies)}</Label>
             <Select
               className="select-dropdown"
               onChange={(e) =>

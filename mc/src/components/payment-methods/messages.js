@@ -71,22 +71,6 @@ export default defineMessages({
     id: 'general.enableLogs.label',
     defaultMessage: initialState.enableLogs.label,
   },
-  generalSkip3dsAuthenticationLabel: {
-    id: 'general.skip3dsAuthentication.label',
-    defaultMessage: initialState.skip3dsAuthentication.label,
-  },
-  generalBgColorLabel: {
-    id: 'general.bgColor.label',
-    defaultMessage: initialState.bgColor.label,
-  },
-  generalTextColorLabel: {
-    id: 'general.textColor.label',
-    defaultMessage: initialState.textColor.label,
-  },
-  generalOutlineColorLabel: {
-    id: 'general.outlineColor.label',
-    defaultMessage: initialState.outlineColor.label,
-  },
   onSiteTitle: {
     id: 'onSite.title',
     defaultMessage: 'On Site Mode: Card Payments Only',

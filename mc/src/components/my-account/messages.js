@@ -54,6 +54,62 @@ export default defineMessages({
     id: 'myAccount.liveMode',
     defaultMessage: 'Live Mode',
   },
+  serverurl: {
+    id: 'myAccount.serverurl',
+    defaultMessage: 'Server URL',
+  },
+  serverurlPlaceholder: {
+    id: 'myAccount.serverurlPlaceholder',
+    defaultMessage: 'Enter the server url',
+  },
+  serverport: {
+    id: 'myAccount.serverport',
+    defaultMessage: 'Server Port',
+  },
+  serverportPlaceholder: {
+    id: 'myAccount.serverportPlaceholder',
+    defaultMessage: 'Enter the server port',
+  },
+  serverusername: {
+    id: 'myAccount.serverusername',
+    defaultMessage: 'Username',
+  },
+  serverusernamePlaceholder: {
+    id: 'myAccount.serverusernamePlaceholder',
+    defaultMessage: 'Enter the username',
+  },
+  serverpassword: {
+    id: 'myAccount.serverpassword',
+    defaultMessage: 'Password',
+  },
+  serverpasswordPlaceholder: {
+    id: 'myAccount.serverpasswordPlaceholder',
+    defaultMessage: 'Enter the password',
+  },
+  servertimeout: {
+    id: 'myAccount.servertimeout',
+    defaultMessage: 'Server Timeout',
+  },
+  servertimeoutPlaceholder: {
+    id: 'myAccount.servertimeoutPlaceholder',
+    defaultMessage: 'Enter the timeout',
+  },
+  serverto: {
+    id: 'myAccount.serverto',
+    defaultMessage: 'Recepient Email',
+  },
+  servertoPlaceholder: {
+    id: 'myAccount.servertoPlaceholder',
+    defaultMessage: 'Enter the recepient email',
+  },
+  serverfrom: {
+    id: 'myAccount.serverfrom',
+    defaultMessage: 'Sender Email',
+  },
+  serverfromPlaceholder: {
+    id: 'myAccount.serverfromPlaceholder',
+    defaultMessage: 'Enter the sender email',
+  },
   redirectFailureUrl: {
     id: 'myAccount.redirectFailureUrl',
     defaultMessage: 'Redirection Payment Page Failure URL',
@@ -145,6 +201,10 @@ export default defineMessages({
   emptyErr: {
     id: 'myAccount.emptyErr',
     defaultMessage: 'Please fill out this field',
+  },
+  emailErr: {
+    id: 'myAccount.emailErr',
+    defaultMessage: 'Please enter valid email',
   },
   characterExceedErr: {
     id: 'myAccount.characterExceedErr',
