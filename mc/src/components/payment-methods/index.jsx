@@ -249,6 +249,15 @@ const PaymentMethods = () => {
     setLoader(false);
   };
 
+  const camelCase = (str) => {
+    return str
+      .toLowerCase()
+      .replace(/(?:^\w|[A-Z]|\b\w)/g, function (word, index) {
+        return index == 0 ? word.toLowerCase() : word.toUpperCase();
+      })
+      .replace(/\s+/g, '');
+  };
+
   const saveFormData = async () => {
     setLoader(true);
     if (state?.merchantReference?.value?.replaceAll(' ', '').length > 12) {
@@ -272,16 +281,27 @@ const PaymentMethods = () => {
           for (let dSet of dataSet) {
             if (dSet === 'paymentOptions') {
               sendLoad[dSet] = data[dSet].map((pDat) => {
-                if (!data.enabled.value) return { ...pDat, enabled: false };
-                else return { ...pDat };
+                if (!data.enabled.value)
+                  return {
+                    ...pDat,
+                    enabled: false,
+                    paymentMethod: camelCase(pDat.label),
+                  };
+                else return { ...pDat, paymentMethod: camelCase(pDat.label) };
               });
+            } else if (dSet === 'payButtonTitle') {
+              sendLoad[dSet] = data[dSet]?.values;
             } else sendLoad[dSet] = data[dSet]?.value;
           }
           return {
             [key]: sendLoad,
           };
         default:
-          return { [key]: state[key].value };
+          if (key === 'placeOrder') {
+            return { [key]: state[key].values };
+          } else {
+            return { [key]: state[key].value };
+          }
       }
     });
 
@@ -293,10 +313,18 @@ const PaymentMethods = () => {
     Object.keys(saveData).forEach((key) =>
       saveData[key] === undefined ? delete saveData[key] : {}
     );
+    if (
+      saveData.redirectModeA.paymentOptions.filter(
+        (pData) => pData.paymentMethod === 'oney3x4x'
+      )[0].enabled
+    )
+      saveData.authorizationMode = 'SALE';
+
     const final_payload = {
       value: {
         ...customObject?.value,
         merchantReference: saveData.merchantReference.replaceAll(' ', ''),
+        authorizationMode: saveData.authorizationMode,
         live: {
           ...customObject?.value?.live,
           ...saveData,
@@ -311,6 +339,7 @@ const PaymentMethods = () => {
   };
 
   useEffect(async () => {
+    setLoader(true);
     const payload = JSON.parse(JSON.stringify(initialState));
     if (customObject?.value) {
       const customValue = customObject?.value?.test;
@@ -321,39 +350,50 @@ const PaymentMethods = () => {
             case 'redirectModeA':
             case 'redirectModeB':
               if (field === 'paymentOptions') {
+                const response = await fetchWorldlinePaymentOptions(
+                  activeStore
+                );
                 if (customValue?.[ds]?.[field] !== undefined) {
-                  payload[ds][field] = customValue[ds][field];
+                  payload[ds][field] = customValue[ds][field].map((payOpt) => {
+                    return {
+                      ...payOpt,
+                      defaultLogo: response?.find(
+                        (res) => res.label === payOpt.label
+                      )['logo'],
+                    };
+                  });
                 } else {
-                  const response = await fetchWorldlinePaymentOptions(
-                    activeStore
-                  );
                   if (response && response.length) {
                     payload[ds][field] = response.map((res) => {
-                      return { ...res, enabled: false };
+                      return { ...res, enabled: false, defaultLogo: res.logo };
                     });
                   }
                 }
                 break;
               } else if (field === 'payButtonTitle') {
                 if (customValue?.[ds]?.[field]) {
-                  payload[ds][field].value = customValue?.[ds]?.[field];
-                  payload[ds][field].values[
-                    customValue[ds]['payButtonLanguage']
-                  ] = customValue?.[ds]?.[field];
+                  payload[ds][field].value =
+                    customValue?.[ds]?.[field][
+                      customValue[ds]['payButtonLanguage']
+                    ];
+                  payload[ds][field].values = customValue?.[ds]?.[field];
                 }
                 break;
               } else {
-                if (customValue?.[ds]?.[field] !== undefined)
+                if (customValue?.[ds]?.[field] !== undefined) {
                   payload[ds][field].value = customValue?.[ds]?.[field];
+                }
                 break;
               }
             case 'general':
               if (customValue?.[field] !== undefined) {
                 if (field === 'placeOrder') {
-                  payload[field].values[customValue['placeOrderLanguage']] =
-                    customValue?.[field];
+                  payload[field].value =
+                    customValue?.[field][customValue['placeOrderLanguage']];
+                  payload[field].values = customValue?.[field];
+                } else {
+                  payload[field].value = customValue?.[field];
                 }
-                payload[field].value = customValue?.[field];
               }
               if (
                 customObject?.value &&
@@ -362,11 +402,18 @@ const PaymentMethods = () => {
                 payload['merchantReference'].value =
                   customObject?.value?.merchantReference.replaceAll(' ', '');
               }
+              if (field === 'paymentOption') {
+                payload['paymentOption'].value =
+                  customObject?.value?.authorizationMode === 'SALE'
+                    ? customObject?.value?.authorizationMode
+                    : 'AUTH';
+              }
               break;
           }
         }
       }
     }
+    setLoader(false);
     dispatch({
       type: 'UPDATE-STATE',
       value: payload,

@@ -6,6 +6,9 @@ import {
   getPaymentMethods,
   uploadImages,
   testConnection,
+  requestNewFeature,
+  getProject,
+  getPluginVersion,
 } from '../../ct-methods';
 import { useApplicationContext } from '@commercetools-frontend/application-shell-connectors';
 import Snackbar from '@mui/material/Snackbar';
@@ -23,8 +26,16 @@ const PaymentProvider = ({ children }) => {
   const apiHost = useApplicationContext(
     (context) => context.environment.apiHost
   );
+  const sourcePackageLink = useApplicationContext(
+    (context) => context.environment.sourcePackageLink
+  );
+
   const [activeStore, setActiveStore] = useState(null);
+  const [activeCurrency, setActiveCurrency] = useState(null);
+  const [activeCountry, setActiveCountry] = useState(null);
   const [stores, setStores] = useState([]);
+  const [countries, setCountries] = useState([]);
+  const [currencies, setCurrencies] = useState([]);
   const [loading, setLoading] = useState(false);
   const [customObject, setCustomObject] = useState({});
   const [toaster, setToaster] = useState({
@@ -37,6 +48,23 @@ const PaymentProvider = ({ children }) => {
     autoHideDuration: 3000,
   });
   const { vertical, horizontal, open, transition } = toaster;
+
+  const fetchProject = async () => {
+    setLoader(true);
+    try {
+      const response = await getProject(projectKey);
+      setLoader(false);
+      return response;
+    } catch (err) {
+      console.error('Failed to fetch project details');
+      showToaster({
+        severity: 'error',
+        open: true,
+        message: 'Failed to fetch project details',
+      });
+      setLoader(false);
+    }
+  };
 
   const fetchStores = async () => {
     setLoader(true);
@@ -85,6 +113,8 @@ const PaymentProvider = ({ children }) => {
       try {
         payload.key = activeStore.key;
         payload.container = CONTAINER_NAME;
+        payload.value.country = activeCountry;
+        payload.value.currency = activeCurrency;
         const response = await createCustomObject(payload, projectKey);
         if (response.id) {
           showToaster({
@@ -154,6 +184,28 @@ const PaymentProvider = ({ children }) => {
     }
   };
 
+  const fetchPluginVersion = async () => {
+    setLoader(true);
+    try {
+      const {
+        payload: {
+          blob: { rawLines },
+        },
+      } = await getPluginVersion(sourcePackageLink);
+      if (response) {
+        const { version } = JSON.parse(rawLines.join(' '));
+        setLoader(false);
+        return version;
+      } else {
+        setLoader(false);
+        return null;
+      }
+    } catch (err) {
+      setLoader(false);
+      return null;
+    }
+  };
+
   const imageUploader = async (files, toasterFlag) => {
     setLoader(true);
     try {
@@ -190,6 +242,27 @@ const PaymentProvider = ({ children }) => {
       });
       setLoader(false);
     }
+  };
+
+  const sendRequest = async (payload) => {
+    setLoader(true);
+    try {
+      const response = await requestNewFeature(payload, apiHost, projectKey);
+      if (response && response.statusCode === 200)
+        showToaster({
+          severity: 'success',
+          open: true,
+          message: 'Request send successfully',
+        });
+    } catch (err) {
+      console.error(err);
+      showToaster({
+        severity: 'error',
+        open: true,
+        message: 'Failed to send request',
+      });
+    }
+    setLoader(false);
   };
 
   const checkConnection = async (payload) => {
@@ -251,14 +324,25 @@ const PaymentProvider = ({ children }) => {
         saveCustomObject,
         fetchWorldlinePaymentOptions,
         imageUploader,
+        sendRequest,
         checkConnection,
         customObject,
         activeStore,
         stores,
+        fetchProject,
+        setCountries,
+        setCurrencies,
+        countries,
+        currencies,
+        setActiveCurrency,
+        setActiveCountry,
+        activeCurrency,
+        activeCountry,
+        fetchPluginVersion,
       }}
     >
       <Backdrop
-        sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
+        sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1500 }}
         open={loading}
       >
         <CircularProgress color="inherit" />

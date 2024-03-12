@@ -157,7 +157,7 @@ const GeneralSettings = ({ state, handleCommonSettings }) => {
         <div className="template-section flex">
           <TextInput
             className="section-input"
-            value={state.placeOrder.value}
+            value={state.placeOrder.value ? state.placeOrder.value : ''}
             type={state.placeOrder.type}
             onChange={(e) => handleCommonSettings('placeOrder', e.target.value)}
           />
@@ -198,65 +198,6 @@ const GeneralSettings = ({ state, handleCommonSettings }) => {
           {state.enableLogs.value && (
             <DownloadIcon style={{ margin: 'auto' }} />
           )}
-        </div>
-      </div>
-      <div className="section-wrapper">
-        <div className="force-s3sv2 flex mb-2">
-          <h5 className="section-header">
-            {formatMessage(messages.generalSkip3dsAuthenticationLabel)}
-          </h5>
-          <ToggleInput
-            size={'small'}
-            isDisabled={false}
-            isChecked={state.skip3dsAuthentication.value}
-            onChange={(e) =>
-              handleCommonSettings('skip3dsAuthentication', e.target.checked)
-            }
-          />
-        </div>
-      </div>
-      <div className="section-wrapper">
-        <div className="colorpicker-section">
-          <div className="colorpicker-container flex mb-2">
-            <input
-              type={state.bgColor.type}
-              name="bg_color"
-              value={state.bgColor.value}
-              title={state.bgColor.label}
-              onChange={(e) => handleCommonSettings('bgColor', e.target.value)}
-            />
-            <h5 className="colorpicker-title">
-              {formatMessage(messages.generalBgColorLabel)}
-            </h5>
-          </div>
-          <div className="colorpicker-container flex mb-2">
-            <input
-              type={state.textColor.type}
-              name="text_color"
-              value={state.textColor.value}
-              title={state.textColor.label}
-              onChange={(e) =>
-                handleCommonSettings('textColor', e.target.value)
-              }
-            />
-            <h5 className="colorpicker-title">
-              {formatMessage(messages.generalTextColorLabel)}
-            </h5>
-          </div>
-          <div className="colorpicker-container flex mb-2">
-            <input
-              type={state.outlineColor.type}
-              name="bg_color"
-              value={state.outlineColor.value}
-              title={state.outlineColor.label}
-              onChange={(e) =>
-                handleCommonSettings('outlineColor', e.target.value)
-              }
-            />
-            <h5 className="colorpicker-title">
-              {formatMessage(messages.generalOutlineColorLabel)}
-            </h5>
-          </div>
         </div>
       </div>
     </>

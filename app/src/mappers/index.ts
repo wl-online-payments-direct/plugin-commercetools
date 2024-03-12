@@ -15,3 +15,7 @@ export * from './capturePayment';
 export * from './common';
 export * from './getPaymentProducts';
 export * from './getOrder';
+export * from './getMyCards';
+export * from './initiateCapturePayment';
+export * from './sendPaymentNotification';
+export * from './sendEmail';

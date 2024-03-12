@@ -3,8 +3,30 @@ const HOSTED_AND_APMS = 'HOSTED_AND_APMS';
 const REDIRECT_WORLDLINE = 'REDIRECT_WORLDLINE';
 
 export default {
+  CRON: {
+    manually: 'Manually',
+    endOfDay: 'At the end of the day',
+    afterOneDay: 'After 1 day',
+    afterTwoDay: 'After 2 days',
+    afterThreeDay: 'After 3 days',
+    afterFourDay: 'After 4 days',
+    afterFiveDay: 'After 5 days',
+    afterSixDay: 'After 6 days',
+    afterSevenDay: 'After 7 days',
+  },
   CART: {
     ACTIVE: 'Active',
+  },
+  TRANSACTION: {
+    CHARGE: 'Charge',
+    REFUND: 'Refund',
+    CANCEL_AUTHORIZATION: 'CancelAuthorization',
+    PAID: 'Paid',
+  },
+  ORDER: {
+    CONFIRMED: 'Confirmed',
+    COMPLETE: 'Complete',
+    CANCELLED: 'Cancelled',
   },
   PAYMENT: {
     REDIRECTMODE_A: {
@@ -21,6 +43,10 @@ export default {
     DATABASE: {
       STATUS: {
         FAILED: 'FAILED',
+        IN_REVIEW: 'IN_REVIEW',
+        PARTIALLY_CAPTURED: 'PARTIALLY_CAPTURED',
+        PARTIALLY_REFUNDED: 'PARTIALLY_REFUNDED',
+        PARTIALLY_CANCELLED: 'PARTIALLY_CANCELLED',
       },
       STATE: {
         DEFAULT: 'DEFAULT',
@@ -35,6 +61,7 @@ export default {
   },
   STATUS: {
     PENDING_CAPTURE: 'payment.pending_capture',
+    CAPTURED: 'payment.captured',
   },
   getWordlineCreditCardOption() {
     return WORLDLINE_CREDITCARD;

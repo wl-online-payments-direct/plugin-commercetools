@@ -12,6 +12,7 @@ import type {
   GetOrders,
   Payment,
   PaymentQueryParams,
+  Status,
 } from './types';
 
 export async function getDBOrders(
@@ -38,6 +39,7 @@ export async function getDBOrders(
         skip,
         take: limit,
         ...params,
+        orderBy: { orderCreatedAt: 'desc' },
       }),
     ]);
     return {
@@ -166,7 +168,7 @@ export async function getPayment(where: {
 
 export async function setPayment(
   where: { [key: string]: string | number },
-  data: { [key: string]: string | number },
+  data: { [key: string]: string | number | boolean },
 ): Promise<Payment> {
   try {
     const result = await prisma.payments.update({
@@ -179,6 +181,44 @@ export async function setPayment(
       message: 'Failed to update payment',
       statusCode: 500,
       details: (error as { message: string }).message,
+    };
+  }
+}
+
+export async function getPaymentsByStatus(
+  storeId: string,
+  statuses: Status[],
+  isSendNotification: boolean = false,
+): Promise<Payment[]> {
+  try {
+    const whereClause: {
+      storeId: string;
+      status: {
+        in: Status[];
+      };
+      isSendNotification?: boolean;
+    } = {
+      storeId,
+      status: {
+        in: statuses,
+      },
+    };
+
+    if (isSendNotification !== undefined) {
+      whereClause.isSendNotification = isSendNotification;
+    }
+
+    const payments = await prisma.payments.findMany({
+      where: whereClause,
+    });
+
+    return payments;
+  } catch (error) {
+    logger().error(`Failed to fetch payment from DB: ${JSON.stringify(error)}`);
+    throw {
+      message: 'Exception occurred while fetching the payments',
+      statusCode: 500,
+      details: (error as Error).message,
     };
   }
 }

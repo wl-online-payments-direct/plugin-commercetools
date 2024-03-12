@@ -23,6 +23,9 @@ import refundPaymentController from '../api/refundPayment/controller';
 import uploadImageController from '../api/uploadImage/controller';
 import getPaymentProductsController from '../api/getPaymentProducts/controller';
 import getOrderController from '../api/getOrder/controller';
+import getMyCardsController from '../api/getMyCards/controller';
+import sendEmailController from '../api/sendEmail/controller';
+import getCardsController from '../api/getCards/controller';
 
 const routes = {
   '/': healthController.processRequest,
@@ -42,6 +45,9 @@ const routes = {
   '/payment/refund': refundPaymentController.processRequest,
   '/token/remove': deleteTokenController.processRequest,
   '/me/payment/methods': loadMyPaymentMethodsController.processRequest,
+  '/me/cards': getMyCardsController.processRequest,
+  '/send/email': sendEmailController.processRequest,
+  '/cards': getCardsController.processRequest,
 
   // Using frontastic token
   '/payment/methods': loadPaymentMethodsController.processRequest,

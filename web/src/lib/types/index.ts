@@ -14,3 +14,4 @@ export * from './deleteToken';
 export * from './validateCart';
 export * from './createPayment';
 export * from './hostedMyCheckout';
+export * from './sendEmail';

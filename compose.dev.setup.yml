@@ -10,7 +10,7 @@ services:
       - redisnet
       - dbnet
     env_file:
-      - compose.env
+      - .env
   mc:
     image: worldline/ctintegration-mc-dev
     build:
@@ -21,7 +21,7 @@ services:
     networks:
       - redisnet
     env_file:
-      - compose.env
+      - .env
 
   redis:
     image: redis:alpine
@@ -39,7 +39,7 @@ services:
     networks:
       - dbnet
     env_file:
-      - compose.env
+      - .env
     expose:
       - 3306
 volumes:

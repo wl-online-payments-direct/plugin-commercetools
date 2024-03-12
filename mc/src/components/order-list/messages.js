@@ -33,6 +33,10 @@ export default defineMessages({
     id: 'Order.total',
     defaultMessage: 'Total',
   },
+  amountPaid: {
+    id: 'Order.amountPaid',
+    defaultMessage: 'Amount Paid',
+  },
   action: {
     id: 'Order.action',
     defaultMessage: 'Actions',
@@ -55,30 +59,30 @@ export default defineMessages({
   },
   capture: {
     id: 'Order.capture',
-    defaultMessage: 'Capture'
+    defaultMessage: 'Capture',
   },
   refund: {
     id: 'Order.refund',
-    defaultMessage: 'Refund'
+    defaultMessage: 'Refund',
   },
   cancel: {
     id: 'Order.cancel',
-    defaultMessage: 'Cancel'
+    defaultMessage: 'Cancel',
   },
   cancelModalTitle: {
     id: 'Order.cancelModalTitle',
-    defaultMessage: 'says'
+    defaultMessage: 'says',
   },
   cancelModalMessage: {
     id: 'Order.cancelModalMessage',
-    defaultMessage: 'Are you sure want to cancel this payment?'
+    defaultMessage: 'Are you sure want to cancel this payment?',
   },
   cancelModalOk: {
     id: 'Order.cancelModalOk',
-    defaultMessage: 'Ok'
+    defaultMessage: 'Ok',
   },
   cancelModalCancel: {
     id: 'Order.cancelModalCancel',
-    defaultMessage: 'Cancel'
+    defaultMessage: 'Cancel',
   },
 });

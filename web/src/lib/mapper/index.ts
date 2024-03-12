@@ -21,3 +21,6 @@ export * from './createPayment';
 export * from './getMyWebhookStatus';
 export * from './getPaymentProducts';
 export * from './getOrder';
+export * from './getMyCards';
+export * from './sendEmail';
+export * from './getCards';

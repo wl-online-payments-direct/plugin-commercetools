@@ -3,12 +3,18 @@ import { ErrorObject } from '@commercetools/platform-sdk';
 export interface RedirectModeAPaymentOptions {
   sendOrderData: boolean;
   enabled: boolean;
+  templateFileName: string;
   paymentOptions: {
+    paymentMethod: string;
     paymentProductId: number;
     displayOrder: number;
     label: string;
     enabled: boolean;
     logo: string;
+    defaultLogo: string;
+    recurrenceType?: string;
+    signatureType?: string;
+    paymentOption?: string;
   }[];
 }
 

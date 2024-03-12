@@ -17,8 +17,6 @@ export function getCapturePaymentRequiredProps(request: Request) {
 }
 
 export function getCapturePaymentAppPayload(request: Request) {
-  const authToken = request.headers.authorization || '';
-
   const {
     storeId = '',
     amount = 0,
@@ -27,7 +25,6 @@ export function getCapturePaymentAppPayload(request: Request) {
   } = (request?.body || {}) as CapturePaymentPayload;
 
   return {
-    authToken,
     storeId,
     amount,
     paymentId,
