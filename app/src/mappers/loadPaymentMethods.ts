@@ -1,24 +1,13 @@
 import Constants from '../constants';
-import {
-  CustomObjects,
-  CustomerPaymentToken,
-  Payment,
-  PaymentMethod,
-} from '../types';
+import { CustomObjects, CustomerPaymentToken, PaymentMethod } from '../types';
 import { camelCase } from './common';
 
 export function loadPaymentMethodsMappedResponse(
   customConfig: CustomObjects,
   customerPaymentTokens: CustomerPaymentToken[] | null,
-  dbPayments?: Payment[],
 ) {
   const {
-    PAYMENT: {
-      REDIRECTMODE_A,
-      REDIRECTMODE_B,
-      ONSITEMODE,
-      DATABASE: { PAYMENT_OPTIONS },
-    },
+    PAYMENT: { REDIRECTMODE_A, REDIRECTMODE_B, ONSITEMODE },
   } = Constants;
 
   const {
@@ -31,29 +20,33 @@ export function loadPaymentMethodsMappedResponse(
   const mappedPaymentMethods = Object.fromEntries(
     redirectModeA.paymentOptions.map((pOption) => [
       pOption.paymentProductId,
-      pOption.paymentMethod,
+      pOption,
     ]),
   );
+  // Create a map with a composite key (customerId-paymentId-token)
+  const tokenMap = new Map<string, CustomerPaymentToken>();
 
+  customerPaymentTokens?.forEach((token) => {
+    const key = `${token.customerId}-${token.token}`;
+    tokenMap.set(key, token);
+  });
+
+  // Convert map values back to an array
+  const uniqueTokensArray = Array.from(tokenMap.values());
   const tokens =
-    customerPaymentTokens && Array.isArray(customerPaymentTokens)
-      ? customerPaymentTokens.map((cpt) => {
-          const payment = dbPayments?.find(
-            (dbPayment) => dbPayment.paymentId === cpt.paymentId,
-          );
-
-          // Determine the type based on the existence of dbPayment and its paymentOption
-          const type =
-            payment &&
-            payment.paymentOption === PAYMENT_OPTIONS.WORLDLINE_CREDITCARD
-              ? ONSITEMODE.TYPE
-              : REDIRECTMODE_A.TYPE;
+    uniqueTokensArray && Array.isArray(uniqueTokensArray)
+      ? uniqueTokensArray.map((cpt) => {
+          const { logo = '' } =
+            mappedPaymentMethods[cpt?.paymentProductId] || {};
 
           return {
             name: cpt?.title || '',
-            type,
+            type: ONSITEMODE.TYPE,
             token: cpt?.token || '',
-            paymentMethod: mappedPaymentMethods[cpt?.paymentProductId],
+            paymentMethod: cpt?.title || '',
+            image: {
+              src: logo,
+            },
           };
         })
       : [];
