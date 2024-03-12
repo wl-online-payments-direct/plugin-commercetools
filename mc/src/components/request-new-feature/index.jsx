@@ -27,7 +27,7 @@ const RequestNewFeature = () => {
   const { sendRequest, setLoader, activeStore } = useContext(PaymentContext);
   const dataForm = [
     {
-      name: 'pspid',
+      name: 'pspId',
       label: 'PSPID',
       placeholder: 'Enter the PSPID',
       type: 'text',
