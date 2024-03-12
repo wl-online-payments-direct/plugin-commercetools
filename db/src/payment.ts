@@ -222,3 +222,27 @@ export async function getPaymentsByStatus(
     };
   }
 }
+
+export async function getPaymentsByIds(
+  paymentIds: string[],
+): Promise<Payment[]> {
+  try {
+    const payments = await prisma.payments.findMany({
+      where: {
+        paymentId: {
+          in: paymentIds,
+        },
+      },
+    });
+    return payments;
+  } catch (error) {
+    logger().error(
+      `Failed to fetch payments from DB: ${JSON.stringify(error)}`,
+    );
+    throw {
+      message: 'Exception occurred while fetching payments',
+      statusCode: 500,
+      details: (error as { message: string }).message,
+    };
+  }
+}
