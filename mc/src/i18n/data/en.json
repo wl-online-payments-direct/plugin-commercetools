@@ -142,5 +142,18 @@
   "upload.save": "Save",
   "upload.yes": "Yes",
   "upload.cancel": "Cancel",
-  "upload.mandatory": "Mandatory Field"
+  "upload.mandatory": "Mandatory Field",
+  "api.fetchProject.errMsg": "Failed to fetch project details",
+  "api.fetchStore.errMsg": "Failed to fetch stores",
+  "api.fetchCustomObject.errMsg": "Failed to fetch custom objects",
+  "api.saveCustomObject.successMsg": "Payment settings saved successfully",
+  "api.saveCustomObject.errMsg": "Failed to save custom object",
+  "api.noStoreSelected.errMsg": "No store selected",
+  "api.refreshPaymentMethods.successMsg": "Refresh Payment Methods: Success",
+  "api.refreshPaymentMethods.errMsg": "Failed to refresh payment methods",
+  "api.imageUpload.successMsg": "Image uploaded",
+  "api.imageUpload.errMsg": "Failed to upload Image",
+  "api.sendRequest.successMsg": "Request send successfully",
+  "api.sendRequest.errMsg": "Failed to send request",
+  "api.checkConnection.errMsg": "Warning: Please enter correct PSPID, API Key & API Secret."
 }
