@@ -316,7 +316,7 @@ const PaymentMethods = () => {
     if (
       saveData.redirectModeA.paymentOptions.filter(
         (pData) => pData.paymentMethod === 'oney3x4x'
-      )[0].enabled
+      )?.[0]?.enabled
     )
       saveData.authorizationMode = 'SALE';
 
@@ -358,8 +358,8 @@ const PaymentMethods = () => {
                     return {
                       ...payOpt,
                       defaultLogo: response?.find(
-                        (res) => res.label === payOpt.label
-                      )['logo'],
+                        (res) => res.label === payOpt?.label
+                      )?.['logo'],
                     };
                   });
                 } else {
@@ -474,7 +474,8 @@ const PaymentMethods = () => {
         </div>
       </div>
       <p className="supportmail">
-      {formatMessage(messages.generalSupportMail)}<a href={`mailto:${emailAddress}`}>{emailAddress}</a>
+        {formatMessage(messages.generalSupportMail)}
+        <a href={`mailto:${emailAddress}`}>{emailAddress}</a>
       </p>
     </PageWrapper>
   );
