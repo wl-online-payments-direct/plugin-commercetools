@@ -120,7 +120,7 @@ const RedirectModeB = ({ redirectModeB, handleRedirectModeB }) => {
           <div className="template-section">
             <TextInput
               className="section-input"
-              value={redirectModeB.templateFileName.value}
+              value={(redirectModeB.templateFileName.value).trim()}
               type={redirectModeB.templateFileName.type}
               placeholder={formatMessage(
                 messages.redirectBTemplateFileNamePlaceholder

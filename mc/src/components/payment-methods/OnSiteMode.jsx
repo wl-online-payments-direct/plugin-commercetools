@@ -75,7 +75,7 @@ const OnSiteMode = ({ onSiteMode, handleOnsiteMode }) => {
           <div className="template-section">
             <TextInput
               className="section-input"
-              value={onSiteMode.templateFileName.value}
+              value={(onSiteMode.templateFileName.value).trim()}
               type={onSiteMode.templateFileName.type}
               placeholder={formatMessage(
                 messages.onSiteTemplateFileNamePlaceholder

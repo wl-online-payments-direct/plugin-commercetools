@@ -1,5 +1,5 @@
 import { Order } from '@worldline/ctintegration-ct';
-import { GetOrderPayload, PaymentDetailsPayload } from '../types';
+import { GetOrderPayload, PaymentDetailsPayload, Transaction } from '../types';
 
 export function getOrderDBPayload(payload: GetOrderPayload) {
   const { paymentId = '' } = payload || {};
@@ -9,6 +9,7 @@ export function getOrderDBPayload(payload: GetOrderPayload) {
 export function getOrderResponseMapper(
   payload: PaymentDetailsPayload,
   order: Order,
+  payment: Transaction[],
 ) {
   const {
     id: worldlineId,
@@ -28,22 +29,38 @@ export function getOrderResponseMapper(
 
   const fraudResults = cardPaymentMethodSpecificOutput?.fraudResults ?? {};
 
-  const mappedOperations = Operations.map((operation) => ({
+  // Filter out operations with status 'CANCELLED' before mapping
+  const mappedOperations = Operations.filter(
+    (operation) => operation.status !== 'CANCELLED',
+  ).map((operation) => ({
     id: operation.id,
     amountOfMoney: operation.amountOfMoney,
     status: operation.status,
     time: operation.statusOutput.statusCodeChangeDateTime,
   }));
+
+  // Map payment transactions similar to operations
+  const mappedPaymentTransactions = payment.map((transaction) => ({
+    amountOfMoney: {
+      amount: transaction.amount.centAmount,
+      currencyCode: transaction.amount.currencyCode,
+    },
+    status: 'CANCELLED',
+  }));
+
+  // Concatenate mapped operations and payment transactions
+  const allTransactions = [...mappedOperations, ...mappedPaymentTransactions];
+
   // Calculate already refunded and already captured amounts
-  const alreadyRefundedAmount = mappedOperations
+  const alreadyRefundedAmount = allTransactions
     .filter((operation) => operation.status === 'REFUNDED')
     .reduce((total, operation) => total + operation.amountOfMoney.amount, 0);
 
-  const alreadyCapturedAmount = mappedOperations
+  const alreadyCapturedAmount = allTransactions
     .filter((operation) => operation.status === 'CAPTURED')
     .reduce((total, operation) => total + operation.amountOfMoney.amount, 0);
 
-  const alreadyCancelledAmount = mappedOperations
+  const alreadyCancelledAmount = allTransactions
     .filter((operation) => operation.status === 'CANCELLED')
     .reduce((total, operation) => total + operation.amountOfMoney.amount, 0);
 
@@ -65,6 +82,6 @@ export function getOrderResponseMapper(
       bin,
     },
     fraudResults,
-    Operations: mappedOperations,
+    Operations: allTransactions,
   };
 }
