@@ -1,4 +1,4 @@
-import { getCustomObjects, getMyCart } from '@worldline/ctintegration-ct';
+import { getCustomObjects, getCustomer } from '@worldline/ctintegration-ct';
 import { deleteTokenService } from '@worldline/ctintegration-psp';
 import {
   deleteCustomerPaymentTokens,
@@ -13,11 +13,12 @@ import {
 
 export async function deleteTokenAppHandler(payload: DeleteTokenPayload) {
   // Fetch cart from Commercetools to authenticate
-  const { cart } = await getMyCart(payload.authToken);
+  const customer = await getCustomer(payload.customerId, payload.customerEmail);
+
   const { customerPaymentTokenId } = payload;
-  if (!cart) {
+  if (!customer) {
     throw {
-      message: 'Failed to fetch the cart of cart is missing',
+      message: 'Failed to fetch the customer or customer is missing',
       statusCode: 500,
     };
   }

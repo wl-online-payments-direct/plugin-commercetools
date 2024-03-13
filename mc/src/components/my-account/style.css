@@ -127,3 +127,7 @@ p.info {
 .error-msg{
     color: red;
 }
+
+.chip{
+    max-width: 40%;
+}

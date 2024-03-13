@@ -46,6 +46,8 @@ ENV NODE_ENV production
 
 RUN apk update && apk upgrade
 
+RUN npm i -g prisma
+
 WORKDIR /app
 RUN mkdir app ct db psp util web
 

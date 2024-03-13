@@ -1,5 +1,5 @@
 import { getCreatePaymentMappedResponse } from '../mappers';
-import { connectService } from '../client';
+import { connectService, getExtraHeaders } from '../client';
 import {
   CreatePaymentRequest,
   CreatePaymentResponse,
@@ -13,11 +13,9 @@ export async function createPaymentService(
 ): Promise<CreatePaymentResponse> {
   const { merchantId } = connectOpts;
   const client = await connectService(connectOpts);
-  const result = (await client.payments.createPayment(
-    merchantId,
-    payload,
-    {},
-  )) as CreatedPaymentServiceResponse;
+  const result = (await client.payments.createPayment(merchantId, payload, {
+    extraHeaders: getExtraHeaders(connectOpts),
+  })) as CreatedPaymentServiceResponse;
 
   if (result?.body?.errors) {
     throw {

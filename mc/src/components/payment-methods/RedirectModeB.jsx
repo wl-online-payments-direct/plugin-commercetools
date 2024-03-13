@@ -13,8 +13,12 @@ import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 import Select from '@mui/material/Select';
 import PaymentModalComponent from '../payment-modal';
+import { useIntl } from 'react-intl';
+import messages from './messages';
 
 const RedirectModeB = ({ redirectModeB, handleRedirectModeB }) => {
+  const { formatMessage } = useIntl();
+
   return (
     <Accordion className="payment-redirect payment-section-wrapper">
       <AccordionSummary
@@ -22,10 +26,7 @@ const RedirectModeB = ({ redirectModeB, handleRedirectModeB }) => {
         expandIcon={<ExpandMoreIcon />}
         aria-controls="panel1a-content"
       >
-        <Typography>
-          Redirect Mode B: Payment Method selection <b>after </b>
-          redirection
-        </Typography>
+        <Typography>{formatMessage(messages.redirectBTitle)}</Typography>
         <ToggleInput
           size={'big'}
           isChecked={redirectModeB.enabled.value}
@@ -34,15 +35,18 @@ const RedirectModeB = ({ redirectModeB, handleRedirectModeB }) => {
       </AccordionSummary>
       <AccordionDetails className="accordion-details">
         <p className="sub-title">
-          Full redirection to Worldline Online Payments page
+          {formatMessage(messages.redirectBDescription)}
         </p>
         <div className="relative">
           <span className="float-right">
             <div className="flex">
-              <span className="header-section-title">Send Order Data</span>
+              <span className="header-section-title">
+                {' '}
+                {formatMessage(messages.redirectBSendOrderDataLabel)}
+              </span>
               <Tooltip
                 placement="top"
-                title={redirectModeB.sendOrderData.tooltip}
+                title={formatMessage(messages.redirectBSendOrderDataTooltip)}
               >
                 <InfoIcon />
               </Tooltip>
@@ -58,9 +62,12 @@ const RedirectModeB = ({ redirectModeB, handleRedirectModeB }) => {
         <div className="section-wrapper">
           <h5 className="section-header">
             <span className="header-section-title">
-              {redirectModeB.logo.label}
+              {formatMessage(messages.redirectBLogoLabel)}
             </span>
-            <Tooltip placement="top" title={redirectModeB.logo.tooltip}>
+            <Tooltip
+              placement="top"
+              title={formatMessage(messages.redirectBLogoTooltip)}
+            >
               <InfoIcon />
             </Tooltip>
           </h5>
@@ -74,7 +81,7 @@ const RedirectModeB = ({ redirectModeB, handleRedirectModeB }) => {
         </div>
         <div className="section-wrapper">
           <h5 className="section-header">
-            {redirectModeB.payButtonTitle.label}
+            {formatMessage(messages.redirectBPayButtonTitleLabel)}
           </h5>
           <div className="template-section flex">
             <TextInput
@@ -108,23 +115,22 @@ const RedirectModeB = ({ redirectModeB, handleRedirectModeB }) => {
         </div>
         <div className="section-wrapper">
           <h5 className="section-header">
-            {redirectModeB.templateFileName.label}
+            {formatMessage(messages.redirectBTemplateFileNameLabel)}
           </h5>
           <div className="template-section">
             <TextInput
               className="section-input"
               value={redirectModeB.templateFileName.value}
               type={redirectModeB.templateFileName.type}
-              placeholder={redirectModeB.templateFileName.placeholder}
+              placeholder={formatMessage(
+                messages.redirectBTemplateFileNamePlaceholder
+              )}
               onChange={(e) =>
                 handleRedirectModeB('templateFileName', e.target.value)
               }
             />
             <p className="sub-title">
-              If you are using a customized template, please enter the name
-              here. If empty, the standard payment page will be displayed.
-              Payment page look and feel can be customized on Worldline Back
-              Office.
+              {formatMessage(messages.redirectBTemplateFileNameDescription)}
             </p>
           </div>
         </div>
@@ -138,9 +144,12 @@ const RedirectModeB = ({ redirectModeB, handleRedirectModeB }) => {
           <div className="group-cards-title">
             <div className="flex">
               <span className="header-section-title">
-                {redirectModeB.groupCards.label}
+                {formatMessage(messages.redirectBGroupCardsLabel)}
               </span>
-              <Tooltip placement="top" title={redirectModeB.groupCards.tooltip}>
+              <Tooltip
+                placement="top"
+                title={formatMessage(messages.redirectBGroupCardsTooltip)}
+              >
                 <InfoIcon />
               </Tooltip>
             </div>
@@ -148,11 +157,11 @@ const RedirectModeB = ({ redirectModeB, handleRedirectModeB }) => {
         </div>
         <div className="section-wrapper">
           <h5 className="section-header">
-            {redirectModeB['3dsEnablement'].label}
+            {formatMessage(messages.redirectB3dsEnablementLabel)}
           </h5>
           <div className="3ds-enablement flex">
             <h5 className="section-title">
-              {redirectModeB['3dsEnablement'].label}
+              {formatMessage(messages.redirectB3dsEnablementLabel)}
             </h5>
             <ToggleInput
               size={'small'}
@@ -167,7 +176,7 @@ const RedirectModeB = ({ redirectModeB, handleRedirectModeB }) => {
         <div className="section-wrapper flex">
           <div className="3ds-challenge flex">
             <h5 className="section-title">
-              {redirectModeB['3dsChallenge'].label}
+              {formatMessage(messages.redirectB3dsChallengeLabel)}
             </h5>
             <ToggleInput
               size={'small'}
@@ -180,7 +189,7 @@ const RedirectModeB = ({ redirectModeB, handleRedirectModeB }) => {
           </div>
           <div className="3ds-excemption flex">
             <h5 className="section-title">
-              {redirectModeB['3dsExemption'].label}
+              {formatMessage(messages.redirectB3dsExemptionLabel)}
             </h5>
             <ToggleInput
               size={'small'}

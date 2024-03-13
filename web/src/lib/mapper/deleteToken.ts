@@ -12,12 +12,17 @@ export function getDeleteTokenRequiredProps(request: Request) {
 export function getDeleteTokenAppPayload(
   request: Request,
 ): DeleteTokenAppPayload {
-  const { storeId = '', customerPaymentTokenId = '' } = (request.body ||
-    {}) as DeleteTokenAppPayload;
-  const { authorization: authToken = '' } = request.headers;
+  const {
+    storeId = '',
+    customerPaymentTokenId = '',
+    customerEmail,
+    customerId,
+  } = (request.body || {}) as DeleteTokenAppPayload;
+
   return {
-    authToken,
     storeId,
     customerPaymentTokenId,
+    customerEmail: customerEmail || '',
+    customerId: customerId || '',
   };
 }

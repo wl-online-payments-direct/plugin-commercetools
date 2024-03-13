@@ -1,4 +1,4 @@
-import { connectService } from '../client';
+import { connectService, getExtraHeaders } from '../client';
 import { ConnectOpts } from '../types';
 
 export async function getPaymentService(
@@ -10,7 +10,9 @@ export async function getPaymentService(
   const result = await client.payments.getPaymentDetails(
     merchantId,
     paymentId,
-    {},
+    {
+      extraHeaders: getExtraHeaders(connectOpts),
+    },
   );
   if (result?.body?.errors) {
     throw {

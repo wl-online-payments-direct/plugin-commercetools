@@ -12,17 +12,29 @@ import PageWrapper from '../page-wrapper';
 import Spacings from '@commercetools-uikit/spacings';
 import worldlineLogo from '../../assets/worldline-logo-main.png';
 import worldlineLogoBottom from '../../assets/worldline-logo-bottom.png';
-import { ClipboardIcon } from '@commercetools-uikit/icons';
+import {
+  ClipboardIcon,
+  ArrowTriangleDownIcon,
+  ArrowTriangleUpIcon,
+} from '@commercetools-uikit/icons';
 import { PaymentContext } from '../../context/payment';
+import RequestNewFeature from '../request-new-feature';
+import WhatsNew from '../whats-new';
 import dataFields from './dataFields.json';
 import Typography from '@mui/material/Typography';
+import { useIntl } from 'react-intl';
+import messages from './messages';
+import Chip from '@mui/material/Chip';
+import PluginVersion from '../plugin-version';
 
 const MyAccount = (props) => {
+  const { formatMessage } = useIntl();
+
   const { setLoader, saveCustomObject, customObject, checkConnection } =
     useContext(PaymentContext);
-
   const [selectedOption, setSelectedOption] = useState('test');
   const [copied, setCopied] = useState(false);
+  const [serverFields, setServerFields] = useState(false);
   const [formData, setFormData] = useState(dataFields[selectedOption]);
   const {
     signUpLink,
@@ -30,6 +42,7 @@ const MyAccount = (props) => {
     contactSalesLink,
     contactSupportLink,
   } = useApplicationContext((context) => context.environment);
+
   useEffect(() => {
     if (customObject?.value) {
       const custValue = customObject?.value[selectedOption];
@@ -73,6 +86,29 @@ const MyAccount = (props) => {
         const payload = {};
         for (let pData of Object.keys(prevData)) {
           if (
+            [
+              'serverurl',
+              'serverport',
+              'serverusername',
+              'serverpassword',
+              'servertimeout',
+              'serverto',
+              'serverfrom',
+            ].includes(pData)
+          ) {
+            payload[pData] = {
+              ...prevData[pData],
+              value:
+                customObject?.value?.serverConfig &&
+                customObject?.value?.serverConfig[
+                  pData.replace('server', '')
+                ] !== undefined
+                  ? customObject?.value?.serverConfig[
+                      pData.replace('server', '')
+                    ]
+                  : prevData[pData].value,
+            };
+          } else if (
             ['webhookUrl', 'redirectSuccessUrl', 'redirectFailureUrl'].includes(
               pData
             )
@@ -131,9 +167,9 @@ const MyAccount = (props) => {
               formData[pData].value.length > 256),
           errMsg:
             formData[pData].value.length === 0
-              ? 'Please fill out this field'
+              ? formatMessage(messages.emptyErr)
               : formData[pData].value.length > 256
-              ? 'Maximum character limit is 256'
+              ? formatMessage(messages.characterExceedErr)
               : '',
         };
       } else if (pData === 'timeOut') {
@@ -146,10 +182,25 @@ const MyAccount = (props) => {
               formData[pData].value > 1440),
           errMsg:
             formData[pData].value < 1
-              ? 'Minimum timeout is 1'
+              ? formatMessage(messages.timeOutBelowErr)
               : formData[pData].value > 256
-              ? 'Maximum timeout is 1440'
+              ? formatMessage(messages.timeOutAboveErr)
               : '',
+        };
+      } else if (
+        [
+          'serverurl',
+          'serverport',
+          'serverusername',
+          'serverpassword',
+          'servertimeout',
+          'serverto',
+          'serverfrom',
+        ].includes(pData)
+      ) {
+        formPayload[pData] = {
+          ...formData[pData],
+          hasError: false,
         };
       } else {
         formPayload[pData] = {
@@ -158,7 +209,7 @@ const MyAccount = (props) => {
             !formData[pData].disabled && formData[pData].value.length === 0,
           errMsg:
             formData[pData].value.length === 0
-              ? 'Please fill out this field'
+              ? formatMessage(messages.emptyErr)
               : '',
         };
       }
@@ -180,6 +231,24 @@ const MyAccount = (props) => {
       if (result?.connection) {
         for (let fData of Object.keys(formData)) {
           if (
+            [
+              'serverurl',
+              'serverport',
+              'serverusername',
+              'serverpassword',
+              'servertimeout',
+              'serverto',
+              'serverfrom',
+            ].includes(fData)
+          ) {
+            payload.value = {
+              ...payload.value,
+              serverConfig: {
+                ...payload.value.serverConfig,
+                [fData.replace('server', '')]: formData[fData].value?.trim(),
+              },
+            };
+          } else if (
             ['webhookUrl', 'redirectSuccessUrl', 'redirectFailureUrl'].includes(
               fData
             )
@@ -199,10 +268,64 @@ const MyAccount = (props) => {
           }
         }
         await saveCustomObject(payload);
+        hideServerFields();
       } else {
         setLoader(false);
+        hideServerFields();
       }
     }
+  };
+
+  const showServerFields = () => {
+    setServerFields(true);
+    setFormData((prevData) => {
+      const payload = { ...prevData };
+      for (let pData of Object.keys(prevData)) {
+        if (
+          [
+            'serverurl',
+            'serverport',
+            'serverusername',
+            'serverpassword',
+            'servertimeout',
+            'serverto',
+            'serverfrom',
+          ].includes(pData)
+        ) {
+          payload[pData] = {
+            ...prevData[pData],
+            hideField: false,
+          };
+        }
+      }
+      return payload;
+    });
+  };
+
+  const hideServerFields = () => {
+    setServerFields(false);
+    setFormData((prevData) => {
+      const payload = { ...prevData };
+      for (let pData of Object.keys(prevData)) {
+        if (
+          [
+            'serverurl',
+            'serverport',
+            'serverusername',
+            'serverpassword',
+            'servertimeout',
+            'serverto',
+            'serverfrom',
+          ].includes(pData)
+        ) {
+          payload[pData] = {
+            ...prevData[pData],
+            hideField: true,
+          };
+        }
+      }
+      return payload;
+    });
   };
 
   return (
@@ -213,7 +336,9 @@ const MyAccount = (props) => {
             <div className="logo-section">
               <div className="logo-container">
                 <div className="logo-wrapper">
-                  <h1 className="welcome-title">Welcome!</h1>
+                  <h1 className="welcome-title">
+                    {formatMessage(messages.welcome)}
+                  </h1>
                   <img
                     src={worldlineLogo}
                     alt="worldline-logo"
@@ -221,14 +346,13 @@ const MyAccount = (props) => {
                   />
                 </div>
                 <p className="welcome-description">
-                  Experience a seamless and efficient checkout process in just a
-                  matter of minutes.
+                  {formatMessage(messages.welcomeDescription)}
                 </p>
               </div>
               <div className="bottom-section">
                 <div className="contact-section">
                   <div className="contact-wrapper">
-                    <Label>Test account creation : </Label>
+                    <Label>{formatMessage(messages.testAccountCreation)}</Label>
                     <Link
                       className="external-link"
                       isExternal={true}
@@ -238,7 +362,7 @@ const MyAccount = (props) => {
                     </Link>
                   </div>
                   <div className="contact-wrapper">
-                    <Label>Documentation : </Label>
+                    <Label>{formatMessage(messages.documentation)}</Label>
                     <Link
                       className="external-link"
                       isExternal={true}
@@ -248,7 +372,7 @@ const MyAccount = (props) => {
                     </Link>
                   </div>
                   <div className="contact-wrapper">
-                    <Label>Contact sales team : </Label>
+                    <Label>{formatMessage(messages.contactSalesteam)}</Label>
                     <Link
                       className="external-link"
                       isExternal={true}
@@ -258,7 +382,7 @@ const MyAccount = (props) => {
                     </Link>
                   </div>
                   <div className="contact-wrapper">
-                    <Label>Contact support teams : </Label>
+                    <Label>{formatMessage(messages.contactSupportteam)}</Label>
                     <Link
                       className="external-link"
                       isExternal={true}
@@ -267,49 +391,64 @@ const MyAccount = (props) => {
                       {contactSupportLink}
                     </Link>
                   </div>
+                  <WhatsNew />
+                  <PluginVersion />
                 </div>
                 <div className="logo-bottom-container">
-                  <p>Also available for</p>
+                  <p>{formatMessage(messages.alsoAvailable)}</p>
                   <img src={worldlineLogoBottom} />
                 </div>
               </div>
+              <RequestNewFeature />
             </div>
           </div>
           <div id="right-div">
             <div className="link-wrapper">
               <Link className="external-link" isExternal={true} to={signUpLink}>
-                Sign Up
+                {formatMessage(messages.signUp)}
               </Link>
               <Link
                 className="external-link"
                 isExternal={true}
                 to={contactSupportLink}
               >
-                Contact Us
+                {formatMessage(messages.contactUs)}
               </Link>
             </div>
             <div className="form-wrapper">
-              <h1 className="connect-title">Connect to Worldline</h1>
+              <h1 className="connect-title">
+                {formatMessage(messages.connectWorldline)}
+              </h1>
               <div className="myaccount-form">
                 <Spacings.Stack scale="m">
                   <Label isBold={true}>
-                    <p className="form-label">Checkout types</p>
+                    <p className="form-label">
+                      {formatMessage(messages.checkoutTypes)}
+                    </p>
                   </Label>
                   <SelectInput
                     name="form-field-name"
                     value={selectedOption}
                     onChange={handleChange}
                     options={[
-                      { value: 'test', label: 'Test Mode' },
-                      { value: 'live', label: 'Live Mode' },
+                      {
+                        value: 'test',
+                        label: formatMessage(messages.testMode),
+                      },
+                      {
+                        value: 'live',
+                        label: formatMessage(messages.liveMode),
+                      },
                     ]}
                   />
                   {Object.keys(formData).map((key, i) => {
                     const formField = formData[key];
-                    return (
+                    return formField.hideField ? null : (
                       <div key={`Data-field-${i}`}>
                         <Label isBold={true}>
-                          <p className="form-label">{formField.label}</p>
+                          <p className="form-label">
+                            {formatMessage(messages[key])}
+                          </p>
                           {formField.required && !formField.disabled ? (
                             <p className="required">*</p>
                           ) : null}
@@ -327,7 +466,9 @@ const MyAccount = (props) => {
                               <div className="flex">
                                 <TextInput
                                   name={key}
-                                  placeholder={formField.placeholder}
+                                  placeholder={formatMessage(
+                                    messages[`${key}Placeholder`]
+                                  )}
                                   value={formField.value}
                                   isReadOnly={formField.disabled}
                                   onChange={handleInputChange}
@@ -350,16 +491,19 @@ const MyAccount = (props) => {
                                 style={{ justifyContent: 'space-between' }}
                               >
                                 <p className="info">
-                                  To avoid copy/paste issues, use the `copy`
-                                  icon to copy the URL
+                                  {formatMessage(messages.clipboardMsg)}
                                 </p>
-                                {copied && <p>Copied!</p>}
+                                {copied && (
+                                  <p> {formatMessage(messages.copiedMsg)}</p>
+                                )}
                               </div>
                             </>
                           ) : (
                             <TextInput
                               name={key}
-                              placeholder={formField.placeholder}
+                              placeholder={formatMessage(
+                                messages[`${key}Placeholder`]
+                              )}
                               value={formField.value}
                               isReadOnly={formField.disabled}
                               onChange={handleInputChange}
@@ -369,7 +513,9 @@ const MyAccount = (props) => {
                         ) : (
                           <NumberInput
                             name={key}
-                            placeholder={formField.placeholder}
+                            placeholder={formatMessage(
+                              messages[`${key}Placeholder`]
+                            )}
                             value={formField.value}
                             onChange={handleInputChange}
                             hasError={formField.hasError}
@@ -378,8 +524,32 @@ const MyAccount = (props) => {
                       </div>
                     );
                   })}
+                  {serverFields ? (
+                    <Chip
+                      className="chip"
+                      icon={
+                        <ArrowTriangleUpIcon size="medium" color="neutral60" />
+                      }
+                      label="Hide Server Credentials"
+                      variant="outlined"
+                      onClick={hideServerFields}
+                    />
+                  ) : (
+                    <Chip
+                      className="chip"
+                      icon={
+                        <ArrowTriangleDownIcon
+                          size="medium"
+                          color="neutral60"
+                        />
+                      }
+                      label="Add/Edit Server Credentials"
+                      variant="outlined"
+                      onClick={showServerFields}
+                    />
+                  )}
                   <PrimaryButton
-                    label="Save/Update"
+                    label={formatMessage(messages.saveBtn)}
                     onClick={handleSubmit}
                     isDisabled={false}
                   />
