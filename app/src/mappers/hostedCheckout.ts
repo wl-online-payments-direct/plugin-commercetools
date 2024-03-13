@@ -100,7 +100,11 @@ export function getHostedCheckoutPayload(
 
   /* option to template for Hosted Checkout and Hosted Tokenization */
   let variant = redirectModeA?.templateFileName || '';
-  let { threeDSEnablement, threeDSChallenge, threeDSExemption } = redirectModeA;
+  let {
+    '3dsEnablement': threeDSEnablement,
+    '3dsChallenge': threeDSChallenge,
+    '3dsExemption': threeDSExemption,
+  } = redirectModeA;
 
   let skipAuthentication = !threeDSEnablement;
   const threeDSecure = {
@@ -119,9 +123,9 @@ export function getHostedCheckoutPayload(
       groupCards,
     };
     variant = redirectModeB?.templateFileName;
-    threeDSEnablement = redirectModeB.threeDSEnablement;
-    threeDSChallenge = redirectModeB.threeDSChallenge;
-    threeDSExemption = redirectModeB.threeDSExemption;
+    threeDSEnablement = redirectModeB['3dsEnablement'];
+    threeDSChallenge = redirectModeB['3dsChallenge'];
+    threeDSExemption = redirectModeB['3dsExemption'];
     skipAuthentication = !threeDSEnablement;
   }
 
@@ -131,15 +135,12 @@ export function getHostedCheckoutPayload(
         amount < 30 ? undefined : 'challenge-required';
       threeDSecure.exemptionRequest = amount < 30 ? 'lowvalue' : undefined;
     } else {
-      threeDSecure.challengeIndicator = 'challenge-required';
-      threeDSecure.exemptionRequest = undefined;
+      threeDSecure.challengeIndicator = process.env.CHALLENGE_INDICATOR as
+        | 'challenge-required'
+        | undefined;
     }
   } else if (threeDSExemption) {
-    threeDSecure.challengeIndicator = undefined;
     threeDSecure.exemptionRequest = amount < 30 ? 'lowvalue' : undefined;
-  } else {
-    threeDSecure.challengeIndicator = undefined;
-    threeDSecure.exemptionRequest = undefined;
   }
 
   const paymentSettings = redirectModeA.paymentOptions.find(

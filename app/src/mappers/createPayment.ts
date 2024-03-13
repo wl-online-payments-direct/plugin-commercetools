@@ -45,25 +45,16 @@ export function getServicePayload(
   let challengeIndicator: string | undefined;
   let exemptionRequest: string | undefined;
 
-  if (onSiteMode.threeDSChallenge) {
-    if (amount < 30 && onSiteMode.threeDSExemption) {
-      challengeIndicator = undefined;
-      exemptionRequest = 'lowvalue';
+  if (onSiteMode['3dsChallenge']) {
+    if (amount < 30 && onSiteMode['3dsExemption']) {
+      exemptionRequest = process.env.EXEMPTION_REQUEST;
     } else {
-      challengeIndicator = 'challenge-required';
-      exemptionRequest = undefined;
+      challengeIndicator = process.env.CHALLENGE_INDICATOR;
     }
-  } else if (onSiteMode.threeDSExemption) {
+  } else if (onSiteMode['3dsExemption']) {
     if (amount < 30) {
-      challengeIndicator = undefined;
-      exemptionRequest = 'lowvalue';
-    } else {
-      challengeIndicator = undefined;
-      exemptionRequest = undefined;
+      exemptionRequest = process.env.EXEMPTION_REQUEST;
     }
-  } else {
-    challengeIndicator = undefined;
-    exemptionRequest = undefined;
   }
 
   return {
@@ -71,7 +62,7 @@ export function getServicePayload(
     cardPaymentMethodSpecificInput: {
       authorizationMode,
       threeDSecure: {
-        skipAuthentication: !onSiteMode.threeDSEnablement,
+        skipAuthentication: !onSiteMode['3dsEnablement'],
         challengeIndicator,
         exemptionRequest,
         redirectionData: {
