@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import './style.css';
 import ToggleInput from '@commercetools-uikit/toggle-input';
 import RadioField from '@commercetools-uikit/radio-field';
@@ -12,8 +12,11 @@ import { DownloadIcon } from '@commercetools-uikit/icons';
 import Alert from '@mui/material/Alert';
 import { useIntl } from 'react-intl';
 import messages from './messages';
+import { PaymentContext } from '../../context/payment';
 
 const GeneralSettings = ({ state, handleCommonSettings }) => {
+  const { downloadLog } = useContext(PaymentContext);
+
   const [merchREfError, setmerchRefError] = useState(
     state.merchantReference.value?.replaceAll(' ', '').length > 12
       ? true
@@ -196,7 +199,10 @@ const GeneralSettings = ({ state, handleCommonSettings }) => {
             }
           />
           {state.enableLogs.value && (
-            <DownloadIcon style={{ margin: 'auto' }} />
+            <span className="download-btn flex" onClick={() => downloadLog()}>
+              <DownloadIcon style={{ margin: 'auto' }} />
+              <p className="download-title">{'Download Logs'}</p>
+            </span>
           )}
         </div>
       </div>
