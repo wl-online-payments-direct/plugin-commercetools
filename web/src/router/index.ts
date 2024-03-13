@@ -10,7 +10,7 @@ import validateMyCartController from '../api/validateMyCart/controller';
 import validateCartController from '../api/validateCart/controller';
 import webhookController from '../api/webhook/controller';
 import retryPaymentController from '../api/retryPayment/controller';
-import deleteTokenController from '../api/deleteToken/controller';
+import deleteMyTokenController from '../api/deleteMyToken/controller';
 import loadMyPaymentMethodsController from '../api/loadMyPaymentMethods/controller';
 import loadPaymentMethodsController from '../api/loadPaymentMethods/controller';
 import getMyWebhookStatusController from '../api/getMyWebhookStatus/controller';
@@ -23,6 +23,10 @@ import refundPaymentController from '../api/refundPayment/controller';
 import uploadImageController from '../api/uploadImage/controller';
 import getPaymentProductsController from '../api/getPaymentProducts/controller';
 import getOrderController from '../api/getOrder/controller';
+import getMyCardsController from '../api/getMyCards/controller';
+import sendEmailController from '../api/sendEmail/controller';
+import getCardsController from '../api/getCards/controller';
+import deleteTokenController from '../api/deleteToken/controller';
 
 const routes = {
   '/': healthController.processRequest,
@@ -40,8 +44,12 @@ const routes = {
   '/payment/capture': capturePaymentController.processRequest,
   '/payment/cancel': cancelPaymentController.processRequest,
   '/payment/refund': refundPaymentController.processRequest,
-  '/token/remove': deleteTokenController.processRequest,
+  '/me/token/remove': deleteMyTokenController.processRequest,
   '/me/payment/methods': loadMyPaymentMethodsController.processRequest,
+  '/me/cards': getMyCardsController.processRequest,
+  '/send/email': sendEmailController.processRequest,
+  '/cards': getCardsController.processRequest,
+  '/token/remove': deleteTokenController.processRequest,
 
   // Using frontastic token
   '/payment/methods': loadPaymentMethodsController.processRequest,

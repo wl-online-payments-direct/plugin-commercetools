@@ -5,11 +5,16 @@ export interface RedirectModeAPaymentOptions {
   enabled: boolean;
   templateFileName: string;
   paymentOptions: {
+    paymentMethod: string;
     paymentProductId: number;
     displayOrder: number;
     label: string;
     enabled: boolean;
     logo: string;
+    defaultLogo: string;
+    recurrenceType?: string;
+    signatureType?: string;
+    paymentOption?: string;
   }[];
 }
 

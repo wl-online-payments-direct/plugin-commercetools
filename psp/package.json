@@ -3,6 +3,9 @@
   "version": "1.0.0",
   "description": "Module containing Payment integration",
   "main": "dist/index.js",
+  "author": {
+    "name": "Worldline SDK"
+  },
   "types": "dist/types/index.d.ts",
   "scripts": {
     "build": "tsc",

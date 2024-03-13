@@ -21,7 +21,7 @@
       "values": ["EN", "ES", "FR", "NL", "DE", "IT"]
     },
     "templateFileName": {
-      "label": " Template File Name",
+      "label": "Template File Name",
       "type": "text",
       "value": "SimplifiedCustomPaymentPage",
       "placeholder": "Enter Template file name",
@@ -312,7 +312,7 @@
     }
   },
   "merchantReference": {
-    "label": " Merchant Reference ID",
+    "label": "Merchant Reference ID",
     "type": "text",
     "value": "SampleReferenceId",
     "placeholder": "Enter Merchant Reference",

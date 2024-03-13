@@ -12,6 +12,8 @@ import TextInput from '@commercetools-uikit/text-input';
 import InfoIcon from '@mui/icons-material/Info';
 import Tooltip from '@mui/material/Tooltip';
 import PaymentOptions from './PaymentOptions';
+import { useIntl } from 'react-intl';
+import messages from './messages';
 
 const RedirectModeA = ({
   redirectModeA,
@@ -19,6 +21,8 @@ const RedirectModeA = ({
   handleOptionUpdate,
   fetchPaymentMethods,
 }) => {
+  const { formatMessage } = useIntl();
+
   return (
     <Accordion className="payment-redirect payment-section-wrapper">
       <AccordionSummary
@@ -26,10 +30,7 @@ const RedirectModeA = ({
         expandIcon={<ExpandMoreIcon />}
         aria-controls="panel1a-content"
       >
-        <Typography>
-          Redirect Mode A: Payment Method selection <b>before </b>
-          redirection
-        </Typography>
+        <Typography>{formatMessage(messages.redirectATitle)}</Typography>
         <ToggleInput
           size={'big'}
           isChecked={redirectModeA.enabled.value}
@@ -37,14 +38,18 @@ const RedirectModeA = ({
         />
       </AccordionSummary>
       <AccordionDetails className="accordion-details">
-        <p className="sub-title">Single payment buttons selected on site</p>
+        <p className="sub-title">
+          {formatMessage(messages.redirectADescription)}
+        </p>
         <div className="relative">
           <span className="float-right">
             <div className="flex">
-              <span className="header-section-title"> Send Order Data</span>
+              <span className="header-section-title">
+                {formatMessage(messages.redirectASendOrderDataLabel)}
+              </span>
               <Tooltip
                 placement="top"
-                title={redirectModeA.sendOrderData.tooltip}
+                title={formatMessage(messages.redirectASendOrderDataTooltip)}
               >
                 <InfoIcon />
               </Tooltip>
@@ -59,12 +64,15 @@ const RedirectModeA = ({
         </div>
         <div>
           <SecondaryButton
-            label={redirectModeA.refresh.label}
+            label={formatMessage(messages.redirectARefreshLabel)}
             onClick={() => fetchPaymentMethods()}
           ></SecondaryButton>
           <span className="refresh-btn">
             <span>
-              <Tooltip placement="top" title={redirectModeA.refresh.tooltip}>
+              <Tooltip
+                placement="top"
+                title={formatMessage(messages.redirectARefreshTooltip)}
+              >
                 <InfoIcon />
               </Tooltip>
             </span>
@@ -77,7 +85,7 @@ const RedirectModeA = ({
         />
         <div className="section-wrapper">
           <h5 className="section-header">
-            {redirectModeA.templateFileName.label}
+            {formatMessage(messages.redirectATemplateFileNameLabel)}
           </h5>
           <div className="template-section">
             <TextInput
@@ -87,23 +95,22 @@ const RedirectModeA = ({
               onChange={(e) =>
                 handleRedirectModeA('templateFileName', e.target.value)
               }
-              placeholder={redirectModeA.templateFileName.placeholder}
+              placeholder={formatMessage(
+                messages.redirectATemplateFileNamePlaceholder
+              )}
             />
             <p className="sub-title">
-              If you are using a customized template, please enter the name
-              here. If empty, the standard payment page will be displayed.
-              Payment page look and feel can be customized on Worldline Back
-              Office.
+              {formatMessage(messages.redirectATemplateFileNameDescription)}
             </p>
           </div>
         </div>
         <div className="section-wrapper">
           <h5 className="section-header">
-            {redirectModeA['3dsEnablement'].label}
+            {formatMessage(messages.redirectA3dsEnablementLabel)}
           </h5>
           <div className="3ds-enablement flex">
             <h5 className="section-title">
-              {redirectModeA['3dsEnablement'].label}
+              {formatMessage(messages.redirectA3dsEnablementLabel)}
             </h5>
             <ToggleInput
               size={'small'}
@@ -118,7 +125,7 @@ const RedirectModeA = ({
         <div className="section-wrapper flex">
           <div className="3ds-challenge flex">
             <h5 className="section-title">
-              {redirectModeA['3dsChallenge'].label}
+              {formatMessage(messages.redirectA3dsChallengeLabel)}
             </h5>
             <ToggleInput
               size={'small'}
@@ -131,7 +138,7 @@ const RedirectModeA = ({
           </div>
           <div className="3ds-excemption flex">
             <h5 className="section-title">
-              {redirectModeA['3dsExemption'].label}
+              {formatMessage(messages.redirectA3dsExemptionLabel)}
             </h5>
             <ToggleInput
               size={'small'}

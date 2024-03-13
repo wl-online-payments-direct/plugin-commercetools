@@ -1,4 +1,4 @@
-import { connectService } from '../client';
+import { connectService, getExtraHeaders } from '../client';
 import { ConnectOpts } from '../types';
 
 export async function getHostedTokenizationService(
@@ -10,7 +10,9 @@ export async function getHostedTokenizationService(
   const result = await client.hostedTokenization.getHostedTokenization(
     merchantId,
     hostedTokenizationId,
-    {},
+    {
+      extraHeaders: getExtraHeaders(connectOpts),
+    },
   );
   if (result?.body?.errors) {
     throw {
