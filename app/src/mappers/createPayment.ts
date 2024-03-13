@@ -20,7 +20,12 @@ export function getServicePayload(
   cart: Cart,
   payload: ICreateMyPaymentPayload,
 ) {
-  const { hostedTokenizationId, acceptHeader, userAgent } = payload;
+  const {
+    hostedTokenizationId,
+    acceptHeader,
+    userAgent,
+    device: { timezoneOffsetUtcMinutes, browserData },
+  } = payload;
   const { authorizationMode, merchantReference, onSiteMode } = customConfig;
   // Concat with the merchant reference
   const paymentId = getFormattedPaymentId(
@@ -81,6 +86,8 @@ export function getServicePayload(
           ...locale,
           acceptHeader,
           userAgent,
+          timezoneOffsetUtcMinutes,
+          browserData,
         },
       },
       references: {
