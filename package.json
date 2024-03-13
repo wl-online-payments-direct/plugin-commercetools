@@ -6,6 +6,7 @@
   "scripts": {
     "build": "npm run -workspaces build",
     "dev": "run-p dev:*",
+    "start": "run-p start:*",
     "web": "run-s prisma:push prisma:migrate start:web",
     "start:web": "npm run -workspace web start",
     "start:cron": "npm run -workspace cron start",

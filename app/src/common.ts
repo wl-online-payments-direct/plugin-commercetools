@@ -99,7 +99,10 @@ export async function orderPaymentHandler(payload: PaymentPayload) {
       // Fetch CT cart
       const cart = await getCartById(dbPayment.cartId);
       if (!cart) {
-        await setPayment({ id: dbPayment.id }, { status: 'IN_REVIEW' });
+        await setPayment(
+          { id: dbPayment.id },
+          { status: PAYMENT.DATABASE.STATUS.IN_REVIEW },
+        );
         // TODO: store the error message in database.
 
         logger().error(`Cart '${dbPayment.cartId}' is missing!`);
@@ -107,6 +110,10 @@ export async function orderPaymentHandler(payload: PaymentPayload) {
       }
 
       if (hasEqualAmounts(payload, cart)) {
+        await setPayment(
+          { id: dbPayment.id },
+          { status: PAYMENT.DATABASE.STATUS.IN_REVIEW },
+        );
         // TODO: send a notification to admin and add a column to save the reason
         logger().error(
           '[orderPaymentHandler] Cart amount doesnt match with the paid amount',
@@ -140,6 +147,18 @@ export async function orderPaymentHandler(payload: PaymentPayload) {
         result = !dbPayment?.orderId
           ? await createOrderWithPayment(payload, cart, customObjects)
           : await updateOrderWithPayment(payload, dbPayment);
+
+        /**
+         * save token if;
+         * - `storePermanently` field is received as true
+         * - cart has a logged in customer
+         * - payment is used by card
+         */
+        if (shouldSaveToken(cart, dbPayment, payload)) {
+          await saveCustomerPaymentToken(
+            getCustomerTokenPayload(cart, dbPayment, payload),
+          );
+        }
       }
 
       // update order id and reset the state as DEFAULT
@@ -160,15 +179,6 @@ export async function orderPaymentHandler(payload: PaymentPayload) {
       };
 
       await setPayment(getPaymentFilterQuery(dbPayment), updateQuery);
-
-      //  Should save the token only:
-      //  if "storePermanently" field is received as true
-      //  and cart has a logged in customer
-      if (shouldSaveToken(cart, dbPayment)) {
-        await saveCustomerPaymentToken(
-          getCustomerTokenPayload(cart, dbPayment, payload),
-        );
-      }
 
       return { isRetry: false, data: result };
     } catch (error) {

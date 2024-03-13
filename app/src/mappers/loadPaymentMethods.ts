@@ -6,13 +6,9 @@ export function loadPaymentMethodsMappedResponse(
   customConfig: CustomObjects,
   customerPaymentTokens: CustomerPaymentToken[] | null,
 ) {
-  const tokens =
-    customerPaymentTokens && Array.isArray(customerPaymentTokens)
-      ? customerPaymentTokens.map((cpt) => ({
-          title: cpt?.title || '',
-          token: cpt?.token || '',
-        }))
-      : [];
+  const {
+    PAYMENT: { REDIRECTMODE_A, REDIRECTMODE_B, ONSITEMODE },
+  } = Constants;
 
   const {
     enableWorldlineCheckout,
@@ -21,15 +17,46 @@ export function loadPaymentMethodsMappedResponse(
     onSiteMode,
   } = customConfig || {};
 
+  const mappedPaymentMethods = Object.fromEntries(
+    redirectModeA.paymentOptions.map((pOption) => [
+      pOption.paymentProductId,
+      pOption,
+    ]),
+  );
+  // Create a map with a composite key (customerId-paymentId-token)
+  const tokenMap = new Map<string, CustomerPaymentToken>();
+
+  customerPaymentTokens?.forEach((token) => {
+    const key = `${token.customerId}-${token.token}`;
+    tokenMap.set(key, token);
+  });
+
+  // Convert map values back to an array
+  const uniqueTokensArray = Array.from(tokenMap.values());
+  const tokens =
+    uniqueTokensArray && Array.isArray(uniqueTokensArray)
+      ? uniqueTokensArray.map((cpt) => {
+          const { logo = '' } =
+            mappedPaymentMethods[cpt?.paymentProductId] || {};
+
+          return {
+            name: cpt?.title || '',
+            type: ONSITEMODE.TYPE,
+            token: cpt?.token || '',
+            paymentMethod: cpt?.title || '',
+            image: {
+              src: logo,
+            },
+          };
+        })
+      : [];
+
   // Return empty payment methods if checkout is disabled
   if (!enableWorldlineCheckout) {
     return { paymentMethods: [] };
   }
 
   const paymentMethods: PaymentMethod[] = [];
-  const {
-    PAYMENT: { REDIRECTMODE_A, REDIRECTMODE_B, ONSITEMODE },
-  } = Constants;
 
   Object.values(redirectModeA.paymentOptions).forEach((value) => {
     if (value && value?.enabled) {
