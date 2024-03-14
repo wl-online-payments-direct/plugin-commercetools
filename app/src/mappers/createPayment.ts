@@ -6,7 +6,7 @@ import {
   ICreateMyPaymentPayload,
   ICreatePaymentResponse,
 } from '../types';
-import { appendAdditionalParamsToUrl } from './common';
+import { appendAdditionalParamsToUrl, process3Ds } from './common';
 import Constants from '../constants';
 
 const getFormattedPaymentId = (
@@ -42,20 +42,11 @@ export function getServicePayload(
     orderPaymentId: paymentId,
   });
 
-  let challengeIndicator: string | undefined;
-  let exemptionRequest: string | undefined;
-
-  if (onSiteMode['3dsChallenge']) {
-    if (amount < 30 && onSiteMode['3dsExemption']) {
-      exemptionRequest = process.env.EXEMPTION_REQUEST;
-    } else {
-      challengeIndicator = process.env.CHALLENGE_INDICATOR;
-    }
-  } else if (onSiteMode['3dsExemption']) {
-    if (amount < 30) {
-      exemptionRequest = process.env.EXEMPTION_REQUEST;
-    }
-  }
+  const { challengeIndicator, exemptionRequest } = process3Ds(
+    amount,
+    onSiteMode['3dsChallenge'],
+    onSiteMode['3dsExemption'],
+  );
 
   return {
     hostedTokenizationId,

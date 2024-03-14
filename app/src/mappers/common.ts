@@ -47,3 +47,27 @@ export function getOrderResultMapper(order: { id: string; createdAt: string }) {
     orderCreatedAt: order.createdAt,
   };
 }
+
+export function process3Ds(
+  amount: number,
+  threeDSChallenge: boolean,
+  threeDSExemption: boolean,
+) {
+  let exemptionRequest: string | undefined;
+  let challengeIndicator: string | undefined;
+
+  const { CHALLENGE_INDICATOR, EXEMPTION_REQUEST } = Constants.THREE_DS;
+  if (threeDSChallenge) {
+    if (amount < 30 && threeDSExemption) {
+      exemptionRequest = EXEMPTION_REQUEST;
+    } else {
+      challengeIndicator = CHALLENGE_INDICATOR;
+    }
+  } else if (threeDSExemption) {
+    if (amount < 30) {
+      exemptionRequest = EXEMPTION_REQUEST;
+    }
+  }
+
+  return { challengeIndicator, exemptionRequest };
+}

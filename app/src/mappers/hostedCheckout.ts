@@ -1,7 +1,7 @@
 import { Cart, Customer } from '@worldline/ctintegration-ct';
 import { logger } from '@worldline/ctintegration-util';
 import { CustomObjects, HostedMyCheckoutPayload } from '../types';
-import { appendAdditionalParamsToUrl } from './common';
+import { appendAdditionalParamsToUrl, process3Ds } from './common';
 import Constants from '../constants';
 
 type CartWithCustomer = Cart & { customer: Customer };
@@ -129,19 +129,16 @@ export function getHostedCheckoutPayload(
     skipAuthentication = !threeDSEnablement;
   }
 
-  if (threeDSChallenge) {
-    if (threeDSExemption) {
-      threeDSecure.challengeIndicator =
-        amount < 30 ? undefined : 'challenge-required';
-      threeDSecure.exemptionRequest = amount < 30 ? 'lowvalue' : undefined;
-    } else {
-      threeDSecure.challengeIndicator = process.env.CHALLENGE_INDICATOR as
-        | 'challenge-required'
-        | undefined;
-    }
-  } else if (threeDSExemption) {
-    threeDSecure.exemptionRequest = amount < 30 ? 'lowvalue' : undefined;
-  }
+  const { challengeIndicator, exemptionRequest } = process3Ds(
+    amount,
+    threeDSChallenge,
+    threeDSExemption,
+  );
+
+  threeDSecure.challengeIndicator = challengeIndicator as
+    | 'challenge-required'
+    | undefined;
+  threeDSecure.exemptionRequest = exemptionRequest as 'lowvalue' | undefined;
 
   const paymentSettings = redirectModeA.paymentOptions.find(
     (paymentOption) => paymentOption.paymentProductId === paymentProductId,

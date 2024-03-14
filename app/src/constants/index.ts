@@ -63,6 +63,10 @@ export default {
     PENDING_CAPTURE: 'payment.pending_capture',
     CAPTURED: 'payment.captured',
   },
+  THREE_DS: {
+    CHALLENGE_INDICATOR: 'challenge-required',
+    EXEMPTION_REQUEST: 'lowvalue',
+  },
   getWordlineCreditCardOption() {
     return WORLDLINE_CREDITCARD;
   },
