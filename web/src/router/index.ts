@@ -26,6 +26,7 @@ import getOrderController from '../api/getOrder/controller';
 import getMyCardsController from '../api/getMyCards/controller';
 import sendEmailController from '../api/sendEmail/controller';
 import getCardsController from '../api/getCards/controller';
+import downloadLogController from '../api/downloadLog/controller';
 import deleteTokenController from '../api/deleteToken/controller';
 
 const routes = {
@@ -64,6 +65,7 @@ const routes = {
   '/payment/products': getPaymentProductsController.processRequest,
   '/orders': listOrdersController.processRequest,
   '/order': getOrderController.processRequest,
+  '/download/log': downloadLogController.processRequest,
 };
 
 export { routes };
