@@ -62,7 +62,10 @@ const RequestNewFeature = () => {
   const clearRequestForm = () => {
     setRequestForm((requestForm) =>
       requestForm.map((form) => {
-        return { ...form, value: '' };
+        return {
+          ...form,
+          value: form.name !== 'pluginVersion' ? '' : pluginVersion,
+        };
       })
     );
   };
@@ -228,7 +231,7 @@ const RequestNewFeature = () => {
               <PrimaryButton
                 isDisabled={disableSendRequest}
                 iconLeft={<RocketIcon />}
-                label={formatMessage(messages.saveBtn)}
+                label={formatMessage(messages.sendBtn)}
                 onClick={sendRequestForm}
               />
             </Box>

@@ -138,6 +138,7 @@
   "upload.file": "Caricare un file",
   "upload.file.errorMsg": "Carica logo massimo 200x80px.",
   "upload.save": "Salva",
+  "upload.send": "Inviare",
   "upload.yes": "SÌ",
   "upload.cancel": "Annulla",
   "upload.mandatory": "Campo obbligatorio",

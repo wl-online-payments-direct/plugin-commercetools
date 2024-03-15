@@ -46,9 +46,9 @@ export default defineMessages({
     id: 'myAccount.pluginVersion',
     defaultMessage: 'Plugin Version',
   },
-  saveBtn: {
-    id: 'upload.save',
-    defaultMessage: 'Save',
+  sendBtn: {
+    id: 'upload.send',
+    defaultMessage: 'Send',
   },
   cancelBtn: {
     id: 'upload.cancel',

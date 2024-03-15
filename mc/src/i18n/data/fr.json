@@ -138,6 +138,7 @@
   "upload.file": "Télécharger un fichier",
   "upload.file.errorMsg": "Téléchargez un logo d'une taille maximale de 200x80px.",
   "upload.save": "Économiser",
+  "upload.send": "Envoyer",
   "upload.yes": "Oui",
   "upload.cancel": "Annuler",
   "upload.mandatory": "Champ obligatoire",

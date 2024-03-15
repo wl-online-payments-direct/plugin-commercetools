@@ -138,6 +138,7 @@
   "upload.file": "Een bestand uploaden",
   "upload.file.errorMsg": "Upload logo maximaal 200x80px.",
   "upload.save": "Sla",
+  "upload.send": "Versturen",
   "upload.yes": "Ja",
   "upload.cancel": "Annuleren",
   "upload.mandatory": "Verplicht veld",

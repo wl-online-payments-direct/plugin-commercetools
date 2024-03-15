@@ -138,6 +138,7 @@
   "upload.file": "Eine Datei hochladen",
   "upload.file.errorMsg": "Logo hochladen, maximal 200x80px.",
   "upload.save": "Speichern Sie",
+  "upload.send": "Schicken",
   "upload.yes": "Ja",
   "upload.cancel": "Abbrechen",
   "upload.mandatory": "Obligatorisches Feld",

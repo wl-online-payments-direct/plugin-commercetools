@@ -138,6 +138,7 @@
   "upload.file": "Upload a file",
   "upload.file.errorMsg": "Upload logo maximum 200x80px.",
   "upload.save": "Save",
+  "upload.send": "Send",
   "upload.yes": "Yes",
   "upload.cancel": "Cancel",
   "upload.mandatory": "Mandatory Field",
