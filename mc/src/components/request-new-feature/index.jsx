@@ -1,7 +1,8 @@
 import React, { useContext, useState, useEffect } from 'react';
 import SecondaryButton from '@commercetools-uikit/secondary-button';
-import { CloseIcon, RocketIcon, InfoIcon } from '@commercetools-uikit/icons';
-import Tooltip from '@commercetools-uikit/tooltip';
+import { CloseIcon, RocketIcon } from '@commercetools-uikit/icons';
+import Tooltip from '@mui/material/Tooltip';
+import InfoIcon from '@mui/icons-material/Info';
 import Label from '@commercetools-uikit/label';
 import TextInput from '@commercetools-uikit/text-input';
 import NumberInput from '@commercetools-uikit/number-input';
