@@ -71,8 +71,6 @@
   "myAccount.message": "Mensaje",
   "myAccount.messagePlaceholder": "Introduzca el mensaje",
   "myAccount.messageTooltip": "Explique cómo se puede mejorar nuestro plugin de pago",
-  "myAccount.platformVersion": "Versión de plataforma",
-  "myAccount.platformVersionPlaceholder": "Introduzca la versión de la plataforma",
   "myAccount.pluginVersion": "Versión del plugin",
   "general.worldlineEnable": "Activar Worldline Checkout",
   "general.title": "Seleccione una combinación de uno o varios tipos de pago para diseñar su experiencia de pago",

@@ -42,14 +42,6 @@ export default defineMessages({
     defaultMessage:
       'Please explain how our payment plugin can be further improved',
   },
-  platformVersion: {
-    id: 'myAccount.platformVersion',
-    defaultMessage: 'Platform Version',
-  },
-  platformVersionPlaceholder: {
-    id: 'myAccount.platformVersionPlaceholder',
-    defaultMessage: 'Enter the platform version',
-  },
   pluginVersion: {
     id: 'myAccount.pluginVersion',
     defaultMessage: 'Plugin Version',

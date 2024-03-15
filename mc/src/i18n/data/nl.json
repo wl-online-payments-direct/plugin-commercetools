@@ -71,8 +71,6 @@
   "myAccount.message": "Bericht",
   "myAccount.messagePlaceholder": "Voer het bericht in",
   "myAccount.messageTooltip": "Leg uit hoe onze betalingsplugin verder kan worden verbeterd",
-  "myAccount.platformVersion": "Versie platform",
-  "myAccount.platformVersionPlaceholder": "Voer de platformversie in",
   "myAccount.pluginVersion": "Plugin versie",
   "general.worldlineEnable": "Worldline Checkout inschakelen",
   "general.title": "Selecteer een combinatie van een of meer soorten kassa's om uw kassa-ervaring vorm te geven",

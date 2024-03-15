@@ -51,13 +51,6 @@ const RequestNewFeature = () => {
       value: '',
     },
     {
-      name: 'platformVersion',
-      label: 'Platform Version',
-      placeholder: 'Enter the platform version',
-      type: 'text',
-      value: '',
-    },
-    {
       name: 'pluginVersion',
       label: 'Plugin Version',
       value: `${pluginVersion}`,
