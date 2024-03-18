@@ -22,17 +22,6 @@ export function getHostedCheckoutPayload(
   const { tokens, acceptHeader, userAgent, paymentProductId, paymentMethod } =
     payload;
 
-  // Personal information
-  const { customer } = cart as CartWithCustomer;
-  const personalInformation = {
-    name: {
-      title: customer?.title,
-      firstName: customer?.firstName,
-      surname: customer?.lastName,
-    },
-    dateOfBirth: customer?.dateOfBirth || '',
-  };
-
   // Billing address
   const {
     apartment = '',
@@ -48,19 +37,33 @@ export function getHostedCheckoutPayload(
 
   // Shipping
   const { shippingAddress, taxedShippingPrice } = cart;
+  const { customer } = cart as CartWithCustomer;
+
   const shipping = {
     address: {
       name: {
-        firstName: shippingAddress?.firstName || '',
-        surname: shippingAddress?.lastName || '',
+        firstName: shippingAddress?.firstName || customer?.firstName,
+        surname: shippingAddress?.lastName || customer?.lastName,
+        lastname: shippingAddress?.lastName || customer?.lastName,
       },
       houseNumber: `${shippingAddress?.apartment} ${shippingAddress?.building}`,
       zip: shippingAddress?.postalCode || '',
       city: shippingAddress?.city || '',
       countryCode: shippingAddress?.country || '',
+      street: shippingAddress?.streetName || '',
     },
     shippingCost: taxedShippingPrice?.totalNet.centAmount,
     shippingCostTax: taxedShippingPrice?.totalTax?.centAmount,
+  };
+
+  const personalInformation = {
+    name: {
+      title: customer?.title,
+      firstName: customer?.firstName || shippingAddress?.firstName,
+      lastname: customer?.lastName || shippingAddress?.lastName,
+      surname: customer?.lastName || shippingAddress?.lastName,
+    },
+    dateOfBirth: customer?.dateOfBirth || '',
   };
 
   // Line items
