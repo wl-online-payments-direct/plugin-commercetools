@@ -12,36 +12,53 @@ export function loadPaymentMethodsMappedResponse(
 
   const {
     enableWorldlineCheckout,
-    redirectModeA = { paymentOptions: [] },
+    redirectModeA: { enabled = false, paymentOptions = [] } = {},
     redirectModeB,
     onSiteMode,
   } = customConfig || {};
 
   const mappedPaymentMethods = Object.fromEntries(
-    redirectModeA.paymentOptions.map((pOption) => [
-      pOption.paymentProductId,
-      pOption.paymentMethod,
-    ]),
+    paymentOptions.map((pOption) => [pOption.paymentProductId, pOption]),
   );
+  // Create a map with a composite key (customerId-paymentId-token)
+  const tokenMap = new Map<string, CustomerPaymentToken>();
 
+  customerPaymentTokens?.forEach((token) => {
+    const key = `${token.customerId}-${token.paymentId}-${token.token}`;
+    tokenMap.set(key, token);
+  });
+
+  // Convert map values back to an array
+  const uniqueTokensArray = Array.from(tokenMap.values());
   const tokens =
-    customerPaymentTokens && Array.isArray(customerPaymentTokens)
-      ? customerPaymentTokens.map((cpt) => ({
-          name: cpt?.title || '',
-          type: ONSITEMODE.TYPE,
-          token: cpt?.token || '',
-          paymentMethod: mappedPaymentMethods[cpt?.paymentProductId],
-        }))
+    uniqueTokensArray && Array.isArray(uniqueTokensArray)
+      ? uniqueTokensArray.map((cpt) => {
+          const { logo = '' } =
+            mappedPaymentMethods[cpt?.paymentProductId] || {};
+
+          return {
+            name: cpt?.title || '',
+            type: ONSITEMODE.TYPE,
+            token: cpt?.token || '',
+            paymentMethod: cpt?.title || '',
+            image: {
+              src: logo,
+            },
+          };
+        })
       : [];
 
   // Return empty payment methods if checkout is disabled
-  if (!enableWorldlineCheckout) {
+  if (
+    !enableWorldlineCheckout ||
+    (!enabled && !redirectModeB.enabled && !onSiteMode.enabled)
+  ) {
     return { paymentMethods: [] };
   }
 
   const paymentMethods: PaymentMethod[] = [];
 
-  Object.values(redirectModeA.paymentOptions).forEach((value) => {
+  Object.values(paymentOptions).forEach((value) => {
     if (value && value?.enabled) {
       paymentMethods.push({
         name: value.label,

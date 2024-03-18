@@ -1,5 +1,5 @@
 import { logger } from '@worldline/ctintegration-util';
-import { connectService } from '../client';
+import { connectService, getExtraHeaders } from '../client';
 import {
   CapturePaymentRequest,
   CapturePaymentResponse,
@@ -17,7 +17,9 @@ export async function capturePaymentService(
     merchantId,
     paymentId,
     payload,
-    {},
+    {
+      extraHeaders: getExtraHeaders(connectOpts),
+    },
   );
   if (result.body?.errors) {
     logger().error(

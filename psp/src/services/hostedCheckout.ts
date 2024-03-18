@@ -1,5 +1,5 @@
 import { getFormattedHostedCheckoutResult } from '../mappers';
-import { connectService } from '../client';
+import { connectService, getExtraHeaders } from '../client';
 import {
   HostedCheckoutPayload,
   HostedCheckoutResponse,
@@ -15,7 +15,9 @@ export async function hostedCheckoutService(
   const result = await client.hostedCheckout.createHostedCheckout(
     merchantId,
     payload,
-    {},
+    {
+      extraHeaders: getExtraHeaders(connectOpts),
+    },
   );
 
   if (result?.body?.errors) {

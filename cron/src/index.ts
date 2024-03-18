@@ -1,2 +1,2 @@
-// eslint-disable-next-line no-console
-console.log('health');
+export * from './initiateCapturePayment';
+export * from './sendPaymentNotification';

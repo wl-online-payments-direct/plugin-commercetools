@@ -1,6 +1,6 @@
 export interface HostedCheckoutPayload {
   paymentProductId?: number;
-  paymentMethod: string;
+  paymentMethod?: string;
   storeId: string;
   cartId: string;
   tokens?: string;

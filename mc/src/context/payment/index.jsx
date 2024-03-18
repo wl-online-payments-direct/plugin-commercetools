@@ -9,6 +9,7 @@ import {
   requestNewFeature,
   getProject,
   getPluginVersion,
+  downloadLogs,
 } from '../../ct-methods';
 import { useApplicationContext } from '@commercetools-frontend/application-shell-connectors';
 import Snackbar from '@mui/material/Snackbar';
@@ -17,6 +18,8 @@ import Slide from '@mui/material/Slide';
 import Backdrop from '@mui/material/Backdrop';
 import CircularProgress from '@mui/material/CircularProgress';
 import CONFIG from '../../../configuration';
+import { useIntl } from 'react-intl';
+import messages from './messages';
 
 export const PaymentContext = createContext();
 const { CONTAINER_NAME } = CONFIG;
@@ -26,6 +29,8 @@ const PaymentProvider = ({ children }) => {
   const apiHost = useApplicationContext(
     (context) => context.environment.apiHost
   );
+  const { formatMessage } = useIntl();
+
   const sourcePackageLink = useApplicationContext(
     (context) => context.environment.sourcePackageLink
   );
@@ -56,11 +61,11 @@ const PaymentProvider = ({ children }) => {
       setLoader(false);
       return response;
     } catch (err) {
-      console.error('Failed to fetch project details');
+      console.error(formatMessage(messages.fetchProjectErrMsg));
       showToaster({
         severity: 'error',
         open: true,
-        message: 'Failed to fetch project details',
+        message: formatMessage(messages.fetchProjectErrMsg),
       });
       setLoader(false);
     }
@@ -73,11 +78,11 @@ const PaymentProvider = ({ children }) => {
       setLoader(false);
       return results;
     } catch (err) {
-      console.error('Failed to fetch stores');
+      console.error(formatMessage(messages.fetchStoreErrMsg));
       showToaster({
         severity: 'error',
         open: true,
-        message: 'Failed to fetch stores',
+        message: formatMessage(messages.fetchStoreErrMsg),
       });
       setLoader(false);
     }
@@ -96,11 +101,11 @@ const PaymentProvider = ({ children }) => {
           return {};
         }
       } catch (err) {
-        console.error('Failed to fetch custom objects');
+        console.error(formatMessage(messages.fetchCustomObjectErrMsg));
         showToaster({
           severity: 'error',
           open: true,
-          message: 'Failed to fetch custom objects',
+          message: formatMessage(messages.fetchCustomObjectErrMsg),
         });
         setLoader(false);
       }
@@ -120,26 +125,26 @@ const PaymentProvider = ({ children }) => {
           showToaster({
             severity: 'success',
             open: true,
-            message: 'Payment settings saved successfully',
+            message: formatMessage(messages.saveCustomObjectSuccessMsg),
           });
           const response = await fetchCustomObjects(activeStore);
           setCustomObject(response);
         }
       } catch (err) {
-        console.error('Error saving custom object', err);
+        console.error(formatMessage(messages.saveCustomObjectErrMsg), err);
         showToaster({
           severity: 'error',
           open: true,
-          message: 'Failed to save data',
+          message: formatMessage(messages.saveCustomObjectErrMsg),
         });
         setLoader(false);
       }
     } else {
-      console.error('No store selected');
+      console.error(formatMessage(messages.noStoreSelectedErrMsg));
       showToaster({
         severity: 'error',
         open: true,
-        message: 'No store selected',
+        message: formatMessage(messages.noStoreSelectedErrMsg),
       });
       setLoader(false);
     }
@@ -160,7 +165,7 @@ const PaymentProvider = ({ children }) => {
           showToaster({
             severity: 'success',
             open: true,
-            message: 'Refresh Payment Methods: Success',
+            message: formatMessage(messages.refreshPaymentMethodsSuccessMsg),
           });
           return result;
         } else {
@@ -168,7 +173,7 @@ const PaymentProvider = ({ children }) => {
           showToaster({
             severity: 'error',
             open: true,
-            message: 'Failed to refresh payment methods',
+            message: formatMessage(messages.refreshPaymentMethodsErrMsg),
           });
           return null;
         }
@@ -177,7 +182,7 @@ const PaymentProvider = ({ children }) => {
         showToaster({
           severity: 'error',
           open: true,
-          message: 'Failed to refresh payment methods',
+          message: formatMessage(messages.refreshPaymentMethodsErrMsg),
         });
         return null;
       }
@@ -206,6 +211,23 @@ const PaymentProvider = ({ children }) => {
     }
   };
 
+  const downloadLog = async () => {
+    setLoader(true);
+    try {
+      const response = await downloadLogs(apiHost, projectKey);
+      if (response) {
+        setLoader(false);
+        return response;
+      } else {
+        setLoader(false);
+        return null;
+      }
+    } catch (err) {
+      setLoader(false);
+      return null;
+    }
+  };
+
   const imageUploader = async (files, toasterFlag) => {
     setLoader(true);
     try {
@@ -222,7 +244,7 @@ const PaymentProvider = ({ children }) => {
             showToaster({
               severity: 'success',
               open: true,
-              message: 'Image uploaded',
+              message: formatMessage(messages.imageUploadSuccessMsg),
             });
           return result;
         } else {
@@ -234,11 +256,11 @@ const PaymentProvider = ({ children }) => {
         }
       }
     } catch (err) {
-      console.error('Error saving image', err);
+      console.error(formatMessage(messages.imageUploadErrMsg), err);
       showToaster({
         severity: 'error',
         open: true,
-        message: 'Failed to upload Image',
+        message: formatMessage(messages.imageUploadErrMsg),
       });
       setLoader(false);
     }
@@ -248,14 +270,19 @@ const PaymentProvider = ({ children }) => {
     setLoader(true);
     try {
       const response = await requestNewFeature(payload, apiHost, projectKey);
-      if (response)
+      if (response && response.statusCode === 200)
         showToaster({
           severity: 'success',
           open: true,
-          message: 'Request send successfully',
+          message: formatMessage(messages.sendRequestSuccessMsg),
         });
     } catch (err) {
       console.error(err);
+      showToaster({
+        severity: 'error',
+        open: true,
+        message: formatMessage(messages.sendRequestErrMsg),
+      });
     }
     setLoader(false);
   };
@@ -271,14 +298,11 @@ const PaymentProvider = ({ children }) => {
         showToaster({
           severity: 'error',
           open: true,
-          message: 'Warning: Please enter correct PSPID, API Key & API Secret.',
+          message: formatMessage(messages.checkConnectionErrMsg),
         });
       }
     } catch (err) {
-      console.error(
-        'Warning: Please enter correct PSPID, API Key & API Secret.',
-        err.message
-      );
+      console.error(formatMessage(messages.checkConnectionErrMsg), err.message);
       setLoader(false);
     }
   };
@@ -334,6 +358,7 @@ const PaymentProvider = ({ children }) => {
         activeCurrency,
         activeCountry,
         fetchPluginVersion,
+        downloadLog,
       }}
     >
       <Backdrop

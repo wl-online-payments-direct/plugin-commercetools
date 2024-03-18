@@ -23,6 +23,15 @@ export function getCreateMyPaymentAppPayload(request: Request) {
     storeId = '',
     hostedTokenizationId = '',
     returnUrl = '',
+    device: {
+      timezoneOffsetUtcMinutes = 0,
+      browserData: {
+        screenHeight = 0,
+        screenWidth = 0,
+        javaEnabled = false,
+        colorDepth = 0,
+      },
+    },
   } = (request.body || {}) as CreateMyPaymentPayload;
 
   return {
@@ -32,5 +41,14 @@ export function getCreateMyPaymentAppPayload(request: Request) {
     storeId,
     hostedTokenizationId,
     returnUrl,
+    device: {
+      timezoneOffsetUtcMinutes,
+      browserData: {
+        screenHeight,
+        screenWidth,
+        javaEnabled,
+        colorDepth,
+      },
+    },
   };
 }

@@ -34,15 +34,11 @@
   "general": [
     "enableLogs",
     "authorizationMode",
-    "bgColor",
     "captureAuthorizationMode",
     "enableWorldlineCheckout",
-    "skip3dsAuthentication",
     "merchantReference",
-    "outlineColor",
     "paymentOption",
     "placeOrder",
-    "placeOrderLanguage",
-    "textColor"
+    "placeOrderLanguage"
   ]
 }

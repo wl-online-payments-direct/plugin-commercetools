@@ -54,12 +54,13 @@ const OrderList = () => {
     { key: 'orderId', label: formatMessage(messages.orderId) },
     { key: 'paymentOption', label: formatMessage(messages.paymentOption) },
     {
-      key: 'worldlinePaymentResponse',
+      key: 'worldlineStatus',
       label: formatMessage(messages.worldlinePaymentResponse),
     },
     { key: 'status', label: formatMessage(messages.status) },
     { key: 'currency', label: formatMessage(messages.currency) },
     { key: 'total', label: formatMessage(messages.total) },
+    { key: 'amountPaid', label: formatMessage(messages.amountPaid) },
     { key: 'actions', label: formatMessage(messages.action) },
   ];
 
@@ -104,6 +105,24 @@ const OrderList = () => {
     if (!apiHost || !projectKey || !activeStore) return;
     getOrders();
   }, [apiHost, projectKey, activeStore]);
+
+  useEffect(() => {
+    const keyDownHandler = (event) => {
+      if (event.key === 'Enter') {
+        handleSearch(searchData);
+      }
+    };
+    document.addEventListener('keydown', keyDownHandler);
+    return () => {
+      document.removeEventListener('keydown', keyDownHandler);
+    };
+  }, []);
+
+  useEffect(() => {
+    setOpenCancel(false);
+    setOpenCapture(false);
+    setOpenRefund(false);
+  }, []);
 
   const onPagination = async (page) => {
     setCurrentPage(page);
@@ -155,10 +174,14 @@ const OrderList = () => {
       );
       return paymentBox;
     }
+    if (column.key === 'total') {
+      return (itemValue / 100).toFixed(2);
+    }
     if (column.key === 'actions') {
       if (
         item['status'] === 'AUTHORIZED' ||
-        item['status'] === 'PENDING_CAPTURE'
+        item['status'] === 'PENDING_CAPTURE' ||
+        item['status'] === 'PARTIALLY_CANCELLED'
       ) {
         return (
           <div className="action-wrapper">
@@ -182,7 +205,10 @@ const OrderList = () => {
             </button>
           </div>
         );
-      } else if (item['status'] === 'CAPTURED') {
+      } else if (
+        item['status'] === 'CAPTURED' ||
+        item['status'] === 'PARTIALLY_REFUNDED'
+      ) {
         return (
           <div className="action-wrapper">
             <button
@@ -220,8 +246,8 @@ const OrderList = () => {
     });
   };
 
-  const handleSearch = () => {
-    getOrders(searchData);
+  const handleSearch = (data) => {
+    getOrders(data ? data : searchData);
   };
 
   const clearFilter = () => {

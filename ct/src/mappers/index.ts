@@ -12,3 +12,4 @@ export * from './getOrderById';
 export * from './updateOrder';
 export * from './createTransaction';
 export * from './getPaymentById';
+export * from './getCustomer';

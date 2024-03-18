@@ -42,6 +42,7 @@ export interface CreatePaymentRequest {
   storeId: string;
   cartId: string;
   orderId: string;
+  orderCreatedAt?: Date;
   currency: string;
   total: number;
   status?: $Enums.Status;
@@ -64,4 +65,10 @@ export interface GetOrders {
     totalCount: number;
   };
   data: Payment[];
+}
+
+export enum Status {
+  INITIAL = 'INITIAL',
+  AUTHORIZED = 'AUTHORIZED',
+  IN_REVIEW = 'IN_REVIEW',
 }

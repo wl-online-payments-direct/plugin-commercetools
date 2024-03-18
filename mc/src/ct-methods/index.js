@@ -223,7 +223,7 @@ export const requestNewFeature = async (payload, apiHost, projectKey) => {
       body: JSON.stringify(payload),
       headers: {
         'Accept-version': 'v2',
-        'X-Forward-To': `${apiHost}/request-feature`,
+        'X-Forward-To': `${apiHost}/send/email`,
         'X-Forward-To-Audience-Policy': 'forward-url-full-path',
         'X-Project-Key': projectKey,
       },
@@ -256,6 +256,25 @@ export const getProject = async (projectKey) => {
     return project;
   } catch (error) {
     console.error('Error:', error.message);
+    throw new Error(error.message);
+  }
+};
+
+export const downloadLogs = async (apiHost, projectKey) => {
+  try {
+    const response = await fetcher(`/proxy/forward-to`, {
+      method: 'POST',
+      headers: {
+        'Accept-version': 'v2',
+        'X-Forward-To': `${apiHost}/download/log`,
+        'X-Forward-To-Audience-Policy': 'forward-url-full-path',
+        'X-Project-Key': projectKey,
+      },
+    });
+
+    return response;
+  } catch (error) {
+    console.error('Failed to download log', error.message);
     throw new Error(error.message);
   }
 };
