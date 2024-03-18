@@ -42,9 +42,9 @@ export function getHostedCheckoutPayload(
   const shipping = {
     address: {
       name: {
-        firstName: shippingAddress?.firstName || customer?.firstName,
-        surname: shippingAddress?.lastName || customer?.lastName,
-        lastname: shippingAddress?.lastName || customer?.lastName,
+        firstName: shippingAddress?.firstName || customer?.firstName || '',
+        surname: shippingAddress?.lastName || customer?.lastName || '',
+        lastname: shippingAddress?.lastName || customer?.lastName || '',
       },
       houseNumber: `${shippingAddress?.apartment} ${shippingAddress?.building}`,
       zip: shippingAddress?.postalCode || '',
@@ -59,9 +59,9 @@ export function getHostedCheckoutPayload(
   const personalInformation = {
     name: {
       title: customer?.title,
-      firstName: customer?.firstName || shippingAddress?.firstName,
-      lastname: customer?.lastName || shippingAddress?.lastName,
-      surname: customer?.lastName || shippingAddress?.lastName,
+      firstName: customer?.firstName || shippingAddress?.firstName || '',
+      lastname: customer?.lastName || shippingAddress?.lastName || '',
+      surname: customer?.lastName || shippingAddress?.lastName || '',
     },
     dateOfBirth: customer?.dateOfBirth || '',
   };
