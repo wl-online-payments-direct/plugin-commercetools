@@ -10,14 +10,15 @@ export function loadPaymentMethodsMappedResponse(
     PAYMENT: { REDIRECTMODE_A, REDIRECTMODE_B, ONSITEMODE },
   } = Constants;
 
-  const { enableWorldlineCheckout, redirectModeA, redirectModeB, onSiteMode } =
-    customConfig || {};
+  const {
+    enableWorldlineCheckout,
+    redirectModeA: { enabled = false, paymentOptions = [] } = {},
+    redirectModeB,
+    onSiteMode,
+  } = customConfig || {};
 
   const mappedPaymentMethods = Object.fromEntries(
-    redirectModeA.paymentOptions.map((pOption) => [
-      pOption.paymentProductId,
-      pOption,
-    ]),
+    paymentOptions.map((pOption) => [pOption.paymentProductId, pOption]),
   );
   // Create a map with a composite key (customerId-paymentId-token)
   const tokenMap = new Map<string, CustomerPaymentToken>();
@@ -50,14 +51,14 @@ export function loadPaymentMethodsMappedResponse(
   // Return empty payment methods if checkout is disabled
   if (
     !enableWorldlineCheckout ||
-    (!redirectModeA.enabled && !redirectModeB.enabled && !onSiteMode.enabled)
+    (!enabled && !redirectModeB.enabled && !onSiteMode.enabled)
   ) {
     return { paymentMethods: [] };
   }
 
   const paymentMethods: PaymentMethod[] = [];
 
-  Object.values(redirectModeA.paymentOptions).forEach((value) => {
+  Object.values(paymentOptions).forEach((value) => {
     if (value && value?.enabled) {
       paymentMethods.push({
         name: value.label,
