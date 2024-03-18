@@ -291,6 +291,8 @@ const PaymentMethods = () => {
               });
             } else if (dSet === 'payButtonTitle') {
               sendLoad[dSet] = data[dSet]?.values;
+            } else if (dSet === 'templateFileName') {
+              sendLoad[dSet] = data[dSet]?.value.trim();
             } else sendLoad[dSet] = data[dSet]?.value;
           }
           return {

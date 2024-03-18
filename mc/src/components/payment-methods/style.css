@@ -173,3 +173,12 @@ label:focus-within::after {
 .group-cards-title {
     margin-top: 4px;
 }
+
+.download-btn {
+    margin: 10px;
+    cursor: pointer;
+}
+
+.download-title {
+    margin: 5px 0px 0px 5px;
+}
