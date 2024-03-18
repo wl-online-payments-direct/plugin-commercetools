@@ -69,6 +69,7 @@ const query = `
         lineItems {
           id
           productId
+          name(locale: "en")
           totalPrice {
             currencyCode
             centAmount
