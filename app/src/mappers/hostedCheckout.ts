@@ -77,7 +77,7 @@ export function getHostedCheckoutPayload(
         .description,
     },
     orderLineDetails: {
-      productName: '', // Todo, will pass the locale to cart to get the name
+      productName: lineItem.name, // Todo, will pass the all locale to cart to get the name
       discountAmount: 0, // Todo, getting an array of discount
       productCode: lineItem.productId,
       productPrice: lineItem.price.value.centAmount,

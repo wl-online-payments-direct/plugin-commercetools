@@ -24,7 +24,10 @@ export function getServicePayload(
     hostedTokenizationId,
     acceptHeader,
     userAgent,
-    device: { timezoneOffsetUtcMinutes, browserData },
+    device: {
+      timezoneOffsetUtcMinutes,
+      browserData: { screenHeight, screenWidth, colorDepth, javaEnabled },
+    },
   } = payload;
   const { authorizationMode, merchantReference, onSiteMode } = customConfig;
   // Concat with the merchant reference
@@ -68,8 +71,13 @@ export function getServicePayload(
           ...locale,
           acceptHeader,
           userAgent,
-          timezoneOffsetUtcMinutes,
-          browserData,
+          timezoneOffsetUtcMinutes: timezoneOffsetUtcMinutes.toString(),
+          browserData: {
+            screenHeight: screenHeight.toString(),
+            screenWidth: screenWidth.toString(),
+            colorDepth,
+            javaEnabled,
+          },
         },
       },
       references: {
