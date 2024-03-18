@@ -50,9 +50,7 @@ export function loadPaymentMethodsMappedResponse(
   // Return empty payment methods if checkout is disabled
   if (
     !enableWorldlineCheckout ||
-    !redirectModeA.enabled ||
-    !redirectModeB.enabled ||
-    !onSiteMode.enabled
+    (!redirectModeA.enabled && !redirectModeB.enabled && !onSiteMode.enabled)
   ) {
     return { paymentMethods: [] };
   }
