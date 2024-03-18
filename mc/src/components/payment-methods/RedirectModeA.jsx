@@ -90,7 +90,7 @@ const RedirectModeA = ({
           <div className="template-section">
             <TextInput
               className="section-input"
-              value={(redirectModeA.templateFileName.value).trim()}
+              value={redirectModeA.templateFileName.value}
               type={redirectModeA.templateFileName.type}
               onChange={(e) =>
                 handleRedirectModeA('templateFileName', e.target.value)
