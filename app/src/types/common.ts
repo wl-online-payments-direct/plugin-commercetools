@@ -2,6 +2,9 @@ export interface RedirectModeAPaymentOptions {
   sendOrderData: boolean;
   templateFileName: string;
   enabled: boolean;
+  '3dsEnablement': boolean;
+  '3dsChallenge': boolean;
+  '3dsExemption': boolean;
   paymentOptions: {
     paymentMethod: string;
     paymentProductId: number;
@@ -22,6 +25,9 @@ export interface RedirectModeBPaymentOptions {
   payButtonTitle: string;
   templateFileName: string;
   groupCards?: boolean;
+  '3dsEnablement': boolean;
+  '3dsChallenge': boolean;
+  '3dsExemption': boolean;
 }
 
 export interface OnSiteModePaymentOptions {
@@ -30,6 +36,9 @@ export interface OnSiteModePaymentOptions {
   payButtonTitle: string;
   payButtonLanguage: string;
   templateFileName: string;
+  '3dsEnablement': boolean;
+  '3dsChallenge': boolean;
+  '3dsExemption': boolean;
 }
 
 export interface CustomObjects {

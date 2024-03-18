@@ -1,7 +1,7 @@
 import { Cart, Customer } from '@worldline/ctintegration-ct';
 import { logger } from '@worldline/ctintegration-util';
 import { CustomObjects, HostedMyCheckoutPayload } from '../types';
-import { appendAdditionalParamsToUrl } from './common';
+import { appendAdditionalParamsToUrl, process3Ds } from './common';
 import Constants from '../constants';
 
 type CartWithCustomer = Cart & { customer: Customer };
@@ -100,7 +100,18 @@ export function getHostedCheckoutPayload(
 
   /* option to template for Hosted Checkout and Hosted Tokenization */
   let variant = redirectModeA?.templateFileName || '';
+  let {
+    '3dsEnablement': threeDSEnablement,
+    '3dsChallenge': threeDSChallenge,
+    '3dsExemption': threeDSExemption,
+  } = redirectModeA;
 
+  let skipAuthentication = !threeDSEnablement;
+  const threeDSecure = {
+    skipAuthentication,
+    challengeIndicator: undefined as 'challenge-required' | undefined,
+    exemptionRequest: undefined as 'lowvalue' | undefined,
+  };
   let cardPaymentMethodSpecificInput = {};
   let redirectPaymentMethodSpecificInput = {};
   let sepaDirectDebitPaymentMethodSpecificInput = {};
@@ -112,7 +123,23 @@ export function getHostedCheckoutPayload(
       groupCards,
     };
     variant = redirectModeB?.templateFileName;
+    threeDSEnablement = redirectModeB['3dsEnablement'];
+    threeDSChallenge = redirectModeB['3dsChallenge'];
+    threeDSExemption = redirectModeB['3dsExemption'];
+    skipAuthentication = !threeDSEnablement;
   }
+
+  const { challengeIndicator, exemptionRequest } = process3Ds(
+    amount,
+    threeDSChallenge,
+    threeDSExemption,
+  );
+
+  threeDSecure.challengeIndicator = challengeIndicator as
+    | 'challenge-required'
+    | undefined;
+  threeDSecure.exemptionRequest = exemptionRequest as 'lowvalue' | undefined;
+
   const paymentSettings = redirectModeA.paymentOptions.find(
     (paymentOption) => paymentOption.paymentProductId === paymentProductId,
   );
@@ -131,6 +158,10 @@ export function getHostedCheckoutPayload(
       ? { cardPaymentMethodSpecificInput }
       : {}),
     paymentProductFilters: {},
+  };
+
+  cardPaymentMethodSpecificInput = {
+    threeDSecure,
   };
 
   if (paymentProductId) {
@@ -208,6 +239,7 @@ export function getHostedCheckoutPayload(
         cardPaymentMethodSpecificInput = {
           authorizationMode,
           paymentProductId,
+          threeDSecure,
         };
         break;
       default:
@@ -262,7 +294,7 @@ export function getHostedCheckoutPayload(
     cardPaymentMethodSpecificInput:
       paymentMethod !== PAYMENT.REDIRECTMODE_B.PAYMENT_METHOD
         ? cardPaymentMethodSpecificInput
-        : {},
+        : { threeDSecure },
     hostedCheckoutSpecificInput,
     redirectPaymentMethodSpecificInput,
     sepaDirectDebitPaymentMethodSpecificInput,
