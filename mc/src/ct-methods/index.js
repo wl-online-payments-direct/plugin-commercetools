@@ -259,3 +259,22 @@ export const getProject = async (projectKey) => {
     throw new Error(error.message);
   }
 };
+
+export const downloadLogs = async (apiHost, projectKey) => {
+  try {
+    const response = await fetcher(`/proxy/forward-to`, {
+      method: 'POST',
+      headers: {
+        'Accept-version': 'v2',
+        'X-Forward-To': `${apiHost}/download/log`,
+        'X-Forward-To-Audience-Policy': 'forward-url-full-path',
+        'X-Project-Key': projectKey,
+      },
+    });
+
+    return response;
+  } catch (error) {
+    console.error('Failed to download log', error.message);
+    throw new Error(error.message);
+  }
+};

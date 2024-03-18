@@ -9,6 +9,7 @@ import {
   requestNewFeature,
   getProject,
   getPluginVersion,
+  downloadLogs,
 } from '../../ct-methods';
 import { useApplicationContext } from '@commercetools-frontend/application-shell-connectors';
 import Snackbar from '@mui/material/Snackbar';
@@ -210,6 +211,23 @@ const PaymentProvider = ({ children }) => {
     }
   };
 
+  const downloadLog = async () => {
+    setLoader(true);
+    try {
+      const response = await downloadLogs(apiHost, projectKey);
+      if (response) {
+        setLoader(false);
+        return response;
+      } else {
+        setLoader(false);
+        return null;
+      }
+    } catch (err) {
+      setLoader(false);
+      return null;
+    }
+  };
+
   const imageUploader = async (files, toasterFlag) => {
     setLoader(true);
     try {
@@ -340,6 +358,7 @@ const PaymentProvider = ({ children }) => {
         activeCurrency,
         activeCountry,
         fetchPluginVersion,
+        downloadLog,
       }}
     >
       <Backdrop

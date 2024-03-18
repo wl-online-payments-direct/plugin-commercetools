@@ -79,6 +79,9 @@ export default {
   getPaymentOptions() {
     return [WORLDLINE_CREDITCARD, HOSTED_AND_APMS, REDIRECT_WORLDLINE];
   },
+  getDownloadFileName() {
+    return `worldline-log-${Date.now()}.log`;
+  },
   HTML: {
     EMAIL_TEMPLATE: `<table border=1>
     <thead>
