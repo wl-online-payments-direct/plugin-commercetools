@@ -1,5 +1,6 @@
 import { Order } from '@worldline/ctintegration-ct';
 import { GetOrderPayload, PaymentDetailsPayload } from '../types';
+import { getOrderMappedStatus } from './common';
 
 export function getOrderDBPayload(payload: GetOrderPayload) {
   const { paymentId = '' } = payload || {};
@@ -53,7 +54,7 @@ export function getOrderResponseMapper(
     orderId: order.id,
     customerEmail: order.customerEmail,
     paymentMethod,
-    status,
+    status: getOrderMappedStatus(status),
     statusCode,
     amount,
     currencyCode,
