@@ -317,7 +317,9 @@ const PaymentMethods = () => {
     );
     if (
       saveData.redirectModeA.paymentOptions.filter(
-        (pData) => pData.paymentMethod === 'oney3x4x'
+        (pData) =>
+          pData.paymentMethod === 'oney3x4x' ||
+          pData.paymentMethod === 'intersolve'
       )?.[0]?.enabled
     )
       saveData.authorizationMode = 'SALE';

@@ -19,7 +19,6 @@ import CancelAlert from './cancel-alert';
 
 const OrderList = () => {
   const { formatMessage } = useIntl();
-
   const filterOptions = [
     { value: 'ALL', label: formatMessage(messages.filterOrders) },
     {
@@ -109,14 +108,21 @@ const OrderList = () => {
   useEffect(() => {
     const keyDownHandler = (event) => {
       if (event.key === 'Enter') {
-        handleSearch(searchData);
+        event.preventDefault();
+        if (!apiHost || !projectKey || !activeStore) return;
+        handleSearch({
+          filterOption:
+            document?.getElementsByName('orderFilterOption')?.[0]?.value,
+          orderId: document?.getElementsByName('orderId')?.[0]?.value,
+        });
       }
     };
+
     document.addEventListener('keydown', keyDownHandler);
     return () => {
       document.removeEventListener('keydown', keyDownHandler);
     };
-  }, []);
+  }, [apiHost, projectKey, activeStore]);
 
   useEffect(() => {
     setOpenCancel(false);
@@ -246,8 +252,13 @@ const OrderList = () => {
     });
   };
 
-  const handleSearch = (data) => {
-    getOrders(data ? data : searchData);
+  const handleSearch = (payload = null) => {
+    setSearchData(payload);
+    getOrders(
+      payload && (payload.filterOption || payload.orderId)
+        ? payload
+        : searchData
+    );
   };
 
   const clearFilter = () => {
@@ -267,7 +278,7 @@ const OrderList = () => {
         <form className="order-filters" onSubmit={handleSearch}>
           <div className="filter-order">
             <SelectInput
-              name="filterOption"
+              name="orderFilterOption"
               value={searchData.filterOption}
               options={filterOptions}
               onChange={handleFilterChange}
