@@ -63,6 +63,10 @@ export default {
     PENDING_CAPTURE: 'payment.pending_capture',
     CAPTURED: 'payment.captured',
   },
+  THREE_DS: {
+    CHALLENGE_INDICATOR: 'challenge-required',
+    EXEMPTION_REQUEST: 'lowvalue',
+  },
   getWordlineCreditCardOption() {
     return WORLDLINE_CREDITCARD;
   },
@@ -74,6 +78,9 @@ export default {
   },
   getPaymentOptions() {
     return [WORLDLINE_CREDITCARD, HOSTED_AND_APMS, REDIRECT_WORLDLINE];
+  },
+  getDownloadFileName() {
+    return `worldline-log-${Date.now()}.log`;
   },
   HTML: {
     EMAIL_TEMPLATE: `<table border=1>

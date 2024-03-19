@@ -507,7 +507,6 @@ export async function orderPaymentCancelHandler(payload: PaymentPayload) {
       { id: payment.id },
       {
         status: PAYMENT.DATABASE.STATUS.PARTIALLY_CANCELLED,
-        worldlineStatus: mappedStatus,
       },
     );
   }

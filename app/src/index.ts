@@ -24,4 +24,5 @@ export * from './initiateCapturePayment';
 export * from './sendPaymentNotification';
 export * from './sendEmail';
 export * from './getCards';
+export * from './downloadLog';
 export * from './deleteToken';

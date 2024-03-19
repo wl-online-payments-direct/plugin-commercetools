@@ -1,7 +1,7 @@
 import { Cart, Customer } from '@worldline/ctintegration-ct';
 import { logger } from '@worldline/ctintegration-util';
 import { CustomObjects, HostedMyCheckoutPayload } from '../types';
-import { appendAdditionalParamsToUrl } from './common';
+import { appendAdditionalParamsToUrl, process3Ds } from './common';
 import Constants from '../constants';
 
 type CartWithCustomer = Cart & { customer: Customer };
@@ -22,17 +22,6 @@ export function getHostedCheckoutPayload(
   const { tokens, acceptHeader, userAgent, paymentProductId, paymentMethod } =
     payload;
 
-  // Personal information
-  const { customer } = cart as CartWithCustomer;
-  const personalInformation = {
-    name: {
-      title: customer?.title,
-      firstName: customer?.firstName,
-      surname: customer?.lastName,
-    },
-    dateOfBirth: customer?.dateOfBirth || '',
-  };
-
   // Billing address
   const {
     apartment = '',
@@ -48,19 +37,33 @@ export function getHostedCheckoutPayload(
 
   // Shipping
   const { shippingAddress, taxedShippingPrice } = cart;
+  const { customer } = cart as CartWithCustomer;
+
   const shipping = {
     address: {
       name: {
-        firstName: shippingAddress?.firstName || '',
-        surname: shippingAddress?.lastName || '',
+        firstName: shippingAddress?.firstName || customer?.firstName || '',
+        surname: shippingAddress?.lastName || customer?.lastName || '',
+        lastname: shippingAddress?.lastName || customer?.lastName || '',
       },
       houseNumber: `${shippingAddress?.apartment} ${shippingAddress?.building}`,
       zip: shippingAddress?.postalCode || '',
       city: shippingAddress?.city || '',
       countryCode: shippingAddress?.country || '',
+      street: shippingAddress?.streetName || '',
     },
     shippingCost: taxedShippingPrice?.totalNet.centAmount,
     shippingCostTax: taxedShippingPrice?.totalTax?.centAmount,
+  };
+
+  const personalInformation = {
+    name: {
+      title: customer?.title,
+      firstName: customer?.firstName || shippingAddress?.firstName || '',
+      lastname: customer?.lastName || shippingAddress?.lastName || '',
+      surname: customer?.lastName || shippingAddress?.lastName || '',
+    },
+    dateOfBirth: customer?.dateOfBirth || '',
   };
 
   // Line items
@@ -74,7 +77,7 @@ export function getHostedCheckoutPayload(
         .description,
     },
     orderLineDetails: {
-      productName: '', // Todo, will pass the locale to cart to get the name
+      productName: '', // Todo, will pass the all locale to cart to get the name
       discountAmount: 0, // Todo, getting an array of discount
       productCode: lineItem.productId,
       productPrice: lineItem.price.value.centAmount,
@@ -100,7 +103,18 @@ export function getHostedCheckoutPayload(
 
   /* option to template for Hosted Checkout and Hosted Tokenization */
   let variant = redirectModeA?.templateFileName || '';
+  let {
+    '3dsEnablement': threeDSEnablement,
+    '3dsChallenge': threeDSChallenge,
+    '3dsExemption': threeDSExemption,
+  } = redirectModeA;
 
+  let skipAuthentication = !threeDSEnablement;
+  const threeDSecure = {
+    skipAuthentication,
+    challengeIndicator: undefined as 'challenge-required' | undefined,
+    exemptionRequest: undefined as 'lowvalue' | undefined,
+  };
   let cardPaymentMethodSpecificInput = {};
   let redirectPaymentMethodSpecificInput = {};
   let sepaDirectDebitPaymentMethodSpecificInput = {};
@@ -112,7 +126,23 @@ export function getHostedCheckoutPayload(
       groupCards,
     };
     variant = redirectModeB?.templateFileName;
+    threeDSEnablement = redirectModeB['3dsEnablement'];
+    threeDSChallenge = redirectModeB['3dsChallenge'];
+    threeDSExemption = redirectModeB['3dsExemption'];
+    skipAuthentication = !threeDSEnablement;
   }
+
+  const { challengeIndicator, exemptionRequest } = process3Ds(
+    amount,
+    threeDSChallenge,
+    threeDSExemption,
+  );
+
+  threeDSecure.challengeIndicator = challengeIndicator as
+    | 'challenge-required'
+    | undefined;
+  threeDSecure.exemptionRequest = exemptionRequest as 'lowvalue' | undefined;
+
   const paymentSettings = redirectModeA.paymentOptions.find(
     (paymentOption) => paymentOption.paymentProductId === paymentProductId,
   );
@@ -131,6 +161,10 @@ export function getHostedCheckoutPayload(
       ? { cardPaymentMethodSpecificInput }
       : {}),
     paymentProductFilters: {},
+  };
+
+  cardPaymentMethodSpecificInput = {
+    threeDSecure,
   };
 
   if (paymentProductId) {
@@ -208,6 +242,7 @@ export function getHostedCheckoutPayload(
         cardPaymentMethodSpecificInput = {
           authorizationMode,
           paymentProductId,
+          threeDSecure,
         };
         break;
       default:
@@ -262,7 +297,7 @@ export function getHostedCheckoutPayload(
     cardPaymentMethodSpecificInput:
       paymentMethod !== PAYMENT.REDIRECTMODE_B.PAYMENT_METHOD
         ? cardPaymentMethodSpecificInput
-        : {},
+        : { threeDSecure },
     hostedCheckoutSpecificInput,
     redirectPaymentMethodSpecificInput,
     sepaDirectDebitPaymentMethodSpecificInput,

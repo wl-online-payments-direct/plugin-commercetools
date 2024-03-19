@@ -6,7 +6,7 @@ import {
   ICreateMyPaymentPayload,
   ICreatePaymentResponse,
 } from '../types';
-import { appendAdditionalParamsToUrl } from './common';
+import { appendAdditionalParamsToUrl, process3Ds } from './common';
 import Constants from '../constants';
 
 const getFormattedPaymentId = (
@@ -20,17 +20,22 @@ export function getServicePayload(
   cart: Cart,
   payload: ICreateMyPaymentPayload,
 ) {
-  const { hostedTokenizationId, acceptHeader, userAgent } = payload;
-  const { authorizationMode, merchantReference, skip3dsAuthentication } =
-    customConfig;
-
+  const {
+    hostedTokenizationId,
+    acceptHeader,
+    userAgent,
+    device: {
+      timezoneOffsetUtcMinutes,
+      browserData: { screenHeight, screenWidth, colorDepth, javaEnabled },
+    },
+  } = payload;
+  const { authorizationMode, merchantReference, onSiteMode } = customConfig;
   // Concat with the merchant reference
   const paymentId = getFormattedPaymentId(
     merchantReference,
     reference.referenceId,
   );
 
-  const skipAuthentication = skip3dsAuthentication || false;
   const amount = cart?.taxedPrice?.totalGross.centAmount || 0;
   const currencyCode = cart?.taxedPrice?.totalGross.currencyCode || '';
   const merchantCustomerId = cart?.customerId || cart?.anonymousId || '';
@@ -40,12 +45,20 @@ export function getServicePayload(
     orderPaymentId: paymentId,
   });
 
+  const { challengeIndicator, exemptionRequest } = process3Ds(
+    amount,
+    onSiteMode['3dsChallenge'],
+    onSiteMode['3dsExemption'],
+  );
+
   return {
     hostedTokenizationId,
     cardPaymentMethodSpecificInput: {
       authorizationMode,
       threeDSecure: {
-        skipAuthentication,
+        skipAuthentication: !onSiteMode['3dsEnablement'],
+        challengeIndicator,
+        exemptionRequest,
         redirectionData: {
           returnUrl,
         },
@@ -58,10 +71,16 @@ export function getServicePayload(
           ...locale,
           acceptHeader,
           userAgent,
+          timezoneOffsetUtcMinutes: timezoneOffsetUtcMinutes.toString(),
+          browserData: {
+            screenHeight: screenHeight.toString(),
+            screenWidth: screenWidth.toString(),
+            colorDepth,
+            javaEnabled,
+          },
         },
       },
       references: {
-        // this key is used to identify the merchant from webhook
         merchantReference: paymentId,
       },
       amountOfMoney: {
