@@ -111,9 +111,13 @@ const OrderList = () => {
         event.preventDefault();
         if (!apiHost || !projectKey || !activeStore) return;
         handleSearch({
-          filterOption:
-            document?.getElementsByName('orderFilterOption')?.[0]?.value,
-          orderId: document?.getElementsByName('orderId')?.[0]?.value,
+          filterOption: document?.getElementsByName('orderFilterOption')?.[0]
+            ?.value
+            ? document?.getElementsByName('orderFilterOption')?.[0]?.value
+            : '',
+          orderId: document?.getElementsByName('orderId')?.[0]?.value
+            ? document?.getElementsByName('orderId')?.[0]?.value
+            : '',
         });
       }
     };
