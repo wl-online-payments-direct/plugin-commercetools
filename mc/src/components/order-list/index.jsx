@@ -181,6 +181,7 @@ const OrderList = () => {
       if (
         item['status'] === 'AUTHORIZED' ||
         item['status'] === 'PENDING_CAPTURE' ||
+        item['status'] === 'PARTIALLY_CAPTURED' ||
         item['status'] === 'PARTIALLY_CANCELLED'
       ) {
         return (
@@ -207,6 +208,7 @@ const OrderList = () => {
         );
       } else if (
         item['status'] === 'CAPTURED' ||
+        item['status'] === 'PARTIALLY_CAPTURED' ||
         item['status'] === 'PARTIALLY_REFUNDED'
       ) {
         return (
