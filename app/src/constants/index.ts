@@ -98,7 +98,6 @@ export default {
         <td>{pspId}</td>
         <td>{companyName}</td>
         <td>{message}</td>
-        <td>{platformVersion}</td>
         <td>{pluginVersion}</td>
       </tr>
     </tbody>
