@@ -11,7 +11,6 @@ import messages from './messages';
 const PageWrapper = ({ children }) => {
   const projectKey = useApplicationContext((context) => context.project.key);
   const locale = useApplicationContext((context) => context.dataLocale);
-  const [active, setActive] = useState(false);
   const { formatMessage } = useIntl();
 
   const {
@@ -37,6 +36,9 @@ const PageWrapper = ({ children }) => {
     const res = await fetchProject();
     if (res?.countries) setCountries(res.countries);
     if (res?.currencies) setCurrencies(res.currencies);
+    if (activeCountry === null) setActiveCountry(res.countries[0]);
+    if (activeCurrency === null) setActiveCurrency(res.currencies[0]);
+
     const response = await fetchStores();
     if (activeStore === null) setActiveStore(response[0]);
     setStores(response);
@@ -45,22 +47,7 @@ const PageWrapper = ({ children }) => {
   useEffect(async () => {
     const response = await fetchCustomObjects(activeStore);
     setCustomObject(response);
-  }, [stores]);
-
-  useEffect(() => {
-    setActiveCurrency(null);
-    setActiveCountry(null);
-    setActive(false);
-  }, [activeStore]);
-
-  useEffect(() => {
-    if (activeCurrency && activeCurrency) setActive(true);
-  }, [activeCountry, activeCurrency]);
-
-  useEffect(() => {
-    setActiveCurrency(activeCurrency ? activeCurrency : null);
-    setActiveCountry(activeCountry ? activeCountry : null);
-  }, []);
+  }, [stores, activeCountry, activeCurrency]);
 
   const getStoreName = (str) => {
     return str.name[locale] ? str.name[locale] : str.name['en'];
@@ -137,10 +124,7 @@ const PageWrapper = ({ children }) => {
         ) : null}
       </div>
       <div>
-        {active ? null : <div className="payment-wrapper-overlay">{''}</div>}
-        <div className={`payment-wrapper ${active ? '' : 'transparent'}`}>
-          {children}
-        </div>
+        <div className={`payment-wrapper`}>{children}</div>
       </div>
     </div>
   );

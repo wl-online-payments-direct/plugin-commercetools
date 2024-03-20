@@ -25,6 +25,8 @@ const PaymentMethods = () => {
     activeStore,
     hideToaster,
     showToaster,
+    activeCountry,
+    activeCurrency,
   } = useContext(PaymentContext);
 
   const { formatMessage } = useIntl();
@@ -237,7 +239,11 @@ const PaymentMethods = () => {
 
   const fetchPaymentMethods = async () => {
     setLoader(true);
-    const result = await fetchWorldlinePaymentOptions(activeStore);
+    const result = await fetchWorldlinePaymentOptions(
+      activeStore,
+      activeCountry,
+      activeCurrency
+    );
     if (result) {
       handleRedirectModeA('paymentOptions', result);
     } else {
@@ -355,7 +361,9 @@ const PaymentMethods = () => {
             case 'redirectModeB':
               if (field === 'paymentOptions') {
                 const response = await fetchWorldlinePaymentOptions(
-                  activeStore
+                  activeStore,
+                  activeCountry,
+                  activeCurrency
                 );
                 if (customValue?.[ds]?.[field] !== undefined) {
                   payload[ds][field] = customValue[ds][field].map((payOpt) => {

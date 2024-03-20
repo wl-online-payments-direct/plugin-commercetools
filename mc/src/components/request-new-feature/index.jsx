@@ -1,7 +1,8 @@
 import React, { useContext, useState, useEffect } from 'react';
 import SecondaryButton from '@commercetools-uikit/secondary-button';
-import { CloseIcon, RocketIcon, InfoIcon } from '@commercetools-uikit/icons';
-import Tooltip from '@commercetools-uikit/tooltip';
+import { CloseIcon, RocketIcon } from '@commercetools-uikit/icons';
+import Tooltip from '@mui/material/Tooltip';
+import InfoIcon from '@mui/icons-material/Info';
 import Label from '@commercetools-uikit/label';
 import TextInput from '@commercetools-uikit/text-input';
 import NumberInput from '@commercetools-uikit/number-input';
@@ -51,13 +52,6 @@ const RequestNewFeature = () => {
       value: '',
     },
     {
-      name: 'platformVersion',
-      label: 'Platform Version',
-      placeholder: 'Enter the platform version',
-      type: 'text',
-      value: '',
-    },
-    {
       name: 'pluginVersion',
       label: 'Plugin Version',
       value: `${pluginVersion}`,
@@ -69,7 +63,10 @@ const RequestNewFeature = () => {
   const clearRequestForm = () => {
     setRequestForm((requestForm) =>
       requestForm.map((form) => {
-        return { ...form, value: '' };
+        return {
+          ...form,
+          value: form.name !== 'pluginVersion' ? '' : pluginVersion,
+        };
       })
     );
   };
@@ -233,9 +230,10 @@ const RequestNewFeature = () => {
               </Button>
               <Box sx={{ flex: '1 1 auto' }} />
               <PrimaryButton
+                className="sendBtn"
                 isDisabled={disableSendRequest}
                 iconLeft={<RocketIcon />}
-                label={formatMessage(messages.saveBtn)}
+                label={formatMessage(messages.sendBtn)}
                 onClick={sendRequestForm}
               />
             </Box>
