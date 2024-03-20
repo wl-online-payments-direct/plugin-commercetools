@@ -1,22 +1,24 @@
 import { Payment } from '../types';
 import constants from '../constants';
 
-export function listOrderResponseMapper(orders: Payment[]) {
+export function listOrderResponseMapper(orders: { data: Payment[] }) {
   const {
     FRONTEND: { SETTLED_PROCESSING, AWAITING_PAYMENT },
   } = constants;
 
-  const updatedOrders = orders.map((order) => {
+  const statusMapper: { [key: string]: string } = {
+    CAPTURED: SETTLED_PROCESSING,
+    AUTHORIZED: AWAITING_PAYMENT,
+  };
+
+  const updatedOrders = orders.data.map((order) => {
     const updatedOrder = { ...order };
-
-    if (updatedOrder.status === 'CAPTURED') {
-      updatedOrder.status = SETTLED_PROCESSING;
-    } else if (updatedOrder.status === 'AUTHORIZED') {
-      updatedOrder.status = AWAITING_PAYMENT;
-    }
-
+    updatedOrder.status = statusMapper[updatedOrder.status];
     return updatedOrder;
   });
 
-  return updatedOrders;
+  return {
+    ...orders,
+    data: updatedOrders,
+  };
 }

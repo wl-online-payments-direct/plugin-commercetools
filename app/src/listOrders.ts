@@ -12,5 +12,5 @@ export async function getListOrders(payload: ListOrdersPayload) {
   }
   const orders = await getDBOrders(payload);
 
-  return listOrderResponseMapper(orders.data);
+  return listOrderResponseMapper(orders);
 }
