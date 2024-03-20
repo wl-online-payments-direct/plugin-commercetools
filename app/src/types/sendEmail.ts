@@ -3,6 +3,5 @@ export interface ISendEmailPayload {
   pspId: string;
   companyName: string;
   message: string;
-  platformVersion: string;
   pluginVersion: string;
 }
