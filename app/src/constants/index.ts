@@ -16,6 +16,7 @@ export default {
   },
   CART: {
     ACTIVE: 'Active',
+    MINIMUM_AMOUNT_CENTS: 3000,
   },
   TRANSACTION: {
     CHARGE: 'Charge',
