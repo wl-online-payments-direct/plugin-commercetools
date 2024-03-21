@@ -19,16 +19,16 @@
     justify-content: space-between;
 }
 
-.request-feature-wrapper{
+.request-feature-wrapper {
     display: flex;
     justify-content: flex-end;
 }
 
-.field-wrapper{
+.field-wrapper {
     display: flex;
 }
 
-.server-request-wrapper { 
+.server-request-wrapper {
     padding: 5px;
 }
 

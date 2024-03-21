@@ -44,7 +44,6 @@ export function getHostedCheckoutPayload(
       name: {
         firstName: shippingAddress?.firstName || customer?.firstName || '',
         surname: shippingAddress?.lastName || customer?.lastName || '',
-        lastname: shippingAddress?.lastName || customer?.lastName || '',
       },
       houseNumber: `${shippingAddress?.apartment} ${shippingAddress?.building}`,
       zip: shippingAddress?.postalCode || '',
@@ -60,7 +59,6 @@ export function getHostedCheckoutPayload(
     name: {
       title: customer?.title,
       firstName: customer?.firstName || shippingAddress?.firstName || '',
-      lastname: customer?.lastName || shippingAddress?.lastName || '',
       surname: customer?.lastName || shippingAddress?.lastName || '',
     },
     dateOfBirth: customer?.dateOfBirth || '',
@@ -77,7 +75,7 @@ export function getHostedCheckoutPayload(
         .description,
     },
     orderLineDetails: {
-      productName: '', // Todo, will pass the all locale to cart to get the name
+      productName: lineItem.name as unknown, // Todo, will pass the all locale to cart to get the name
       discountAmount: 0, // Todo, getting an array of discount
       productCode: lineItem.productId,
       productPrice: lineItem.price.value.centAmount,
@@ -86,7 +84,6 @@ export function getHostedCheckoutPayload(
       // taxAmount: lineItem.taxRate?.amount,
     },
   }));
-
   // Concat with the merchant reference
   const paymentId = `${merchantReference}-${reference?.referenceId?.toString()}`;
 

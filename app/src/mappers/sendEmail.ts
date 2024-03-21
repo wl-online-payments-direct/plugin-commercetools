@@ -5,8 +5,7 @@ export function sendMailOptionsPayment(
   payload: ISendEmailPayload,
   customObject: CustomObject,
 ) {
-  const { pspId, companyName, message, platformVersion, pluginVersion } =
-    payload;
+  const { pspId, companyName, message, pluginVersion } = payload;
 
   let html = Constants.HTML.EMAIL_TEMPLATE;
 
@@ -14,7 +13,6 @@ export function sendMailOptionsPayment(
   html = html.replace('{pspId}', pspId);
   html = html.replace('{companyName}', companyName);
   html = html.replace('{message}', message);
-  html = html.replace('{platformVersion}', platformVersion);
   html = html.replace('{pluginVersion}', pluginVersion);
 
   const { to = '', from = '' } = customObject.value.serverConfig;
