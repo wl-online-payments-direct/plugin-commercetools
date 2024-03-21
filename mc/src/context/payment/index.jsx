@@ -150,14 +150,20 @@ const PaymentProvider = ({ children }) => {
     }
   };
 
-  const fetchWorldlinePaymentOptions = async (activeStore) => {
+  const fetchWorldlinePaymentOptions = async (
+    activeStore,
+    activeCountry,
+    activeCurrency
+  ) => {
     setLoader(true);
-    if (activeStore?.key) {
+    if (activeStore?.key && activeCountry && activeCurrency) {
       try {
         const response = await getPaymentMethods(
           projectKey,
           activeStore?.key,
-          apiHost
+          apiHost,
+          activeCountry,
+          activeCurrency
         );
         if (response.statusCode === 200) {
           const { result } = response;
@@ -214,14 +220,8 @@ const PaymentProvider = ({ children }) => {
   const downloadLog = async () => {
     setLoader(true);
     try {
-      const response = await downloadLogs(apiHost, projectKey);
-      if (response) {
-        setLoader(false);
-        return response;
-      } else {
-        setLoader(false);
-        return null;
-      }
+      await downloadLogs(apiHost, projectKey);
+      setLoader(false);
     } catch (err) {
       setLoader(false);
       return null;

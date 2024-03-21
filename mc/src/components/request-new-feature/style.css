@@ -49,3 +49,11 @@
 .stepper-wrapper {
     margin: 2rem 2rem 0 0;
 }
+
+.form-title svg {
+    cursor: pointer;
+}
+
+.sendBtn {
+    padding: 10px;
+}
