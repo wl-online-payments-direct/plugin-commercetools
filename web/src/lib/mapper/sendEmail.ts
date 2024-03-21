@@ -6,7 +6,6 @@ export function getSendEmailRequiredProps(request: Request) {
     pspId = '',
     companyName = '',
     message = '',
-    platformVersion = '',
     pluginVersion = '',
   } = (request?.body || {}) as sendEmailPayload;
 
@@ -15,7 +14,6 @@ export function getSendEmailRequiredProps(request: Request) {
     pspId,
     companyName,
     message,
-    platformVersion,
     pluginVersion,
   };
 }
@@ -26,7 +24,6 @@ export function getSendEmailAppPayload(request: Request) {
     pspId = '',
     companyName = '',
     message = '',
-    platformVersion = '',
     pluginVersion = '',
   } = (request?.body || {}) as sendEmailPayload;
 
@@ -35,7 +32,6 @@ export function getSendEmailAppPayload(request: Request) {
     pspId,
     companyName,
     message,
-    platformVersion,
     pluginVersion,
   };
 }

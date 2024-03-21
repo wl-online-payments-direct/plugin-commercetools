@@ -16,6 +16,7 @@ export default {
   },
   CART: {
     ACTIVE: 'Active',
+    MINIMUM_AMOUNT_CENTS: 3000,
   },
   FRONTEND: {
     SETTLED_PROCESSING: 'Settled processing',
@@ -102,7 +103,6 @@ export default {
         <td>{pspId}</td>
         <td>{companyName}</td>
         <td>{message}</td>
-        <td>{platformVersion}</td>
         <td>{pluginVersion}</td>
       </tr>
     </tbody>

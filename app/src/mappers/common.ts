@@ -58,13 +58,13 @@ export function process3Ds(
 
   const { CHALLENGE_INDICATOR, EXEMPTION_REQUEST } = Constants.THREE_DS;
   if (threeDSChallenge) {
-    if (amount < 30 && threeDSExemption) {
+    if (amount < Constants.CART.MINIMUM_AMOUNT_CENTS && threeDSExemption) {
       exemptionRequest = EXEMPTION_REQUEST;
     } else {
       challengeIndicator = CHALLENGE_INDICATOR;
     }
   } else if (threeDSExemption) {
-    if (amount < 30) {
+    if (amount < Constants.CART.MINIMUM_AMOUNT_CENTS) {
       exemptionRequest = EXEMPTION_REQUEST;
     }
   }
