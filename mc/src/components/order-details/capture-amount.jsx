@@ -54,7 +54,7 @@ const CaptureAmount = ({
       setTransactionRequested(false);
       const payload = {
         storeId: storeId,
-        amount: parseInt(captureAmount),
+        amount: parseInt(captureAmount * 100),
         isFinal: true,
         paymentId: worldlineId,
         orderId: orderId,
