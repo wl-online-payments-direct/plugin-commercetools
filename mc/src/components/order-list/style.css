@@ -6,7 +6,6 @@
     gap: 20px;
 }
 .order-list {
-    display: flex;
     overflow: auto;
     flex: 1;
 }
