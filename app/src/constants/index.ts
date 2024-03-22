@@ -18,10 +18,6 @@ export default {
     ACTIVE: 'Active',
     MINIMUM_AMOUNT_CENTS: 3000,
   },
-  FRONTEND: {
-    SETTLED_PROCESSING: 'Settled processing',
-    AWAITING_PAYMENT: 'Awaiting Payment',
-  },
   TRANSACTION: {
     CHARGE: 'Charge',
     REFUND: 'Refund',
