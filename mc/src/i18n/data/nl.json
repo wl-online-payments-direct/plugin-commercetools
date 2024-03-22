@@ -163,7 +163,6 @@
   "Order.status": "Betalingsstatus",
   "Order.currency": "Valuta",
   "Order.total": "Totaal",
-  "Order.amountPaid": "Betaald bedrag",
   "Order.action": "Acties",
   "Order.filterOrders": "Bestellingen filteren",
   "Order.worldlineCreditCard": "Worldline-kredietkaart",
