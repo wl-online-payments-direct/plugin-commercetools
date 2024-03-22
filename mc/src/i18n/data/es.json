@@ -203,7 +203,7 @@
   "Order.cancelStatus": "Cancelar estado",
   "Order.email": "Correo electrónico",
   "Order.captureInProgress": "Un éxito: Captura en curso",
-  "Order.captureFailed": "Fracaso: Captura fallida",
+  "Order.captureFailed": "El monto de captura no es válido",
   "Order.refundInProgress": "Un éxito: Reembolso en curso",
   "Order.refundFailed": "Fracaso: Reembolso fallido",
   "Order.cancelInProgress": "Un éxito: Cancelación en curso",

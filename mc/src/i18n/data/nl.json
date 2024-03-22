@@ -203,7 +203,7 @@
   "Order.cancelStatus": "Status annuleren",
   "Order.email": "E-mail",
   "Order.captureInProgress": "Succes: Capture is in uitvoering",
-  "Order.captureFailed": "Falen: Vastleggen mislukt",
+  "Order.captureFailed": "Het vastgelegde bedrag is niet geldig",
   "Order.refundInProgress": "Succes: Restitutie is in behandeling",
   "Order.refundFailed": "Falen: Terugbetaling mislukt",
   "Order.cancelInProgress": "Succes: Annuleren is in uitvoering",

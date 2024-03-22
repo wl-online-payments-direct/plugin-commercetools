@@ -10,7 +10,7 @@ import LoadingSpinner from '@commercetools-uikit/loading-spinner';
 import PageWrapper from '../page-wrapper';
 import { getOrderList } from '../../ct-methods';
 import { Link, useHistory, useRouteMatch } from 'react-router-dom';
-import { areObjectsSame } from '../../helpers';
+import { areObjectsSame, getStatus } from '../../helpers';
 import './style.css';
 import { PaymentContext } from '../../context/payment';
 import messages from './messages';
@@ -179,7 +179,7 @@ const OrderList = () => {
     }
     if (column.key === 'status') {
       const paymentBox = (
-        <div className="alert alert-yellow"> {itemValue} </div>
+        <div className="alert alert-yellow"> {getStatus(itemValue)} </div>
       );
       return paymentBox;
     }
