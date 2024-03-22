@@ -1,5 +1,6 @@
 import { ServerResponse } from 'http';
 import {
+  authenticateSession,
   isPostRequestOrThrowError,
   logger,
   ResponseClient,
@@ -13,7 +14,8 @@ const processRequest = async (request: Request, response: ServerResponse) => {
     // Only allow POST request; else throw error
     await isPostRequestOrThrowError(method);
 
-    // TODO: add authentication
+    // Authenticate the session
+    await authenticateSession(request, response);
 
     await downloadLog(request, response);
   } catch (e) {

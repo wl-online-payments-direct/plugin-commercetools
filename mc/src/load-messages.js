@@ -1,10 +1,31 @@
 import { parseChunkImport } from '@commercetools-frontend/i18n';
 
 const getChunkImport = (locale) => {
-  switch (locale) {
+  const lang = locale ? locale?.split('-')[0] : 'en';
+  switch (lang) {
     case 'de':
       return import(
         /* webpackChunkName: "app-i18n-de" */ './i18n/data/de.json'
+      );
+    case 'en':
+      return import(
+        /* webpackChunkName: "app-i18n-en" */ './i18n/data/en.json'
+      );
+    case 'es':
+      return import(
+        /* webpackChunkName: "app-i18n-es" */ './i18n/data/es.json'
+      );
+    case 'fr':
+      return import(
+        /* webpackChunkName: "app-i18n-fr" */ './i18n/data/fr.json'
+      );
+    case 'it':
+      return import(
+        /* webpackChunkName: "app-i18n-it" */ './i18n/data/it.json'
+      );
+    case 'nl':
+      return import(
+        /* webpackChunkName: "app-i18n-nl" */ './i18n/data/nl.json'
       );
     default:
       return import(

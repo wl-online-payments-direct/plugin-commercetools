@@ -25,6 +25,8 @@ const PaymentMethods = () => {
     activeStore,
     hideToaster,
     showToaster,
+    activeCountry,
+    activeCurrency,
   } = useContext(PaymentContext);
 
   const { formatMessage } = useIntl();
@@ -86,10 +88,6 @@ const PaymentMethods = () => {
       type: 'ONSITE-MODE',
       value: payload,
     });
-
-    setTimeout(() => {
-      hideToaster();
-    }, 3000);
   };
 
   const handleRedirectModeA = (field, value) => {
@@ -177,10 +175,6 @@ const PaymentMethods = () => {
       type: 'REDIRECT-MODE-B',
       value: payload,
     });
-
-    setTimeout(() => {
-      hideToaster();
-    }, 3000);
   };
 
   const handleCommonSettings = (field, value) => {
@@ -237,7 +231,11 @@ const PaymentMethods = () => {
 
   const fetchPaymentMethods = async () => {
     setLoader(true);
-    const result = await fetchWorldlinePaymentOptions(activeStore);
+    const result = await fetchWorldlinePaymentOptions(
+      activeStore,
+      activeCountry,
+      activeCurrency
+    );
     if (result) {
       handleRedirectModeA('paymentOptions', result);
     } else {
@@ -267,6 +265,7 @@ const PaymentMethods = () => {
         message: 'Merchant Reference ID should be maximum 12 characters.',
       });
       setLoader(false);
+      hideToaster();
       return;
     }
     const payload = Object.keys(state).map((key) => {
@@ -317,7 +316,9 @@ const PaymentMethods = () => {
     );
     if (
       saveData.redirectModeA.paymentOptions.filter(
-        (pData) => pData.paymentMethod === 'oney3x4x'
+        (pData) =>
+          pData.paymentMethod === 'oney3x4x' ||
+          pData.paymentMethod === 'intersolve'
       )?.[0]?.enabled
     )
       saveData.authorizationMode = 'SALE';
@@ -353,7 +354,9 @@ const PaymentMethods = () => {
             case 'redirectModeB':
               if (field === 'paymentOptions') {
                 const response = await fetchWorldlinePaymentOptions(
-                  activeStore
+                  activeStore,
+                  activeCountry,
+                  activeCurrency
                 );
                 if (customValue?.[ds]?.[field] !== undefined) {
                   payload[ds][field] = customValue[ds][field].map((payOpt) => {

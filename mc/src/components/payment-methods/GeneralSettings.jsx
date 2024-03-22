@@ -32,6 +32,10 @@ const GeneralSettings = ({ state, handleCommonSettings }) => {
     );
   }, [state.merchantReference.value]);
 
+  const handleDownloadLog = () => {
+    downloadLog();
+  };
+
   return (
     <>
       <div className="section-wrapper">
@@ -82,10 +86,10 @@ const GeneralSettings = ({ state, handleCommonSettings }) => {
             <InfoIcon />
           </Tooltip>
         </h5>
-        <div className="options-section">
+        <div className="options-section radio-field">
           <RadioField
             name="payment-option"
-            title=""
+            title="payment-option"
             value={state.paymentOption.value}
             onChange={(e) =>
               handleCommonSettings('paymentOption', e.target.value)
@@ -199,7 +203,10 @@ const GeneralSettings = ({ state, handleCommonSettings }) => {
             }
           />
           {state.enableLogs.value && (
-            <span className="download-btn flex" onClick={() => downloadLog()}>
+            <span
+              className="download-btn flex"
+              onClick={() => handleDownloadLog()}
+            >
               <DownloadIcon style={{ margin: 'auto' }} />
               <p className="download-title">{'Download Logs'}</p>
             </span>

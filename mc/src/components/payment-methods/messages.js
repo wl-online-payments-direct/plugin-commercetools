@@ -188,11 +188,11 @@ export default defineMessages({
     defaultMessage: initialState.redirectModeB.sendOrderData.tooltip,
   },
   redirectBLogoLabel: {
-    id: ' redirectB.logo.label',
+    id: 'redirectB.logo.label',
     defaultMessage: initialState.redirectModeB.logo.label,
   },
   redirectBLogoTooltip: {
-    id: ' redirectB.logo.tooltip',
+    id: 'redirectB.logo.tooltip',
     defaultMessage: initialState.redirectModeB.logo.tooltip,
   },
   redirectBPayButtonTitleLabel: {
@@ -215,23 +215,23 @@ export default defineMessages({
     Office.`,
   },
   redirectBGroupCardsLabel: {
-    id: ' redirectB.groupCards.label',
+    id: 'redirectB.groupCards.label',
     defaultMessage: initialState.redirectModeB.groupCards.label,
   },
   redirectBGroupCardsTooltip: {
-    id: ' redirectB.groupCards.tooltip',
+    id: 'redirectB.groupCards.tooltip',
     defaultMessage: initialState.redirectModeB.groupCards.tooltip,
   },
   redirectB3dsEnablementLabel: {
-    id: ' redirectB.3dsEnablement.label',
+    id: 'redirectB.3dsEnablement.label',
     defaultMessage: initialState.redirectModeB['3dsEnablement'].label,
   },
   redirectB3dsChallengeLabel: {
-    id: ' redirectB.3dsChallenge.label',
+    id: 'redirectB.3dsChallenge.label',
     defaultMessage: initialState.redirectModeB['3dsChallenge'].label,
   },
   redirectB3dsExemptionLabel: {
-    id: ' redirectB.3dsExemption.label',
+    id: 'redirectB.3dsExemption.label',
     defaultMessage: initialState.redirectModeB['3dsExemption'].label,
   },
 });

@@ -33,10 +33,6 @@ export default defineMessages({
     id: 'Order.total',
     defaultMessage: 'Total',
   },
-  amountPaid: {
-    id: 'Order.amountPaid',
-    defaultMessage: 'Amount Paid',
-  },
   action: {
     id: 'Order.action',
     defaultMessage: 'Actions',

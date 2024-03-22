@@ -54,7 +54,7 @@ const CancelAmount = ({
       setTransactionRequested(false);
       const payload = {
         storeId: storeId,
-        amount: parseInt(cancelAmount),
+        amount: parseInt(cancelAmount * 100),
         paymentId: worldlineId,
         orderId: orderId,
         currencyCode: currencyCode,

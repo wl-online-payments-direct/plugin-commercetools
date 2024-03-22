@@ -230,6 +230,7 @@ const RequestNewFeature = () => {
               </Button>
               <Box sx={{ flex: '1 1 auto' }} />
               <PrimaryButton
+                className="sendBtn"
                 isDisabled={disableSendRequest}
                 iconLeft={<RocketIcon />}
                 label={formatMessage(messages.sendBtn)}

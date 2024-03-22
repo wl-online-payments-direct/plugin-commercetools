@@ -54,7 +54,7 @@ const RefundAmount = ({
       setTransactionRequested(false);
       const payload = {
         storeId: storeId,
-        amount: parseInt(refundAmount),
+        amount: parseInt(refundAmount * 100),
         paymentId: worldlineId,
         orderId: orderId,
         currencyCode: currencyCode,

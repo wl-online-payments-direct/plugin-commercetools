@@ -10,7 +10,7 @@ import LoadingSpinner from '@commercetools-uikit/loading-spinner';
 import PageWrapper from '../page-wrapper';
 import { getOrderList } from '../../ct-methods';
 import { Link, useHistory, useRouteMatch } from 'react-router-dom';
-import { areObjectsSame } from '../../helpers';
+import { areObjectsSame, getStatus } from '../../helpers';
 import './style.css';
 import { PaymentContext } from '../../context/payment';
 import messages from './messages';
@@ -19,7 +19,6 @@ import CancelAlert from './cancel-alert';
 
 const OrderList = () => {
   const { formatMessage } = useIntl();
-
   const filterOptions = [
     { value: 'ALL', label: formatMessage(messages.filterOrders) },
     {
@@ -60,7 +59,6 @@ const OrderList = () => {
     { key: 'status', label: formatMessage(messages.status) },
     { key: 'currency', label: formatMessage(messages.currency) },
     { key: 'total', label: formatMessage(messages.total) },
-    { key: 'amountPaid', label: formatMessage(messages.amountPaid) },
     { key: 'actions', label: formatMessage(messages.action) },
   ];
 
@@ -109,14 +107,25 @@ const OrderList = () => {
   useEffect(() => {
     const keyDownHandler = (event) => {
       if (event.key === 'Enter') {
-        handleSearch(searchData);
+        event.preventDefault();
+        if (!apiHost || !projectKey || !activeStore) return;
+        handleSearch({
+          filterOption: document?.getElementsByName('orderFilterOption')?.[0]
+            ?.value
+            ? document?.getElementsByName('orderFilterOption')?.[0]?.value
+            : '',
+          orderId: document?.getElementsByName('orderId')?.[0]?.value
+            ? document?.getElementsByName('orderId')?.[0]?.value
+            : '',
+        });
       }
     };
+
     document.addEventListener('keydown', keyDownHandler);
     return () => {
       document.removeEventListener('keydown', keyDownHandler);
     };
-  }, []);
+  }, [apiHost, projectKey, activeStore]);
 
   useEffect(() => {
     setOpenCancel(false);
@@ -170,7 +179,7 @@ const OrderList = () => {
     }
     if (column.key === 'status') {
       const paymentBox = (
-        <div className="alert alert-yellow"> {itemValue} </div>
+        <div className="alert alert-yellow"> {getStatus(itemValue)} </div>
       );
       return paymentBox;
     }
@@ -248,8 +257,13 @@ const OrderList = () => {
     });
   };
 
-  const handleSearch = (data) => {
-    getOrders(data ? data : searchData);
+  const handleSearch = (payload = null) => {
+    setSearchData(payload);
+    getOrders(
+      payload && (payload.filterOption || payload.orderId)
+        ? payload
+        : searchData
+    );
   };
 
   const clearFilter = () => {
@@ -269,7 +283,7 @@ const OrderList = () => {
         <form className="order-filters" onSubmit={handleSearch}>
           <div className="filter-order">
             <SelectInput
-              name="filterOption"
+              name="orderFilterOption"
               value={searchData.filterOption}
               options={filterOptions}
               onChange={handleFilterChange}

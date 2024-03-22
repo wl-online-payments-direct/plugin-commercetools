@@ -53,3 +53,14 @@
 .form-title svg {
     cursor: pointer;
 }
+
+.sendBtn {
+    padding: 10px;
+    background-color: #45BEAA;
+    color: #fff;
+    border-radius: 5px;
+}
+
+.sendBtn svg path {
+    fill: #fff !important;
+}

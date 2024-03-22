@@ -50,19 +50,19 @@ export const convertToActionData = (draft) => ({
 });
 
 export const flattenObject = (obj) => {
-  const flattened = {}
+  const flattened = {};
 
   Object.keys(obj).forEach((key) => {
-    const value = obj[key]
+    const value = obj[key];
 
     if (typeof value === 'object' && value !== null && !Array.isArray(value)) {
-      Object.assign(flattened, flattenObject(value))
+      Object.assign(flattened, flattenObject(value));
     } else {
-      flattened[key] = value
+      flattened[key] = value;
     }
-  })
-  return flattened
-}
+  });
+  return flattened;
+};
 
 export const areObjectsSame = (obj1, obj2) => {
   const keys1 = Object.keys(obj1);
@@ -79,4 +79,15 @@ export const areObjectsSame = (obj1, obj2) => {
   }
 
   return true;
-}
+};
+
+export const getStatus = (value) => {
+  switch (value) {
+    case 'CAPTURED':
+      return 'SETTLED PROCESSING';
+    case 'PENDING_CAPTURE':
+      return 'AWAITING PAYMENT/PENDING';
+    default:
+      return value;
+  }
+};

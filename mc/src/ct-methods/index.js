@@ -51,13 +51,19 @@ export const getStores = async (projectKey) => {
   }
 };
 
-export const getPaymentMethods = async (projectKey, storeId, apiHost) => {
+export const getPaymentMethods = async (
+  projectKey,
+  storeId,
+  apiHost,
+  countryCode,
+  currencyCode
+) => {
   try {
     const response = await fetcher(`/proxy/forward-to`, {
       method: 'GET',
       headers: {
         'Accept-version': 'v2',
-        'X-Forward-To': `${apiHost}/payment/products?storeId=${storeId}&countryCode=UK&currencyCode=EUR`,
+        'X-Forward-To': `${apiHost}/payment/products?storeId=${storeId}&countryCode=${countryCode}&currencyCode=${currencyCode}`,
         'X-Forward-To-Audience-Policy': 'forward-url-full-path', // default config policy
         'X-Project-Key': projectKey,
       },
@@ -261,20 +267,20 @@ export const getProject = async (projectKey) => {
 };
 
 export const downloadLogs = async (apiHost, projectKey) => {
-  try {
-    const response = await fetcher(`/proxy/forward-to`, {
+  await fetcher(
+    `/proxy/forward-to`,
+    {
       method: 'POST',
+      redirect: 'follow',
       headers: {
         'Accept-version': 'v2',
         'X-Forward-To': `${apiHost}/download/log`,
         'X-Forward-To-Audience-Policy': 'forward-url-full-path',
         'X-Project-Key': projectKey,
       },
-    });
-
-    return response;
-  } catch (error) {
-    console.error('Failed to download log', error.message);
-    throw new Error(error.message);
-  }
+      responseType: 'arraybuffer',
+      credentials: 'include',
+    },
+    'download'
+  );
 };
