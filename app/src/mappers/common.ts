@@ -71,15 +71,3 @@ export function process3Ds(
 
   return { challengeIndicator, exemptionRequest };
 }
-
-export function getOrderMappedStatus(status: string) {
-  const {
-    FRONTEND: { SETTLED_PROCESSING, AWAITING_PAYMENT },
-  } = Constants;
-  const statusMapper: { [key: string]: string } = {
-    CAPTURED: SETTLED_PROCESSING,
-    AUTHORIZED: AWAITING_PAYMENT,
-  };
-
-  return statusMapper[status] || '';
-}
