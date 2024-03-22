@@ -88,10 +88,6 @@ const PaymentMethods = () => {
       type: 'ONSITE-MODE',
       value: payload,
     });
-
-    setTimeout(() => {
-      hideToaster();
-    }, 3000);
   };
 
   const handleRedirectModeA = (field, value) => {
@@ -179,10 +175,6 @@ const PaymentMethods = () => {
       type: 'REDIRECT-MODE-B',
       value: payload,
     });
-
-    setTimeout(() => {
-      hideToaster();
-    }, 3000);
   };
 
   const handleCommonSettings = (field, value) => {
@@ -273,6 +265,7 @@ const PaymentMethods = () => {
         message: 'Merchant Reference ID should be maximum 12 characters.',
       });
       setLoader(false);
+      hideToaster();
       return;
     }
     const payload = Object.keys(state).map((key) => {

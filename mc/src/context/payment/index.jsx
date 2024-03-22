@@ -68,6 +68,7 @@ const PaymentProvider = ({ children }) => {
         message: formatMessage(messages.fetchProjectErrMsg),
       });
       setLoader(false);
+      hideToaster();
     }
   };
 
@@ -85,6 +86,7 @@ const PaymentProvider = ({ children }) => {
         message: formatMessage(messages.fetchStoreErrMsg),
       });
       setLoader(false);
+      hideToaster();
     }
   };
 
@@ -94,7 +96,7 @@ const PaymentProvider = ({ children }) => {
       try {
         const response = await getCustomObject(projectKey, activeStore?.key);
         setLoader(false);
-        hideToaster();
+        hideToaster('success');
         if (response.value) {
           return response;
         } else {
@@ -108,6 +110,7 @@ const PaymentProvider = ({ children }) => {
           message: formatMessage(messages.fetchCustomObjectErrMsg),
         });
         setLoader(false);
+        hideToaster();
       }
     }
   };
@@ -129,6 +132,7 @@ const PaymentProvider = ({ children }) => {
           });
           const response = await fetchCustomObjects(activeStore);
           setCustomObject(response);
+          hideToaster('success');
         }
       } catch (err) {
         console.error(formatMessage(messages.saveCustomObjectErrMsg), err);
@@ -137,8 +141,9 @@ const PaymentProvider = ({ children }) => {
           open: true,
           message: formatMessage(messages.saveCustomObjectErrMsg),
         });
-        setLoader(false);
+        hideToaster();
       }
+      setLoader(false);
     } else {
       console.error(formatMessage(messages.noStoreSelectedErrMsg));
       showToaster({
@@ -147,6 +152,7 @@ const PaymentProvider = ({ children }) => {
         message: formatMessage(messages.noStoreSelectedErrMsg),
       });
       setLoader(false);
+      hideToaster();
     }
   };
 
@@ -173,6 +179,7 @@ const PaymentProvider = ({ children }) => {
             open: true,
             message: formatMessage(messages.refreshPaymentMethodsSuccessMsg),
           });
+          hideToaster('success');
           return result;
         } else {
           setLoader(false);
@@ -181,6 +188,7 @@ const PaymentProvider = ({ children }) => {
             open: true,
             message: formatMessage(messages.refreshPaymentMethodsErrMsg),
           });
+          hideToaster();
           return null;
         }
       } catch (err) {
@@ -190,6 +198,7 @@ const PaymentProvider = ({ children }) => {
           open: true,
           message: formatMessage(messages.refreshPaymentMethodsErrMsg),
         });
+        hideToaster();
         return null;
       }
     }
@@ -246,6 +255,7 @@ const PaymentProvider = ({ children }) => {
               open: true,
               message: formatMessage(messages.imageUploadSuccessMsg),
             });
+          hideToaster('success');
           return result;
         } else {
           showToaster({
@@ -253,6 +263,7 @@ const PaymentProvider = ({ children }) => {
             open: true,
             message: response?.message,
           });
+          hideToaster();
         }
       }
     } catch (err) {
@@ -263,6 +274,7 @@ const PaymentProvider = ({ children }) => {
         message: formatMessage(messages.imageUploadErrMsg),
       });
       setLoader(false);
+      hideToaster();
     }
   };
 
@@ -270,12 +282,22 @@ const PaymentProvider = ({ children }) => {
     setLoader(true);
     try {
       const response = await requestNewFeature(payload, apiHost, projectKey);
-      if (response && response.statusCode === 200)
+      if (response && response.statusCode === 200) {
         showToaster({
           severity: 'success',
           open: true,
           message: formatMessage(messages.sendRequestSuccessMsg),
         });
+        hideToaster('success');
+      } else {
+        showToaster({
+          severity: 'error',
+          open: true,
+          message: formatMessage(messages.sendRequestErrMsg),
+        });
+        console.error(response.message);
+        hideToaster();
+      }
     } catch (err) {
       console.error(err);
       showToaster({
@@ -283,6 +305,7 @@ const PaymentProvider = ({ children }) => {
         open: true,
         message: formatMessage(messages.sendRequestErrMsg),
       });
+      hideToaster();
     }
     setLoader(false);
   };
@@ -301,6 +324,7 @@ const PaymentProvider = ({ children }) => {
           message: formatMessage(messages.checkConnectionErrMsg),
         });
       }
+      hideToaster();
     } catch (err) {
       console.error(formatMessage(messages.checkConnectionErrMsg), err.message);
       setLoader(false);
@@ -311,7 +335,6 @@ const PaymentProvider = ({ children }) => {
     const response = await fetchCustomObjects(activeStore);
     setCustomObject(response);
     setLoader(false);
-    hideToaster();
   }, [activeStore]);
 
   const showToaster = async (options) => {
@@ -321,8 +344,10 @@ const PaymentProvider = ({ children }) => {
     });
   };
 
-  const hideToaster = async () => {
-    setToaster({ ...toaster, open: false, message: '' });
+  const hideToaster = async (severity = 'error') => {
+    setTimeout(() => {
+      setToaster({ ...toaster, severity: severity, open: false, message: '' });
+    }, 3000);
   };
 
   const setLoader = async (flag) => {
