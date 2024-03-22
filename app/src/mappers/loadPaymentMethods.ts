@@ -24,7 +24,7 @@ export function loadPaymentMethodsMappedResponse(
   const tokenMap = new Map<string, CustomerPaymentToken>();
 
   customerPaymentTokens?.forEach((token) => {
-    const key = `${token.customerId}-${token.title}-${token.token}`;
+    const key = `${token.customerId}-${token.title}`;
     tokenMap.set(key, token);
   });
 

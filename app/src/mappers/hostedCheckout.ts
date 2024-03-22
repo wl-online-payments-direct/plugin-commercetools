@@ -241,6 +241,9 @@ export function getHostedCheckoutPayload(
           paymentProductId,
           threeDSecure,
         };
+        mobilePaymentMethodSpecificInput = {
+          authorizationMode,
+        };
         break;
       default:
         logger().error(
