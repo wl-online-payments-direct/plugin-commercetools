@@ -112,6 +112,8 @@ export function getHostedCheckoutPayload(
     challengeIndicator: undefined as 'challenge-required' | undefined,
     exemptionRequest: undefined as 'lowvalue' | undefined,
   };
+  const tokenize = !!cart?.customerId;
+
   let cardPaymentMethodSpecificInput = {};
   let redirectPaymentMethodSpecificInput = {};
   let sepaDirectDebitPaymentMethodSpecificInput = {};
@@ -162,6 +164,7 @@ export function getHostedCheckoutPayload(
 
   cardPaymentMethodSpecificInput = {
     threeDSecure,
+    tokenize,
   };
 
   if (paymentProductId) {
@@ -169,6 +172,7 @@ export function getHostedCheckoutPayload(
       // Klarna
       case 3301:
       case 3302:
+      case 3306:
         redirectPaymentMethodSpecificInput = {
           paymentProductId,
         };
@@ -240,6 +244,7 @@ export function getHostedCheckoutPayload(
           authorizationMode,
           paymentProductId,
           threeDSecure,
+          tokenize,
         };
         mobilePaymentMethodSpecificInput = {
           authorizationMode,
