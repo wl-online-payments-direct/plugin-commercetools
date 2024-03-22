@@ -59,7 +59,6 @@ const OrderList = () => {
     { key: 'status', label: formatMessage(messages.status) },
     { key: 'currency', label: formatMessage(messages.currency) },
     { key: 'total', label: formatMessage(messages.total) },
-    { key: 'amountPaid', label: formatMessage(messages.amountPaid) },
     { key: 'actions', label: formatMessage(messages.action) },
   ];
 

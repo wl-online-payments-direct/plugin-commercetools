@@ -163,7 +163,7 @@
   "Order.status": "Zahlungsstatus",
   "Order.currency": "Währung",
   "Order.total": "Insgesamt",
-  "Order.amountPaid": "Gezahlter Betrag",
+  "Order.": "Gezahlter Betrag",
   "Order.action": "Aktionen",
   "Order.filterOrders": "Filter Bestellungen",
   "Order.worldlineCreditCard": "Worldline-Kreditkarte",
