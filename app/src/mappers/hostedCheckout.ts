@@ -151,6 +151,11 @@ export function getHostedCheckoutPayload(
     paymentOption = '',
   } = paymentSettings || {};
 
+  cardPaymentMethodSpecificInput = {
+    threeDSecure,
+    tokenize,
+  };
+
   const hostedCheckoutSpecificInput = {
     variant,
     ...locale,
@@ -160,11 +165,6 @@ export function getHostedCheckoutPayload(
       ? { cardPaymentMethodSpecificInput }
       : {}),
     paymentProductFilters: {},
-  };
-
-  cardPaymentMethodSpecificInput = {
-    threeDSecure,
-    tokenize,
   };
 
   if (paymentProductId) {
