@@ -9,7 +9,7 @@ import LoadingSpinner from '@commercetools-uikit/loading-spinner';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { getOrderDetails } from '../../ct-methods';
 import { Link } from 'react-router-dom';
-import { flattenObject } from '../../helpers';
+import { flattenObject, getStatus } from '../../helpers';
 import messages from './messages';
 import { PaymentContext } from '../../context/payment';
 import { OrderContext } from '../../context/order';
@@ -65,6 +65,9 @@ const OrderDetails = () => {
       );
       return link;
     }
+    if (column.key === 'status') {
+      return getStatus(itemValue);
+    }
     if (column.key === 'amount') {
       return (itemValue / 100).toFixed(2);
     }
@@ -103,7 +106,7 @@ const OrderDetails = () => {
         orderId={orderDetails.orderId}
         paymentId={orderDetails.paymentId}
         amount={orderDetails.amount}
-        status={orderDetails.status}
+        status={getStatus(orderDetails.status)}
         worldlineId={orderDetails.worldlineId}
         storeId={activeStore.key}
         currencyCode={orderDetails.currencyCode}
@@ -128,7 +131,7 @@ const OrderDetails = () => {
         orderId={orderDetails.orderId}
         paymentId={orderDetails.paymentId}
         amount={orderDetails.amount}
-        status={orderDetails.status}
+        status={getStatus(orderDetails.status)}
         worldlineId={orderDetails.worldlineId}
         storeId={activeStore.key}
         currencyCode={orderDetails.currencyCode}
@@ -153,7 +156,7 @@ const OrderDetails = () => {
         orderId={orderDetails.orderId}
         paymentId={orderDetails.paymentId}
         amount={orderDetails.amount}
-        status={orderDetails.status}
+        status={getStatus(orderDetails.status)}
         worldlineId={orderDetails.worldlineId}
         storeId={activeStore.key}
         currencyCode={orderDetails.currencyCode}

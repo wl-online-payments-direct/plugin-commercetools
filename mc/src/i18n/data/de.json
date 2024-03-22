@@ -204,7 +204,7 @@
   "Order.cancelStatus": "Status abbrechen",
   "Order.email": "E-Mail",
   "Order.captureInProgress": "Erfolg: Die Erfassung ist im Gange",
-  "Order.captureFailed": "Scheitern: Erfassung fehlgeschlagen",
+  "Order.captureFailed": "Der Erfassungsbetrag ist ungültig",
   "Order.refundInProgress": "Erfolg: Erstattung ist in Arbeit",
   "Order.refundFailed": "Scheitern: Erstattung fehlgeschlagen",
   "Order.cancelInProgress": "Erfolg: Abbrechen ist in Arbeit",

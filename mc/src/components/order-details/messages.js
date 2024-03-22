@@ -139,7 +139,7 @@ export default defineMessages({
   },
   captureFailed: {
     id: 'Order.captureFailed',
-    defaultMessage: 'Failure: Capture failed',
+    defaultMessage: 'Capture amount is not valid',
   },
   refundInProgress: {
     id: 'Order.refundInProgress',
