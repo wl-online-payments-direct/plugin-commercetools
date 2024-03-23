@@ -1,4 +1,4 @@
-import { fetcher } from '../services/custom-api-request';
+import { fetcher, downloadFetcher } from '../services/custom-api-request';
 import CONFIG from '../../configuration';
 const { CONTAINER_NAME } = CONFIG;
 
@@ -267,20 +267,16 @@ export const getProject = async (projectKey) => {
 };
 
 export const downloadLogs = async (apiHost, projectKey) => {
-  await fetcher(
-    `/proxy/forward-to`,
-    {
-      method: 'POST',
-      redirect: 'follow',
-      headers: {
-        'Accept-version': 'v2',
-        'X-Forward-To': `${apiHost}/download/log`,
-        'X-Forward-To-Audience-Policy': 'forward-url-full-path',
-        'X-Project-Key': projectKey,
-      },
-      responseType: 'arraybuffer',
-      credentials: 'include',
+  await downloadFetcher(`/proxy/forward-to`, {
+    method: 'POST',
+    redirect: 'follow',
+    headers: {
+      'Accept-version': 'v2',
+      'X-Forward-To': `${apiHost}/download/log`,
+      'X-Forward-To-Audience-Policy': 'forward-url-full-path',
+      'X-Project-Key': projectKey,
     },
-    'download'
-  );
+    responseType: 'arraybuffer',
+    credentials: 'include',
+  });
 };

@@ -36,7 +36,6 @@
     display: flex;
     gap: 20px;
     flex-direction: column;
-    max-width: 1200px;
     margin: 40px 0 0 0;
 }
 .transaction-details-wrapper {
@@ -114,7 +113,6 @@
 .transaction-list-wrapper {
     background-color: #eee;
     padding: 40px;
-    max-width: 1200px;
 }
 .transaction-list-title {
     display: flex;
