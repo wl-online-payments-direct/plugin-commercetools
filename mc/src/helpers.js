@@ -85,7 +85,7 @@ export const getStatus = (value) => {
   switch (value) {
     case 'CAPTURED':
       return 'SETTLED PROCESSING';
-    case 'PENDING_CAPTURE':
+    case 'AUTHORIZED':
       return 'AWAITING PAYMENT/PENDING';
     default:
       return value;
