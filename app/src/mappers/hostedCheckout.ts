@@ -194,7 +194,9 @@ export function getHostedCheckoutPayload(
           paymentProduct771SpecificInput: {
             mandate: {
               returnUrl,
-              customerReference: merchantCustomerId,
+              // [TODO] Temp solution. commercetools customerId/anonymousId is not worked
+              // WL team will revert this
+              customerReference: `CustomerRef_${Date.now()}`,
               recurrenceType,
               signatureType,
             },
