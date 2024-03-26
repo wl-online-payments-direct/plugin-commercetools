@@ -314,14 +314,6 @@ const PaymentMethods = () => {
     Object.keys(saveData).forEach((key) =>
       saveData[key] === undefined ? delete saveData[key] : {}
     );
-    if (
-      saveData.redirectModeA.paymentOptions.filter(
-        (pData) =>
-          pData.paymentMethod === 'oney3x4x' ||
-          pData.paymentMethod === 'intersolve'
-      )?.[0]?.enabled
-    )
-      saveData.authorizationMode = 'SALE';
 
     const final_payload = {
       value: {
