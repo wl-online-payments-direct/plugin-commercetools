@@ -117,12 +117,11 @@ export function getHostedCheckoutPayload(
   let redirectPaymentMethodSpecificInput = {};
   let sepaDirectDebitPaymentMethodSpecificInput = {};
   let mobilePaymentMethodSpecificInput = {};
+
   const { PAYMENT } = Constants;
+
   // Check if payment method is 'worldlineOffsite'
   if (paymentMethod === PAYMENT.REDIRECTMODE_B.PAYMENT_METHOD) {
-    cardPaymentMethodSpecificInput = {
-      groupCards,
-    };
     variant = redirectModeB?.templateFileName;
     threeDSEnablement = redirectModeB['3dsEnablement'];
     threeDSChallenge = redirectModeB['3dsChallenge'];
@@ -150,20 +149,22 @@ export function getHostedCheckoutPayload(
     paymentOption = '',
   } = paymentSettings || {};
 
+  const tokenize = !!cart?.customerId;
+
   const hostedCheckoutSpecificInput = {
     variant,
     ...locale,
     tokens,
     returnUrl,
-    ...(Object.keys(cardPaymentMethodSpecificInput).length > 0
-      ? { cardPaymentMethodSpecificInput }
-      : {}),
     paymentProductFilters: {},
+    cardPaymentMethodSpecificInput: {},
   };
 
-  cardPaymentMethodSpecificInput = {
-    threeDSecure,
-  };
+  if (paymentMethod === PAYMENT.REDIRECTMODE_B.PAYMENT_METHOD) {
+    hostedCheckoutSpecificInput.cardPaymentMethodSpecificInput = {
+      groupCards,
+    };
+  }
 
   if (paymentProductId) {
     switch (paymentProductId) {
@@ -257,6 +258,11 @@ export function getHostedCheckoutPayload(
     }
   }
 
+  cardPaymentMethodSpecificInput = {
+    ...cardPaymentMethodSpecificInput,
+    ...{ threeDSecure, tokenize },
+  };
+
   return {
     order: {
       amountOfMoney: {
@@ -298,10 +304,7 @@ export function getHostedCheckoutPayload(
         merchantReference: paymentId,
       },
     },
-    cardPaymentMethodSpecificInput:
-      paymentMethod !== PAYMENT.REDIRECTMODE_B.PAYMENT_METHOD
-        ? cardPaymentMethodSpecificInput
-        : { threeDSecure },
+    cardPaymentMethodSpecificInput,
     hostedCheckoutSpecificInput,
     redirectPaymentMethodSpecificInput,
     sepaDirectDebitPaymentMethodSpecificInput,
