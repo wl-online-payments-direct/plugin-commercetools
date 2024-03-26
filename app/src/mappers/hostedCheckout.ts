@@ -1,5 +1,4 @@
 import { Cart, Customer } from '@worldline/ctintegration-ct';
-import { logger } from '@worldline/ctintegration-util';
 import { CustomObjects, HostedMyCheckoutPayload } from '../types';
 import { appendAdditionalParamsToUrl, process3Ds } from './common';
 import Constants from '../constants';
@@ -251,9 +250,9 @@ export function getHostedCheckoutPayload(
         };
         break;
       default:
-        logger().error(
-          `Received invalid payment product Id ${paymentProductId}`,
-        );
+        cardPaymentMethodSpecificInput = {
+          paymentProductId,
+        };
         break;
     }
   }
