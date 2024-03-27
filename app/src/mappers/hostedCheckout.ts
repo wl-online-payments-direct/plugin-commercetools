@@ -1,7 +1,10 @@
 import { Cart, Customer } from '@worldline/ctintegration-ct';
-import { logger } from '@worldline/ctintegration-util';
 import { CustomObjects, HostedMyCheckoutPayload } from '../types';
-import { appendAdditionalParamsToUrl, process3Ds } from './common';
+import {
+  appendAdditionalParamsToUrl,
+  getFormattedDate,
+  process3Ds,
+} from './common';
 import Constants from '../constants';
 
 type CartWithCustomer = Cart & { customer: Customer };
@@ -61,7 +64,7 @@ export function getHostedCheckoutPayload(
       firstName: customer?.firstName || shippingAddress?.firstName || '',
       surname: customer?.lastName || shippingAddress?.lastName || '',
     },
-    dateOfBirth: customer?.dateOfBirth || '',
+    dateOfBirth: getFormattedDate(customer?.dateOfBirth),
   };
 
   // Line items
@@ -117,12 +120,11 @@ export function getHostedCheckoutPayload(
   let redirectPaymentMethodSpecificInput = {};
   let sepaDirectDebitPaymentMethodSpecificInput = {};
   let mobilePaymentMethodSpecificInput = {};
+
   const { PAYMENT } = Constants;
+
   // Check if payment method is 'worldlineOffsite'
   if (paymentMethod === PAYMENT.REDIRECTMODE_B.PAYMENT_METHOD) {
-    cardPaymentMethodSpecificInput = {
-      groupCards,
-    };
     variant = redirectModeB?.templateFileName;
     threeDSEnablement = redirectModeB['3dsEnablement'];
     threeDSChallenge = redirectModeB['3dsChallenge'];
@@ -150,20 +152,22 @@ export function getHostedCheckoutPayload(
     paymentOption = '',
   } = paymentSettings || {};
 
+  const tokenize = !!cart?.customerId;
+
   const hostedCheckoutSpecificInput = {
     variant,
     ...locale,
     tokens,
     returnUrl,
-    ...(Object.keys(cardPaymentMethodSpecificInput).length > 0
-      ? { cardPaymentMethodSpecificInput }
-      : {}),
     paymentProductFilters: {},
+    cardPaymentMethodSpecificInput: {},
   };
 
-  cardPaymentMethodSpecificInput = {
-    threeDSecure,
-  };
+  if (paymentMethod === PAYMENT.REDIRECTMODE_B.PAYMENT_METHOD) {
+    hostedCheckoutSpecificInput.cardPaymentMethodSpecificInput = {
+      groupCards,
+    };
+  }
 
   if (paymentProductId) {
     switch (paymentProductId) {
@@ -246,16 +250,22 @@ export function getHostedCheckoutPayload(
           threeDSecure,
         };
         mobilePaymentMethodSpecificInput = {
-          authorizationMode,
+          // Intersolve does not work with Authorization
+          authorizationMode: 'SALE',
         };
         break;
       default:
-        logger().error(
-          `Received invalid payment product Id ${paymentProductId}`,
-        );
+        cardPaymentMethodSpecificInput = {
+          paymentProductId,
+        };
         break;
     }
   }
+
+  cardPaymentMethodSpecificInput = {
+    ...cardPaymentMethodSpecificInput,
+    ...{ threeDSecure, tokenize },
+  };
 
   return {
     order: {
@@ -298,10 +308,7 @@ export function getHostedCheckoutPayload(
         merchantReference: paymentId,
       },
     },
-    cardPaymentMethodSpecificInput:
-      paymentMethod !== PAYMENT.REDIRECTMODE_B.PAYMENT_METHOD
-        ? cardPaymentMethodSpecificInput
-        : { threeDSecure },
+    cardPaymentMethodSpecificInput,
     hostedCheckoutSpecificInput,
     redirectPaymentMethodSpecificInput,
     sepaDirectDebitPaymentMethodSpecificInput,
