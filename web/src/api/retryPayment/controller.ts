@@ -1,5 +1,6 @@
 import { ServerResponse } from 'http';
 import {
+  authenticateSession,
   isPostRequestOrThrowError,
   logger,
   ResponseClient,
@@ -14,6 +15,9 @@ const processRequest = async (request: Request, response: ServerResponse) => {
 
     // Only allow POST request; else throw error
     await isPostRequestOrThrowError(method);
+
+    // Authenticate the session
+    await authenticateSession(request, response);
 
     logger().debug('[RetryPayment] Process started');
 
