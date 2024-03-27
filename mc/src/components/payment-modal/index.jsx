@@ -59,7 +59,7 @@ const PaymentModalComponent = ({
             errMsg: formatMessage(messages.intersolvePaymentProductIDErrorMsg),
           },
         ];
-      case 'Sepa':
+      case 'SepaDirectDebit':
         return [
           {
             label: formatMessage(messages.sepaReccurenceType),
