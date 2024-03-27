@@ -1,6 +1,10 @@
 import { Cart, Customer } from '@worldline/ctintegration-ct';
 import { CustomObjects, HostedMyCheckoutPayload } from '../types';
-import { appendAdditionalParamsToUrl, process3Ds } from './common';
+import {
+  appendAdditionalParamsToUrl,
+  getFormattedDate,
+  process3Ds,
+} from './common';
 import Constants from '../constants';
 
 type CartWithCustomer = Cart & { customer: Customer };
@@ -60,7 +64,7 @@ export function getHostedCheckoutPayload(
       firstName: customer?.firstName || shippingAddress?.firstName || '',
       surname: customer?.lastName || shippingAddress?.lastName || '',
     },
-    dateOfBirth: customer?.dateOfBirth || '',
+    dateOfBirth: getFormattedDate(customer?.dateOfBirth),
   };
 
   // Line items
@@ -246,7 +250,8 @@ export function getHostedCheckoutPayload(
           threeDSecure,
         };
         mobilePaymentMethodSpecificInput = {
-          authorizationMode,
+          // Intersolve does not work with Authorization
+          authorizationMode: 'SALE',
         };
         break;
       default:

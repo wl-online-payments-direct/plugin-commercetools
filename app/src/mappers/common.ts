@@ -71,3 +71,11 @@ export function process3Ds(
 
   return { challengeIndicator, exemptionRequest };
 }
+
+export const getFormattedDate = (dateOfBirth: string | undefined) => {
+  if (!dateOfBirth) {
+    return '';
+  }
+  const date = new Date(dateOfBirth);
+  return date.toLocaleDateString('en-GB').split('/').reverse().join('');
+};
