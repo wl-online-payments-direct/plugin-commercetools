@@ -60,7 +60,7 @@
     padding: 4px 8px;
     cursor: pointer;
 }
-.cancel-button {
+.cancel-button,.retry-button {
     background: #CCC;
     border: none;
     padding: 10px;
@@ -68,7 +68,7 @@
     border-radius: 2px;
     min-width: 100px;
 }
-.cancel-agree-button {
+.cancel-agree-button,.retry-agree-button {
     background: #056A4B;
     color: #FFF;
     border: none;
