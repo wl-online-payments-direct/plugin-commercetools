@@ -73,7 +73,7 @@ const CancelAmount = ({
       setLoading(false);
       setOpenSnackbar(true);
       setSnackbarMessage(formatMessage(messages.cancelFailed));
-      console.log(error);
+      console.error(error);
     }
   };
   const changeCancelAmount = (e) => {

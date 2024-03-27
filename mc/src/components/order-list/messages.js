@@ -81,4 +81,24 @@ export default defineMessages({
     id: 'Order.cancelModalCancel',
     defaultMessage: 'Cancel',
   },
+  retry: {
+    id: 'Order.retry',
+    defaultMessage: 'Retry',
+  },
+  retryModalMessage: {
+    id: 'Order.retryModalMessage',
+    defaultMessage: 'Are you sure want to retry ?',
+  },
+  retryModalOk: {
+    id: 'Order.retryModalOk',
+    defaultMessage: 'Ok',
+  },
+  retrySuccess: {
+    id: 'Order.retrySuccess',
+    defaultMessage: 'Retry successful',
+  },
+  retryFailed: {
+    id: 'Order.retryFailed',
+    defaultMessage: 'Retry failed',
+  },
 });

@@ -280,3 +280,23 @@ export const downloadLogs = async (apiHost, projectKey) => {
     credentials: 'include',
   });
 };
+
+export const retryOrderPayment = async (apiHost, projectKey, payload) => {
+  try {
+    const response = await fetcher(`/proxy/forward-to`, {
+      method: 'POST',
+      body: JSON.stringify(payload),
+      headers: {
+        'Accept-version': 'v2',
+        'X-Forward-To': `${apiHost}/payment/retry`,
+        'X-Forward-To-Audience-Policy': 'forward-url-full-path',
+        'X-Project-Key': projectKey,
+      },
+    });
+
+    return response;
+  } catch (error) {
+    console.error('Retry error:', error.message);
+    throw new Error(error.message);
+  }
+};

@@ -76,7 +76,7 @@ const RefundAmount = ({
       setOpenSnackbar(true);
       setSnackbarMessage(formatMessage(messages.refundFailed));
       setLoading(false);
-      console.log(error);
+      console.error(error);
     }
   };
   const changeRefundAmount = (e) => {
