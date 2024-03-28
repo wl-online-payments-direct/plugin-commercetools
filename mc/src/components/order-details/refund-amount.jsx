@@ -69,7 +69,11 @@ const RefundAmount = ({
         }
       } else {
         setOpenSnackbar(true);
-        setSnackbarMessage(formatMessage(messages.refundFailed));
+        setSnackbarMessage(
+          response?.message
+            ? response.message
+            : formatMessage(messages.refundFailed)
+        );
       }
       setLoading(false);
     } catch (error) {
