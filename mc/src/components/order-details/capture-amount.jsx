@@ -79,7 +79,7 @@ const CaptureAmount = ({
       setLoading(false);
       setOpenSnackbar(true);
       setSnackbarMessage(formatMessage(messages.captureFailed));
-      console.log(error);
+      console.error(error);
     }
   };
   const changeCaptureAmount = (e) => {

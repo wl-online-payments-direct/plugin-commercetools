@@ -3,18 +3,17 @@ import {
   DialogActions,
   DialogContent,
   DialogContentText,
-  DialogTitle,
 } from '@mui/material';
 import PropTypes from 'prop-types';
 import { useIntl } from 'react-intl';
 import messages from './messages';
 
-const CancelAlert = ({ isOpen, handleClose, handleCancelAgree }) => {
+const CancelAlert = ({ isOpen, handleCancelClose, handleCancelAgree }) => {
   const { formatMessage } = useIntl();
   return (
     <Dialog
       open={isOpen}
-      onClose={handleClose}
+      onClose={handleCancelClose}
       aria-labelledby="alert-dialog-title"
       aria-describedby="alert-dialog-description"
     >
@@ -24,7 +23,7 @@ const CancelAlert = ({ isOpen, handleClose, handleCancelAgree }) => {
         </DialogContentText>
       </DialogContent>
       <DialogActions>
-        <button onClick={handleClose} className="cancel-button">
+        <button onClick={handleCancelClose} className="cancel-button">
           {formatMessage(messages.cancelModalCancel)}
         </button>
         <button
@@ -43,7 +42,6 @@ export default CancelAlert;
 
 CancelAlert.propTypes = {
   isOpen: PropTypes.bool,
-  handleClose: PropTypes.func,
+  handleCancelClose: PropTypes.func,
   handleCancelAgree: PropTypes.func,
-  merchantUrl: PropTypes.string,
 };

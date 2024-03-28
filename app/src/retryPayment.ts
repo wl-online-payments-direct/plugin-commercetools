@@ -1,4 +1,4 @@
-import { getMyCustomObjects } from '@worldline/ctintegration-ct';
+import { getCustomObjects } from '@worldline/ctintegration-ct';
 import { getPaymentService } from '@worldline/ctintegration-psp';
 import { getPayment } from '@worldline/ctintegration-db';
 import { logger } from '@worldline/ctintegration-util';
@@ -12,10 +12,7 @@ import { orderPaymentHandler } from './common';
 export async function retryPaymentAppHandler(
   payload: RetryPaymentStatusPayload,
 ) {
-  const customConfig = await getMyCustomObjects(
-    payload.authToken,
-    payload.storeId,
-  );
+  const customConfig = await getCustomObjects(payload.storeId);
 
   if (!customConfig) {
     throw {

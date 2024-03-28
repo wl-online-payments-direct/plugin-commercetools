@@ -69,14 +69,18 @@ const RefundAmount = ({
         }
       } else {
         setOpenSnackbar(true);
-        setSnackbarMessage(formatMessage(messages.refundFailed));
+        setSnackbarMessage(
+          response?.message
+            ? response.message
+            : formatMessage(messages.refundFailed)
+        );
       }
       setLoading(false);
     } catch (error) {
       setOpenSnackbar(true);
       setSnackbarMessage(formatMessage(messages.refundFailed));
       setLoading(false);
-      console.log(error);
+      console.error(error);
     }
   };
   const changeRefundAmount = (e) => {

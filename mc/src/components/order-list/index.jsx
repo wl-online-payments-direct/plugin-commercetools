@@ -16,6 +16,7 @@ import { PaymentContext } from '../../context/payment';
 import messages from './messages';
 import { OrderContext } from '../../context/order';
 import CancelAlert from './cancel-alert';
+import RetryAlert from './retry-alert';
 
 const OrderList = () => {
   const { formatMessage } = useIntl();
@@ -44,6 +45,7 @@ const OrderList = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [currentPerPage, setCurrentPerPage] = useState(20);
   const [openCancelModal, setOpenCancelModal] = useState(false);
+  const [openRetryModal, setOpenRetryModal] = useState(false);
   const [paymentId, setPaymentId] = useState('');
   const history = useHistory();
 
@@ -144,8 +146,12 @@ const OrderList = () => {
     getOrders({ limit: perPage });
   };
 
-  const handleClose = () => {
+  const handleCancelClose = () => {
     setOpenCancelModal(false);
+  };
+
+  const handleRetryClose = () => {
+    setOpenRetryModal(false);
   };
 
   const handleCancelAgree = () => {
@@ -234,6 +240,19 @@ const OrderList = () => {
             </button>
           </div>
         );
+      } else if (item['status'] === 'INITIAL') {
+        return (
+          <div className="action-wrapper">
+            <button
+              onClick={() => {
+                setPaymentId(item['id']);
+                setOpenRetryModal(true);
+              }}
+            >
+              {formatMessage(messages.retry)}
+            </button>
+          </div>
+        );
       } else {
         return <></>;
       }
@@ -276,8 +295,13 @@ const OrderList = () => {
     <PageWrapper title={'Order list'}>
       <CancelAlert
         isOpen={openCancelModal}
-        handleClose={handleClose}
+        handleCancelClose={handleCancelClose}
         handleCancelAgree={handleCancelAgree}
+      />
+      <RetryAlert
+        isOpen={openRetryModal}
+        handleRetryClose={handleRetryClose}
+        id={paymentId}
       />
       <div className="order-wrapper">
         <form className="order-filters" onSubmit={handleSearch}>
