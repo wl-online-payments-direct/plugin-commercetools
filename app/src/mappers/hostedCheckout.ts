@@ -264,7 +264,7 @@ export function getHostedCheckoutPayload(
 
   cardPaymentMethodSpecificInput = {
     ...cardPaymentMethodSpecificInput,
-    ...{ threeDSecure, tokenize },
+    ...{ threeDSecure, tokenize, authorizationMode },
   };
 
   return {
