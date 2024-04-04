@@ -12,10 +12,12 @@ import { useIntl } from 'react-intl';
 import messages from './messages';
 import { retryOrderPayment } from '../../ct-methods';
 import { PaymentContext } from '../../context/payment';
+import LoadingSpinner from '@commercetools-uikit/loading-spinner';
 
 const RetryAlert = ({ isOpen, handleRetryClose, id }) => {
   const { formatMessage } = useIntl();
   const [openSnackbar, setOpenSnackbar] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState(false);
   const projectKey = useApplicationContext((context) => context.project.key);
   const apiHost = useApplicationContext(
@@ -27,6 +29,7 @@ const RetryAlert = ({ isOpen, handleRetryClose, id }) => {
   };
 
   const handleRetry = async () => {
+    setLoading(true);
     const { key: storeId } = activeStore;
     try {
       const payload = {
@@ -42,7 +45,9 @@ const RetryAlert = ({ isOpen, handleRetryClose, id }) => {
         setOpenSnackbar(true);
         setSnackbarMessage(formatMessage(messages.retryFailed));
       }
+      setLoading(false);
     } catch (e) {
+      setLoading(false);
       handleRetryClose();
       setOpenSnackbar(true);
       setSnackbarMessage(formatMessage(messages.retryFailed));
@@ -68,17 +73,23 @@ const RetryAlert = ({ isOpen, handleRetryClose, id }) => {
             {formatMessage(messages.retryModalMessage)}
           </DialogContentText>
         </DialogContent>
-        <DialogActions>
+        <DialogActions style={{ justifyContent: 'space-between' }}>
           <button onClick={handleRetryClose} className="retry-button">
             {formatMessage(messages.cancelModalCancel)}
           </button>
-          <button
-            onClick={handleRetry}
-            autoFocus
-            className="retry-agree-button"
-          >
-            {formatMessage(messages.retryModalOk)}
-          </button>
+          {loading ? (
+            <div style={{ margin: 'auto' }}>
+              <LoadingSpinner />
+            </div>
+          ) : (
+            <button
+              onClick={handleRetry}
+              autoFocus
+              className="retry-agree-button"
+            >
+              {formatMessage(messages.retryModalOk)}
+            </button>
+          )}
         </DialogActions>
       </Dialog>
     </>
