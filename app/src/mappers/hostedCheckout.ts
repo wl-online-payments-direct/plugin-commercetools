@@ -152,7 +152,13 @@ export function getHostedCheckoutPayload(
     paymentOption = '',
   } = paymentSettings || {};
 
-  const tokenize = !!cart?.customerId;
+  /* 
+  tokenize = true  : Checkbox will NOT be displayed.
+  tokenize = false : Checkbox will be displayed.
+  ie; for the loggedIn customer, tokenize will set as false
+ */
+
+  const tokenize = !cart?.customerId;
 
   const hostedCheckoutSpecificInput = {
     variant,
