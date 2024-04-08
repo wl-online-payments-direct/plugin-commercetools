@@ -177,6 +177,7 @@ export function getHostedCheckoutPayload(
       case 3306:
         redirectPaymentMethodSpecificInput = {
           paymentProductId,
+          requiresApproval: authorizationMode !== 'SALE',
         };
         break;
       // Oney
@@ -211,6 +212,7 @@ export function getHostedCheckoutPayload(
       case 5500:
         redirectPaymentMethodSpecificInput = {
           paymentProductId,
+          requiresApproval: authorizationMode !== 'SALE',
         };
         break;
       // Applepay
@@ -218,18 +220,21 @@ export function getHostedCheckoutPayload(
         mobilePaymentMethodSpecificInput = {
           authorizationMode,
           paymentProductId,
+          requiresApproval: authorizationMode !== 'SALE',
         };
         break;
       // P24
       case 3124:
         redirectPaymentMethodSpecificInput = {
           paymentProductId,
+          requiresApproval: authorizationMode !== 'SALE',
         };
         break;
       // EPS
       case 5406:
         redirectPaymentMethodSpecificInput = {
           paymentProductId,
+          requiresApproval: authorizationMode !== 'SALE',
           redirectionData: {
             returnUrl,
           },
@@ -252,6 +257,7 @@ export function getHostedCheckoutPayload(
         mobilePaymentMethodSpecificInput = {
           // Intersolve does not work with Authorization
           authorizationMode: 'SALE',
+          requiresApproval: authorizationMode !== 'SALE',
         };
         break;
       default:
@@ -266,6 +272,19 @@ export function getHostedCheckoutPayload(
     ...cardPaymentMethodSpecificInput,
     ...{ threeDSecure, tokenize, authorizationMode },
   };
+
+  if (Object.keys(mobilePaymentMethodSpecificInput).length === 0) {
+    mobilePaymentMethodSpecificInput = {
+      authorizationMode,
+      requiresApproval: authorizationMode !== 'SALE',
+    };
+  }
+
+  if (Object.keys(redirectPaymentMethodSpecificInput).length === 0) {
+    mobilePaymentMethodSpecificInput = {
+      requiresApproval: authorizationMode !== 'SALE',
+    };
+  }
 
   return {
     order: {
