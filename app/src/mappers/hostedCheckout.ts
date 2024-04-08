@@ -220,7 +220,6 @@ export function getHostedCheckoutPayload(
         mobilePaymentMethodSpecificInput = {
           authorizationMode,
           paymentProductId,
-          requiresApproval: authorizationMode !== 'SALE',
         };
         break;
       // P24
@@ -257,7 +256,6 @@ export function getHostedCheckoutPayload(
         mobilePaymentMethodSpecificInput = {
           // Intersolve does not work with Authorization
           authorizationMode: 'SALE',
-          requiresApproval: authorizationMode !== 'SALE',
         };
         break;
       default:
@@ -276,12 +274,11 @@ export function getHostedCheckoutPayload(
   if (Object.keys(mobilePaymentMethodSpecificInput).length === 0) {
     mobilePaymentMethodSpecificInput = {
       authorizationMode,
-      requiresApproval: authorizationMode !== 'SALE',
     };
   }
 
   if (Object.keys(redirectPaymentMethodSpecificInput).length === 0) {
-    mobilePaymentMethodSpecificInput = {
+    redirectPaymentMethodSpecificInput = {
       requiresApproval: authorizationMode !== 'SALE',
     };
   }
