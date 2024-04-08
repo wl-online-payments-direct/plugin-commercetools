@@ -152,7 +152,13 @@ export function getHostedCheckoutPayload(
     paymentOption = '',
   } = paymentSettings || {};
 
-  const tokenize = !!cart?.customerId;
+  /* 
+  tokenize = true  : Checkbox will NOT be displayed.
+  tokenize = false : Checkbox will be displayed.
+  ie; for the loggedIn customer, tokenize will set as false
+ */
+
+  const tokenize = !cart?.customerId;
 
   const hostedCheckoutSpecificInput = {
     variant,
@@ -177,6 +183,7 @@ export function getHostedCheckoutPayload(
       case 3306:
         redirectPaymentMethodSpecificInput = {
           paymentProductId,
+          requiresApproval: authorizationMode !== 'SALE',
         };
         break;
       // Oney
@@ -211,6 +218,7 @@ export function getHostedCheckoutPayload(
       case 5500:
         redirectPaymentMethodSpecificInput = {
           paymentProductId,
+          requiresApproval: authorizationMode !== 'SALE',
         };
         break;
       // Applepay
@@ -224,12 +232,14 @@ export function getHostedCheckoutPayload(
       case 3124:
         redirectPaymentMethodSpecificInput = {
           paymentProductId,
+          requiresApproval: authorizationMode !== 'SALE',
         };
         break;
       // EPS
       case 5406:
         redirectPaymentMethodSpecificInput = {
           paymentProductId,
+          requiresApproval: authorizationMode !== 'SALE',
           redirectionData: {
             returnUrl,
           },
@@ -264,8 +274,20 @@ export function getHostedCheckoutPayload(
 
   cardPaymentMethodSpecificInput = {
     ...cardPaymentMethodSpecificInput,
-    ...{ threeDSecure, tokenize },
+    ...{ threeDSecure, tokenize, authorizationMode },
   };
+
+  if (Object.keys(mobilePaymentMethodSpecificInput).length === 0) {
+    mobilePaymentMethodSpecificInput = {
+      authorizationMode,
+    };
+  }
+
+  if (Object.keys(redirectPaymentMethodSpecificInput).length === 0) {
+    redirectPaymentMethodSpecificInput = {
+      requiresApproval: authorizationMode !== 'SALE',
+    };
+  }
 
   return {
     order: {
