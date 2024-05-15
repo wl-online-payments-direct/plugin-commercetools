@@ -32,6 +32,11 @@ export default {
   PAYMENT: {
     REDIRECTMODE_A: {
       TYPE: 'offsite',
+      PAYMENT_OPTIONS: {
+        MOBILE: 'mobile',
+        REDIRECT: 'redirect',
+        CARD: 'card',
+      },
     },
     REDIRECTMODE_B: {
       TYPE: 'offsite',

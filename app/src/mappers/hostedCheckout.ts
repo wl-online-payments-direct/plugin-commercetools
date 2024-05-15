@@ -25,6 +25,12 @@ export function getHostedCheckoutPayload(
   const { tokens, acceptHeader, userAgent, paymentProductId, paymentMethod } =
     payload;
 
+  const selectedPaymentOption = redirectModeA.paymentOptions.find(
+    (e) => e.paymentProductId === paymentProductId,
+  );
+
+  const paymentMethodType = selectedPaymentOption?.paymentMethodType;
+
   // Billing address
   const {
     apartment = '',
@@ -265,9 +271,25 @@ export function getHostedCheckoutPayload(
         };
         break;
       default:
-        cardPaymentMethodSpecificInput = {
-          paymentProductId,
-        };
+        if (
+          paymentMethodType === PAYMENT.REDIRECTMODE_A.PAYMENT_OPTIONS.MOBILE
+        ) {
+          mobilePaymentMethodSpecificInput = {
+            paymentProductId,
+          };
+        }
+        if (
+          paymentMethodType === PAYMENT.REDIRECTMODE_A.PAYMENT_OPTIONS.REDIRECT
+        ) {
+          redirectPaymentMethodSpecificInput = {
+            paymentProductId,
+          };
+        }
+        if (paymentMethodType === PAYMENT.REDIRECTMODE_A.PAYMENT_OPTIONS.CARD) {
+          cardPaymentMethodSpecificInput = {
+            paymentProductId,
+          };
+        }
         break;
     }
   }

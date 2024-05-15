@@ -10,6 +10,7 @@ export interface RedirectModeAPaymentOptions {
   paymentOptions: {
     paymentMethod: string;
     paymentProductId: number;
+    paymentMethodType: string;
     displayOrder: number;
     label: string;
     enabled: boolean;
