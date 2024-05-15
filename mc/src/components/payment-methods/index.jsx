@@ -237,7 +237,15 @@ const PaymentMethods = () => {
       activeCurrency
     );
     if (result) {
-      handleRedirectModeA('paymentOptions', result);
+      handleRedirectModeA(
+        'paymentOptions',
+        result.map((res) => {
+          return {
+            ...res,
+            paymentMethodType: res?.paymentMethod ? res?.paymentMethod : '',
+          };
+        })
+      );
     } else {
       handleRedirectModeA(
         'paymentOptions',
@@ -357,12 +365,26 @@ const PaymentMethods = () => {
                       defaultLogo: response?.find(
                         (res) => res.label === payOpt?.label
                       )?.['logo'],
+                      paymentMethodType: response?.find(
+                        (res) => res.label === payOpt?.label
+                      )?.['paymentMethod']
+                        ? response?.find(
+                            (res) => res.label === payOpt?.label
+                          )?.['paymentMethod']
+                        : '',
                     };
                   });
                 } else {
                   if (response && response.length) {
                     payload[ds][field] = response.map((res) => {
-                      return { ...res, enabled: false, defaultLogo: res.logo };
+                      return {
+                        ...res,
+                        enabled: false,
+                        defaultLogo: res.logo,
+                        paymentMethodType: res?.paymentMethod
+                          ? res?.paymentMethod
+                          : '',
+                      };
                     });
                   }
                 }
