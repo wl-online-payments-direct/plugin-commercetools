@@ -8,6 +8,7 @@ export interface RedirectModeAPaymentOptions {
   paymentOptions: {
     paymentMethod: string;
     paymentProductId: number;
+    paymentMethodType: string;
     displayOrder: number;
     label: string;
     enabled: boolean;
@@ -64,6 +65,7 @@ export interface CustomObjects {
 
 export interface PaymentMethod {
   paymentProductId?: number;
+  paymentMethodType?: string;
   name: string;
   type: string;
   displayOrder?: number;

@@ -1,6 +1,5 @@
 import Constants from '../constants';
 import { CustomObjects, CustomerPaymentToken, PaymentMethod } from '../types';
-import { camelCase } from './common';
 
 export function loadPaymentMethodsMappedResponse(
   customConfig: CustomObjects,
@@ -16,6 +15,14 @@ export function loadPaymentMethodsMappedResponse(
     redirectModeB,
     onSiteMode,
   } = customConfig || {};
+
+  // Return empty payment methods if checkout is disabled
+  if (
+    !enableWorldlineCheckout ||
+    (!enabled && !redirectModeB.enabled && !onSiteMode.enabled)
+  ) {
+    return { paymentMethods: [] };
+  }
 
   const mappedPaymentMethods = Object.fromEntries(
     paymentOptions.map((pOption) => [pOption.paymentProductId, pOption]),
@@ -48,14 +55,6 @@ export function loadPaymentMethodsMappedResponse(
         })
       : [];
 
-  // Return empty payment methods if checkout is disabled
-  if (
-    !enableWorldlineCheckout ||
-    (!enabled && !redirectModeB.enabled && !onSiteMode.enabled)
-  ) {
-    return { paymentMethods: [] };
-  }
-
   const paymentMethods: PaymentMethod[] = [];
 
   Object.values(paymentOptions).forEach((value) => {
@@ -63,13 +62,14 @@ export function loadPaymentMethodsMappedResponse(
       paymentMethods.push({
         name: value.label,
         paymentProductId: value.paymentProductId,
+        paymentMethodType: value.paymentMethodType || '',
         displayOrder: value.displayOrder,
         type: REDIRECTMODE_A.TYPE,
         image: {
           src: value.logo,
         },
         enabled: value?.enabled,
-        paymentMethod: camelCase(value.label),
+        paymentMethod: value.paymentMethod,
       });
     }
   });
