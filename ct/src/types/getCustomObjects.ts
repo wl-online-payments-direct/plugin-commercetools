@@ -54,6 +54,7 @@ interface ConnectionProps {
   webhookSecret: string;
   webhookUrl: string;
   redirectUrl: string;
+  timeOut: number;
   enableWorldlineCheckout: boolean;
   redirectModeA: RedirectModeAPaymentOptions;
   redirectModeB: RedirectModeBPaymentOptions;

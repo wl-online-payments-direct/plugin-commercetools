@@ -57,6 +57,7 @@ export interface CustomObjects {
   webhookSecret: string;
   webhookUrl: string;
   redirectUrl: string;
+  timeOut: number;
   enableWorldlineCheckout: boolean;
   redirectModeA: RedirectModeAPaymentOptions;
   redirectModeB: RedirectModeBPaymentOptions;
