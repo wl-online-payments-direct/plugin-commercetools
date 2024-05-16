@@ -20,8 +20,13 @@ export function getHostedCheckoutPayload(
   const merchantCustomerId = cart?.customerId || cart?.anonymousId || '';
   const locale = cart?.locale ? { locale: cart.locale } : {};
 
-  const { merchantReference, redirectModeA, redirectModeB, authorizationMode } =
-    customConfig;
+  const {
+    merchantReference,
+    redirectModeA,
+    redirectModeB,
+    authorizationMode,
+    timeOut,
+  } = customConfig;
   const { tokens, acceptHeader, userAgent, paymentProductId, paymentMethod } =
     payload;
 
@@ -173,6 +178,7 @@ export function getHostedCheckoutPayload(
     returnUrl,
     paymentProductFilters: {},
     cardPaymentMethodSpecificInput: {},
+    sessionTimeout: timeOut,
   };
 
   if (paymentMethod === PAYMENT.REDIRECTMODE_B.PAYMENT_METHOD) {
