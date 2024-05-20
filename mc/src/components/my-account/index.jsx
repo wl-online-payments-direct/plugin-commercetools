@@ -49,11 +49,7 @@ const MyAccount = (props) => {
       setFormData((prevData) => {
         const payload = {};
         for (let pData of Object.keys(prevData)) {
-          if (
-            ['webhookUrl', 'redirectSuccessUrl', 'redirectFailureUrl'].includes(
-              pData
-            )
-          ) {
+          if (['webhookUrl'].includes(pData)) {
             payload[pData] = {
               ...prevData[pData],
               value:
@@ -108,11 +104,7 @@ const MyAccount = (props) => {
                     ]
                   : prevData[pData].value,
             };
-          } else if (
-            ['webhookUrl', 'redirectSuccessUrl', 'redirectFailureUrl'].includes(
-              pData
-            )
-          ) {
+          } else if (['webhookUrl'].includes(pData)) {
             payload[pData] = {
               ...prevData[pData],
               value:
@@ -248,11 +240,7 @@ const MyAccount = (props) => {
                 [fData.replace('server', '')]: formData[fData].value?.trim(),
               },
             };
-          } else if (
-            ['webhookUrl', 'redirectSuccessUrl', 'redirectFailureUrl'].includes(
-              fData
-            )
-          ) {
+          } else if (['webhookUrl'].includes(fData)) {
             payload.value = {
               ...payload.value,
               [fData]: formData[fData].value?.trim(),
