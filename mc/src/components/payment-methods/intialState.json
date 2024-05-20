@@ -349,26 +349,6 @@
       "afterSevenDay": "After 7 days"
     }
   },
-  "placeOrder": {
-    "label": "Place Order",
-    "type": "text",
-    "value": "Place an Order",
-    "criteria": ["alpha"],
-    "values": {
-      "EN": "Place an order",
-      "ES": "Realizar Pedido",
-      "FR": "Passer la commande",
-      "NL": "Plaats Bestelling",
-      "DE": "Bestellung aufgeben",
-      "IT": "Effettua l`ordine"
-    }
-  },
-  "placeOrderLanguage": {
-    "label": "",
-    "type": "text",
-    "value": "EN",
-    "values": ["EN", "ES", "FR", "NL", "DE", "IT"]
-  },
   "enableLogs": {
     "label": "Enable Debug Logging",
     "type": "boolean",

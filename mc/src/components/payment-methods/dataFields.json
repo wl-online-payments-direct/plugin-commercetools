@@ -37,8 +37,6 @@
     "captureAuthorizationMode",
     "enableWorldlineCheckout",
     "merchantReference",
-    "paymentOption",
-    "placeOrder",
-    "placeOrderLanguage"
+    "paymentOption"
   ]
 }
