@@ -242,6 +242,7 @@ const PaymentMethods = () => {
         result.map((res) => {
           return {
             ...res,
+            enabled: true,
             paymentMethodType: res?.paymentMethod ? res?.paymentMethod : '',
           };
         })
