@@ -1,14 +1,5 @@
 {
   "live": {
-    "integrator": {
-      "hasError": false,
-      "errMsg": "Please fill out this field.",
-      "label": "Integrator",
-      "placeholder": "Enter your Integrator",
-      "value": "Worldline",
-      "required": true,
-      "type": "text"
-    },
     "merchantId": {
       "hasError": false,
       "errMsg": "Please fill out this field.",
@@ -150,15 +141,6 @@
     }
   },
   "test": {
-    "integrator": {
-      "hasError": false,
-      "errMsg": "Please fill out this field.",
-      "label": "Integrator",
-      "placeholder": "Enter your Integrator",
-      "value": "Worldline",
-      "required": true,
-      "type": "text"
-    },
     "merchantId": {
       "hasError": false,
       "errMsg": "Please fill out this field.",

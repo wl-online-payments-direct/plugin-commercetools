@@ -214,7 +214,7 @@ const MyAccount = (props) => {
       setLoader(true);
       const conPayload = {
         merchantId: formData['merchantId'].value,
-        integrator: formData['integrator'].value,
+        integrator: 'Worldline',
         apiKey: formData['apiKey'].value,
         apiSecret: formData['apiSecret'].value,
         host: formData['host'].value,
