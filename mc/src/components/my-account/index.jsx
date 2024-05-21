@@ -26,6 +26,7 @@ import { useIntl } from 'react-intl';
 import messages from './messages';
 import Chip from '@mui/material/Chip';
 import PluginVersion from '../plugin-version';
+import { integrator } from '../../constants';
 
 const MyAccount = (props) => {
   const { formatMessage } = useIntl();
@@ -214,7 +215,7 @@ const MyAccount = (props) => {
       setLoader(true);
       const conPayload = {
         merchantId: formData['merchantId'].value,
-        integrator: 'Worldline',
+        integrator: integrator,
         apiKey: formData['apiKey'].value,
         apiSecret: formData['apiSecret'].value,
         host: formData['host'].value,
