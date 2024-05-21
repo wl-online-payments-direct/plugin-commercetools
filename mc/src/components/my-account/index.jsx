@@ -42,8 +42,9 @@ const MyAccount = (props) => {
     documentationLink,
     contactSalesLink,
     contactSupportLink,
+    apiHost,
+    webhookURL,
   } = useApplicationContext((context) => context.environment);
-
   useEffect(() => {
     if (customObject?.value) {
       const custValue = customObject?.value[selectedOption];
@@ -56,7 +57,7 @@ const MyAccount = (props) => {
               value:
                 customObject?.value[pData] !== undefined
                   ? customObject?.value[pData]
-                  : prevData[pData].value,
+                  : apiHost + webhookURL,
             };
           } else {
             payload[pData] = {
@@ -71,7 +72,13 @@ const MyAccount = (props) => {
         return payload;
       });
     } else {
-      setFormData(dataFields[selectedOption]);
+      setFormData({
+        ...dataFields[selectedOption],
+        webhookUrl: {
+          ...dataFields[selectedOption].webhookUrl,
+          value: apiHost + webhookURL,
+        },
+      });
     }
     setCopied(false);
   }, [selectedOption]);
@@ -109,9 +116,9 @@ const MyAccount = (props) => {
             payload[pData] = {
               ...prevData[pData],
               value:
-                customObject?.value[pData] !== undefined
-                  ? customObject?.value[pData]
-                  : prevData[pData].value,
+                customObject?.value[pData].length === 0
+                  ? apiHost + webhookURL
+                  : customObject?.value[pData],
             };
           } else {
             payload[pData] = {
