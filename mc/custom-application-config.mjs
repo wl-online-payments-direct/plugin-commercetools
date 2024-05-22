@@ -83,6 +83,7 @@ const config = {
     sourcePackageLink: '${env:CTP_MC_APPLICATION_SOURCE_PACKAGE_LINK}',
     currentVersion: '${env:CTP_MC_APPLICATION_CURRENT_VERSION}',
     pluginDownloadLink: '${env:CTP_MC_APPLICATION_PLUGIN_DOWNLOAD_LINK}',
+    webhookURL: '${env:CTP_MC_APPLICATION_WEBHOOK_URL}',
   },
 };
 

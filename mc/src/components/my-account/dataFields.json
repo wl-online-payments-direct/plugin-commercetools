@@ -1,14 +1,5 @@
 {
   "live": {
-    "integrator": {
-      "hasError": false,
-      "errMsg": "Please fill out this field.",
-      "label": "Integrator",
-      "placeholder": "Enter your Integrator",
-      "value": "Worldline",
-      "required": true,
-      "type": "text"
-    },
     "merchantId": {
       "hasError": false,
       "errMsg": "Please fill out this field.",
@@ -77,26 +68,6 @@
       "errMsg": "Please fill out this field.",
       "label": "Webhook URL",
       "placeholder": "Enter your Webhook URL",
-      "value": "",
-      "disabled": true,
-      "required": true,
-      "type": "text"
-    },
-    "redirectSuccessUrl": {
-      "hasError": false,
-      "errMsg": "Please fill out this field.",
-      "label": "Redirection Payment Page Success URL",
-      "placeholder": "Enter your Redirect Success URL",
-      "value": "",
-      "disabled": true,
-      "required": true,
-      "type": "text"
-    },
-    "redirectFailureUrl": {
-      "hasError": false,
-      "errMsg": "Please fill out this field.",
-      "label": "Redirection Payment Page Failure URL",
-      "placeholder": "Enter your Redirect Failure URL",
       "value": "",
       "disabled": true,
       "required": true,
@@ -170,15 +141,6 @@
     }
   },
   "test": {
-    "integrator": {
-      "hasError": false,
-      "errMsg": "Please fill out this field.",
-      "label": "Integrator",
-      "placeholder": "Enter your Integrator",
-      "value": "Worldline",
-      "required": true,
-      "type": "text"
-    },
     "merchantId": {
       "hasError": false,
       "errMsg": "Please fill out this field.",
@@ -247,26 +209,6 @@
       "errMsg": "Please fill out this field.",
       "label": "Webhook URL",
       "placeholder": "Enter your Webhook URL",
-      "value": "",
-      "disabled": true,
-      "required": true,
-      "type": "text"
-    },
-    "redirectSuccessUrl": {
-      "hasError": false,
-      "errMsg": "Please fill out this field.",
-      "label": "Redirection Payment Page Success URL",
-      "placeholder": "Enter your Redirect Success URL",
-      "value": "",
-      "disabled": true,
-      "required": true,
-      "type": "text"
-    },
-    "redirectFailureUrl": {
-      "hasError": false,
-      "errMsg": "Please fill out this field.",
-      "label": "Redirection Payment Page Failure URL",
-      "placeholder": "Enter your Redirect Failure URL",
       "value": "",
       "disabled": true,
       "required": true,
