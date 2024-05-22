@@ -14,3 +14,5 @@ export const paymentMethodsUri = '';
 export const orderUri = 'orders';
 
 export const PERMISSIONS = entryPointUriPathToPermissionKeys(entryPointUriPath);
+
+export const integrator = 'Worldline';

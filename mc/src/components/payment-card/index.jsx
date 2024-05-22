@@ -50,9 +50,6 @@ const PaymentCard = ({ handlePaymentOptionUpdate, ...props }) => {
             isChecked={enabled}
             onChange={(event) => {
               handlePaymentOptionUpdate(label, 'enabled', event.target.checked);
-              if (event.target.checked) {
-                handleOpen();
-              }
             }}
             size="small"
           />
