@@ -63,6 +63,10 @@ export default defineMessages({
     id: 'general.captureAuthorizationMode.label',
     defaultMessage: initialState.captureAuthorizationMode.label,
   },
+  generalPlaceOrderLabel: {
+    id: 'general.placeOrder.label',
+    defaultMessage: initialState.placeOrder.label,
+  },
   generalenableLogsLabel: {
     id: 'general.enableLogs.label',
     defaultMessage: initialState.enableLogs.label,

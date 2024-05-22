@@ -158,6 +158,38 @@ const GeneralSettings = ({ state, handleCommonSettings }) => {
         </>
       )}
       <div className="section-wrapper">
+        <h5 className="section-header">
+          {formatMessage(messages.generalPlaceOrderLabel)}
+        </h5>
+        <div className="template-section flex">
+          <TextInput
+            className="section-input"
+            value={state.placeOrder.value ? state.placeOrder.value : ''}
+            type={state.placeOrder.type}
+            onChange={(e) => handleCommonSettings('placeOrder', e.target.value)}
+          />
+          <div className="dropdown-container">
+            <Select
+              className="select-dropdown"
+              value={state.placeOrderLanguage.value}
+              type={state.placeOrderLanguage.type}
+              onChange={(e) =>
+                handleCommonSettings('placeOrderLanguage', e.target.value)
+              }
+              displayEmpty
+              inputProps={{ 'aria-label': 'Without label' }}
+            >
+              {state.placeOrderLanguage.values &&
+                state.placeOrderLanguage.values.map((lang, index) => (
+                  <MenuItem key={`placeOrderlang${index}`} value={lang}>
+                    {lang}
+                  </MenuItem>
+                ))}
+            </Select>
+          </div>
+        </div>
+      </div>
+      <div className="section-wrapper">
         <div className="debug-loging flex">
           <h5 className="section-header">
             {formatMessage(messages.generalenableLogsLabel)}

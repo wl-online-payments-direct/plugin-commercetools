@@ -26,7 +26,6 @@ import { useIntl } from 'react-intl';
 import messages from './messages';
 import Chip from '@mui/material/Chip';
 import PluginVersion from '../plugin-version';
-import { integrator } from '../../constants';
 
 const MyAccount = (props) => {
   const { formatMessage } = useIntl();
@@ -42,22 +41,25 @@ const MyAccount = (props) => {
     documentationLink,
     contactSalesLink,
     contactSupportLink,
-    apiHost,
-    webhookURL,
   } = useApplicationContext((context) => context.environment);
+
   useEffect(() => {
     if (customObject?.value) {
       const custValue = customObject?.value[selectedOption];
       setFormData((prevData) => {
         const payload = {};
         for (let pData of Object.keys(prevData)) {
-          if (['webhookUrl'].includes(pData)) {
+          if (
+            ['webhookUrl', 'redirectSuccessUrl', 'redirectFailureUrl'].includes(
+              pData
+            )
+          ) {
             payload[pData] = {
               ...prevData[pData],
               value:
                 customObject?.value[pData] !== undefined
                   ? customObject?.value[pData]
-                  : apiHost + webhookURL,
+                  : prevData[pData].value,
             };
           } else {
             payload[pData] = {
@@ -72,13 +74,7 @@ const MyAccount = (props) => {
         return payload;
       });
     } else {
-      setFormData({
-        ...dataFields[selectedOption],
-        webhookUrl: {
-          ...dataFields[selectedOption].webhookUrl,
-          value: apiHost + webhookURL,
-        },
-      });
+      setFormData(dataFields[selectedOption]);
     }
     setCopied(false);
   }, [selectedOption]);
@@ -112,13 +108,17 @@ const MyAccount = (props) => {
                     ]
                   : prevData[pData].value,
             };
-          } else if (['webhookUrl'].includes(pData)) {
+          } else if (
+            ['webhookUrl', 'redirectSuccessUrl', 'redirectFailureUrl'].includes(
+              pData
+            )
+          ) {
             payload[pData] = {
               ...prevData[pData],
               value:
-                customObject?.value[pData].length === 0
-                  ? apiHost + webhookURL
-                  : customObject?.value[pData],
+                customObject?.value[pData] !== undefined
+                  ? customObject?.value[pData]
+                  : prevData[pData].value,
             };
           } else {
             payload[pData] = {
@@ -222,7 +222,7 @@ const MyAccount = (props) => {
       setLoader(true);
       const conPayload = {
         merchantId: formData['merchantId'].value,
-        integrator: integrator,
+        integrator: formData['integrator'].value,
         apiKey: formData['apiKey'].value,
         apiSecret: formData['apiSecret'].value,
         host: formData['host'].value,
@@ -248,7 +248,11 @@ const MyAccount = (props) => {
                 [fData.replace('server', '')]: formData[fData].value?.trim(),
               },
             };
-          } else if (['webhookUrl'].includes(fData)) {
+          } else if (
+            ['webhookUrl', 'redirectSuccessUrl', 'redirectFailureUrl'].includes(
+              fData
+            )
+          ) {
             payload.value = {
               ...payload.value,
               [fData]: formData[fData].value?.trim(),
