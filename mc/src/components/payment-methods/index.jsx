@@ -183,7 +183,20 @@ const PaymentMethods = () => {
       ...payload[field],
       value: value,
     };
-    if (field === 'paymentOption') {
+    if (field === 'placeOrderLanguage') {
+      payload['placeOrder'] = {
+        ...payload['placeOrder'],
+        value: state['placeOrder'].values[value],
+      };
+    } else if (field === 'placeOrder') {
+      payload['placeOrder'] = {
+        ...payload['placeOrder'],
+        values: {
+          ...state['placeOrder'].values,
+          [state['placeOrderLanguage'].value]: value,
+        },
+      };
+    } else if (field === 'paymentOption') {
       if (value === 'AUTH') {
         payload['authorizationMode'] = {
           ...payload[field],
@@ -229,7 +242,6 @@ const PaymentMethods = () => {
         result.map((res) => {
           return {
             ...res,
-            enabled: true,
             paymentMethodType: res?.paymentMethod ? res?.paymentMethod : '',
           };
         })
@@ -294,7 +306,11 @@ const PaymentMethods = () => {
             [key]: sendLoad,
           };
         default:
-          return { [key]: state[key].value };
+          if (key === 'placeOrder') {
+            return { [key]: state[key].values };
+          } else {
+            return { [key]: state[key].value };
+          }
       }
     });
 
@@ -390,7 +406,13 @@ const PaymentMethods = () => {
               }
             case 'general':
               if (customValue?.[field] !== undefined) {
-                payload[field].value = customValue?.[field];
+                if (field === 'placeOrder') {
+                  payload[field].value =
+                    customValue?.[field][customValue['placeOrderLanguage']];
+                  payload[field].values = customValue?.[field];
+                } else {
+                  payload[field].value = customValue?.[field];
+                }
               }
               if (
                 customObject?.value &&
