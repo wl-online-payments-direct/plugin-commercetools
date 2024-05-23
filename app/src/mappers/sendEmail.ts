@@ -15,10 +15,11 @@ export function sendMailOptionsPayment(
   html = html.replace('{message}', message);
   html = html.replace('{pluginVersion}', pluginVersion);
 
-  const { to = '', from = '' } = customObject.value.serverConfig;
+  const { from = '' } = customObject.value.serverConfig;
   return {
+    // For "Request new Feature" - the mails will reach to the Wordline
+    to: Constants.getWorldlineEmailID(),
     from,
-    to,
     subject: 'Worldline merchant information!',
     text: html,
     html,
