@@ -152,6 +152,7 @@ const OrderList = () => {
 
   const handleRetryClose = () => {
     setOpenRetryModal(false);
+    getOrders();
   };
 
   const handleCancelAgree = () => {
