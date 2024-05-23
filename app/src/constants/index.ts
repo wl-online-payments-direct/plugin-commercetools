@@ -3,6 +3,9 @@ const HOSTED_AND_APMS = 'HOSTED_AND_APMS';
 const REDIRECT_WORLDLINE = 'REDIRECT_WORLDLINE';
 
 export default {
+  getWorldlineEmailID() {
+    return 'isvpartners@worldline.com';
+  },
   CRON: {
     manually: 'manually',
     endOfDay: 'endOfDay',
