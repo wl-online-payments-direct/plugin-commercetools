@@ -15,7 +15,7 @@ import { PaymentContext } from '../../context/payment';
 import { useIntl } from 'react-intl';
 import messages from './messages';
 
-const { emailAddress } = CONFIG;
+const { supportAddress } = CONFIG;
 const PaymentMethods = () => {
   const {
     setLoader,
@@ -472,7 +472,7 @@ const PaymentMethods = () => {
       </div>
       <p className="supportmail">
         {formatMessage(messages.generalSupportMail)}
-        <a href={`mailto:${emailAddress}`}>{emailAddress}</a>
+        <a href={supportAddress}>{supportAddress}</a>
       </p>
     </PageWrapper>
   );
