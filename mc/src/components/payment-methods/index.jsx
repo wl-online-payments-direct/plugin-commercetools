@@ -1,7 +1,6 @@
 import React, { useContext, useReducer, useEffect } from 'react';
 import './style.css';
 import PageWrapper from '../page-wrapper';
-import ToggleInput from '@commercetools-uikit/toggle-input';
 import PrimaryButton from '@commercetools-uikit/primary-button';
 import CONFIG from '../../../configuration';
 import initialState from './intialState.json';
@@ -14,6 +13,7 @@ import reducer from './reducer';
 import { PaymentContext } from '../../context/payment';
 import { useIntl } from 'react-intl';
 import messages from './messages';
+import { templateName } from '../../constants';
 
 const { supportAddress } = CONFIG;
 const PaymentMethods = () => {
@@ -286,7 +286,9 @@ const PaymentMethods = () => {
             } else if (dSet === 'payButtonTitle') {
               sendLoad[dSet] = data[dSet]?.values;
             } else if (dSet === 'templateFileName') {
-              sendLoad[dSet] = data[dSet]?.value.trim();
+              sendLoad[dSet] = data[dSet]?.value.length
+                ? data[dSet]?.value.trim()
+                : templateName;
             } else sendLoad[dSet] = data[dSet]?.value;
           }
           return {
