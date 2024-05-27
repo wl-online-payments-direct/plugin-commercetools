@@ -92,8 +92,17 @@ const PaymentMethods = () => {
 
   const handleRedirectModeA = (field, value) => {
     const payload = { ...state.redirectModeA };
-    if (field === 'paymentOptions') payload['paymentOptions'] = value;
-    else if (field === '3dsEnablement') {
+    if (field === 'paymentOptions') {
+      const paymentPayload = value.map((option) => {
+        return {
+          ...option,
+          enabled: payload['paymentOptions'].find(
+            (ele) => ele.label === option.label
+          ).enabled,
+        };
+      });
+      payload['paymentOptions'] = paymentPayload;
+    } else if (field === '3dsEnablement') {
       payload['3dsEnablement'] = {
         ...payload['3dsEnablement'],
         value: value,
