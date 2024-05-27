@@ -287,7 +287,7 @@
       "label": "Group Cards",
       "type": "boolean",
       "value": false,
-      "tooltip": "Enabling this setting will group and co-badge card brands when relevant"
+      "tooltip": "Group all cards payment methods under one single payment button on the payment page"
     },
     "enabled": {
       "value": false
@@ -318,14 +318,13 @@
     "placeholder": "Enter Merchant Reference",
     "criteria": [],
     "maxLength": 12,
-    "tooltip": "If you want to show the Merchant ID in Bank statement on their Customer bank account., then you should limit the Merchant ID length to 12 characters"
+    "tooltip": "If you want to show the Merchant ID in Bank statement on their Customer bank account."
   },
   "paymentOption": {
-    "label": "Payment Option",
+    "label": "Transaction type",
     "type": "boolean",
     "value": "SALE",
-    "criteria": [],
-    "tooltip": "Final execution of the payment"
+    "criteria": "Define whether you want to work in one step (money captured directly) or in two steps (authorization followed by a capture)."
   },
   "authorizationMode": {
     "label": "Authorization Payment Option",
@@ -336,6 +335,7 @@
   "captureAuthorizationMode": {
     "label": "Capture Configuration",
     "type": "text",
+    "tooltip": "Numbers of days before automatic capture of authorized transactions",
     "value": "-1",
     "values": {
       "manually": "Manually",
@@ -354,8 +354,5 @@
     "type": "boolean",
     "value": false,
     "criteria": []
-  },
-  "enableWorldlineCheckout": {
-    "value": false
   }
 }

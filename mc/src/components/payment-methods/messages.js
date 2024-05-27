@@ -53,15 +53,29 @@ export default defineMessages({
   },
   generalPaymentOptionsPre: {
     id: 'general.paymentOptions.pre',
-    defaultMessage: 'Pre Authorization',
+    defaultMessage: 'Preauthorization',
+  },
+  generalPaymentOptionsPreTooltip: {
+    id: 'general.paymentOption.pre.tooltip',
+    defaultMessage:
+      'Use a preauthorization to block the funds of your customers for a period of 30 days. The amount captured can be lower than the authorized amount. Note that all acquirers and activity sectors do not support preauthorizations.',
   },
   generalPaymentOptionsFinal: {
     id: 'general.paymentOptions.final',
-    defaultMessage: 'Final Authorization',
+    defaultMessage: 'Authorization',
+  },
+  generalPaymentOptionsFinalTooltip: {
+    id: 'general.paymentOption.final.tooltip',
+    defaultMessage:
+      "Use authorization to block the funds of your customers for a period of 7 days. Those can't be reversed and need to be captured for the full amount.",
   },
   generalCaptureAuthorizationModeLabel: {
     id: 'general.captureAuthorizationMode.label',
     defaultMessage: initialState.captureAuthorizationMode.label,
+  },
+  generalCaptureAuthorizationModeTooltip: {
+    id: 'general.captureAuthorizationMode.tooltip',
+    defaultMessage: initialState.captureAuthorizationMode.tooltip,
   },
   generalenableLogsLabel: {
     id: 'general.enableLogs.label',

@@ -254,16 +254,6 @@ const PaymentMethods = () => {
 
   const saveFormData = async () => {
     setLoader(true);
-    if (state?.merchantReference?.value?.replaceAll(' ', '').length > 12) {
-      showToaster({
-        severity: 'error',
-        open: true,
-        message: 'Merchant Reference ID should be maximum 12 characters.',
-      });
-      setLoader(false);
-      hideToaster();
-      return;
-    }
     const payload = Object.keys(state).map((key) => {
       let data;
       const sendLoad = {};
@@ -419,22 +409,6 @@ const PaymentMethods = () => {
 
   return (
     <PageWrapper title={'Payment Methods'}>
-      <div className="enable-worldline flex algin-end mb-1">
-        <h3 className="section-header">
-          {formatMessage(messages.generalWorldlineEnable)}
-        </h3>
-        <ToggleInput
-          size={'big'}
-          isDisabled={false}
-          isChecked={state.enableWorldlineCheckout.value}
-          onChange={(e) => {
-            dispatch({
-              type: 'ENABLE-WORLDLINE',
-              value: e.target.checked,
-            });
-          }}
-        />
-      </div>
       <div className="payment-options-wrapper mb-2">
         <div className="save-wrapper mb-2">
           <h2>{formatMessage(messages.generalTitle)}</h2>

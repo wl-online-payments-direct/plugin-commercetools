@@ -5,13 +5,6 @@ const reducer = (state, action) => {
         ...state,
         ...action.value,
       };
-    case 'ENABLE-WORLDLINE':
-      return {
-        ...state,
-        enableWorldlineCheckout: {
-          value: action.value,
-        },
-      };
     case 'ONSITE-MODE':
       return {
         ...state,
