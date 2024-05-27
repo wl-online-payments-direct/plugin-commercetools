@@ -42,19 +42,22 @@
       "label": "3DS Enablement",
       "type": "boolean",
       "value": true,
-      "criteria": []
+      "criteria": [],
+      "tooltip": "Enforce 3DS for all transactions."
     },
     "3dsChallenge": {
       "label": "3DS Challenge",
       "type": "boolean",
       "value": false,
-      "criteria": []
+      "criteria": [],
+      "tooltip": "Enforce strong customer authentication for all transactions."
     },
     "3dsExemption": {
       "label": "3DS Exemption",
       "type": "boolean",
       "value": false,
-      "criteria": []
+      "criteria": [],
+      "tooltip": "When enabled, we ask the issuer not to trigger the SCA. Hence, merchants are liable in case of fraud for transactions below €30."
     }
   },
   "redirectModeA": {
@@ -226,19 +229,22 @@
       "label": "3DS Enablement",
       "type": "boolean",
       "value": true,
-      "criteria": []
+      "criteria": [],
+      "tooltip": "Enforce 3DS for all transactions."
     },
     "3dsChallenge": {
       "label": "3DS Challenge",
       "type": "boolean",
       "value": false,
-      "criteria": []
+      "criteria": [],
+      "tooltip": "Enforce strong customer authentication for all transactions."
     },
     "3dsExemption": {
       "label": "3DS Exemption",
       "type": "boolean",
       "value": false,
-      "criteria": []
+      "criteria": [],
+      "tooltip": "When enabled, we ask the issuer not to trigger the SCA. Hence, merchants are liable in case of fraud for transactions below €30."
     }
   },
   "redirectModeB": {
@@ -296,19 +302,22 @@
       "label": "3DS Enablement",
       "type": "boolean",
       "value": true,
-      "criteria": []
+      "criteria": [],
+      "tooltip": "Enforce 3DS for all transactions."
     },
     "3dsChallenge": {
       "label": "3DS Challenge",
       "type": "boolean",
       "value": false,
-      "criteria": []
+      "criteria": [],
+      "tooltip": "Enforce strong customer authentication for all transactions."
     },
     "3dsExemption": {
       "label": "3DS Exemption",
       "type": "boolean",
       "value": false,
-      "criteria": []
+      "criteria": [],
+      "tooltip": "When enabled, we ask the issuer not to trigger the SCA. Hence, merchants are liable in case of fraud for transactions below €30."
     }
   },
   "merchantReference": {

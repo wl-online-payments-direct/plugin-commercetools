@@ -111,6 +111,12 @@ const RedirectModeA = ({
           <div className="3ds-enablement flex">
             <h5 className="section-title">
               {formatMessage(messages.redirectA3dsEnablementLabel)}
+              <Tooltip
+                placement="top"
+                title={formatMessage(messages.redirectA3dsEnablementTooltip)}
+              >
+                <InfoIcon />
+              </Tooltip>
             </h5>
             <ToggleInput
               size={'small'}
@@ -126,6 +132,12 @@ const RedirectModeA = ({
           <div className="3ds-challenge flex">
             <h5 className="section-title">
               {formatMessage(messages.redirectA3dsChallengeLabel)}
+              <Tooltip
+                placement="top"
+                title={formatMessage(messages.redirectA3dsChallengeTooltip)}
+              >
+                <InfoIcon />
+              </Tooltip>
             </h5>
             <ToggleInput
               size={'small'}
@@ -139,6 +151,12 @@ const RedirectModeA = ({
           <div className="3ds-excemption flex">
             <h5 className="section-title">
               {formatMessage(messages.redirectA3dsExemptionLabel)}
+              <Tooltip
+                placement="top"
+                title={formatMessage(messages.redirectA3dsExemptionTooltip)}
+              >
+                <InfoIcon />
+              </Tooltip>
             </h5>
             <ToggleInput
               size={'small'}
