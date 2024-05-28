@@ -9,7 +9,6 @@ import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 import Select from '@mui/material/Select';
 import { DownloadIcon } from '@commercetools-uikit/icons';
-import Alert from '@mui/material/Alert';
 import { useIntl } from 'react-intl';
 import messages from './messages';
 import { PaymentContext } from '../../context/payment';
@@ -17,20 +16,7 @@ import { PaymentContext } from '../../context/payment';
 const GeneralSettings = ({ state, handleCommonSettings }) => {
   const { downloadLog } = useContext(PaymentContext);
 
-  const [merchREfError, setmerchRefError] = useState(
-    state.merchantReference.value?.replaceAll(' ', '').length > 12
-      ? true
-      : false
-  );
   const { formatMessage } = useIntl();
-
-  useEffect(() => {
-    setmerchRefError(
-      state.merchantReference.value?.replaceAll(' ', '').length > 12
-        ? true
-        : false
-    );
-  }, [state.merchantReference.value]);
 
   const handleDownloadLog = () => {
     downloadLog();
@@ -51,13 +37,6 @@ const GeneralSettings = ({ state, handleCommonSettings }) => {
           </Tooltip>
         </h5>
         <div className="template-section">
-          {merchREfError && (
-            <div style={{ margin: '10px' }}>
-              <Alert severity="error">
-                {formatMessage(messages.generalMerchantReferenceErrMsg)}
-              </Alert>
-            </div>
-          )}
           <TextInput
             className="section-input"
             value={
@@ -67,7 +46,6 @@ const GeneralSettings = ({ state, handleCommonSettings }) => {
             placeholder={formatMessage(
               messages.generalMerchantReferencePlaceholder
             )}
-            hasError={merchREfError}
             onChange={(e) =>
               handleCommonSettings('merchantReference', e.target.value)
             }
@@ -119,9 +97,25 @@ const GeneralSettings = ({ state, handleCommonSettings }) => {
               >
                 <RadioInput.Option value={'PRE_AUTHORIZATION'}>
                   {formatMessage(messages.generalPaymentOptionsPre)}
+                  <Tooltip
+                    placement="top"
+                    title={formatMessage(
+                      messages.generalPaymentOptionsPreTooltip
+                    )}
+                  >
+                    <InfoIcon />
+                  </Tooltip>
                 </RadioInput.Option>
                 <RadioInput.Option value={'FINAL_AUTHORIZATION'}>
                   {formatMessage(messages.generalPaymentOptionsFinal)}
+                  <Tooltip
+                    placement="top"
+                    title={formatMessage(
+                      messages.generalPaymentOptionsFinalTooltip
+                    )}
+                  >
+                    <InfoIcon />
+                  </Tooltip>
                 </RadioInput.Option>
               </RadioField>
             </div>
@@ -129,6 +123,14 @@ const GeneralSettings = ({ state, handleCommonSettings }) => {
           <div className="section-wrapper">
             <h5 className="section-header">
               {formatMessage(messages.generalCaptureAuthorizationModeLabel)}
+              <Tooltip
+                placement="top"
+                title={formatMessage(
+                  messages.generalCaptureAuthorizationModeTooltip
+                )}
+              >
+                <InfoIcon />
+              </Tooltip>
             </h5>
             <div>
               <Select
@@ -157,7 +159,7 @@ const GeneralSettings = ({ state, handleCommonSettings }) => {
           </div>
         </>
       )}
-       <div className="section-wrapper">
+      <div className="section-wrapper">
         <div className="debug-loging flex">
           <h5 className="section-header">
             {formatMessage(messages.generalenableLogsLabel)}

@@ -1,7 +1,6 @@
 import React, { useContext, useReducer, useEffect } from 'react';
 import './style.css';
 import PageWrapper from '../page-wrapper';
-import ToggleInput from '@commercetools-uikit/toggle-input';
 import PrimaryButton from '@commercetools-uikit/primary-button';
 import CONFIG from '../../../configuration';
 import initialState from './intialState.json';
@@ -14,8 +13,9 @@ import reducer from './reducer';
 import { PaymentContext } from '../../context/payment';
 import { useIntl } from 'react-intl';
 import messages from './messages';
+import { defaultTemplateName } from '../../constants';
 
-const { emailAddress } = CONFIG;
+const { supportAddress } = CONFIG;
 const PaymentMethods = () => {
   const {
     setLoader,
@@ -92,8 +92,19 @@ const PaymentMethods = () => {
 
   const handleRedirectModeA = (field, value) => {
     const payload = { ...state.redirectModeA };
-    if (field === 'paymentOptions') payload['paymentOptions'] = value;
-    else if (field === '3dsEnablement') {
+    if (field === 'paymentOptions') {
+      const paymentPayload = value.map((option) => {
+        return {
+          ...option,
+          enabled: payload['paymentOptions'].find(
+            (ele) => ele.label === option.label
+          )?.enabled
+            ? true
+            : false,
+        };
+      });
+      payload['paymentOptions'] = paymentPayload;
+    } else if (field === '3dsEnablement') {
       payload['3dsEnablement'] = {
         ...payload['3dsEnablement'],
         value: value,
@@ -254,16 +265,6 @@ const PaymentMethods = () => {
 
   const saveFormData = async () => {
     setLoader(true);
-    if (state?.merchantReference?.value?.replaceAll(' ', '').length > 12) {
-      showToaster({
-        severity: 'error',
-        open: true,
-        message: 'Merchant Reference ID should be maximum 12 characters.',
-      });
-      setLoader(false);
-      hideToaster();
-      return;
-    }
     const payload = Object.keys(state).map((key) => {
       let data;
       const sendLoad = {};
@@ -287,7 +288,9 @@ const PaymentMethods = () => {
             } else if (dSet === 'payButtonTitle') {
               sendLoad[dSet] = data[dSet]?.values;
             } else if (dSet === 'templateFileName') {
-              sendLoad[dSet] = data[dSet]?.value.trim();
+              sendLoad[dSet] = data[dSet]?.value.length
+                ? data[dSet]?.value.trim()
+                : defaultTemplateName;
             } else sendLoad[dSet] = data[dSet]?.value;
           }
           return {
@@ -419,22 +422,6 @@ const PaymentMethods = () => {
 
   return (
     <PageWrapper title={'Payment Methods'}>
-      <div className="enable-worldline flex algin-end mb-1">
-        <h3 className="section-header">
-          {formatMessage(messages.generalWorldlineEnable)}
-        </h3>
-        <ToggleInput
-          size={'big'}
-          isDisabled={false}
-          isChecked={state.enableWorldlineCheckout.value}
-          onChange={(e) => {
-            dispatch({
-              type: 'ENABLE-WORLDLINE',
-              value: e.target.checked,
-            });
-          }}
-        />
-      </div>
       <div className="payment-options-wrapper mb-2">
         <div className="save-wrapper mb-2">
           <h2>{formatMessage(messages.generalTitle)}</h2>
@@ -472,7 +459,7 @@ const PaymentMethods = () => {
       </div>
       <p className="supportmail">
         {formatMessage(messages.generalSupportMail)}
-        <a href={`mailto:${emailAddress}`}>{emailAddress}</a>
+        <a href={supportAddress}>{supportAddress}</a>
       </p>
     </PageWrapper>
   );

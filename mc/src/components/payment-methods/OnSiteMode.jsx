@@ -114,6 +114,12 @@ const OnSiteMode = ({ onSiteMode, handleOnsiteMode }) => {
           <div className="3ds-enablement flex">
             <h5 className="section-title">
               {formatMessage(messages.onSite3dsEnablementLabel)}
+              <Tooltip
+                placement="top"
+                title={formatMessage(messages.onSite3dsEnablementTooltip)}
+              >
+                <InfoIcon />
+              </Tooltip>
             </h5>
             <ToggleInput
               size={'small'}
@@ -129,6 +135,12 @@ const OnSiteMode = ({ onSiteMode, handleOnsiteMode }) => {
           <div className="3ds-challenge flex">
             <h5 className="section-title">
               {formatMessage(messages.onSite3dsChallengeLabel)}
+              <Tooltip
+                placement="top"
+                title={formatMessage(messages.onSite3dsChallengeTooltip)}
+              >
+                <InfoIcon />
+              </Tooltip>
             </h5>
             <ToggleInput
               size={'small'}
@@ -142,6 +154,12 @@ const OnSiteMode = ({ onSiteMode, handleOnsiteMode }) => {
           <div className="3ds-excemption flex">
             <h5 className="section-title">
               {formatMessage(messages.onSite3dsExemptionLabel)}
+              <Tooltip
+                placement="top"
+                title={formatMessage(messages.onSite3dsExemptionTooltip)}
+              >
+                <InfoIcon />
+              </Tooltip>
             </h5>
             <ToggleInput
               size={'small'}

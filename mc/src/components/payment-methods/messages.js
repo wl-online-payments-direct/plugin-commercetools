@@ -17,7 +17,7 @@ export default defineMessages({
   },
   generalSupportMail: {
     id: 'general.supportMail',
-    defaultMessage: 'Support Email : ',
+    defaultMessage: 'Support : ',
   },
   generalMerchantReferenceLabel: {
     id: 'general.merchantReference.label',
@@ -53,15 +53,29 @@ export default defineMessages({
   },
   generalPaymentOptionsPre: {
     id: 'general.paymentOptions.pre',
-    defaultMessage: 'Pre Authorization',
+    defaultMessage: 'Preauthorization',
+  },
+  generalPaymentOptionsPreTooltip: {
+    id: 'general.paymentOption.pre.tooltip',
+    defaultMessage:
+      'Use a preauthorization to block the funds of your customers for a period of 30 days. The amount captured can be lower than the authorized amount. Note that all acquirers and activity sectors do not support preauthorizations.',
   },
   generalPaymentOptionsFinal: {
     id: 'general.paymentOptions.final',
-    defaultMessage: 'Final Authorization',
+    defaultMessage: 'Authorization',
+  },
+  generalPaymentOptionsFinalTooltip: {
+    id: 'general.paymentOption.final.tooltip',
+    defaultMessage:
+      "Use authorization to block the funds of your customers for a period of 7 days. Those can't be reversed and need to be captured for the full amount.",
   },
   generalCaptureAuthorizationModeLabel: {
     id: 'general.captureAuthorizationMode.label',
     defaultMessage: initialState.captureAuthorizationMode.label,
+  },
+  generalCaptureAuthorizationModeTooltip: {
+    id: 'general.captureAuthorizationMode.tooltip',
+    defaultMessage: initialState.captureAuthorizationMode.tooltip,
   },
   generalenableLogsLabel: {
     id: 'general.enableLogs.label',
@@ -106,13 +120,25 @@ export default defineMessages({
     id: 'onSite.3dsEnablement.label',
     defaultMessage: initialState.onSiteMode['3dsEnablement'].label,
   },
+  onSite3dsEnablementTooltip: {
+    id: 'onSite.3dsEnablement.tooltip',
+    defaultMessage: initialState.onSiteMode['3dsEnablement'].tooltip,
+  },
   onSite3dsChallengeLabel: {
     id: 'onSite.3dsChallenge.label',
     defaultMessage: initialState.onSiteMode['3dsChallenge'].label,
   },
+  onSite3dsChallengeTooltip: {
+    id: 'onSite.3dsChallenge.tooltip',
+    defaultMessage: initialState.onSiteMode['3dsChallenge'].tooltip,
+  },
   onSite3dsExemptionLabel: {
     id: 'onSite.3dsExemption.label',
     defaultMessage: initialState.onSiteMode['3dsExemption'].label,
+  },
+  onSite3dsExemptionTooltip: {
+    id: 'onSite.3dsExemption.tooltip',
+    defaultMessage: initialState.onSiteMode['3dsExemption'].tooltip,
   },
   redirectATitle: {
     id: 'redirectA.title',
@@ -158,13 +184,25 @@ export default defineMessages({
     id: 'redirectA.3dsEnablement.label',
     defaultMessage: initialState.redirectModeA['3dsEnablement'].label,
   },
+  redirectA3dsEnablementTooltip: {
+    id: 'redirectA.3dsEnablement.tooltip',
+    defaultMessage: initialState.redirectModeA['3dsEnablement'].tooltip,
+  },
   redirectA3dsChallengeLabel: {
     id: 'redirectA.3dsChallenge.label',
     defaultMessage: initialState.redirectModeA['3dsChallenge'].label,
   },
+  redirectA3dsChallengeTooltip: {
+    id: 'redirectA.3dsChallenge.tooltip',
+    defaultMessage: initialState.redirectModeA['3dsChallenge'].tooltip,
+  },
   redirectA3dsExemptionLabel: {
     id: 'redirectA.3dsExemption.label',
     defaultMessage: initialState.redirectModeA['3dsExemption'].label,
+  },
+  redirectA3dsExemptionTooltip: {
+    id: 'redirectA.3dsExemption.tooltip',
+    defaultMessage: initialState.redirectModeA['3dsExemption'].tooltip,
   },
   redirectBTitle: {
     id: 'redirectB.title',
@@ -222,12 +260,24 @@ export default defineMessages({
     id: 'redirectB.3dsEnablement.label',
     defaultMessage: initialState.redirectModeB['3dsEnablement'].label,
   },
+  redirectB3dsEnablementTooltip: {
+    id: 'redirectB.3dsEnablement.tooltip',
+    defaultMessage: initialState.redirectModeB['3dsEnablement'].tooltip,
+  },
   redirectB3dsChallengeLabel: {
     id: 'redirectB.3dsChallenge.label',
     defaultMessage: initialState.redirectModeB['3dsChallenge'].label,
   },
+  redirectB3dsChallengeTooltip: {
+    id: 'redirectB.3dsChallenge.tooltip',
+    defaultMessage: initialState.redirectModeB['3dsChallenge'].tooltip,
+  },
   redirectB3dsExemptionLabel: {
     id: 'redirectB.3dsExemption.label',
     defaultMessage: initialState.redirectModeB['3dsExemption'].label,
+  },
+  redirectB3dsExemptionTooltip: {
+    id: 'redirectB.3dsExemption.tooltip',
+    defaultMessage: initialState.redirectModeB['3dsExemption'].tooltip,
   },
 });
