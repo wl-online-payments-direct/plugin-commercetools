@@ -17,7 +17,7 @@ export default defineMessages({
   },
   generalSupportMail: {
     id: 'general.supportMail',
-    defaultMessage: 'Support Email : ',
+    defaultMessage: 'Support : ',
   },
   generalMerchantReferenceLabel: {
     id: 'general.merchantReference.label',

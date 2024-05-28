@@ -75,7 +75,7 @@
   "general.worldlineEnable": "Enable Worldline Checkout",
   "general.title": "Please select a combination of one or more checkout types to design your checkout experience",
   "general.saveBtn": "Save Changes",
-  "general.supportMail": "Support Email : ",
+  "general.supportMail": "Support : ",
   "general.merchantReference.label": "Merchant Reference ID",
   "general.merchantReference.tooltip": "If you want to show the Merchant ID in Bank statement on their Customer bank account.",
   "general.merchantReference.placeholder": "Enter Merchant Reference",

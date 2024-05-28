@@ -1,6 +1,6 @@
 const CONFIG = {
   CONTAINER_NAME: 'worldline-configuration',
-  emailAddress:
+  supportAddress:
     'https://docs.direct.worldline-solutions.com/en/about/contact/index',
 };
 

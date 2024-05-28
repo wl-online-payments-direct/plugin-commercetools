@@ -13,7 +13,7 @@ import reducer from './reducer';
 import { PaymentContext } from '../../context/payment';
 import { useIntl } from 'react-intl';
 import messages from './messages';
-import { templateName } from '../../constants';
+import { defaultTemplateName } from '../../constants';
 
 const { supportAddress } = CONFIG;
 const PaymentMethods = () => {
@@ -98,7 +98,9 @@ const PaymentMethods = () => {
           ...option,
           enabled: payload['paymentOptions'].find(
             (ele) => ele.label === option.label
-          ).enabled,
+          )?.enabled
+            ? true
+            : false,
         };
       });
       payload['paymentOptions'] = paymentPayload;
@@ -288,7 +290,7 @@ const PaymentMethods = () => {
             } else if (dSet === 'templateFileName') {
               sendLoad[dSet] = data[dSet]?.value.length
                 ? data[dSet]?.value.trim()
-                : templateName;
+                : defaultTemplateName;
             } else sendLoad[dSet] = data[dSet]?.value;
           }
           return {

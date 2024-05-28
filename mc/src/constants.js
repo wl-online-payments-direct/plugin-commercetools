@@ -17,4 +17,4 @@ export const PERMISSIONS = entryPointUriPathToPermissionKeys(entryPointUriPath);
 
 export const integrator = 'Worldline';
 
-export const templateName = 'SimplifiedCustomPaymentPage';
+export const defaultTemplateName = 'SimplifiedCustomPaymentPage';
