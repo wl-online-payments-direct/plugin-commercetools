@@ -456,7 +456,9 @@ const PaymentMethods = () => {
       </div>
       <p className="supportmail">
         {formatMessage(messages.generalSupportMail)}
-        <a href={supportAddress}>{supportAddress}</a>
+        <a target="_blank" href={supportAddress}>
+          {supportAddress}
+        </a>
       </p>
     </PageWrapper>
   );

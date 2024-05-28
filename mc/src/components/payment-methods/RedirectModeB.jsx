@@ -159,7 +159,7 @@ const RedirectModeB = ({ redirectModeB, handleRedirectModeB }) => {
           <h5 className="section-header">
             {formatMessage(messages.redirectB3dsEnablementLabel)}
           </h5>
-          <div className="3ds-enablement flex">
+          <div className="3ds-enablement flex section-3ds">
             <h5 className="section-title">
               {formatMessage(messages.redirectB3dsEnablementLabel)}
               <Tooltip
@@ -180,7 +180,7 @@ const RedirectModeB = ({ redirectModeB, handleRedirectModeB }) => {
           </div>
         </div>
         <div className="section-wrapper flex">
-          <div className="3ds-challenge flex">
+          <div className="3ds-challenge flex section-3ds">
             <h5 className="section-title">
               {formatMessage(messages.redirectB3dsChallengeLabel)}
               <Tooltip
@@ -199,7 +199,7 @@ const RedirectModeB = ({ redirectModeB, handleRedirectModeB }) => {
               }
             />
           </div>
-          <div className="3ds-excemption flex">
+          <div className="3ds-excemption flex section-3ds">
             <h5 className="section-title">
               {formatMessage(messages.redirectB3dsExemptionLabel)}
               <Tooltip
