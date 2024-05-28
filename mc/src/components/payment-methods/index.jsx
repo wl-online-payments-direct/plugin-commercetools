@@ -13,7 +13,6 @@ import reducer from './reducer';
 import { PaymentContext } from '../../context/payment';
 import { useIntl } from 'react-intl';
 import messages from './messages';
-import { defaultTemplateName } from '../../constants';
 
 const { supportAddress } = CONFIG;
 const PaymentMethods = () => {
@@ -288,9 +287,7 @@ const PaymentMethods = () => {
             } else if (dSet === 'payButtonTitle') {
               sendLoad[dSet] = data[dSet]?.values;
             } else if (dSet === 'templateFileName') {
-              sendLoad[dSet] = data[dSet]?.value.length
-                ? data[dSet]?.value.trim()
-                : defaultTemplateName;
+              sendLoad[dSet] = data[dSet]?.value?.trim();
             } else sendLoad[dSet] = data[dSet]?.value;
           }
           return {
