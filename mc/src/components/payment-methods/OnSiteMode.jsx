@@ -111,7 +111,7 @@ const OnSiteMode = ({ onSiteMode, handleOnsiteMode }) => {
           <h5 className="section-header">
             {formatMessage(messages.onSite3dsEnablementLabel)}
           </h5>
-          <div className="3ds-enablement flex">
+          <div className="3ds-enablement flex section-3ds">
             <h5 className="section-title">
               {formatMessage(messages.onSite3dsEnablementLabel)}
               <Tooltip
@@ -132,7 +132,7 @@ const OnSiteMode = ({ onSiteMode, handleOnsiteMode }) => {
           </div>
         </div>
         <div className="section-wrapper flex">
-          <div className="3ds-challenge flex">
+          <div className="3ds-challenge flex section-3ds">
             <h5 className="section-title">
               {formatMessage(messages.onSite3dsChallengeLabel)}
               <Tooltip
@@ -151,7 +151,7 @@ const OnSiteMode = ({ onSiteMode, handleOnsiteMode }) => {
               }
             />
           </div>
-          <div className="3ds-excemption flex">
+          <div className="3ds-excemption flex section-3ds">
             <h5 className="section-title">
               {formatMessage(messages.onSite3dsExemptionLabel)}
               <Tooltip

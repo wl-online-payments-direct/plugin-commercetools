@@ -327,7 +327,7 @@
     "placeholder": "Enter Merchant Reference",
     "criteria": [],
     "maxLength": 12,
-    "tooltip": "Use this identifier to customize your order reference and match with Worldline Merchant Portal. If you want the acquirer to show it on the customer's bank    "
+    "tooltip": "Use this identifier to customize your order reference and match with Worldline Merchant Portal. If you want the acquirer to show it on the customer's bank account, limit the characters between 2 to 12."
   },
   "paymentOption": {
     "label": "Transaction type",
