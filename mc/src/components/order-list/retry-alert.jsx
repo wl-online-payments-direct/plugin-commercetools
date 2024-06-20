@@ -76,17 +76,18 @@ const RetryAlert = ({ isOpen, handleRetryClose, id }) => {
           </DialogContentText>
         </DialogContent>
         <DialogActions>
-          {loading ? (
-            <LoadingSpinner />
-          ) : (
-            <button
-              onClick={handleRetry}
-              autoFocus
-              className="retry-agree-button"
-            >
-              {formatMessage(messages.retryModalOk)}
-            </button>
-          )}
+          <button
+            onClick={handleRetry}
+            autoFocus
+            className="retry-agree-button"
+            style={{ height: '35px' }}
+          >
+            {loading ? (
+              <LoadingSpinner />
+            ) : (
+              formatMessage(messages.retryModalOk)
+            )}
+          </button>
           <button onClick={handleRetryClose} className="retry-button">
             {formatMessage(messages.cancelModalCancel)}
           </button>
