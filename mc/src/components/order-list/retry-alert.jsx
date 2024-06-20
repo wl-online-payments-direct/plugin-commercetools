@@ -17,6 +17,7 @@ import LoadingSpinner from '@commercetools-uikit/loading-spinner';
 const RetryAlert = ({ isOpen, handleRetryClose, id }) => {
   const { formatMessage } = useIntl();
   const [openSnackbar, setOpenSnackbar] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState(false);
   const projectKey = useApplicationContext((context) => context.project.key);
   const apiHost = useApplicationContext(
@@ -46,6 +47,7 @@ const RetryAlert = ({ isOpen, handleRetryClose, id }) => {
         setOpenSnackbar(true);
         setSnackbarMessage(formatMessage(messages.retryFailed));
       }
+      setLoading(false);
     } catch (e) {
       setLoading(false);
       handleRetryClose();
