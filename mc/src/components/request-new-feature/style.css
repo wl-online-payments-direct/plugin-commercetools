@@ -64,3 +64,13 @@
 .sendBtn svg path {
     fill: #fff !important;
 }
+
+.request-feature-wrapper button {
+background-color: #fff;
+border: 1px solid hsl(232, 18%, 80%);
+padding: 0px 16px;
+}
+
+.request-feature-wrapper button:hover{
+    background-color:hsl(232, 18%, 95%)
+}
