@@ -25,6 +25,7 @@ import Typography from '@mui/material/Typography';
 import { useIntl } from 'react-intl';
 import messages from './messages';
 import Chip from '@mui/material/Chip';
+import Tooltip from '@mui/material/Tooltip';
 import PluginVersion from '../plugin-version';
 import { integrator } from '../../constants';
 
@@ -442,13 +443,34 @@ const MyAccount = (props) => {
                     return formField.hideField ? null : (
                       <div key={`Data-field-${i}`}>
                         <Label isBold={true}>
-                          <p className="form-label">
-                            {formatMessage(messages[key])}
-                          </p>
-                          {formField.required && !formField.disabled ? (
-                            <p className="required">*</p>
-                          ) : null}
+                          {formField.tooltipKey ? (
+                            <Tooltip
+                              placement="right"
+                              title={formatMessage(
+                                messages[formField.tooltipKey]
+                              )}
+                            >
+                              <span className="flex">
+                                <p className="form-label">
+                                  {formatMessage(messages[key])}
+                                </p>
+                                {formField.required && !formField.disabled ? (
+                                  <p className="required">*</p>
+                                ) : null}
+                              </span>
+                            </Tooltip>
+                          ) : (
+                            <span className="flex">
+                              <p className="form-label">
+                                {formatMessage(messages[key])}
+                              </p>
+                              {formField.required && !formField.disabled ? (
+                                <p className="required">*</p>
+                              ) : null}
+                            </span>
+                          )}
                         </Label>
+
                         <div>
                           {formField.hasError ? (
                             <div className="error-msg">
@@ -520,30 +542,38 @@ const MyAccount = (props) => {
                       </div>
                     );
                   })}
-                  {serverFields ? (
-                    <Chip
-                      className="chip"
-                      icon={
-                        <ArrowTriangleUpIcon size="medium" color="neutral60" />
-                      }
-                      label="Hide Server Credentials"
-                      variant="outlined"
-                      onClick={hideServerFields}
-                    />
-                  ) : (
-                    <Chip
-                      className="chip"
-                      icon={
-                        <ArrowTriangleDownIcon
-                          size="medium"
-                          color="neutral60"
-                        />
-                      }
-                      label="Add/Edit Server Credentials"
-                      variant="outlined"
-                      onClick={showServerFields}
-                    />
-                  )}
+                  <Tooltip
+                    placement="right"
+                    title={formatMessage(messages.serverCredMsg)}
+                  >
+                    {serverFields ? (
+                      <Chip
+                        className="chip"
+                        icon={
+                          <ArrowTriangleUpIcon
+                            size="medium"
+                            color="neutral60"
+                          />
+                        }
+                        label="Hide Server Credentials"
+                        variant="outlined"
+                        onClick={hideServerFields}
+                      />
+                    ) : (
+                      <Chip
+                        className="chip"
+                        icon={
+                          <ArrowTriangleDownIcon
+                            size="medium"
+                            color="neutral60"
+                          />
+                        }
+                        label="Add/Edit Server Credentials"
+                        variant="outlined"
+                        onClick={showServerFields}
+                      />
+                    )}
+                  </Tooltip>
                   <PrimaryButton
                     label={formatMessage(messages.saveBtn)}
                     onClick={handleSubmit}
