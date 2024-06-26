@@ -23,15 +23,15 @@ const CancelAlert = ({ isOpen, handleCancelClose, handleCancelAgree }) => {
         </DialogContentText>
       </DialogContent>
       <DialogActions>
-        <button onClick={handleCancelClose} className="cancel-button">
-          {formatMessage(messages.cancelModalCancel)}
-        </button>
         <button
           onClick={handleCancelAgree}
           autoFocus
           className="cancel-agree-button"
         >
           {formatMessage(messages.cancelModalOk)}
+        </button>
+        <button onClick={handleCancelClose} className="cancel-button">
+          {formatMessage(messages.cancelModalCancel)}
         </button>
       </DialogActions>
     </Dialog>

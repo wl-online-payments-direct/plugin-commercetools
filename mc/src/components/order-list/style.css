@@ -72,8 +72,11 @@
     background: #056A4B;
     color: #FFF;
     border: none;
-    padding: 10px;
     cursor: pointer;
     border-radius: 2px;
     min-width: 100px;
+    min-height: 35px;
+}
+.retry-agree-button div {
+    margin: auto;
 }
