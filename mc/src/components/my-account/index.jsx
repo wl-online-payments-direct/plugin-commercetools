@@ -28,6 +28,7 @@ import Chip from '@mui/material/Chip';
 import Tooltip from '@mui/material/Tooltip';
 import PluginVersion from '../plugin-version';
 import { integrator } from '../../constants';
+import InfoIcon from '@mui/icons-material/Info';
 
 const MyAccount = (props) => {
   const { formatMessage } = useIntl();
@@ -443,32 +444,24 @@ const MyAccount = (props) => {
                     return formField.hideField ? null : (
                       <div key={`Data-field-${i}`}>
                         <Label isBold={true}>
-                          {formField.tooltipKey ? (
-                            <Tooltip
-                              placement="right"
-                              title={formatMessage(
-                                messages[formField.tooltipKey]
-                              )}
-                            >
-                              <span className="flex">
-                                <p className="form-label">
-                                  {formatMessage(messages[key])}
-                                </p>
-                                {formField.required && !formField.disabled ? (
-                                  <p className="required">*</p>
-                                ) : null}
-                              </span>
-                            </Tooltip>
-                          ) : (
-                            <span className="flex">
-                              <p className="form-label">
-                                {formatMessage(messages[key])}
-                              </p>
-                              {formField.required && !formField.disabled ? (
-                                <p className="required">*</p>
-                              ) : null}
-                            </span>
-                          )}
+                          <span className="flex">
+                            <p className="form-label">
+                              {formatMessage(messages[key])}
+                            </p>
+                            {formField.required && !formField.disabled ? (
+                              <p className="required">*</p>
+                            ) : null}
+                            {formField.tooltipKey ? (
+                              <Tooltip
+                                placement="right"
+                                title={formatMessage(
+                                  messages[formField.tooltipKey]
+                                )}
+                              >
+                                <InfoIcon />
+                              </Tooltip>
+                            ) : null}
+                          </span>
                         </Label>
 
                         <div>
@@ -542,10 +535,7 @@ const MyAccount = (props) => {
                       </div>
                     );
                   })}
-                  <Tooltip
-                    placement="right"
-                    title={formatMessage(messages.serverCredMsg)}
-                  >
+                  <span>
                     {serverFields ? (
                       <Chip
                         className="chip"
@@ -573,7 +563,13 @@ const MyAccount = (props) => {
                         onClick={showServerFields}
                       />
                     )}
-                  </Tooltip>
+                    <Tooltip
+                      placement="right"
+                      title={formatMessage(messages.serverCredMsg)}
+                    >
+                      <InfoIcon />
+                    </Tooltip>
+                  </span>
                   <PrimaryButton
                     label={formatMessage(messages.saveBtn)}
                     onClick={handleSubmit}
