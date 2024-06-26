@@ -268,7 +268,8 @@
       "placeholder": "Enter the recepient email",
       "errMsg": "Please enter valid email",
       "type": "text",
-      "value": ""
+      "value": "",
+      "tooltipKey": "serverRecipientEmail"
     },
     "serverfrom": {
       "hasError": false,
@@ -278,7 +279,8 @@
       "placeholder": "Enter the sender email",
       "errMsg": "Please enter valid email",
       "type": "text",
-      "value": ""
+      "value": "",
+      "tooltipKey": "serverSenderEmail"
     }
   }
 }

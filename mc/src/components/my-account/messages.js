@@ -231,4 +231,18 @@ export default defineMessages({
     id: 'myAccount.copiedMsg',
     defaultMessage: 'Copied!',
   },
+  serverCredMsg: {
+    id: 'myAccount.serverCredMsg',
+    defaultMessage: 'Configure your SMTP',
+  },
+  serverRecipientEmail: {
+    id: 'myAccount.serverRecipientEmail',
+    defaultMessage:
+      'Merchant email to receive emails for payment related notifications',
+  },
+  serverSenderEmail: {
+    id: 'myAccount.serverSenderEmail',
+    defaultMessage:
+      'Merchant email from where the email is send for request new feature',
+  },
 });
