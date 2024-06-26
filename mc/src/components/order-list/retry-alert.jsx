@@ -24,7 +24,6 @@ const RetryAlert = ({ isOpen, handleRetryClose, id }) => {
     (context) => context.environment.apiHost
   );
   const { activeStore } = useContext(PaymentContext);
-  const [loading, setLoading] = useState(false);
   const handleCloseSnackbar = () => {
     setOpenSnackbar(false);
   };
