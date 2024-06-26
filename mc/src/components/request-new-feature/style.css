@@ -55,9 +55,9 @@
 }
 
 .sendBtn {
-    padding: 10px;
-    background-color: #45BEAA;
-    color: #fff;
+    padding: 10px !important;
+    background-color: #45BEAA !important;
+    color: #fff !important;
     border-radius: 5px;
 }
 
