@@ -71,6 +71,7 @@ export default {
   STATUS: {
     PENDING_CAPTURE: 'payment.pending_capture',
     CAPTURED: 'payment.captured',
+    CAPTURE_REQUESTED: 'payment.capture_requested',
   },
   THREE_DS: {
     CHALLENGE_INDICATOR: 'challenge-required',
