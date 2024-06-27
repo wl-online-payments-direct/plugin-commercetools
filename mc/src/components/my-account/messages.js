@@ -233,16 +233,16 @@ export default defineMessages({
   },
   serverCredMsg: {
     id: 'myAccount.serverCredMsg',
-    defaultMessage: 'Configure your SMTP',
+    defaultMessage: 'Configure your SMTP server',
   },
   serverRecipientEmail: {
     id: 'myAccount.serverRecipientEmail',
     defaultMessage:
-      'Merchant email to receive emails for payment related notifications',
+      'Configure to recieve emails for payment related notifications',
   },
   serverSenderEmail: {
     id: 'myAccount.serverSenderEmail',
     defaultMessage:
-      'Merchant email from where the email is send for request new feature',
+      'Configure merchant email to send new feature requests to Worldline',
   },
 });
