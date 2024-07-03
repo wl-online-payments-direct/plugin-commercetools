@@ -231,6 +231,14 @@ export default defineMessages({
     id: 'myAccount.copiedMsg',
     defaultMessage: 'Copied!',
   },
+  serverCredTitleAdd: {
+    id: 'myAccount.serverCredTitleAdd',
+    defaultMessage: 'Add/Edit Server Credentials',
+  },
+  serverCredTitleHide: {
+    id: 'myAccount.serverCredTitleHide',
+    defaultMessage: 'Hide Server Credentials',
+  },
   serverCredMsg: {
     id: 'myAccount.serverCredMsg',
     defaultMessage: 'Configure your SMTP server',
