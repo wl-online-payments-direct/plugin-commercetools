@@ -60,6 +60,8 @@
   "myAccount.clipboardMsg": "To avoid copy/paste issues, use the `copy` icon to copy the URL",
   "myAccount.copiedMsg": "Copied!",
   "myAccount.serverCredMsg": "Configure your SMTP server",
+  "myAccount.serverCredTitleAdd": "Add/Edit Server Credentials",
+  "myAccount.serverCredTitleHide": "Hide Server Credentials",
   "myAccount.serverRecipientEmail": "Configure to recieve emails for payment related notifications",
   "myAccount.serverSenderEmail": "Configure merchant email to send new feature requests to Worldline",
   "myAccount.pluginTitle": "Plug-in Latest version update",

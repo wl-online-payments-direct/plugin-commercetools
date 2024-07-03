@@ -545,7 +545,7 @@ const MyAccount = (props) => {
                             color="neutral60"
                           />
                         }
-                        label="Hide Server Credentials"
+                        label={formatMessage(messages.serverCredTitleHide)}
                         variant="outlined"
                         onClick={hideServerFields}
                       />
@@ -558,7 +558,7 @@ const MyAccount = (props) => {
                             color="neutral60"
                           />
                         }
-                        label="Add/Edit Server Credentials"
+                        label={formatMessage(messages.serverCredTitleAdd)}
                         variant="outlined"
                         onClick={showServerFields}
                       />

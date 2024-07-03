@@ -176,7 +176,7 @@ const RequestNewFeature = () => {
     <div style={{ zIndex: 1 }}>
       <div className="request-feature-wrapper">
         <SecondaryButton
-          label={'Request New Feature'}
+          label={formatMessage(messages.requestNewFeatureTitle)}
           onClick={handleOpenModal}
         />
       </div>

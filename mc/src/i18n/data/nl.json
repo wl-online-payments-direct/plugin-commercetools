@@ -59,6 +59,8 @@
   "myAccount.saveBtn": "Opslaan/bijwerken",
   "myAccount.clipboardMsg": "Om problemen met kopiëren/plakken te voorkomen, kun je het pictogram `kopiëren` gebruiken om de URL te kopiëren",
   "myAccount.copiedMsg": "Gekopieerd!",
+  "myAccount.serverCredTitleAdd": "Serverreferenties toevoegen/bewerken",
+  "myAccount.serverCredTitleHide": "Serverreferenties verbergen",
   "myAccount.serverCredMsg": "Configureer uw SMTP-server",
   "myAccount.serverRecipientEmail": "Configureren om e-mails te ontvangen voor betalingsgerelateerde meldingen",
   "myAccount.serverSenderEmail": "Configureer het e-mailadres van de verkoper om verzoeken voor nieuwe functies naar Worldline te sturen",

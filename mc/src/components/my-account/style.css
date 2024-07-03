@@ -88,14 +88,12 @@ p.info {
     font-family: 'Inter', sans-serif;
     font-size: 18px;
     letter-spacing: -0.27px;
-    padding-top: 10px;
-    padding-bottom: 10px;
-    padding-left: 20px;
-    padding-right: 20px;
     border-radius: 6px !important;
-    width: 30%;
+    max-width: 40%;
     height: 50px;
     margin: 4rem 0rem !important;
+    background-color: #45BEAA;
+    justify-content: center !important;
 }
 
 .link-wrapper {
@@ -104,10 +102,6 @@ p.info {
 
 .form-wrapper {
     margin-top: 4rem;
-}
-
-.myaccount-form button {
-    background-color: #45BEAA;
 }
 
 .required {

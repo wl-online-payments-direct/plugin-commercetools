@@ -59,6 +59,8 @@
   "myAccount.saveBtn": "Guardar/Actualizar",
   "myAccount.clipboardMsg": "Para evitar problemas de copiar/pegar, utilice el icono `copy` para copiar la URL",
   "myAccount.copiedMsg": "¡Copiado!",
+  "myAccount.serverCredTitleAdd": "Agregar/editar credenciales del servidor",
+  "myAccount.serverCredTitleHide": "Ocultar credenciales del servidor",
   "myAccount.serverCredMsg": "Configure su servidor SMTP",
   "myAccount.serverRecipientEmail": "Configurar la recepción de correos electrónicos para notificaciones relacionadas con pagos",
   "myAccount.serverSenderEmail": "Configurar el correo electrónico del comerciante para enviar solicitudes de nuevas funciones a Worldline",
