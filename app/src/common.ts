@@ -142,8 +142,7 @@ export async function orderPaymentHandler(payload: PaymentPayload) {
       let result;
       if (
         payload.type === STATUS.PENDING_CAPTURE ||
-        payload.type === STATUS.CAPTURED ||
-        payload.type === STATUS.CAPTURE_REQUESTED
+        payload.type === STATUS.CAPTURED
       ) {
         result = !dbPayment?.orderId
           ? await createOrderWithPayment(payload, cart, customObjects)

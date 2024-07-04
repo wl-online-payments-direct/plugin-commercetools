@@ -29,9 +29,6 @@ export interface PaymentPayload {
         paymentProductId: number;
         token: string;
       };
-      sepaDirectDebitPaymentMethodSpecificOutput: {
-        paymentProductId: number;
-      };
       paymentMethod: string;
     };
     status: string;
