@@ -22,7 +22,7 @@ const createServer = () =>
       const parts = url.parse(requestUrl);
       const route = routes[parts.pathname as keyof typeof routes];
       const filePath = decodeURIComponent(
-        path.join(path.resolve(__dirname, '../..'), parts.pathname as string),
+        path.join(path.resolve('/'), parts.pathname as string),
       );
       const { method } = request;
 
@@ -54,6 +54,9 @@ const createServer = () =>
           (process.env.DIR_IMAGE_UPLOAD as string) || 'uploadedImages',
         )
       ) {
+        const fullPath = path.resolve(filePath);
+        const rootDir = path.parse(fullPath).root;
+        logger().info(`fullPath: ${fullPath} rootDir: ${rootDir}`);
         const content = await fs.promises.readFile(filePath);
         let contentType = 'application/octet-stream';
         if (filePath.endsWith('.svg')) {
