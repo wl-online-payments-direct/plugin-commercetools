@@ -33,10 +33,6 @@ const authenticateWebhook = (
   }
 };
 
-const isSepaDirectDebitPayment = (payload: PaymentPayload): boolean =>
-  payload.payment.paymentOutput.sepaDirectDebitPaymentMethodSpecificOutput &&
-  payload.payment.statusOutput.statusCode === 4;
-
 export async function webhookAppHandler({
   payload,
   signature,
@@ -74,13 +70,6 @@ export async function webhookAppHandler({
     case 'payment.pending_capture':
     case 'payment.rejected':
       return orderPaymentHandler(payload as PaymentPayload);
-    case 'payment.capture_requested':
-      if (isSepaDirectDebitPayment(payload as PaymentPayload)) {
-        return orderPaymentHandler(payload as PaymentPayload);
-      }
-      logger().warn(`[Webhook] Received payload: ${JSON.stringify(payload)}`);
-      return {};
-
     case 'payment.captured':
       return orderPaymentCaptureHandler(payload as PaymentPayload);
     case 'payment.cancelled':
