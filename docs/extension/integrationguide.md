@@ -4,18 +4,18 @@ The Extension module interacts with the Store front and Worldline for integratio
 
 ## Overall Architecture
 
-![Overall Architecture](/docs/extension//images/Overall%20Architecture.jpg "Overall Architecture")
+![Overall Architecture](/docs/extension//images/OverallArchitecture.jpg "Overall Architecture")
 
 ## Configuration
 
 ![Configuration](/docs/extension//images/Configuration.jpg "Configuration")
 
 ## Hosted Checkout Flow
-![Hosted Checkout](/docs/extension//images/Hosted%20Checkout.jpg "Hosted Checkout")
+![Hosted Checkout](/docs/extension//images/HostedCheckout.jpg "Hosted Checkout")
 
 ## Hosted Tokenization Flow
 
-![Hosted Tokenization](/docs/extension//images/Hosted%20Tokenization.jpg "Hosted Tokenization")
+![Hosted Tokenization](/docs/extension//images/HostedTokenization.jpg "Hosted Tokenization")
 
 ## Backoffice Flow
 

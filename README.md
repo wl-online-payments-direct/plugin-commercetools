@@ -2,7 +2,6 @@
 
 - [Supported features](#supported-features)
 - [Overview](#overview)
-- [Setup Module](#setup-module)
 - [Merchant Center Custom App](#merchant-center-custom-app)
 - [Extension Module](#extension-module)
 - [Cron Module](#cron-module)
@@ -30,8 +29,8 @@ The mc-custom-app module is Commercetool's Custom App. It is a react application
 
 ![Worldline Merchant Center Custom App](/docs/images/MC-Custom-App.png "Worldline Custom App")
 
-- Refer to [Integration Guide](/mc-custom-app/docs/integrationguide.md) on how to integrate your shop with this module.
-- Refer to [How to run](/mc-custom-app/docs/howtorun.md) the Custom App module.
+- Refer to [Integration Guide](/docs/mc/integrationguide.md) on how to integrate your shop with this module.
+- Refer to [How to run](/docs/mc/howtorun.md) the Custom App module.
 
 ## Extension Module
 
