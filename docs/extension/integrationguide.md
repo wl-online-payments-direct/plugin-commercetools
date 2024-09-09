@@ -1,6 +1,6 @@
 # Extension Module Integration Guide
 
-The Extension module interacts with the Store front and Worldline for integration. The flows are depicted in following diagrams:
+The Extension module interacts with the Store front and Worldline for integration. The flows with API endpoints are depicted in below diagrams.
 
 ## Overall Architecture
 
@@ -20,3 +20,7 @@ The Extension module interacts with the Store front and Worldline for integratio
 ## Backoffice Flow
 
 ![Backoffice](/docs/extension//images/BackOffice.jpg "Backoffice")
+
+## Me endpoints
+
+The integrations depicted here are using endpoints that need a CT admin token. For each of these API endpoints, there is equivalent 'me' endpoints which starts with '/me/...'. These endpoints can be used if the Headless storefront uses customer token is used.

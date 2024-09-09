@@ -9,5 +9,4 @@ Follow the steps:
   - manage_types
 
 - Configure environment variables in the cloud environment where you are deploying the docker. Use [.env-sample](/web/.env-sample) as reference.
-- Deploy your application using one of the following methods:
-  - Build and Deploy the docker file [Dockerfile.web](Dockerfile.web)
+- Deploy your application by using the docker file [Dockerfile.web](Dockerfile.web)
