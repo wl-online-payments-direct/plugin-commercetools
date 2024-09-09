@@ -2,10 +2,6 @@
 
 The Extension module interacts with the Store front and Worldline for integration. The flows with API endpoints are depicted in below diagrams.
 
-## Overall Architecture
-
-![Overall Architecture](/docs/extension//images/OverallArchitecture.jpg "Overall Architecture")
-
 ## Configuration
 
 ![Configuration](/docs/extension//images/Configuration.jpg "Configuration")
@@ -20,6 +16,10 @@ The Extension module interacts with the Store front and Worldline for integratio
 ## Backoffice Flow
 
 ![Backoffice](/docs/extension//images/BackOffice.jpg "Backoffice")
+
+## Manage Saved Cards
+
+![Manage Saved Cards](/docs/extension//images/SavedCards.jpg "Manage Saved Cards")
 
 ## Me endpoints
 

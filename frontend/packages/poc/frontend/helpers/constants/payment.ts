@@ -1,0 +1,3 @@
+export const PAYMENT_CAPTURED = 'CAPTURED'
+export const PAYMENT_AUTHORIZED = 'AUTHORIZED'
+export const PAYMENT_FAILURE = 'FAILED'

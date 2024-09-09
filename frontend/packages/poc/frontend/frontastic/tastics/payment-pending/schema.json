@@ -1,0 +1,21 @@
+{
+    "category": "Checkout",
+    "icon": "",
+    "name": "commercetools UI payment pending",
+    "schema": [
+        {
+            "name": "Message",
+            "helpText": "Customize your tile message",
+            "fields": [
+                {
+                    "label": "Title",
+                    "field": "title",
+                    "type": "string",
+                    "translatable": true,
+                    "required": false
+                }
+            ]
+        }
+    ],
+    "tasticType": "commercetools/ui/payment-pending"
+}

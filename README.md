@@ -13,6 +13,7 @@
 The following features are supported by the Integration:
 
 - Payment integration with Hosted Tokenization and Hosted Checkout.
+- Saved Cards
 - Custom Application through Merchant Center.
     - Payment configuration page
     - Orders list page
@@ -25,6 +26,10 @@ The following features are supported by the Integration:
 ## Overview
 
 ![Worldline Integration Overview](/docs/images/worldline.jpg "Worldline Integration")
+
+## Overall Architecture
+
+![Overall Architecture](/docs/extension//images/OverallArchitecture.jpg "Overall Architecture")
 
 ## Merchant Center Custom App
 
@@ -65,3 +70,5 @@ Each merchant will have their own implementation of Storefront in their choice o
 Commercetools Frontend is a front-end platform designed to work with the commercetools commerce platform. It provides a flexible and scalable framework for building modern, high-performance web and mobile storefronts.
 
 Merchant has to develop their own frontend integration that interact with the Extension (web) module.
+
+The code changes integrating Commercetools Frontend to Extension can be seen [here](/frontend/).

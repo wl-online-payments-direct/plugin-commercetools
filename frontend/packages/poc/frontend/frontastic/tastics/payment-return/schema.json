@@ -1,0 +1,60 @@
+{
+    "category": "Checkout",
+    "icon": "",
+    "name": "commercetools UI payment return",
+    "schema": [
+        {
+            "name": "Message",
+            "helpText": "Customize your tile message",
+            "fields": [
+                {
+                    "label": "Title",
+                    "field": "title",
+                    "type": "string",
+                    "translatable": true,
+                    "required": false
+                }
+            ]
+        },
+        {
+            "name": "Timer",
+            "helpText": "Customize your timer",
+            "fields": [
+                {
+                    "label": "Timer",
+                    "field": "timer",
+                    "type": "number",
+                    "translatable": true,
+                    "required": true
+                }
+            ]
+        },
+        {
+            "name": "Timer Limit",
+            "helpText": "Customize your timer limit",
+            "fields": [
+                {
+                    "label": "Timer Limit",
+                    "field": "timerLimit",
+                    "type": "number",
+                    "translatable": true,
+                    "required": true
+                }
+            ]
+        },
+        {
+			"name": "Error Message",
+			"helpText": "Customize payment error message",
+			"fields": [
+				{
+					"label": "Error Message",
+					"field": "errorMessage",
+					"type": "string",
+					"translatable": true,
+					"required": true
+				}
+			]
+		}
+    ],
+    "tasticType": "commercetools/ui/payment-return"
+}
