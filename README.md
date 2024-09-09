@@ -57,11 +57,11 @@ This module contains the scheduled operations with Worldline is present in [cron
 ## Common Modules
 
 Following modules are commonly used by both Extension (web) module and Cron module:
- - [app](/app/) - contains the application logic. Only web (extension) and cron modules has dependency of app module.
- - [util](/util/) - contains common utilities and is dependency in all other modules.
- - [ct](/ct/) - contains integration code with Commercetools and is dependency in only app module.
- - [db](/db/) - contains database access code and is dependency in only app module.
- - [psp](/psp/) - contains integration code with Worldline Payment Service Provider APIs and is dependency in only app module.
+- [app](/app/) - contains the application logic. Only web (extension) and cron modules has dependency of app module.
+- [util](/util/) - contains common utilities and is dependency in all other modules.
+- [ct](/ct/) - contains integration code with Commercetools and is dependency in only app module.
+- [db](/db/) - contains database access code and is dependency in only app module.
+- [psp](/psp/) - contains integration code with Worldline Payment Service Provider APIs and is dependency in only app module.
 
 ## Store front
 
@@ -71,4 +71,4 @@ Commercetools Frontend is a front-end platform designed to work with the commerc
 
 Merchant has to develop their own frontend integration that interact with the Extension (web) module.
 
-The code changes integrating Commercetools Frontend to Extension can be seen [here](/frontend/).
+Reference code changes integrating Commercetools Frontend to Extension can be seen [here](/frontend/).
