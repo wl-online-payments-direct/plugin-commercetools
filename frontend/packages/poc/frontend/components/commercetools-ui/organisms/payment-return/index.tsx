@@ -1,8 +1,11 @@
 import { useEffect } from 'react';
 import { sdk } from 'sdk';
 import { useRouter, useSearchParams } from 'next/navigation';
+import { useFormat } from 'helpers/hooks/useFormat';
 import PaymentWaiting from './waiting';
 import { PAYMENT_AUTHORIZED, PAYMENT_CAPTURED, PAYMENT_FAILURE } from 'helpers/constants/payment';
+import toast from 'react-hot-toast';
+
 export interface PaymentReturnProps {
   title: string;
   timer: number;
@@ -25,6 +28,9 @@ const PaymentReturn: React.FC<PaymentReturnProps> = ({ timer, timerLimit, errorM
   const router = useRouter();
   const searchparams = useSearchParams();
   const paymentId: any = searchparams.get('orderPaymentId');
+  const { formatMessage: formatPaymentMessage } = useFormat({ name: 'payment' });
+  let showErrorMsg = true;
+
   useEffect(() => {
     const getWebhookStatus = async () => {
       const webhookStatus: StatusResponse = await sdk.callAction({
@@ -41,8 +47,17 @@ const PaymentReturn: React.FC<PaymentReturnProps> = ({ timer, timerLimit, errorM
           router.push(`/thank-you?orderId=${orderId}`);
           return;
         } else if (status === PAYMENT_FAILURE) {
+          if (showErrorMsg) {
+            toast(
+              formatPaymentMessage({
+                id: 'payment.myPaymentFailed',
+                defaultMessage: 'Payment failed, Please try again',
+              }),
+            );
+            showErrorMsg = false;
+          }
           clearTimer();
-          router.push(`/checkout?paymentError=true&message=${errorMessage}&step=2`);
+          router.push(`/cart`);
           return;
         }
       }
@@ -63,8 +78,17 @@ const PaymentReturn: React.FC<PaymentReturnProps> = ({ timer, timerLimit, errorM
           router.push(`/thank-you?orderId=${orderId}`);
           return;
         } else if (status === PAYMENT_FAILURE) {
+          if (showErrorMsg) {
+            toast(
+              formatPaymentMessage({
+                id: 'payment.myPaymentFailed',
+                defaultMessage: 'Payment failed, Please try again',
+              }),
+            );
+            showErrorMsg = false;
+          }
           clearTimer();
-          router.push(`/checkout?paymentError=true&message=${errorMessage}&step=2`);
+          router.push(`/cart`);
           return;
         } else {
           router.push('/pending');

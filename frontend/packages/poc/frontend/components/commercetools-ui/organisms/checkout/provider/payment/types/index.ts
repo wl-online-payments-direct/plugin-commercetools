@@ -13,13 +13,22 @@ export type PaymentMethodType =
   | 'offsite';
 
 export interface PaymentMethod {
-  name: string;
+  name?:
+    | string
+    | {
+        EN: string;
+        ES: string;
+        FR: string;
+        NL: string;
+        DE: string;
+        IT: string;
+      };
   type: PaymentMethodType;
-  image: {
+  image?: {
     src?: string | string[] | undefined;
   };
   token?: string;
-  paymentMethod: string;
+  paymentMethod?: string;
   enabled?: boolean;
   displayOrder?: number;
   paymentProductId?: number;

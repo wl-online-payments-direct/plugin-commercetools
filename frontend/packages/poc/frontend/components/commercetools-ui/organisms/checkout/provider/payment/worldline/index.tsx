@@ -1,10 +1,13 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   WLCreatePaymentData,
   WorldLinePaymentProvider,
   ValidateCartResponse,
+  ValidateResponse,
 } from 'components/commercetools-ui/organisms/checkout/provider/payment/types/worldlinetypes';
+import { PaymentMethod } from 'components/commercetools-ui/organisms/checkout/provider/payment/types';
 import { sdk } from 'sdk';
+import useProcessing from 'helpers/hooks/useProcessing';
 
 export const WorldlineContext = React.createContext<WorldLinePaymentProvider>({} as WorldLinePaymentProvider);
 
@@ -37,21 +40,43 @@ type CreatePaymentResponse = {
 };
 
 const WorldlinePaymentProvider = ({ children }: React.PropsWithChildren) => {
-  let worldlineInstance: any;
   const [iframeLoaded, setIframeLoaded] = useState(false);
+  const [worldlineInstance, setWorldLineInstance] = useState<any>();
+  const { startProcessing, stopProcessing } = useProcessing();
+  const [selectedPayment, setSelectedPayment] = useState<PaymentMethod>();
+  const [extra3dsOptions, setExtra3dsOptions] = useState<any>();
+
+  useEffect(() => {
+    setExtra3dsOptions({
+      device: {
+        timezoneOffsetUtcMinutes: new Date().getTimezoneOffset(),
+        browserData: {
+          colorDepth: screen.colorDepth,
+          screenHeight: screen.height,
+          screenWidth: screen.width,
+          javaEnabled: navigator.javaEnabled(),
+        },
+      },
+    });
+  }, []);
 
   const initWorldLineCheckout = async (hostedTokenizationUrl: string) => {
-    // const options = paymentData?.token ? { hideTokenFields: true } : { hideCardholderName: false };
-    const tokenizer = new Tokenizer(hostedTokenizationUrl, 'div-hosted-tokenization', { hideCardholderName: false });
-    worldlineInstance = tokenizer;
+    const options = selectedPayment?.token ? { hideTokenFields: false } : { hideCardholderName: false };
+    const tokenizer = new Tokenizer(
+      hostedTokenizationUrl,
+      'div-hosted-tokenization',
+      { ...options },
+      selectedPayment && selectedPayment?.token,
+    );
+    setWorldLineInstance(tokenizer);
     tokenizer
       .initialize()
       .then(() => {
-        setIframeLoaded(true)
+        setIframeLoaded(true);
         // Do work after initialization, if any
       })
       .catch(() => {
-        setIframeLoaded(false)
+        setIframeLoaded(false);
         console.error('worldline failed to intialize');
       });
   };
@@ -59,6 +84,13 @@ const WorldlinePaymentProvider = ({ children }: React.PropsWithChildren) => {
   const fetchHostedTokenizationURL = async () => {
     const hostedTokenization: HostedTokenizationResponse = await sdk.callAction({
       actionName: 'payment/getHostedTokenization',
+      payload: {
+        ...extra3dsOptions,
+        ...(selectedPayment &&
+          selectedPayment?.token && {
+            cardToken: selectedPayment?.token,
+          }),
+      },
     });
     if (hostedTokenization.isError === false) {
       const { data } = hostedTokenization;
@@ -78,6 +110,7 @@ const WorldlinePaymentProvider = ({ children }: React.PropsWithChildren) => {
     const createPaymentResponse: CreatePaymentResponse = await sdk.callAction({
       actionName: 'payment/createPayment',
       payload: {
+        ...extra3dsOptions,
         data,
       },
     });
@@ -99,32 +132,41 @@ const WorldlinePaymentProvider = ({ children }: React.PropsWithChildren) => {
 
   const processPayment = async () => {
     if (worldlineInstance) {
+      startProcessing();
       worldlineInstance.submitTokenization().then(async (result: any) => {
         if (result.success) {
           const paymentPayload: WLCreatePaymentData = {
             hostedTokenizationId: result.hostedTokenizationId,
             returnUrl: window.location.origin + '/payment',
           };
-          const validateResponse = await validateCart();
-          if (validateResponse) {
-            if (validateResponse.statusCode === 200) {
-              const response: ProcessPaymentResponse = await createWorldLinePayment(paymentPayload);
-              if (response) {
-                const { statusCode, result: dataResponse } = response;
+          const validateResponse: ValidateResponse = await validateCart();
+          if (validateResponse?.statusCode === 200 && validateResponse?.result?.hasInventory) {
+            const response: ProcessPaymentResponse = await createWorldLinePayment(paymentPayload);
+            if (response) {
+              const { statusCode, result: dataResponse } = response;
+              if (dataResponse) {
                 const { orderPaymentId, actionType, redirectURL } = dataResponse;
                 if (statusCode === 200) {
                   window.location.href =
                     actionType === 'REDIRECT' ? redirectURL : `/payment?orderPaymentId=${orderPaymentId}`;
+                } else {
+                  stopProcessing();
                 }
+              } else {
+                stopProcessing();
               }
-            } else {
-              console.error('No cart found');
             }
+          } else {
+            console.error('No cart found');
+            stopProcessing();
           }
         } else {
           console.error('failed to tokenise card', result);
+          stopProcessing();
         }
       });
+    } else {
+      stopProcessing();
     }
   };
 
@@ -135,6 +177,8 @@ const WorldlinePaymentProvider = ({ children }: React.PropsWithChildren) => {
         validateCart,
         processPayment,
         fetchHostedTokenizationURL,
+        setSelectedPayment,
+        selectedPayment,
       }}
     >
       {children}

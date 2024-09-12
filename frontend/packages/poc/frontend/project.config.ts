@@ -26,6 +26,14 @@ const localizationMapper = {
     countryName: 'Germany',
     countryKey: 'de',
   },
+  pl: {
+    locale: 'pl_PL',
+    currency: 'PLN',
+    currencyCode: 'zł',
+    countryCode: 'PL',
+    countryName: 'Poland',
+    countryKey: 'pl',
+  },
 } as Record<string, LocalizationMapping>;
 
 export const getLocalizationInfo = (locale: string) => {

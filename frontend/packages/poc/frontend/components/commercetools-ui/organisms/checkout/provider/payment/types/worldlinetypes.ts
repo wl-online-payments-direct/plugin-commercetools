@@ -1,3 +1,4 @@
+import { PaymentMethod } from 'components/commercetools-ui/organisms/checkout/provider/payment/types';
 export interface WLCreatePaymentData {
   storeId?: string | null;
   hostedTokenizationId: string;
@@ -20,9 +21,21 @@ export type ValidateCartResponse = {
   };
 };
 
+export type ValidateResponse =
+  | {
+      statusCode?: number | undefined;
+      result?: {
+        hasInventory?: string | undefined;
+      };
+    }
+  | null
+  | undefined;
+
 export interface WorldLinePaymentProvider {
   iframeLoaded: boolean;
-  validateCart: () => Promise<{ statusCode?: number | undefined } | null | undefined>;
+  validateCart: () => Promise<ValidateResponse>;
   processPayment: () => void;
-  fetchHostedTokenizationURL: () => void;
+  fetchHostedTokenizationURL: (token?: string) => void;
+  selectedPayment: PaymentMethod | undefined;
+  setSelectedPayment: any;
 }

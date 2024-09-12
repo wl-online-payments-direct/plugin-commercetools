@@ -8,9 +8,14 @@ import {
   PaymentMethodType,
   PaymentData,
 } from 'components/commercetools-ui/organisms/checkout/provider/payment/types';
+import { useParams } from 'next/navigation';
 import { useFormat } from 'helpers/hooks/useFormat';
 import Klarna from './components/klarna';
 import Scheme from './components/scheme';
+import {
+  getPaymentName,
+  getTranslation,
+} from 'components/commercetools-ui/organisms/checkout/provider/payment/worldline/hooks/worldLineUtil';
 
 interface Props {
   goToNextStep: () => void;
@@ -18,9 +23,9 @@ interface Props {
 
 const Payment: React.FC<Props> = ({ goToNextStep }) => {
   const { formatMessage: formatCheckoutMessage } = useFormat({ name: 'checkout' });
-
   const { getPaymentMethods, setPaymentData, paymentData, paymentDataIsValid } = useCheckout();
   const { processPayment } = useWorldlineCheckout();
+  const { locale } = useParams();
 
   const [paymentMethods, setPaymentMethods] = useState<PaymentMethod[]>([]);
 
@@ -67,25 +72,33 @@ const Payment: React.FC<Props> = ({ goToNextStep }) => {
   return (
     <div className="lg:px-36 lg:pb-36 lg:pt-0">
       <div className="mt-24 border-x border-t border-neutral-400 bg-white lg:mt-0">
-        {paymentMethods.map(({ name, type, image }) => (
-          <div
-            key={type}
-            className="cursor-pointer border-b border-neutral-400 p-16 lg:px-20 lg:py-28"
-            onClick={() => handlePaymentMethodSelection(type)}
-          >
-            <div className="flex items-center justify-between lg:justify-start lg:gap-64">
-              <div>
-                <div className="flex items-center gap-16">
-                  <Radio name="checkout-shipping-method" checked={type === selectedType} />
-                  <p className="text-14 font-medium">{name}</p>
+        {paymentMethods.map(({ name, type, image, displayOrder }) => {
+          const displayName =
+            displayOrder !== undefined
+              ? getTranslation(name, locale)
+              : typeof name === 'object'
+              ? getPaymentName(name, locale)
+              : name;
+          return (
+            <div
+              key={type}
+              className="cursor-pointer border-b border-neutral-400 p-16 lg:px-20 lg:py-28"
+              onClick={() => handlePaymentMethodSelection(type)}
+            >
+              <div className="flex items-center justify-between lg:justify-start lg:gap-64">
+                <div>
+                  <div className="flex items-center gap-16">
+                    <Radio name="checkout-shipping-method" checked={type === selectedType} />
+                    <p className="text-14 font-medium">{displayName}</p>
+                  </div>
                 </div>
+                {/* eslint-disable-next-line */}
+                {image?.src && <img src={`${image.src}`} className="mr-10 h-[20px] lg:h-[24px]" />}
               </div>
-              {/* eslint-disable-next-line */}
-              {image?.src && <img src={`${image.src}`} className="mr-10 h-[20px] lg:h-[24px]" />}
+              {getComponent(type)}
             </div>
-            {getComponent(type)}
-          </div>
-        ))}
+          );
+        })}
       </div>
       <div className="mt-24">
         <Button

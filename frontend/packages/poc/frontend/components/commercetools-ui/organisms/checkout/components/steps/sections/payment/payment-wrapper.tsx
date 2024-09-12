@@ -1,6 +1,5 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import { useSearchParams } from 'next/navigation';
-import { sdk } from 'sdk';
+import { useParams, useSearchParams } from 'next/navigation';
 import Button from 'components/commercetools-ui/atoms/button';
 import Radio from 'components/commercetools-ui/atoms/radio';
 import { useWorldlineCheckout } from 'components/commercetools-ui/organisms/checkout/provider';
@@ -9,8 +8,13 @@ import {
   PaymentMethodType,
 } from 'components/commercetools-ui/organisms/checkout/provider/payment/types';
 import { useFormat } from 'helpers/hooks/useFormat';
-import Worldline from './components/worldline';
 import useProcessing from 'helpers/hooks/useProcessing';
+import Worldline from './components/worldline';
+import { sdk } from 'sdk';
+import {
+  getPaymentName,
+  getTranslation,
+} from 'components/commercetools-ui/organisms/checkout/provider/payment/worldline/hooks/worldLineUtil';
 
 type PaymentMethodResponse = {
   isError: boolean;
@@ -31,13 +35,13 @@ type HostedCheckoutResponse = {
 const PaymentWordline: React.FC = () => {
   const [paymentMethods, setPaymentMethods] = useState<PaymentMethod[] | undefined>([]);
   const [paymentError, setPaymentError] = useState(false);
-  const { formatMessage: formatCheckoutMessage } = useFormat({ name: 'checkout' });
-  const [selectedPayment, setSelectedPayment] = useState<PaymentMethod>();
-  const { validateCart, processPayment } = useWorldlineCheckout();
+  const { formatMessage: formatCheckoutMessage } = useFormat({ name: 'cart' });
+  const { validateCart, processPayment, setSelectedPayment, selectedPayment } = useWorldlineCheckout();
   const searchparams = useSearchParams();
   const isPaymentError = searchparams.get('paymentError') === 'true';
   const errorMessage = searchparams.get('message');
   const { processing, startProcessing, stopProcessing } = useProcessing();
+  const { locale } = useParams();
 
   useEffect(() => {
     if (!isPaymentError) return;
@@ -63,10 +67,10 @@ const PaymentWordline: React.FC = () => {
     (payment: PaymentMethod) => {
       const { paymentMethod } = payment;
       if (paymentMethod !== selectedPayment?.paymentMethod) {
-        setSelectedPayment(payment);
+        setSelectedPayment({ ...payment });
       }
     },
-    [selectedPayment?.paymentMethod],
+    [selectedPayment?.paymentMethod, setSelectedPayment],
   );
 
   useEffect(() => {
@@ -78,14 +82,10 @@ const PaymentWordline: React.FC = () => {
         if (paymentmethodsResponse.isError === false) {
           const { data } = paymentmethodsResponse;
           if (data) {
-            if (window && window.ApplePaySession) {
-              setPaymentMethods(data.paymentMethods?.filter((payMethod) => payMethod.enabled));
-            } else {
-              setPaymentMethods(
-                data.paymentMethods
-                  ?.filter((payMethod) => payMethod.enabled)
-                  .filter((d) => d.paymentMethod !== 'applepay'),
-              );
+            const rawPaymentMethods: PaymentMethod[] =
+              data.paymentMethods?.filter((payMethod) => payMethod.enabled || payMethod.token) || [];
+            if (window && !window.ApplePaySession) {
+              setPaymentMethods(rawPaymentMethods.filter((d) => d.paymentMethod !== 'applepay'));
             }
           }
         }
@@ -103,29 +103,27 @@ const PaymentWordline: React.FC = () => {
     if (type === 'offsite') {
       try {
         const validateResponse = await validateCart();
-        if (validateResponse) {
-          if (validateResponse.statusCode === 200) {
-            const hostedCheckoutResponse: HostedCheckoutResponse = await sdk.callAction({
-              actionName: 'payment/getHostedCheckout',
-              payload: {
-                returnUrl: `${window.location.origin}/payment`,
-                paymentMethod: paymentMethod,
-                paymentProductId: paymentProductId,
-              },
-            });
-            if (hostedCheckoutResponse.isError === false) {
-              const { data } = hostedCheckoutResponse;
-              if (data) {
-                const { result } = data;
-                if (result) {
-                  const { redirectUrl } = result;
-                  window.location.href = redirectUrl;
-                }
+        if (validateResponse?.statusCode === 200 && validateResponse?.result?.hasInventory) {
+          const hostedCheckoutResponse: HostedCheckoutResponse = await sdk.callAction({
+            actionName: 'payment/getHostedCheckout',
+            payload: {
+              returnUrl: `${window.location.origin}/payment`,
+              paymentMethod: paymentMethod,
+              paymentProductId: paymentProductId,
+            },
+          });
+          if (hostedCheckoutResponse.isError === false) {
+            const { data } = hostedCheckoutResponse;
+            if (data) {
+              const { result } = data;
+              if (result) {
+                const { redirectUrl } = result;
+                window.location.href = redirectUrl;
               }
             }
-          } else {
-            console.error('No cart found');
           }
+        } else {
+          console.error('No cart found');
         }
         stopProcessing();
       } catch (error) {
@@ -158,15 +156,16 @@ const PaymentWordline: React.FC = () => {
       )}
       <div className="mt-24 border-x border-t border-neutral-400 bg-white lg:mt-0">
         {paymentMethods?.map((payment) => {
-          const {
-            name,
-            paymentMethod,
-            image: { src },
-            displayOrder,
-          } = payment;
+          const { name, paymentMethod, image, displayOrder } = payment;
+          const displayName =
+            displayOrder !== undefined
+              ? getTranslation(name, locale)
+              : typeof name === 'object'
+              ? getPaymentName(name, locale)
+              : name;
           return (
             <div
-              key={name}
+              key={displayName}
               className="cursor-pointer border-b border-neutral-400 p-16 lg:px-20 lg:py-28"
               onClick={() => handlePaymentMethodSelection(payment)}
             >
@@ -174,17 +173,17 @@ const PaymentWordline: React.FC = () => {
                 <div>
                   <div className="flex items-center gap-16">
                     <Radio name="checkout-shipping-method" checked={paymentMethod === selectedPayment?.paymentMethod} />
-                    <p className="text-14 font-medium">{displayOrder !== undefined ? `Pay with ${name}` : name}</p>
+                    <p className="text-14 font-medium">{displayName}</p>
                   </div>
                 </div>
-                {Array.isArray(src) ? (
+                {image && Array.isArray(image.src) ? (
                   <div className="flex items-center">
-                    {src.map((imgSrc, index) => (
+                    {image.src.map((imgSrc, index) => (
                       <img key={`payment-img-${index}`} src={imgSrc} className="mr-10 h-[20px] lg:h-[24px]" />
                     ))}
                   </div>
                 ) : (
-                  <img src={`${src}`} className="h-[20px] lg:h-[24px]" />
+                  image && <img src={`${image.src}`} className="h-[20px] lg:h-[24px]" />
                 )}
               </div>
               {getComponent(payment)}
@@ -201,7 +200,7 @@ const PaymentWordline: React.FC = () => {
           loading={processing}
           // disabled={!paymentDataIsValid}
         >
-          {formatCheckoutMessage({ id: 'review.order', defaultMessage: 'Submit order' })}
+          {formatCheckoutMessage({ id: 'submit.order', defaultMessage: 'Submit order' })}
         </Button>
       </div>
     </div>
