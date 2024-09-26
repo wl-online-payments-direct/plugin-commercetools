@@ -1,4 +1,37 @@
-# Commercetools-Worldline Integration
+# Commercetools-Worldline
+
+Our Commercetools plug-in comes with regular updates and full integration support, guaranteeing a versatile out-of-the-box solution to accept online payments easily:
+
+Supports both [Hosted Checkout Page](https://docs.direct.worldline-solutions.com/en/integration/basic-integration-methods/hosted-checkout-page) and [Hosted Tokenization Page](https://docs.direct.worldline-solutions.com/en/integration/basic-integration-methods/hosted-tokenization-page) integration mode
+
+- Offers the following payment methods on our platform:
+    - Alipay+ 
+    - American Express 
+    - Apple Pay 
+    - Bancontact 
+    - Bizum 
+    - Carte Bancaire
+    - Cpay 
+    - Diners Club 
+    - iDEAL 
+    - Illicado 
+    - Intersolve 
+    - JCB 
+    - Multibanco 
+    - OneyBrandedGiftCard 
+    - PayPal
+    - SEPA Direct Debit 
+    - Maestro 
+    - MasterCard 
+    - Visa 
+    - WeChatPay
+- Manages multiple stores
+- Accepts payment operations (Refunds, authorisations, captures etc.) directly from the plugin
+
+[Keep an eye on our Release Notes](https://docs.direct.worldline-solutions.com/en/about/release-notes) to stay informed about updates and new features (i.e. [payment methods](https://docs.direct.worldline-solutions.com/en/payment-methods-and-features/index), [features](https://docs.direct.worldline-solutions.com/en/payment-methods-and-features/advanced-features/index), [integration modes](https://docs.direct.worldline-solutions.com/en/integration/index)) we have added to this plugin!
+
+
+# Integration
 
 - [Supported features](#supported-features)
 - [Overview](#overview)
