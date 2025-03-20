@@ -22,7 +22,7 @@
     "url": ""
   },
   "author": "",
-  "license": "ISC",
+  "license": "MIT",
   "homepage": "",
   "dependencies": {
     "@types/node": "^18.11.18",

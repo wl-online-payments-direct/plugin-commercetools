@@ -15,7 +15,7 @@
     "prepush": "npm run lint"
   },
   "keywords": [],
-  "license": "ISC",
+  "license": "MIT",
   "dependencies": {
     "@commercetools/platform-sdk": "^7.0.0",
     "@commercetools/sdk-auth": "^4.0.1",
