@@ -12,7 +12,6 @@ import { CloseIcon } from '@commercetools-uikit/icons';
 const PaymentCard = ({ handlePaymentOptionUpdate, ...props }) => {
   const {
     logo,
-    defaultLogo,
     label,
     enabled,
     paymentProductId,
@@ -41,7 +40,6 @@ const PaymentCard = ({ handlePaymentOptionUpdate, ...props }) => {
           className="payment-list-img"
           src={logo}
           alt={label}
-          onError={() => handlePaymentOptionUpdate(label, 'logo', defaultLogo)}
         />
         <div className="payment-title">{label}</div>
         <div className="payment-options-card-actions flex algin-even">

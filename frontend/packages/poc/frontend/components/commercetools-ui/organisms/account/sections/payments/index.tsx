@@ -16,7 +16,6 @@ interface Card {
   paymentMethod?: string;
   label?: string;
   logo?: string;
-  defaultLogo?: string;
 }
 
 const Payments = () => {

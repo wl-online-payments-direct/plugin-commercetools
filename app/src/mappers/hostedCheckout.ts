@@ -79,25 +79,31 @@ export function getHostedCheckoutPayload(
   };
 
   // Line items
-  const items = cart.lineItems.map((lineItem) => ({
-    amountOfMoney: {
-      currencyCode: lineItem?.totalPrice?.currencyCode,
-      amount: lineItem?.totalPrice?.centAmount,
-    },
-    invoiceData: {
-      description: (lineItem.productType as unknown as { description: string })
-        .description,
-    },
-    orderLineDetails: {
-      productName: lineItem.name as unknown, // Todo, will pass the all locale to cart to get the name
-      discountAmount: 0, // Todo, getting an array of discount
-      productCode: lineItem.productId,
-      productPrice: lineItem.price.value.centAmount,
-      productType: lineItem.productType.obj?.name,
-      quantity: lineItem.quantity,
-      // taxAmount: lineItem.taxRate?.amount,
-    },
-  }));
+  const items = cart.lineItems.map((lineItem) => {
+    const productName = typeof lineItem.name === 'string'
+        ? lineItem.name
+        : lineItem.name?.en || lineItem.name?.[cart.locale || 'en'] || Object.values(lineItem.name || {})[0] || 'Product';
+
+    return {
+      amountOfMoney: {
+        currencyCode: lineItem?.totalPrice?.currencyCode,
+        amount: lineItem?.totalPrice?.centAmount,
+      },
+      invoiceData: {
+        description: (lineItem.productType as unknown as { description: string })
+            .description,
+      },
+      orderLineDetails: {
+        productName: productName as string,
+        discountAmount: 0, // Todo, getting an array of discount
+        productCode: lineItem.productId,
+        productPrice: lineItem.price.value.centAmount,
+        productType: lineItem.productType.obj?.name,
+        quantity: lineItem.quantity,
+        // taxAmount: lineItem.taxRate?.amount,
+      },
+    };
+  });
   // Concat with the merchant reference
   const paymentId = `${merchantReference}-${reference?.referenceId?.toString()}`;
 

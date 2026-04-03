@@ -5,7 +5,7 @@ import dotenv from 'dotenv';
 // Load environment variables from .env file
 dotenv.config();
 
-const cronScheduleTimer = process.env.CRON_SCHEDULE || '* * * * *'; // Default to running every minute if not specified
+const cronScheduleTimer = process.env.CRON_SCHEDULE_TIMER || '* * * * *'; // Default to running every minute if not specified
 
 async function initiateCapturePayment() {
   cron.schedule(cronScheduleTimer, async () => {

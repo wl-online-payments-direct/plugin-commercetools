@@ -1,4 +1,4 @@
-import React, { useContext, useReducer, useEffect } from 'react';
+import React, {useContext, useEffect, useReducer} from 'react';
 import './style.css';
 import PageWrapper from '../page-wrapper';
 import PrimaryButton from '@commercetools-uikit/primary-button';
@@ -10,9 +10,11 @@ import RedirectModeA from './RedirectModeA';
 import RedirectModeB from './RedirectModeB';
 import GeneralSettings from './GeneralSettings';
 import reducer from './reducer';
-import { PaymentContext } from '../../context/payment';
-import { useIntl } from 'react-intl';
+import {PaymentContext} from '../../context/payment';
+import {useIntl} from 'react-intl';
 import messages from './messages';
+
+
 
 const { supportAddress } = CONFIG;
 const PaymentMethods = () => {
@@ -30,7 +32,15 @@ const PaymentMethods = () => {
 
   const { formatMessage } = useIntl();
 
-  const [state, dispatch] = useReducer(reducer, initialState);
+  const customInitialState = {
+    ...initialState,
+    redirectModeA: {
+      ...initialState.redirectModeA,
+      paymentOptions: [],
+    },
+  };
+
+  const [state, dispatch] = useReducer(reducer, customInitialState);
 
   const handleOnsiteMode = (field, value) => {
     const payload = { ...state.onSiteMode };
@@ -92,17 +102,14 @@ const PaymentMethods = () => {
   const handleRedirectModeA = (field, value) => {
     const payload = { ...state.redirectModeA };
     if (field === 'paymentOptions') {
-      const paymentPayload = value.map((option) => {
+      payload['paymentOptions'] = value.map((option) => {
         return {
           ...option,
-          enabled: payload['paymentOptions'].find(
-            (ele) => ele.label === option.label
-          )?.enabled
-            ? true
-            : false,
+          enabled: !!payload['paymentOptions'].find(
+              (ele) => ele.label === option.label
+          )?.enabled,
         };
       });
-      payload['paymentOptions'] = paymentPayload;
     } else if (field === '3dsEnablement') {
       payload['3dsEnablement'] = {
         ...payload['3dsEnablement'],
@@ -250,14 +257,14 @@ const PaymentMethods = () => {
         initialState.redirectModeA.paymentOptions
       );
     }
-    setLoader(false);
+    setLoader(false); 
   };
 
   const camelCase = (str) => {
     return str
       .toLowerCase()
       .replace(/(?:^\w|[A-Z]|\b\w)/g, function (word, index) {
-        return index == 0 ? word.toLowerCase() : word.toUpperCase();
+        return index === 0 ? word.toLowerCase() : word.toUpperCase();
       })
       .replace(/\s+/g, '');
   };
@@ -280,7 +287,6 @@ const PaymentMethods = () => {
                   return {
                     ...pDat,
                     enabled: false,
-                    paymentMethod: camelCase(pDat.label),
                   };
                 else return { ...pDat, paymentMethod: camelCase(pDat.label) };
               });
@@ -310,6 +316,8 @@ const PaymentMethods = () => {
     const final_payload = {
       value: {
         ...customObject?.value,
+        enableWorldlineCheckout: true,
+        mode: customObject?.value?.mode || 'test',
         merchantReference: saveData.merchantReference.replaceAll(' ', ''),
         authorizationMode: saveData.authorizationMode,
         live: {
@@ -328,6 +336,7 @@ const PaymentMethods = () => {
   useEffect(async () => {
     setLoader(true);
     const payload = JSON.parse(JSON.stringify(initialState));
+    payload.redirectModeA.paymentOptions = [];
     if (customObject?.value) {
       const customValue = customObject?.value?.test;
       for (let ds of Object.keys(dataFields)) {

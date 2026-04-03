@@ -26,3 +26,4 @@ export * from './sendEmail';
 export * from './getCards';
 export * from './downloadLog';
 export * from './deleteToken';
+export * from './saveCustomObject';

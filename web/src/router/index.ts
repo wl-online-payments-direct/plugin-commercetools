@@ -28,6 +28,7 @@ import sendEmailController from '../api/sendEmail/controller';
 import getCardsController from '../api/getCards/controller';
 import downloadLogController from '../api/downloadLog/controller';
 import deleteTokenController from '../api/deleteToken/controller';
+import saveCustomObjectController from '../api/saveCustomObject/controller';
 
 const routes = {
   '/': healthController.processRequest,
@@ -66,6 +67,7 @@ const routes = {
   '/orders': listOrdersController.processRequest,
   '/order': getOrderController.processRequest,
   '/download/log': downloadLogController.processRequest,
+  '/configuration': saveCustomObjectController.processRequest,
 };
 
 export { routes };

@@ -134,14 +134,6 @@ export default defineMessages({
     id: 'myAccount.webhookUrlPlaceholder',
     defaultMessage: 'Enter your Webhook URL',
   },
-  timeOut: {
-    id: 'myAccount.timeOut',
-    defaultMessage: 'Time Out in Minutes',
-  },
-  timeOutPlaceholder: {
-    id: 'myAccount.timeOutPlaceholder',
-    defaultMessage: 'Enter your Time Out in Minutes',
-  },
   webhookSecret: {
     id: 'myAccount.webhookSecret',
     defaultMessage: 'Webhook Secret',
@@ -210,13 +202,17 @@ export default defineMessages({
     id: 'myAccount.characterExceedErr',
     defaultMessage: 'Maximum character limit is 256',
   },
-  timeOutBelowErr: {
-    id: 'myAccount.timeOutBelowErr',
-    defaultMessage: 'Minimum timeout is 1',
+  serverportErr: {
+    id: 'myAccount.serverportErr',
+    defaultMessage: 'Port must be between 0 and 65535',
   },
-  timeOutAboveErr: {
-    id: 'myAccount.timeOutAboveErr',
-    defaultMessage: 'Maximum timeout is 1440',
+  servertimeoutErr: {
+    id: 'myAccount.servertimeoutErr',
+    defaultMessage: 'Timeout must be a positive number',
+  },
+  serverurlErr: {
+    id: 'myAccount.serverurlErr',
+    defaultMessage: 'Please enter a valid domain or URL',
   },
   saveBtn: {
     id: 'myAccount.saveBtn',

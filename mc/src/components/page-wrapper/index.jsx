@@ -7,11 +7,14 @@ import { PaymentContext } from '../../context/payment/index';
 import Label from '@commercetools-uikit/label';
 import { useIntl } from 'react-intl';
 import messages from './messages';
+import { useLocation } from 'react-router-dom';
+import { entryPointUriPath } from '../../constants';
 
 const PageWrapper = ({ children }) => {
   const projectKey = useApplicationContext((context) => context.project.key);
   const locale = useApplicationContext((context) => context.dataLocale);
   const { formatMessage } = useIntl();
+  const location = useLocation();
 
   const {
     fetchStores,
@@ -32,25 +35,49 @@ const PageWrapper = ({ children }) => {
     activeCountry,
   } = useContext(PaymentContext);
 
-  useEffect(async () => {
-    const res = await fetchProject();
-    if (res?.countries) setCountries(res.countries);
-    if (res?.currencies) setCurrencies(res.currencies);
-    if (activeCountry === null) setActiveCountry(res.countries[0]);
-    if (activeCurrency === null) setActiveCurrency(res.currencies[0]);
+  useEffect(() => {
+    let cancelled = false;
+    const load = async () => {
+      const res = await fetchProject();
+      if (cancelled) return;
+      if (res?.countries) {
+        setCountries(res.countries);
+        if (activeCountry === null) setActiveCountry(res.countries[0]);
+      }
+      if (res?.currencies) {
+        setCurrencies(res.currencies);
+        if (activeCurrency === null) setActiveCurrency(res.currencies[0]);
+      }
 
-    const response = await fetchStores();
-    if (activeStore === null) setActiveStore(response[0]);
-    setStores(response);
+      const response = await fetchStores();
+      if (cancelled) return;
+      if (response?.length) {
+        if (activeStore === null) setActiveStore(response[0]);
+        setStores(response);
+      }
+    };
+    load();
+    return () => { cancelled = true; };
   }, [projectKey]);
 
-  useEffect(async () => {
-    const response = await fetchCustomObjects(activeStore);
-    setCustomObject(response);
+  useEffect(() => {
+    let cancelled = false;
+    const load = async () => {
+      const response = await fetchCustomObjects(activeStore);
+      if (!cancelled) setCustomObject(response || {});
+    };
+    load();
+    return () => { cancelled = true; };
   }, [stores, activeCountry, activeCurrency]);
 
   const getStoreName = (str) => {
-    return str.name[locale] ? str.name[locale] : str.name['en'];
+    return str?.name?.[locale] || str?.name?.['en'] || str?.key || '';
+  };
+
+  const isPaymentMethodsPage = () => {
+    const pathname = location.pathname;
+
+    return pathname.endsWith(entryPointUriPath) || pathname.endsWith(`${entryPointUriPath}/`);
   };
 
   return (
@@ -78,7 +105,7 @@ const PageWrapper = ({ children }) => {
             </Select>
           </div>
         ) : null}
-        {countries?.length ? (
+        {countries?.length && isPaymentMethodsPage() ? (
           <div className="select-dropdown-wrapper">
             <Label>{formatMessage(messages.countries)}</Label>
             <Select
@@ -100,7 +127,7 @@ const PageWrapper = ({ children }) => {
             </Select>
           </div>
         ) : null}
-        {currencies?.length ? (
+        {currencies?.length && isPaymentMethodsPage() ? (
           <div className="select-dropdown-wrapper">
             <Label>{formatMessage(messages.currencies)}</Label>
             <Select

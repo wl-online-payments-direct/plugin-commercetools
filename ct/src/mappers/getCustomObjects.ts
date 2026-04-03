@@ -1,6 +1,22 @@
+import { decrypt } from '@worldline/ctintegration-util';
 import { CustomObjects, CustomObjectsResponse } from '../types';
 
-const getCustomObjectsResponseMapper = (response: CustomObjectsResponse) => {
+/**
+ * Decrypt sensitive fields in CustomObjects
+ */
+function decryptConfigFields(config: CustomObjects): CustomObjects {
+  return {
+    ...config,
+    apiKey: decrypt(config.apiKey),
+    apiSecret: decrypt(config.apiSecret),
+    webhookKey: decrypt(config.webhookKey),
+    webhookSecret: decrypt(config.webhookSecret),
+  };
+}
+
+const getCustomObjectsResponseMapper = (
+  response: CustomObjectsResponse,
+): CustomObjects => {
   if (response?.body?.errors) {
     throw {
       message: '[CT] Failed to retrieve custom object information',
@@ -25,8 +41,8 @@ const getCustomObjectsResponseMapper = (response: CustomObjectsResponse) => {
     ...connectionProps,
     ...rest,
   } as CustomObjects;
-
-  return config;
+  
+  return decryptConfigFields(config);
 };
 
 export { getCustomObjectsResponseMapper };

@@ -4,10 +4,12 @@ import ToggleInput from '@commercetools-uikit/toggle-input';
 import RadioField from '@commercetools-uikit/radio-field';
 import RadioInput from '@commercetools-uikit/radio-input';
 import TextInput from '@commercetools-uikit/text-input';
+import NumberInput from '@commercetools-uikit/number-input';
 import InfoIcon from '@mui/icons-material/Info';
 import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 import Select from '@mui/material/Select';
+import Typography from '@mui/material/Typography';
 import { DownloadIcon } from '@commercetools-uikit/icons';
 import { useIntl } from 'react-intl';
 import messages from './messages';
@@ -159,6 +161,37 @@ const GeneralSettings = ({ state, handleCommonSettings }) => {
           </div>
         </>
       )}
+      <div className="section-wrapper">
+        <h5 className="section-header">
+          <span className="header-section-title">
+            {formatMessage(messages.generaltimeOutLabel)}
+          </span>
+          <Tooltip
+            placement="top"
+            title={formatMessage(messages.generaltimeOutTooltip)}
+          >
+            <InfoIcon />
+          </Tooltip>
+        </h5>
+        <div className="template-section">
+          <div>
+            {state.timeOut.hasError ? (
+              <div className="error-msg">
+                <Typography>{state.timeOut.errMsg}</Typography>
+              </div>
+            ) : null}
+          </div>
+          <NumberInput
+            className="section-input"
+            value={state.timeOut.value}
+            placeholder={formatMessage(messages.generaltimeOutPlaceholder)}
+            onChange={(e) =>
+              handleCommonSettings('timeOut', parseInt(e.target.value))
+            }
+            hasError={state.timeOut.hasError}
+          />
+        </div>
+      </div>
       <div className="section-wrapper">
         <div className="debug-loging flex">
           <h5 className="section-header">

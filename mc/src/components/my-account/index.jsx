@@ -5,6 +5,7 @@ import { useApplicationContext } from '@commercetools-frontend/application-shell
 import SelectInput from '@commercetools-uikit/select-input';
 import Label from '@commercetools-uikit/label';
 import TextInput from '@commercetools-uikit/text-input';
+import PasswordInput from '@commercetools-uikit/password-input';
 import NumberInput from '@commercetools-uikit/number-input';
 import PrimaryButton from '@commercetools-uikit/primary-button';
 import './style.css';
@@ -46,6 +47,8 @@ const MyAccount = (props) => {
     contactSupportLink,
     apiHost,
     webhookURL,
+    worldlineTestEndpoint = 'payment.preprod.direct.worldline-solutions.com',
+    worldlineLiveEndpoint = 'payment.direct.worldline-solutions.com',
   } = useApplicationContext((context) => context.environment);
   useEffect(() => {
     if (customObject?.value) {
@@ -118,7 +121,7 @@ const MyAccount = (props) => {
             payload[pData] = {
               ...prevData[pData],
               value:
-                customObject?.value[pData].length === 0
+                !customObject?.value[pData] || customObject?.value[pData].length === 0
                   ? apiHost + webhookURL
                   : customObject?.value[pData],
             };
@@ -149,7 +152,7 @@ const MyAccount = (props) => {
         ...prevData,
         [name]: {
           ...prevData[name],
-          value: name === 'timeOut' ? parseInt(value) : value,
+          value: value,
           hasError: false,
         },
       };
@@ -159,6 +162,20 @@ const MyAccount = (props) => {
   const handleSubmit = async () => {
     const payload = { ...customObject };
     const formPayload = {};
+
+    const smtpFields = [
+      'serverurl',
+      'serverport',
+      'serverusername',
+      'serverpassword',
+      'servertimeout',
+      'serverto',
+      'serverfrom',
+    ];
+    const anySmtpFieldFilled = smtpFields.some(
+      (field) => formData[field]?.value && formData[field].value.toString().trim().length > 0
+    );
+
     for (let pData of Object.keys(formData)) {
       if (pData === 'merchantId') {
         formPayload[pData] = {
@@ -174,41 +191,55 @@ const MyAccount = (props) => {
               ? formatMessage(messages.characterExceedErr)
               : '',
         };
-      } else if (pData === 'timeOut') {
+      } else if (smtpFields.includes(pData)) {
+        let hasError = false;
+        let errMsg = '';
+
+        if (anySmtpFieldFilled) {
+          const value = formData[pData].value?.toString().trim() || '';
+
+          if (value.length === 0) {
+            hasError = true;
+            errMsg = formatMessage(messages.emptyErr);
+          } else {
+            if (pData === 'serverport') {
+              const port = parseInt(value);
+              if (isNaN(port) || port < 0 || port > 65535) {
+                hasError = true;
+                errMsg = formatMessage(messages.serverportErr);
+              }
+            } else if (pData === 'servertimeout') {
+              const timeout = parseInt(value);
+              if (isNaN(timeout) || timeout < 0) {
+                hasError = true;
+                errMsg = formatMessage(messages.servertimeoutErr);
+              }
+            } else if (pData === 'serverurl') {
+              const urlPattern = /^[a-zA-Z0-9][a-zA-Z0-9-._]*[a-zA-Z0-9]\.[a-zA-Z]{2,}$/;
+              if (!urlPattern.test(value) && !value.startsWith('smtp.')) {
+                hasError = true;
+                errMsg = formatMessage(messages.serverurlErr);
+              }
+            } else if (pData === 'serverto' || pData === 'serverfrom') {
+              const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+              if (!emailPattern.test(value)) {
+                hasError = true;
+                errMsg = formatMessage(messages.emailErr);
+              }
+            }
+          }
+        }
+
         formPayload[pData] = {
           ...formData[pData],
-          hasError:
-            !formData[pData].disabled &&
-            (isNaN(formData[pData].value) ||
-              formData[pData].value < 1 ||
-              formData[pData].value > 1440),
-          errMsg:
-            formData[pData].value < 1
-              ? formatMessage(messages.timeOutBelowErr)
-              : formData[pData].value > 256
-              ? formatMessage(messages.timeOutAboveErr)
-              : '',
-        };
-      } else if (
-        [
-          'serverurl',
-          'serverport',
-          'serverusername',
-          'serverpassword',
-          'servertimeout',
-          'serverto',
-          'serverfrom',
-        ].includes(pData)
-      ) {
-        formPayload[pData] = {
-          ...formData[pData],
-          hasError: false,
+          hasError: hasError,
+          errMsg: errMsg,
         };
       } else {
         formPayload[pData] = {
           ...formData[pData],
           hasError:
-            !formData[pData].disabled && formData[pData].value.length === 0,
+            !formData[pData].disabled && !formData[pData].hideField && formData[pData].value.length === 0,
           errMsg:
             formData[pData].value.length === 0
               ? formatMessage(messages.emptyErr)
@@ -222,12 +253,16 @@ const MyAccount = (props) => {
       return;
     } else {
       setLoader(true);
+      const hostToUse = selectedOption === 'live'
+        ? worldlineLiveEndpoint
+        : worldlineTestEndpoint;
+
       const conPayload = {
         merchantId: formData['merchantId'].value,
         integrator: integrator,
         apiKey: formData['apiKey'].value,
         apiSecret: formData['apiSecret'].value,
-        host: formData['host'].value,
+        host: hostToUse,
       };
       const result = await checkConnection(conPayload);
       if (result?.connection) {
@@ -256,16 +291,20 @@ const MyAccount = (props) => {
               [fData]: formData[fData].value?.trim(),
             };
           } else {
+            let valueToSave = formData[fData].value?.trim();
+            if (fData === 'host') {
+              valueToSave = selectedOption === 'live'
+                ? worldlineLiveEndpoint
+                : worldlineTestEndpoint;
+            }
+
             payload.value[selectedOption] = {
               ...payload.value[selectedOption],
-              [fData]:
-                fData === 'timeOut'
-                  ? formData[fData].value
-                  : formData[fData].value?.trim(),
+              [fData]: valueToSave,
             };
           }
         }
-        await saveCustomObject(payload);
+        await saveCustomObject(payload, true);
         hideServerFields();
       } else {
         setLoader(false);
@@ -471,63 +510,72 @@ const MyAccount = (props) => {
                             </div>
                           ) : null}
                         </div>
-                        {formField.type === 'text' ? (
-                          key === 'webhookUrl' ? (
-                            <>
-                              <div className="flex">
-                                <TextInput
-                                  name={key}
-                                  placeholder={formatMessage(
-                                    messages[`${key}Placeholder`]
-                                  )}
-                                  value={formField.value}
-                                  isReadOnly={formField.disabled}
-                                  onChange={handleInputChange}
-                                  hasError={formField.hasError}
-                                />
-                                {formField.value && formField.value.length && (
-                                  <ClipboardIcon
-                                    style={{ margin: 'auto' }}
-                                    onClick={() => {
-                                      setCopied(true);
-                                      navigator.clipboard.writeText(
-                                        formField.value
-                                      );
-                                    }}
-                                  />
-                                )}
-                              </div>
-                              <div
-                                className="flex"
-                                style={{ justifyContent: 'space-between' }}
-                              >
-                                <p className="info">
-                                  {formatMessage(messages.clipboardMsg)}
-                                </p>
-                                {copied && (
-                                  <p> {formatMessage(messages.copiedMsg)}</p>
-                                )}
-                              </div>
-                            </>
-                          ) : (
-                            <TextInput
-                              name={key}
-                              placeholder={formatMessage(
-                                messages[`${key}Placeholder`]
-                              )}
-                              value={formField.value}
-                              isReadOnly={formField.disabled}
-                              onChange={handleInputChange}
-                              hasError={formField.hasError}
-                            />
-                          )
-                        ) : (
+                        {formField.type === 'number' ? (
                           <NumberInput
                             name={key}
                             placeholder={formatMessage(
                               messages[`${key}Placeholder`]
                             )}
                             value={formField.value}
+                            onChange={handleInputChange}
+                            hasError={formField.hasError}
+                          />
+                        ) : formField.type === 'password' ? (
+                          <PasswordInput
+                            name={key}
+                            placeholder={formatMessage(
+                              messages[`${key}Placeholder`]
+                            )}
+                            value={formField.value}
+                            isReadOnly={formField.disabled}
+                            onChange={handleInputChange}
+                            hasError={formField.hasError}
+                          />
+                        ) : key === 'webhookUrl' ? (
+                          <>
+                            <div className="flex">
+                              <TextInput
+                                name={key}
+                                placeholder={formatMessage(
+                                  messages[`${key}Placeholder`]
+                                )}
+                                value={formField.value}
+                                isReadOnly={formField.disabled}
+                                onChange={handleInputChange}
+                                hasError={formField.hasError}
+                              />
+                              {formField.value && formField.value.length && (
+                                <ClipboardIcon
+                                  style={{ margin: 'auto' }}
+                                  onClick={() => {
+                                    setCopied(true);
+                                    navigator.clipboard.writeText(
+                                      formField.value
+                                    );
+                                  }}
+                                />
+                              )}
+                            </div>
+                            <div
+                              className="flex"
+                              style={{ justifyContent: 'space-between' }}
+                            >
+                              <p className="info">
+                                {formatMessage(messages.clipboardMsg)}
+                              </p>
+                              {copied && (
+                                <p> {formatMessage(messages.copiedMsg)}</p>
+                              )}
+                            </div>
+                          </>
+                        ) : (
+                          <TextInput
+                            name={key}
+                            placeholder={formatMessage(
+                              messages[`${key}Placeholder`]
+                            )}
+                            value={formField.value}
+                            isReadOnly={formField.disabled}
                             onChange={handleInputChange}
                             hasError={formField.hasError}
                           />

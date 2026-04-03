@@ -16,7 +16,7 @@
       "placeholder": "Enter your API Key",
       "value": "",
       "required": true,
-      "type": "text"
+      "type": "password"
     },
     "apiSecret": {
       "hasError": false,
@@ -25,7 +25,7 @@
       "placeholder": "Enter your API Secret",
       "value": "",
       "required": true,
-      "type": "text"
+      "type": "password"
     },
     "host": {
       "hasError": false,
@@ -33,8 +33,9 @@
       "label": "API End Point",
       "placeholder": "Enter your API End Point",
       "value": "",
-      "required": true,
-      "type": "text"
+      "required": false,
+      "type": "text",
+      "hideField": true
     },
     "webhookKey": {
       "hasError": false,
@@ -43,7 +44,7 @@
       "placeholder": "Enter your Webhook Key",
       "value": "",
       "required": true,
-      "type": "text"
+      "type": "password"
     },
     "webhookSecret": {
       "hasError": false,
@@ -52,16 +53,7 @@
       "placeholder": "Enter your Webhook Secret",
       "value": "",
       "required": true,
-      "type": "text"
-    },
-    "timeOut": {
-      "hasError": false,
-      "errMsg": "Please fill out this field.",
-      "label": "Time Out in Minutes",
-      "placeholder": "Enter your Time Out in Minutes",
-      "value": 180,
-      "required": true,
-      "type": "number"
+      "type": "password"
     },
     "webhookUrl": {
       "hasError": false,
@@ -107,16 +99,7 @@
       "hideField": true,
       "label": "Password",
       "placeholder": "Enter the password",
-      "type": "text",
-      "value": ""
-    },
-    "servertimeout": {
-      "hasError": false,
-      "required": false,
-      "hideField": true,
-      "label": "Server Timeout",
-      "placeholder": "Enter the timeout",
-      "type": "number",
+      "type": "password",
       "value": ""
     },
     "serverto": {
@@ -157,7 +140,7 @@
       "placeholder": "Enter your API Key",
       "value": "",
       "required": true,
-      "type": "text"
+      "type": "password"
     },
     "apiSecret": {
       "hasError": false,
@@ -166,7 +149,7 @@
       "placeholder": "Enter your API Secret",
       "value": "",
       "required": true,
-      "type": "text"
+      "type": "password"
     },
     "host": {
       "hasError": false,
@@ -174,8 +157,9 @@
       "label": "API End Point",
       "placeholder": "Enter your API End Point",
       "value": "",
-      "required": true,
-      "type": "text"
+      "required": false,
+      "type": "text",
+      "hideField": true
     },
     "webhookKey": {
       "hasError": false,
@@ -184,7 +168,7 @@
       "placeholder": "Enter your Webhook Key",
       "value": "",
       "required": true,
-      "type": "text"
+      "type": "password"
     },
     "webhookSecret": {
       "hasError": false,
@@ -193,16 +177,7 @@
       "placeholder": "Enter your Webhook Secret",
       "value": "",
       "required": true,
-      "type": "text"
-    },
-    "timeOut": {
-      "hasError": false,
-      "errMsg": "Please fill out this field.",
-      "label": "Time Out in Minutes",
-      "placeholder": "Enter your Time Out in Minutes",
-      "value": 180,
-      "required": true,
-      "type": "number"
+      "type": "password"
     },
     "webhookUrl": {
       "hasError": false,
@@ -248,16 +223,7 @@
       "hideField": true,
       "label": "Password",
       "placeholder": "Enter the password",
-      "type": "text",
-      "value": ""
-    },
-    "servertimeout": {
-      "hasError": false,
-      "required": false,
-      "hideField": true,
-      "label": "Server Timeout",
-      "placeholder": "Enter the timeout",
-      "type": "number",
+      "type": "password",
       "value": ""
     },
     "serverto": {

@@ -81,6 +81,28 @@ export default defineMessages({
     id: 'general.enableLogs.label',
     defaultMessage: initialState.enableLogs.label,
   },
+  generaltimeOutLabel: {
+    id: 'general.timeOut.label',
+    defaultMessage: initialState.timeOut.label,
+  },
+  generaltimeOutPlaceholder: {
+    id: 'general.timeOut.' +
+        '' +
+        '',
+    defaultMessage: initialState.timeOut.placeholder,
+  },
+  generaltimeOutTooltip: {
+    id: 'general.timeOut.tooltip',
+    defaultMessage: initialState.timeOut.tooltip,
+  },
+  generaltimeOutBelowErr: {
+    id: 'general.timeOut.belowErr',
+    defaultMessage: 'Minimum timeout is 1',
+  },
+  generaltimeOutAboveErr: {
+    id: 'general.timeOut.aboveErr',
+    defaultMessage: 'Maximum timeout is 1440',
+  },
   onSiteTitle: {
     id: 'onSite.title',
     defaultMessage: 'On Site Mode: Card Payments Only',

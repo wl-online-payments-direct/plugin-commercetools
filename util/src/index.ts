@@ -5,3 +5,4 @@ export * from './methods';
 export * from './common';
 export * from './sessionAuthentication';
 export * from './mail';
+export * from './crypto';

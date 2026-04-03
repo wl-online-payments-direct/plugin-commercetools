@@ -1,4 +1,4 @@
-FROM node:18-alpine AS dependencies
+﻿FROM node:18-alpine AS dependencies
 
 RUN apk update && apk upgrade
 
@@ -44,6 +44,7 @@ RUN npm run build
 
 FROM node:18-bullseye-slim AS deploy
 
+
 RUN apt-get update && apt-get install -y nginx supervisor openssl && apt-get clean && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /app
@@ -76,4 +77,11 @@ RUN npm ci --ignore-scripts
 #generate prisma.
 RUN npm run prisma:generate
 
-CMD ["npm", "run", "start:cron"]
+
+RUN mkdir -p /etc/nginx/conf.d
+COPY ./nginx.conf  /etc/nginx/sites-enabled/default
+COPY ./supervisord.conf /etc/supervisord.conf
+
+EXPOSE 80
+
+CMD ["supervisord", "-c", "/etc/supervisord.conf"]

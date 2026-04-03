@@ -21,9 +21,6 @@ const createServer = () =>
       const requestUrl = request.url || '/';
       const parts = url.parse(requestUrl);
       const route = routes[parts.pathname as keyof typeof routes];
-      const filePath = decodeURIComponent(
-        path.join(path.resolve('/'), parts.pathname as string),
-      );
       const { method } = request;
 
       if (route) {
@@ -48,28 +45,43 @@ const createServer = () =>
         } else {
           await route(request, response);
         }
-      } else if (
-        isGetRequest(method) &&
-        filePath.includes(
-          (process.env.DIR_IMAGE_UPLOAD as string) || 'uploadedImages',
-        )
-      ) {
-        const fullPath = path.resolve(filePath);
-        const rootDir = path.parse(fullPath).root;
-        logger().info(`fullPath: ${fullPath} rootDir: ${rootDir}`);
-        const content = await fs.promises.readFile(filePath);
-        let contentType = 'application/octet-stream';
-        if (filePath.endsWith('.svg')) {
-          contentType = 'image/svg+xml';
-        } else if (
-          ['.jpg', '.jpeg', '.png', '.gif'].some((ext) =>
-            filePath.toLowerCase().endsWith(ext),
-          )
-        ) {
-          contentType = `image/${path.extname(filePath).slice(1)}`;
+      } else if (isGetRequest(method)) {
+
+        const uploadDirName = process.env.DIR_IMAGE_UPLOAD || 'uploadedImages';
+        const uploadDirPath = path.join(process.cwd(), uploadDirName);
+        const pathname = parts.pathname || '';
+
+        if (pathname.startsWith(`/${uploadDirName}/`)) {
+          const relativePath = pathname.replace(`/${uploadDirName}/`, '');
+          const filePath = path.join(uploadDirPath, relativePath);
+
+          try {
+            const content = await fs.promises.readFile(filePath);
+
+            let contentType = 'application/octet-stream';
+            if (filePath.endsWith('.svg')) {
+              contentType = 'image/svg+xml';
+            } else if (
+                ['.jpg', '.jpeg', '.png', '.gif'].some((ext) =>
+                    filePath.toLowerCase().endsWith(ext),
+                )
+            ) {
+              contentType = `image/${path.extname(filePath).slice(1)}`;
+            }
+            response.writeHead(200, { 'Content-Type': contentType });
+            response.end(content);
+          } catch (e) {
+            ResponseClient.setResponseError(response, {
+              statusCode: StatusCodes.INTERNAL_SERVER_ERROR,
+              message: (e as { message: string }).message,
+            });
+          }
+        } else {
+          ResponseClient.setResponseError(response, {
+            statusCode: StatusCodes.NOT_FOUND,
+            message: 'Route not found',
+          });
         }
-        response.writeHead(200, { 'Content-Type': contentType });
-        response.end(content);
       } else {
         ResponseClient.setResponseError(response, {
           statusCode: StatusCodes.NOT_FOUND,

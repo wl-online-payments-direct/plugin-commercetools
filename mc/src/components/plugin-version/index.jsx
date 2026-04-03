@@ -16,10 +16,20 @@ const PluginVersion = () => {
   } = useApplicationContext((context) => context.environment);
   const { formatMessage } = useIntl();
 
-  useEffect(async () => {
-    const version = await fetchPluginVersion();
-    if (version === currentVersion) setNewVersion(true);
-  }, [sourcePackageLink]);
+  useEffect(() => {
+    const load = async () => {
+      const remoteVersion = await fetchPluginVersion();
+      if (remoteVersion && remoteVersion !== currentVersion) {
+        setNewVersion(true);
+      } else {
+        setNewVersion(false);
+      }
+    };
+
+    if (sourcePackageLink) {
+      load();
+    }
+  }, [sourcePackageLink, currentVersion]);
 
   return (
     <div>

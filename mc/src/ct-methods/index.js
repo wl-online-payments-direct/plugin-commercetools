@@ -1,20 +1,44 @@
-import { fetcher, downloadFetcher } from '../services/custom-api-request';
+import {downloadFetcher, fetcher} from '../services/custom-api-request';
 import CONFIG from '../../configuration';
+
 const { CONTAINER_NAME } = CONFIG;
 
-export const createCustomObject = async (payload, projectKey) => {
+export const createCustomObject = async (payload, projectKey, apiHost) => {
   try {
-    const customObject = await fetcher(
-      `/proxy/ctp/${projectKey}/custom-objects`,
-      {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(payload),
-      }
+    const response = await fetcher(`/proxy/forward-to`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept-version': 'v2',
+        'X-Forward-To': `${apiHost}/configuration`,
+        'X-Forward-To-Audience-Policy': 'forward-url-full-path',
+        'X-Project-Key': projectKey,
+      },
+      body: JSON.stringify({
+        key: payload.key,
+        value: payload.value,
+      }),
+    });
+    
+    return response?.result || response;
+  } catch (error) {
+    console.error('Error creating custom object:', error.message);
+    throw error;
+  }
+};
+
+export const createPaymentCustomType = async (payload, projectKey) => {
+  try {
+    return await fetcher(
+        `/proxy/ctp/${projectKey}/types`,
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(payload),
+        }
     );
-    return customObject;
   } catch (error) {
     console.error('Error creating custom object:', error.message);
   }
@@ -245,7 +269,14 @@ export const requestNewFeature = async (payload, apiHost, projectKey) => {
 export const getPluginVersion = async (url) => {
   try {
     const response = await fetch(url);
-    return response;
+    if (!response.ok) {
+      throw new Error(`GitHub API error. Status: ${response.status}`);
+    }
+    const data = await response.json();
+
+    const rawTag = data.tag_name || data.name || '';
+    
+    return rawTag.replace(/^v/i, '');
   } catch (error) {
     console.error('Error plugin version:', error.message);
   }

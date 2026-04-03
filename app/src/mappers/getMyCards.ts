@@ -21,7 +21,6 @@ export function getMyCardsResponseMapper(
       paymentMethod = '',
       label = '',
       logo = '',
-      defaultLogo = '',
     } = mappedPaymentMethods[paymentProductId] || {};
 
     return {
@@ -32,7 +31,6 @@ export function getMyCardsResponseMapper(
       paymentMethod,
       label,
       logo,
-      defaultLogo,
       savedAt,
     };
   });

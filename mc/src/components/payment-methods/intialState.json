@@ -345,7 +345,7 @@
     "label": "Capture Configuration",
     "type": "text",
     "tooltip": "Numbers of days before automatic capture of authorized transactions",
-    "value": "-1",
+    "value": "manually",
     "values": {
       "manually": "Manually",
       "endOfDay": "At the end of the day",
@@ -363,5 +363,15 @@
     "type": "boolean",
     "value": false,
     "criteria": []
+  },
+  "timeOut": {
+    "label": "Checkout Timeout (in Minutes)",
+    "type": "number",
+    "value": 180,
+    "placeholder": "Enter Checkout Timeout in Minutes",
+    "tooltip": "Time in minutes before the checkout session expires",
+    "criteria": [],
+    "hasError": false,
+    "errMsg": ""
   }
 }

@@ -1,23 +1,20 @@
-FROM node:18-alpine as server
-
-ENV NODE_ENV development
+FROM node:18-alpine AS server
 
 RUN apk update && apk upgrade
-RUN apk --update --no-cache add curl
+RUN apk --update --no-cache add curl openssl libc6-compat
 
 WORKDIR /app
 
-RUN mkdir app ct db psp util web
-COPY app/package*.json ./app
-COPY ct/package*.json ./ct
-COPY db/package*.json ./db
-COPY psp/package*.json ./psp
-COPY util/package*.json ./util
-COPY web/package*.json ./web
-COPY package*.json .
-COPY ./dev-start.sh ./dev-start.sh
 
-RUN npm ci
+COPY package*.json ./
+COPY app/package*.json ./app/
+COPY ct/package*.json ./ct/
+COPY db/package*.json ./db/
+COPY psp/package*.json ./psp/
+COPY util/package*.json ./util/
+COPY web/package*.json ./web/
+COPY cron/package*.json ./cron/
+
 
 COPY ./app ./app
 COPY ./ct ./ct
@@ -25,8 +22,18 @@ COPY ./db ./db
 COPY ./psp ./psp
 COPY ./util ./util
 COPY ./web ./web
+COPY ./cron ./cron
+
+RUN npm ci
+
+COPY ./dev-start.sh ./dev-start.sh
 
 RUN npm run prisma:generate
 
+ENV NODE_ENV=development
+
+RUN chmod +x ./dev-start.sh
+
 EXPOSE 3000
+
 CMD ["./dev-start.sh"]

@@ -36,6 +36,7 @@
     "authorizationMode",
     "captureAuthorizationMode",
     "merchantReference",
-    "paymentOption"
+    "paymentOption",
+    "timeOut"
   ]
 }

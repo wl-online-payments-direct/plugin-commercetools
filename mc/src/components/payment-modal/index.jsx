@@ -112,13 +112,17 @@ const PaymentModalComponent = ({
     const toasterFlag = source !== 'modal' ? true : false;
     const res = await imageUploader(files, toasterFlag);
     setLoader(false);
-    if (res && res.length >= 0) {
-      if (source !== 'modal') {
-        setImagesData(imagesData.concat(`${apiHost}/${res[0]}`));
-        saveImage(imagesData.concat(`${apiHost}/${res[0]}`));
-      } else {
-        setImagesData([`${apiHost}/${res[0]}`]);
-      }
+       if (res && res.length > 0) {
+          const uploadedUrl = `${apiHost}/${res[0]}`;
+      
+               if (source !== 'modal') {
+               const updatedList = imagesData.concat(uploadedUrl);
+               setImagesData(updatedList);
+                   saveImage(updatedList);
+            } else {
+                   setImagesData([uploadedUrl]);
+               saveImage(uploadedUrl);
+            }
       resetInputElement();
     }
     setDimError(false);

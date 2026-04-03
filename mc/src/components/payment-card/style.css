@@ -1,5 +1,7 @@
 .payment-options-card {
     border-radius: 15px;
+    width: 170px;
+    height: 180px;
 }
 
 .payment-list-img {
