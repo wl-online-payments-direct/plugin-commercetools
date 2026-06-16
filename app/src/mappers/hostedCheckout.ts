@@ -26,6 +26,7 @@ export function getHostedCheckoutPayload(
     redirectModeB,
     authorizationMode,
     timeOut,
+    showResultPage,
   } = customConfig;
   const { tokens, acceptHeader, userAgent, paymentProductId, paymentMethod } =
     payload;
@@ -185,6 +186,7 @@ export function getHostedCheckoutPayload(
     paymentProductFilters: {},
     cardPaymentMethodSpecificInput: {},
     sessionTimeout: timeOut,
+    showResultPage: !!showResultPage,
   };
 
   if (paymentMethod === PAYMENT.REDIRECTMODE_B.PAYMENT_METHOD) {

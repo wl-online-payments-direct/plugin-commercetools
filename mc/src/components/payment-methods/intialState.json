@@ -358,6 +358,14 @@
       "afterSevenDay": "After 7 days"
     }
   },
+  "showResultPage": {
+    "label": "Display payment confirmation page",
+    "description": "By enabling this option, your customers will see the Worldline payment confirmation page",
+    "tooltip": "If enabled, customers will see a dedicated confirmation screen after payment is processed, confirming the payment and providing key details.",
+    "type": "boolean",
+    "value": true,
+    "criteria": []
+  },
   "enableLogs": {
     "label": "Enable Debug Logging",
     "type": "boolean",

@@ -64,6 +64,7 @@ interface ConfigModes {
   mode: string;
   skip3dsAuthentication: boolean;
   enableLogs: boolean;
+  showResultPage: boolean;
   authorizationMode: string;
   variant: string;
   merchantReference: string;

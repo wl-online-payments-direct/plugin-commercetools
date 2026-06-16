@@ -33,6 +33,7 @@
   ],
   "general": [
     "enableLogs",
+    "showResultPage",
     "authorizationMode",
     "captureAuthorizationMode",
     "merchantReference",

@@ -34,6 +34,7 @@ export interface HostedCheckoutPayload {
     cardPaymentMethodSpecificInput?: {
       groupCards?: boolean;
     };
+    showResultPage?: boolean;
   };
   redirectPaymentMethodSpecificInput?: {
     paymentProductId?: number;

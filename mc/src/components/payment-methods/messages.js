@@ -77,6 +77,18 @@ export default defineMessages({
     id: 'general.captureAuthorizationMode.tooltip',
     defaultMessage: initialState.captureAuthorizationMode.tooltip,
   },
+  generalShowResultPageLabel: {
+    id: 'general.showResultPage.label',
+    defaultMessage: initialState.showResultPage.label,
+  },
+  generalShowResultPageHelper: {
+    id: 'general.showResultPage.helper',
+    defaultMessage: initialState.showResultPage.description,
+  },
+  generalShowResultPageTooltip: {
+    id: 'general.showResultPage.tooltip',
+    defaultMessage: initialState.showResultPage.tooltip,
+  },
   generalenableLogsLabel: {
     id: 'general.enableLogs.label',
     defaultMessage: initialState.enableLogs.label,

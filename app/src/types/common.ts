@@ -59,6 +59,7 @@ export interface CustomObjects {
   redirectUrl: string;
   timeOut: number;
   enableWorldlineCheckout: boolean;
+  showResultPage: boolean;
   redirectModeA: RedirectModeAPaymentOptions;
   redirectModeB: RedirectModeBPaymentOptions;
   onSiteMode: OnSiteModePaymentOptions;

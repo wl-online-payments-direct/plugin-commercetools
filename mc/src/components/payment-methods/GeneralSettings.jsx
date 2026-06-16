@@ -195,6 +195,30 @@ const GeneralSettings = ({ state, handleCommonSettings }) => {
       <div className="section-wrapper">
         <div className="debug-loging flex">
           <h5 className="section-header">
+            {formatMessage(messages.generalShowResultPageLabel)}
+            <Tooltip
+              placement="top"
+              title={formatMessage(messages.generalShowResultPageTooltip)}
+            >
+              <InfoIcon />
+            </Tooltip>
+          </h5>
+          <ToggleInput
+            size={'small'}
+            isDisabled={false}
+            isChecked={state.showResultPage.value}
+            onChange={(e) =>
+              handleCommonSettings('showResultPage', e.target.checked)
+            }
+          />
+        </div>
+        <p className="sub-title">
+          {formatMessage(messages.generalShowResultPageHelper)}
+        </p>
+      </div>
+      <div className="section-wrapper">
+        <div className="debug-loging flex">
+          <h5 className="section-header">
             {formatMessage(messages.generalenableLogsLabel)}
           </h5>
           <ToggleInput
